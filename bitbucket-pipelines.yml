@@ -7,11 +7,12 @@ image: node:6.9.4
 
 pipelines:
   pull-requests:
-    - step:
-        caches:
-          - node
-        script: # Modify the commands below to build your repository.
-          - npm install
-          - npm run lint
-          - npm run typecheck
-          - npm test
+    '**':
+      - step:
+          caches:
+            - node
+          script: # Modify the commands below to build your repository.
+            - npm install
+            - npm run lint
+            - npm run typecheck
+            - npm test
