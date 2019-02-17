@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface CounterProps {
-  count: number,
-  onInc: () => void,
+  count: number;
+  onInc: () => void;
 }
 
 const Counter: React.FunctionComponent<CounterProps> = ({ count, onInc }) => (
@@ -14,8 +14,9 @@ const Counter: React.FunctionComponent<CounterProps> = ({ count, onInc }) => (
 );
 
 interface HelloProps {
-  isBlue: boolean
+  isBlue: boolean;
 }
+
 const Hello = styled.p`
   color: ${({ isBlue }: HelloProps) => isBlue ? 'blue' : 'red'};
 `;

@@ -1,12 +1,7 @@
-import React from 'react';
-
-import {
-  render,
-  fireEvent,
-  cleanup,
-} from 'react-testing-library';
-
 import 'jest-dom/extend-expect';
+import React from 'react';
+import { cleanup, fireEvent, render } from 'react-testing-library';
+
 import HelloPage from './index';
 
 afterEach(cleanup);
@@ -14,7 +9,7 @@ afterEach(cleanup);
 test('button increments count', () => {
   const rendered = render(<HelloPage />);
   const button = rendered.getByText('Testing!');
-  const count = rendered.getByTestId("countDisplay");
+  const count = rendered.getByTestId('countDisplay');
   const increment = () => fireEvent.click(button);
 
   expect(count.textContent).toBe('0');
