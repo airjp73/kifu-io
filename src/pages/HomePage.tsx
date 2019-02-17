@@ -4,7 +4,7 @@ import Header from 'components/Header';
 const HelloPage: React.FunctionComponent = () => {
   return (
     <>
-      <Header onMenuClick={() => alert('Menu opened!')}>Home</Header>
+      <Header onMenuClick={() => console.log('Menu opened!')}>Home</Header>
     </>
   );
 };
