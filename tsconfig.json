@@ -6,7 +6,8 @@
     "sourceMap": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "baseUrl": "./src"
   },
   "include": [
     "src/**/*",
@@ -15,5 +16,5 @@
   "exclude": [
     "node_modules",
     ".next"
-  ]
+  ],
 }
