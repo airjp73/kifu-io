@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { panelHover } from 'style';
+import { panelHighlight, boxShadowLow } from 'style';
 
 const FlatButton = styled.button`
   border: none;
@@ -12,7 +12,12 @@ const FlatButton = styled.button`
   cursor: pointer;
 
   :hover {
-    background-color: ${panelHover};
+    background-color: ${panelHighlight};
+  }
+
+  :active {
+    box-shadow: ${boxShadowLow} ${panelHighlight} inset;
+    transform: translateY(1px);
   }
 `;
 
