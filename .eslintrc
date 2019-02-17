@@ -4,6 +4,7 @@
   "plugins": ["@typescript-eslint", "react", "jest"],
   "parserOptions": {
     "sourceType": "module",
+    "ecmaVersion": 2017,
     "ecmaFeatures": {
       "jsx": true,
       "modules": true

@@ -5,10 +5,12 @@
     "jsx": "preserve",
     "sourceMap": false,
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noImplicitAny": true,
   },
   "exclude": [
     "out",
-    ".next"
+    ".next",
+    "node_modules"
   ]
 }

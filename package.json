@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "lint": "eslint src/**/*.ts?(x)",
+    "lint": "eslint --ext .ts --ext .tsx src/",
     "start": "next start",
     "test": "jest",
     "test:watch": "npm run test -- --watch"
