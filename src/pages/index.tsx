@@ -8,8 +8,8 @@ interface CounterProps {
 
 const Counter: React.FunctionComponent<CounterProps> = ({ count, onInc }) => (
   <>
-    {count}
-    <button onClick={onInc} />
+    <span data-testid="countDisplay">{count}</span>
+    <button onClick={onInc}>Testing!</button>
   </>
 );
 
@@ -20,7 +20,7 @@ const Hello = styled.p`
   color: ${({ isBlue }: HelloProps) => isBlue ? 'blue' : 'red'};
 `;
 
-export default () => {
+const HelloPage: React.FunctionComponent = () => {
   const [count, setCount] = useState(0);
 
   return (
@@ -30,3 +30,5 @@ export default () => {
     </>
   );
 };
+
+export default HelloPage;
