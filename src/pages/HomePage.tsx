@@ -4,7 +4,11 @@ import Header from 'components/Header';
 const HelloPage: React.FunctionComponent = () => {
   return (
     <>
-      <Header onMenuClick={() => console.log('Menu opened!')}>Home</Header>
+      <Header
+        onMenuClick={() => {}} // TODO: Implement side menu
+      >
+        Home
+      </Header>
     </>
   );
 };
