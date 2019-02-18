@@ -4,8 +4,6 @@
     "target": "esnext",
     "jsx": "react",
     "sourceMap": false,
-    "experimentalDecorators": true,
-    "noImplicitUseStrict": true,
     "removeComments": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -16,8 +14,13 @@
     "typeRoots": [
       "node_modules/@types",
       "src/@types"
-    ]
+    ],
+    "baseUrl": "./src"
   },
+  "include": [
+    "src/**/*",
+    "pages/**/*"
+  ],
   "exclude": [
     "node_modules",
     "out",
