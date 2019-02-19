@@ -19,7 +19,6 @@ const HeaderContainer = styled.header`
   right: 0;
 
   display: flex;
-  justify-content: space-between;
   color: ${highlight};
   font-size: 3rem;
   align-items: center;
@@ -31,17 +30,24 @@ const HeaderContainer = styled.header`
 `;
 
 const MenuIcon = styled(FontIcon)`
-  margin-right: 1rem;
-  font-size: 5rem;
+  font-size: 4rem;
+`;
+
+const SiteTitle = styled.span`
+  margin-left: .5rem;
+`;
+
+const ChildContainer = styled.div`
+  margin-left: auto;
 `;
 
 const Header: React.FunctionComponent<HeaderProps> = ({ children, onMenuClick }) => (
   <HeaderContainer>
     <FlatButton onClick={onMenuClick}>
       <MenuIcon icon="menu" />
-      Go Reviews
     </FlatButton>
-    <div>{children}</div>
+    <SiteTitle>Go Reviews</SiteTitle>
+    <ChildContainer>{children}</ChildContainer>
   </HeaderContainer>
 );
 
