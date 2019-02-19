@@ -1,10 +1,26 @@
 import React from 'react';
-import { render } from 'react-testing-library';
-import FontIcon from './FontIcon';
+import { fireEvent, render, RenderResult } from 'react-testing-library';
+import Header from './Header';
 
-test('should render a span with the `material-icons` class and any provided classes', () => {
-  const rendered = render(<FontIcon icon="person" className="test-class" />);
-  const icon = rendered.getByText('person');
-  expect(icon.classList).toContain('material-icons');
-  expect(icon.classList).toContain('test-class');
+const onMenuClick = jest.fn();
+let rendered: RenderResult;
+
+beforeEach(() => {
+  rendered = render(
+    <Header onMenuClick={onMenuClick}>
+      <span>Child</span>
+    </Header>
+  );
+  onMenuClick.mockClear();
+});
+
+test('should render children', () => {
+  const child = rendered.getByText('Child');
+  expect(child.tagName).toBe('SPAN');
+});
+
+test('should call onMenuClick when menu button clicked', () => {
+  const menuButton = rendered.getByText('menu');
+  fireEvent.click(menuButton);
+  expect(onMenuClick).toBeCalledTimes(1);
 });
