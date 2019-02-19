@@ -1,6 +1,6 @@
 module.exports = {
   roots: [
-    '<rootDir>/src'
+    '<rootDir>'
   ],
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
@@ -16,10 +16,12 @@ module.exports = {
   ],
   globals: {
     'ts-jest': {
-      'tsConfig': 'jest.tsconfig.json',
+      tsConfig: 'jest.tsconfig.json',
     }
   },
   setupFilesAfterEnv: [
-    'react-testing-library/cleanup-after-each'
-  ]
+    'react-testing-library/cleanup-after-each',
+    './testSetup.js'
+  ],
+  modulePaths: ["<rootDir>/src"],
 }
