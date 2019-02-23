@@ -1,12 +1,12 @@
 import React from 'react';
 import { fireEvent, render } from 'react-testing-library';
-import SidePanel from './SidePanel';
+import SlideOutPanel from './SlideOutPanel';
 
 test('should be on the right if side = "right"', () => {
   const rendered = render(
-    <SidePanel active={false} onClose={() => {}} side="right">
+    <SlideOutPanel active={false} onClose={() => {}} side="right">
       Hi
-    </SidePanel>
+    </SlideOutPanel>
   );
   const panel = rendered.getByTestId('side-panel');
   const overlay = rendered.getByTestId('side-panel-overlay');
@@ -17,9 +17,9 @@ test('should be on the right if side = "right"', () => {
 
 test('should be on the left if side = "left"', () => {
   const rendered = render(
-    <SidePanel active={false} onClose={() => {}} side="left">
+    <SlideOutPanel active={false} onClose={() => {}} side="left">
       Hi
-    </SidePanel>
+    </SlideOutPanel>
   );
   const panel = rendered.getByTestId('side-panel');
   const overlay = rendered.getByTestId('side-panel-overlay');
@@ -30,9 +30,9 @@ test('should be on the left if side = "left"', () => {
 
 test('should be visble when active', () => {
   const rendered = render(
-    <SidePanel active onClose={() => {}} side="left">
+    <SlideOutPanel active onClose={() => {}} side="left">
       Hi
-    </SidePanel>
+    </SlideOutPanel>
   );
   const panel = rendered.getByTestId('side-panel');
   const overlay = rendered.getByTestId('side-panel-overlay');
@@ -43,9 +43,9 @@ test('should be visble when active', () => {
 test('should call onClose prop when overlay clicked', () => {
   const onClose = jest.fn();
   const rendered = render(
-    <SidePanel active onClose={onClose} side="right">
+    <SlideOutPanel active onClose={onClose} side="right">
       Hi
-    </SidePanel>
+    </SlideOutPanel>
   );
   const overlay = rendered.getByTestId('side-panel-overlay');
   fireEvent.click(overlay);

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { highlight, panelBackground } from 'style';
+import Portal from './Portal';
 
 interface SidePanelProps {
   active: boolean;
@@ -59,13 +60,13 @@ const Overlay = styled.div`
   ${(props: OverlayProps) => props.active && activeOverlay}
 `;
 
-const SidePanel: React.FunctionComponent<SidePanelProps> = ({
+const SlideOutPanel: React.FunctionComponent<SidePanelProps> = ({
   active,
   children,
   onClose,
   side = 'left',
-}) =>
-  ReactDOM.createPortal(
+}) => (
+  <Portal>
     <div
       css={`
         position: absolute;
@@ -84,8 +85,8 @@ const SidePanel: React.FunctionComponent<SidePanelProps> = ({
       <Panel active={active} side={side} data-testid="side-panel">
         {children}
       </Panel>
-    </div>,
-    document.body
-  );
+    </div>
+  </Portal>
+);
 
-export default SidePanel;
+export default SlideOutPanel;

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from 'components/Header';
-import SidePanel from 'components/SidePanel';
+import SlideOutPanel from 'components/SlideOutPanel';
 import NavMenu from 'components/NavMenu';
 
 interface LayoutProps {
   children: React.ReactNode,
 }
 
+// TODO: Add styles for larger screens
 const MainContent = styled.main`
 `;
 
@@ -16,16 +17,16 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children }) => {
   return (
     <>
       <Header onMenuClick={() => setSidePanelOpen(true)}>Home</Header>
-      <SidePanel
+      <SlideOutPanel
         active={sidePanelOpen}
         onClose={() => setSidePanelOpen(false)}
         side="left"
       >
         <NavMenu />
-      </SidePanel>
-      <main>
+      </SlideOutPanel>
+      <MainContent>
         {children}
-      </main>
+      </MainContent>
     </>
   );
 };
