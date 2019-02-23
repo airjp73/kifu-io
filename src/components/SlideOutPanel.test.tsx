@@ -4,40 +4,34 @@ import SlideOutPanel from './SlideOutPanel';
 
 test('should be on the right if side = "right"', () => {
   const rendered = render(
-    <SlideOutPanel active={false} onClose={() => {}} side="right">
+    <SlideOutPanel active onClose={() => {}} side="right">
       Hi
     </SlideOutPanel>
   );
   const panel = rendered.getByTestId('side-panel');
-  const overlay = rendered.getByTestId('side-panel-overlay');
   expect(panel).toHaveStyle('right: 0;');
-  expect(panel).toHaveStyle('transform: translateX(20rem);');
-  expect(overlay).toHaveStyle('opacity: 0;');
 });
 
 test('should be on the left if side = "left"', () => {
-  const rendered = render(
-    <SlideOutPanel active={false} onClose={() => {}} side="left">
-      Hi
-    </SlideOutPanel>
-  );
-  const panel = rendered.getByTestId('side-panel');
-  const overlay = rendered.getByTestId('side-panel-overlay');
-  expect(panel).toHaveStyle('left: 0;');
-  expect(panel).toHaveStyle('transform: translateX(-20rem);');
-  expect(overlay).toHaveStyle('opacity: 0;');
-});
-
-test('should be visble when active', () => {
   const rendered = render(
     <SlideOutPanel active onClose={() => {}} side="left">
       Hi
     </SlideOutPanel>
   );
   const panel = rendered.getByTestId('side-panel');
-  const overlay = rendered.getByTestId('side-panel-overlay');
-  expect(panel).toHaveStyle('transform: translateX(0);');
-  expect(overlay).toHaveStyle('opacity: 1;');
+  expect(panel).toHaveStyle('left: 0;');
+});
+
+test('should not be visible when not active', () => {
+  const rendered = render(
+    <SlideOutPanel active={false} onClose={() => {}} side="left">
+      Hi
+    </SlideOutPanel>
+  );
+  const panel = rendered.queryByTestId('side-panel');
+  const overlay = rendered.queryByTestId('side-panel-overlay');
+  expect(panel).toBeFalsy();
+  expect(overlay).toBeFalsy();
 });
 
 test('should call onClose prop when overlay clicked', () => {
