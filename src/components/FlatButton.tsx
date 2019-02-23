@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { panelHighlight, boxShadowLow } from 'style';
+import { panelHighlight, boxShadowLow, panelActiveButton } from 'style';
 
 const FlatButton = styled.button`
   border: none;
@@ -16,8 +16,7 @@ const FlatButton = styled.button`
   }
 
   :active {
-    box-shadow: ${boxShadowLow} ${panelHighlight} inset;
-    transform: translateY(1px);
+    background-color: ${panelActiveButton};
   }
 `;
 
