@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { highlight, panelBackground } from 'style';
 
@@ -63,17 +64,28 @@ const SidePanel: React.FunctionComponent<SidePanelProps> = ({
   children,
   onClose,
   side = 'left',
-}) => (
-  <>
-    <Overlay
-      active={active}
-      onClick={onClose}
-      data-testid="side-panel-overlay"
-    />
-    <Panel active={active} side={side} data-testid="side-panel">
-      {children}
-    </Panel>
-  </>
-);
+}) =>
+  ReactDOM.createPortal(
+    <div
+      css={`
+        position: absolute;
+        right: 0;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        pointer-events: none;
+      `}
+    >
+      <Overlay
+        active={active}
+        onClick={onClose}
+        data-testid="side-panel-overlay"
+      />
+      <Panel active={active} side={side} data-testid="side-panel">
+        {children}
+      </Panel>
+    </div>,
+    document.body
+  );
 
 export default SidePanel;
