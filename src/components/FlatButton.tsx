@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { panelHighlight, boxShadowLow, panelActiveButton } from 'style';
+import { panelHighlight, panelActiveButton } from 'style';
 
 const FlatButton = styled.button`
   border: none;

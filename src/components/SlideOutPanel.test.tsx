@@ -43,5 +43,5 @@ test('should call onClose prop when overlay clicked', () => {
   );
   const overlay = rendered.getByTestId('side-panel-overlay');
   fireEvent.click(overlay);
-  expect(onClose).toBeCalledTimes(1);
+  expect(onClose).toHaveBeenCalledTimes(1);
 });

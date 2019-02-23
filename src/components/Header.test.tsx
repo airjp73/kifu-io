@@ -22,5 +22,5 @@ test('should render children', () => {
 test('should call onMenuClick when menu button clicked', () => {
   const menuButton = rendered.getByText('menu');
   fireEvent.click(menuButton);
-  expect(onMenuClick).toBeCalledTimes(1);
+  expect(onMenuClick).toHaveBeenCalledTimes(1);
 });

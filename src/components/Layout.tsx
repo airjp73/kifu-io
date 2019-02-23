@@ -5,12 +5,11 @@ import SlideOutPanel from 'components/SlideOutPanel';
 import NavMenu from 'components/NavMenu';
 
 interface LayoutProps {
-  children: React.ReactNode,
+  children: React.ReactNode;
 }
 
 // TODO: Add styles for larger screens
-const MainContent = styled.main`
-`;
+const MainContent = styled.main``;
 
 const Layout: React.FunctionComponent<LayoutProps> = ({ children }) => {
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
@@ -24,9 +23,7 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children }) => {
       >
         <NavMenu />
       </SlideOutPanel>
-      <MainContent>
-        {children}
-      </MainContent>
+      <MainContent>{children}</MainContent>
     </>
   );
 };
