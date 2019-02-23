@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from 'components/Header';
 import SidePanel from 'components/SidePanel';
+import NavMenu from 'components/NavMenu';
 
 const HelloPage: React.FunctionComponent = () => {
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
@@ -12,7 +13,7 @@ const HelloPage: React.FunctionComponent = () => {
         onClose={() => setSidePanelOpen(false)}
         side="left"
       >
-        Some stuff stuff stuff stuff stuff
+        <NavMenu />
       </SidePanel>
     </>
   );
