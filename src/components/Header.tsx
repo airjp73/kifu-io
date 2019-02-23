@@ -13,7 +13,7 @@ const HeaderContainer = styled.header`
   background-color: ${panelBackground};
   padding: .5rem 2rem .5rem 1.5rem;
 
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;

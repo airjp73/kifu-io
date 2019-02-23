@@ -1,22 +1,10 @@
 import React, { useState } from 'react';
-import Header from 'components/Header';
-import SidePanel from 'components/SidePanel';
-import NavMenu from 'components/NavMenu';
+import Layout from 'components/Layout';
 
-const HelloPage: React.FunctionComponent = () => {
-  const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  return (
-    <>
-      <Header onMenuClick={() => setSidePanelOpen(true)}>Home</Header>
-      <SidePanel
-        active={sidePanelOpen}
-        onClose={() => setSidePanelOpen(false)}
-        side="left"
-      >
-        <NavMenu />
-      </SidePanel>
-    </>
-  );
-};
+const HelloPage: React.FunctionComponent = () => (
+  <Layout>
+    <span css="height: 200vh">Hello!</span>
+  </Layout>
+);
 
 export default HelloPage;
