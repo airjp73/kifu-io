@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, RenderResult } from 'react-testing-library';
+import { fireEvent, render } from 'react-testing-library';
 import Header from './Header';
 
 test('should call onMenuClick when menu button clicked', () => {
