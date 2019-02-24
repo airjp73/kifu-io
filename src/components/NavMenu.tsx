@@ -57,7 +57,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
 );
 
 const NavMenu = () => (
-  <Nav>
+  <Nav data-testid="nav-menu">
     <h3>Go Reviews</h3>
     <ul css="list-style: none;">
       <NavItem icon="search" label="Browse Reviews" href="/browse" />

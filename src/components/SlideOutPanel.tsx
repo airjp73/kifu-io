@@ -80,11 +80,11 @@ const SlideOutPanel: React.FunctionComponent<SidePanelProps> = ({
         <Overlay
           key="overlay"
           onClick={onClose}
-          data-testid="side-panel-overlay"
+          data-testid="slide-out-panel-overlay"
         />
       )}
       {active && (
-        <Panel key="panel" side={side} data-testid="side-panel">
+        <Panel key="panel" side={side} data-testid="slide-out-panel">
           {children}
         </Panel>
       )}
