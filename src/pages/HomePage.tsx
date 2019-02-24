@@ -1,9 +1,10 @@
 import React from 'react';
 import Layout from 'components/Layout';
+import Goban from 'components/Goban';
 
 const HelloPage: React.FunctionComponent = () => (
   <Layout>
-    <span css="height: 200vh">Hello!</span>
+    <Goban />
   </Layout>
 );
 
