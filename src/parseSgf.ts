@@ -234,7 +234,7 @@ const parseSgf = (sgfString: string): GameCollection => {
       } else {
         const property = processPropertyName();
         const values = [];
-        while (parser.peek(false) === '[') {
+        while (parser.peek() === '[') {
           values.push(processPropertyValue());
         }
 
