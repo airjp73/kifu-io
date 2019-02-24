@@ -1,6 +1,8 @@
 import React, { useState, useRef, useLayoutEffect, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import parseSgf, { Point } from 'parseSgf';
+import parseSgf from 'parseSgf';
+
+export type Point = 'b' | 'w' | null;
 
 const sgf = `
 (;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
