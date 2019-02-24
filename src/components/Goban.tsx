@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const Board = styled.div`
   background-color: brown;
-  padding: 1rem;
   display: grid;
   grid-template-columns: repeat(19, 1fr);
   grid-template-rows: repeat(19, 1fr);
@@ -24,15 +23,20 @@ const useBoardHeight: UseBoardHeight = () => {
   return [height, boardRef];
 };
 
+interface SpaceProps {
+  invisible: boolean;
+}
 const Space = styled.div`
-  background-color: tan;
+  ${(props: SpaceProps) => !props.invisible ? 'background-color: tan;' : 'blackground-color: blue;'};
+  transform: translate(50%, 50%);
 `;
 
 interface PieceProps {
   type: 'b' | 'w';
 }
 const Piece = styled.div`
-  background-color: ${(props: PieceProps) => props.type === 'b' ? 'black' : 'white'};
+  background-color: ${(props: PieceProps) =>
+    props.type === 'b' ? 'black' : 'white'};
   border-radius: 50%;
   transform: translate(-50%, -50%);
   height: 100%;
@@ -40,30 +44,34 @@ const Piece = styled.div`
 `;
 
 type Point = 'b' | 'w' | null;
+interface Space {
+  point: Point;
+  hidden: boolean;
+}
 const Goban = () => {
   // Temporary state
   // keying an object by point my be a good approach
   const gameState: { [key: string]: Point } = {
     dd: 'b',
-    qq: 'w',
+    pp: 'w',
   };
   const [height, boardRef] = useBoardHeight();
 
   const a = 'a'.charCodeAt(0);
-  const spaces: Array<Point> = [];
+  const spaces: Array<Space> = [];
   for (let y = 0; y < 19; ++y) {
     for (let x = 0; x < 19; ++x) {
       const yChar = String.fromCharCode(y + a);
       const xChar = String.fromCharCode(x + a);
       const stateKey = `${yChar}${xChar}`;
-      spaces.push(gameState[stateKey]);
+      spaces.push({ point: gameState[stateKey], hidden: x === 18 || y === 18 });
     }
   }
   return (
     <Board ref={boardRef} style={{ height }}>
       {spaces.map(space => (
-        <Space>
-          {space && <Piece type={space} />}
+        <Space invisible={space.hidden}>
+          {space.point && <Piece type={space.point} />}
         </Space>
       ))}
     </Board>
