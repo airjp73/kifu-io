@@ -7,9 +7,7 @@ let rendered: RenderResult;
 
 beforeEach(() => {
   rendered = render(
-    <Header onMenuClick={onMenuClick}>
-      <span>Child</span>
-    </Header>
+    <Header onMenuClick={onMenuClick} />
   );
   onMenuClick.mockClear();
 });

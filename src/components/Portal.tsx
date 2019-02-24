@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-interface PortalProps {
-  children: React.ReactNode;
-}
-
-const Portal: React.FunctionComponent<PortalProps> = ({ children }) => {
+const Portal: React.FunctionComponent = ({ children }) => {
   const [portalTarget, setPortalTarget] = useState<HTMLElement>(null);
   useEffect(() => setPortalTarget(document.body), []);
 

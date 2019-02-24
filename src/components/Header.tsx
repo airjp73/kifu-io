@@ -5,7 +5,6 @@ import FontIcon from './FontIcon';
 import FlatButton from './FlatButton';
 
 interface HeaderProps {
-  children: React.ReactNode;
   onMenuClick: () => void;
 }
 

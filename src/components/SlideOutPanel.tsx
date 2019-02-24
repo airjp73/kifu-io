@@ -6,28 +6,17 @@ import Portal from './Portal';
 
 interface SidePanelProps {
   active: boolean;
-  children: React.ReactNode;
   onClose: () => void;
   side: string;
 }
 
 interface PanelProps {
-  active: boolean;
-  children: React.ReactNode;
   side: string;
 }
 
-interface OverlayProps {
-  active: boolean;
-  onClick: () => void;
-}
-
-interface PanelPoseProps {
-  side: string;
-}
 const PanelPose = posed.div({
   closed: {
-    x: (props: PanelPoseProps) => (props.side === 'left' ? '-20rem' : '20rem'),
+    x: (props: PanelProps) => (props.side === 'left' ? '-20rem' : '20rem'),
   },
   open: { x: '0rem' },
 });
@@ -47,10 +36,8 @@ const Panel = styled(PanelPose)`
   overflow: hidden;
   color: ${highlight};
   width: ${panelWidth};
-  /* transition: transform 0.25s ease-in-out; */
 
   ${(props: PanelProps) => (props.side === 'right' ? rightPanel : leftPanel)}
-  /* ${(props: PanelProps) => props.active && 'transform: translateX(0);'} */
 `;
 
 const OverlayPose = posed.div({
