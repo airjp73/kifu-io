@@ -5,5 +5,6 @@ export const fadedGrey = '#6D6D6D';
 export const error = '#E8291D';
 export const dark = '#1A2C5B';
 
-export const panelHighlight = 'rgba(1, 1, 1, .25)';
+export const panelHighlight = 'rgba(0, 0, 0, .25)';
+export const panelActiveButton = 'rgba(180, 180, 180, .25)';
 export const boxShadowLow = '0 1px 2px';

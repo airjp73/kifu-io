@@ -1,16 +1,10 @@
 import React from 'react';
-import Header from 'components/Header';
+import Layout from 'components/Layout';
 
-const HelloPage: React.FunctionComponent = () => {
-  return (
-    <>
-      <Header
-        onMenuClick={() => {}} // TODO: Implement side menu
-      >
-        Home
-      </Header>
-    </>
-  );
-};
+const HelloPage: React.FunctionComponent = () => (
+  <Layout>
+    <span css="height: 200vh">Hello!</span>
+  </Layout>
+);
 
 export default HelloPage;
