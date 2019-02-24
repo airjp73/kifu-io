@@ -1,5 +1,34 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
+import parseSgf, { Point } from 'parseSgf';
+
+const sgf = `
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
+RU[Japanese]SZ[19]KM[0.00]
+PW[White]PB[Black]C[This is a test sgf file.]
+;B[pd]
+;W[dp]
+;B[pp]
+;W[dd]C[The purpose of this file is to see check my sgf parser]
+;B[ed]
+;W[ee]
+;B[dc]
+;W[ec]
+;B[cd]
+;W[fd]
+;B[de]
+;W[df]
+;B[ed]
+;W[ef]
+;B[dd]TR[dc][cd][dd][ed][de]
+;W[ge]
+;B[fc]
+;W[gc]
+;B[eb]
+;AB[qf][qi][ql][qn]
+;W[nq]
+;B[np])
+`;
 
 const Board = styled.div`
   background-color: brown;
@@ -27,7 +56,8 @@ interface SpaceProps {
   invisible: boolean;
 }
 const Space = styled.div`
-  ${(props: SpaceProps) => !props.invisible ? 'background-color: tan;' : 'blackground-color: blue;'};
+  ${(props: SpaceProps) =>
+    !props.invisible ? 'background-color: tan;' : 'blackground-color: blue;'};
   transform: translate(50%, 50%);
 `;
 
@@ -43,7 +73,16 @@ const Piece = styled.div`
   width: 100%;
 `;
 
-type Point = 'b' | 'w' | null;
+class ErrorBoundary extends React.Component {
+  componentDidCatch(error: any) {
+    console.log(error);
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+
 interface Space {
   point: Point;
   hidden: boolean;
@@ -51,10 +90,35 @@ interface Space {
 const Goban = () => {
   // Temporary state
   // keying an object by point my be a good approach
-  const gameState: { [key: string]: Point } = {
-    dd: 'b',
-    pp: 'w',
-  };
+  const gameCollection = useMemo(() => parseSgf(sgf), [sgf]);
+
+  // TODO: This is temporary stuff
+  console.log(gameCollection);
+  const gameState: { [key: string]: Point } = useMemo(() => {
+    const state: { [key: string]: Point } = {};
+    const gameTree = gameCollection[0];
+    for (let node of gameTree) {
+      const properties = node.properties;
+      if (!properties) {
+        break;
+      }
+
+      if (properties.B) {
+        state[properties.B[0]] = 'b';
+      } else if (properties.W) {
+        state[properties.W[0]] = 'w';
+      } else if (properties.AB) {
+        properties.AB.forEach(property => {
+          state[property] = 'b';
+        });
+      } else if (properties.AW) {
+        properties.AW.forEach(property => {
+          state[property] = 'w';
+        });
+      }
+    }
+    return state;
+  }, [gameCollection]);
   const [height, boardRef] = useBoardHeight();
 
   const a = 'a'.charCodeAt(0);
@@ -68,13 +132,15 @@ const Goban = () => {
     }
   }
   return (
-    <Board ref={boardRef} style={{ height }}>
-      {spaces.map(space => (
-        <Space invisible={space.hidden}>
-          {space.point && <Piece type={space.point} />}
-        </Space>
-      ))}
-    </Board>
+    <ErrorBoundary>
+      <Board ref={boardRef} style={{ height }}>
+        {spaces.map(space => (
+          <Space invisible={space.hidden}>
+            {space.point && <Piece type={space.point} />}
+          </Space>
+        ))}
+      </Board>
+    </ErrorBoundary>
   );
 };
 
