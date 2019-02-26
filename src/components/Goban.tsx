@@ -55,16 +55,6 @@ const Piece = styled.div`
   width: 100%;
 `;
 
-class ErrorBoundary extends React.Component {
-  componentDidCatch(error: any) {
-    console.log(error);
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
-
 interface Space {
   point: Point;
   hidden: boolean;
@@ -79,7 +69,6 @@ const Goban = () => {
     const state: { [key: string]: Point } = {};
     let node = gameCollection[0];
     while (node) {
-      console.log(node.properties);
       const properties = node.properties;
       if (!properties) {
         break;
@@ -103,11 +92,10 @@ const Goban = () => {
     }
     return state;
   }, [gameCollection]);
-  console.log(gameState);
   const [height, boardRef] = useBoardHeight();
 
   const a = 'a'.charCodeAt(0);
-  const spaces: Array<Space> = [];
+  const spaces: Space[] = [];
   for (let y = 0; y < 19; ++y) {
     for (let x = 0; x < 19; ++x) {
       const yChar = String.fromCharCode(y + a);
@@ -117,15 +105,13 @@ const Goban = () => {
     }
   }
   return (
-    <ErrorBoundary>
-      <Board ref={boardRef} style={{ height }}>
-        {spaces.map(space => (
-          <Space invisible={space.hidden}>
-            {space.point && <Piece type={space.point} />}
-          </Space>
-        ))}
-      </Board>
-    </ErrorBoundary>
+    <Board ref={boardRef} style={{ height }}>
+      {spaces.map((space, index) => (
+        <Space key={index} invisible={space.hidden}>
+          {space.point && <Piece type={space.point} />}
+        </Space>
+      ))}
+    </Board>
   );
 };
 

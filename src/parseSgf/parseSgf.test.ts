@@ -2,6 +2,29 @@ import each from 'jest-each';
 import parseSgf, { GameNode } from './parseSgf';
 import snapshots from './snapshots';
 
+const LF = String.fromCharCode(10);
+const CR = String.fromCharCode(13);
+
+function compareNodes(actual: GameNode, expected: GameNode) {
+  expect(actual.properties).toMatchObject(expected.properties);
+  compareChildren(actual.children, expected.children);
+}
+
+function compareChildren(
+  actualChildren: GameNode[],
+  expectedChildren: GameNode[],
+) {
+  if (!actualChildren) {
+    expect(expectedChildren).toBeFalsy();
+    return;
+  }
+
+  expect(actualChildren.length).toBe(expectedChildren.length);
+  for (let c = 0; c < actualChildren.length; ++c) {
+    compareNodes(actualChildren[c], expectedChildren[c]);
+  }
+}
+
 const kgsCommentInput = `
 (;W[ee]C[Koons [?\\]: but i hoped to use the thickness
 AaronP [2d?\\]: hmm yeah
@@ -21,9 +44,6 @@ Koons [?]: chimin will tell us :)
 Koons [?]: thanks again
 AaronP [2d?]: you too :)
 `;
-
-const LF = String.fromCharCode(10);
-const CR = String.fromCharCode(13);
 
 describe('parseSgf', () => {
   each([
@@ -162,23 +182,3 @@ describe('parseSgf', () => {
     });
   });
 });
-
-function compareNodes(actual: GameNode, expected: GameNode) {
-  expect(actual.properties).toMatchObject(expected.properties);
-  compareChildren(actual.children, expected.children);
-}
-
-function compareChildren(
-  actualChildren: Array<GameNode>,
-  expectedChildren: Array<GameNode>
-) {
-  if (!actualChildren) {
-    expect(expectedChildren).toBeFalsy();
-    return;
-  }
-
-  expect(actualChildren.length).toBe(expectedChildren.length);
-  for (let c = 0; c < actualChildren.length; ++c) {
-    compareNodes(actualChildren[c], expectedChildren[c]);
-  }
-}

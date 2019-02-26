@@ -15,16 +15,12 @@
 // User facing types
 export interface GameNode {
   parent?: GameNode;
-  children?: Array<GameNode>;
+  children?: GameNode[];
   properties?: GameProperties;
 }
 export interface GameProperties {
-  [key: string]: Array<string>;
+  [key: string]: string[];
 }
-
-// Primary export
-const parseSgf = (sgfString: string): Array<GameNode> =>
-  new SgfParser(sgfString.trim()).parse();
 
 // Internal SgfParser type
 interface SgfParser {
@@ -33,17 +29,17 @@ interface SgfParser {
   assertNotDone: () => void;
   done: () => boolean;
   next: (ignoreWhitespace?: boolean, testValue?: string) => string;
-  parse: () => Array<GameNode>;
+  parse: () => GameNode[];
   peek: (ignoreWhitespace?: boolean) => string;
   processGameNode: (parent?: GameNode) => GameNode;
-  processGameTree: (parent?: GameNode) => Array<GameNode>;
+  processGameTree: (parent?: GameNode) => GameNode[];
   processPropertyName: () => string;
   processPropertyValue: () => string;
   throw: (message: string) => void;
 }
 
 class SgfParser {
-  constructor(sgf: string) {
+  public constructor(sgf: string) {
     this.sgf = sgf;
     this.currentChar = 0;
 
@@ -83,7 +79,7 @@ class SgfParser {
     this.parse = () => this.processGameTree();
 
     this.processGameTree = parent => {
-      const gameTree: Array<GameNode> = [];
+      const gameTree: GameNode[] = [];
 
       while (!this.done()) {
         const token = this.peek();
@@ -114,27 +110,28 @@ class SgfParser {
         );
       }
 
+      // keeping the terminal logic all together in the if statements is cleaner, I think
+      // eslint-disable-next-line no-constant-condition
       while (true) {
         const token = this.peek();
 
-        switch (token) {
-          case ';':
-            gameNode.children = [this.processGameNode(gameNode)];
-            return gameNode;
-          case ')':
-            return gameNode;
-          case '(':
-            gameNode.children = this.processGameTree(gameNode);
-            return gameNode;
-          default:
-            const property = this.processPropertyName();
-            const values = [];
-            while (this.peek() === '[') {
-              values.push(this.processPropertyValue());
-            }
+        if (token === ';') {
+          gameNode.children = [this.processGameNode(gameNode)];
+          return gameNode;
+        } else if (token === ')') {
+          return gameNode;
+        } else if (token === '(') {
+          gameNode.children = this.processGameTree(gameNode);
+          return gameNode;
+        } else {
+          const property = this.processPropertyName();
+          const values = [];
+          while (this.peek() === '[') {
+            values.push(this.processPropertyValue());
+          }
 
-            gameNode.properties = gameNode.properties || {};
-            gameNode.properties[property] = values;
+          gameNode.properties = gameNode.properties || {};
+          gameNode.properties[property] = values;
         }
       }
     };
@@ -189,5 +186,9 @@ class SgfParser {
     };
   }
 }
+
+// Primary export
+const parseSgf = (sgfString: string): GameNode[] =>
+  new SgfParser(sgfString.trim()).parse();
 
 export default parseSgf;
