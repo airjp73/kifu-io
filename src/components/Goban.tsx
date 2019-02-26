@@ -40,6 +40,7 @@ const Board = styled.div`
   grid-gap: 1px;
 `;
 
+// TODO: Come up with an alternative method since this doesn't work server-side
 type UseBoardHeight = () => [number, React.MutableRefObject<HTMLDivElement>];
 const useBoardHeight: UseBoardHeight = () => {
   const [height, setHeight] = useState(0);
@@ -98,8 +99,9 @@ const Goban = () => {
   console.log(gameCollection);
   const gameState: { [key: string]: Point } = useMemo(() => {
     const state: { [key: string]: Point } = {};
-    const gameTree = gameCollection[0];
-    for (let node of gameTree) {
+    let node = gameCollection[0];
+    while (node) {
+      console.log(node.properties);
       const properties = node.properties;
       if (!properties) {
         break;
@@ -118,9 +120,12 @@ const Goban = () => {
           state[property] = 'w';
         });
       }
+
+      node = node.children && node.children[0];
     }
     return state;
   }, [gameCollection]);
+  console.log(gameState);
   const [height, boardRef] = useBoardHeight();
 
   const a = 'a'.charCodeAt(0);

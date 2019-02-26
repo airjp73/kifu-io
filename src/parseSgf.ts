@@ -21,24 +21,25 @@ export interface GameNode {
 export interface GameProperties {
   [key: string]: Array<string>;
 }
-export type GameNodeCollection = Array<GameNode>;
 
 // Primary export
-const parseSgf = (sgfString: string): GameNode =>
+const parseSgf = (sgfString: string): Array<GameNode> =>
   new SgfParser(sgfString.trim()).parse();
 
 // Internal SgfParser type
 interface SgfParser {
   sgf: string;
   currentChar: number;
-  parse: () => GameNode;
-  peek: (ignoreWhitespace?: boolean) => string;
-  next: (ignoreWhitespace?: boolean) => string;
-  done: () => boolean;
   assertNotDone: () => void;
-  processGameNode: (parent: GameNode) => void;
+  done: () => boolean;
+  next: (ignoreWhitespace?: boolean) => string;
+  parse: () => Array<GameNode>;
+  peek: (ignoreWhitespace?: boolean) => string;
+  processGameNode: (parent?: GameNode) => GameNode;
+  processGameTree: (parent?: GameNode) => Array<GameNode>;
   processPropertyName: () => string;
   processPropertyValue: () => string;
+  throw: (message: string) => void;
 }
 
 class SgfParser {
@@ -61,104 +62,107 @@ class SgfParser {
       return nextChar;
     };
 
-    this.done = () => this.currentChar >= this.sgf.length;
+    this.done = () => this.currentChar >= this.sgf.length || !this.peek();
 
     this.assertNotDone = () => {
       if (this.done()) {
-        throw 'Unexpected end of sgf file.';
+        this.throw('Unexpected end of sgf file.');
       }
     };
 
-    this.parse = () => {
-      // At this level, the next token should always be the start of a new tree
-      const startOfTree = this.next();
-      if (startOfTree !== '(') {
-        throw `Unexpected token "${startOfTree}". Expected start of game tree.`;
-      }
-      return processGameTree();
+    this.throw = message => {
+      const firstChar = Math.max(this.currentChar - 10, 0);
+      const lastChar = Math.min(this.currentChar + 10, this.sgf.length - 1);
+
+      throw new Error(message + ' ' + this.sgf.substr(firstChar, lastChar));
     };
 
-    this.processGameTree = () => {
-      const gameTree: GameTree = [];
+    this.parse = () => this.processGameTree();
 
-      // Every tree must contain at least one node
-      const startOfNode = this.peek();
-      if (startOfNode !== ';') {
-        throw `Unexpected token "${startOfNode}". Expected start of node.`;
-      }
+    this.processGameTree = parent => {
+      const gameTree: Array<GameNode> = [];
 
-      // Loop terminated by return or throw
-      while (true) {
-        this.assertNotDone();
-
+      while (!this.done()) {
         const token = this.next();
-        if (token === ';') {
-          gameTree.push(this.processGameNode());
+        if (token === '(') {
+          gameTree.push(this.processGameNode(parent));
+          // Consume closing paren
+          this.next();
         } else if (token === ')') {
           return gameTree;
         } else {
-          throw `Unexpected token "${token}". Expected node or end of GameTree.`;
+          this.throw(
+            `Unexpected token "${token}". Expected start or end of sub-tree.`
+          );
         }
       }
+
+      return gameTree;
     };
 
-    this.processGameNode = (parent) => {
+    this.processGameNode = parent => {
       const gameNode: GameNode = { parent };
 
-      // A node starts with a semi-colon
-      // This function is currently only called when the current char _is_ a semi-colon
-      // but having it here will be useful to guard against future whoopsies
-      // const startOfNode = this.next();
-      // if (startOfNode !== ';') {
-      //   throw `Unexpected token "${startOfNode}". Expected start of node.`;
-      // }
+      // Consume node start so we can assume later that `;` means next node
+      const startOfNode = this.next();
+      if (startOfNode !== ';') {
+        this.throw(
+          `Unexpected token "${startOfNode}". Expected start of node.`
+        );
+      }
 
-      // Loop terminated by return or throw
       while (true) {
-        const token = this.next();
-        if (token === ';') {
-          gameNode.children = [this.processGameNode(gameNode)];
-          return gameNode;
-        } else if (token === ')') {
-          return gameNode;
-        } else if (token === '(') {
-          gameNode.children = gameNode.children || [];
-          gameNode.children = this.processGameTree(gameNode);
-        } else {
-          const property = this.processPropertyName();
-          const values = [];
-          while (this.peek() === '[') {
-            values.push(this.processPropertyValue());
-          }
+        const token = this.peek();
 
-          // TODO: Do something nice with that info
-          gameNode.properties = gameNode.properties || {};
-          gameNode.properties[property] = values;
+        switch (token) {
+          case ';':
+            gameNode.children = [this.processGameNode(gameNode)];
+            return gameNode;
+          case ')':
+            return gameNode;
+          case '(':
+            gameNode.children = this.processGameTree(gameNode);
+            return gameNode;
+          default:
+            const property = this.processPropertyName();
+            const values = [];
+            while (this.peek() === '[') {
+              values.push(this.processPropertyValue());
+            }
+
+            gameNode.properties = gameNode.properties || {};
+            gameNode.properties[property] = values;
         }
       }
     };
 
     this.processPropertyName = () => {
-      // The spec technically allows for custom properties and properties longer than 2 chars
+      // Every property must have a value, so we can terminate the loop with the start of a value '['
       let propertyName = '';
       while (this.peek() !== '[') {
-        this.assertNotDone();
         propertyName += this.next();
       }
       return propertyName;
     };
 
     this.processPropertyValue = () => {
+      // Consume opening '[' character
+      this.next();
+
+      // Property values should not skip over whitespace
       let propertyValue = '';
-      const startOfPropertyValue = this.next();
-      if (startOfPropertyValue !== '[') {
-        throw `Unexpected token "${startOfPropertyValue}". Expected start of property value.`;
+      while (this.peek(false) !== ']') {
+        // Check for characters escaped with '\'
+        let nextChar = this.next(false);
+        if (nextChar === '\\') {
+          nextChar === this.next(false);
+        }
+        propertyValue += nextChar;
       }
 
-      while (this.peek(false) !== ']') {
-        propertyValue += this.next(false);
-      }
+      // Consume close ']' character
       this.next();
+
       return propertyValue;
     };
   }
