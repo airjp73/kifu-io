@@ -1,36 +1,15 @@
-import React, { useState, useRef, useLayoutEffect, useEffect, useMemo } from 'react';
+import React, {
+  useState,
+  useRef,
+  useLayoutEffect,
+  useEffect,
+  useMemo,
+} from 'react';
 import styled from 'styled-components';
 import parseSgf from 'parseSgf';
+import sgf from 'parseSgf/snapshots/snapshot1';
 
 export type Point = 'b' | 'w' | null;
-
-const sgf = `
-(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
-RU[Japanese]SZ[19]KM[0.00]
-PW[White]PB[Black]C[This is a test sgf file.]
-;B[pd]
-;W[dp]
-;B[pp]
-;W[dd]C[The purpose of this file is to see check my sgf parser]
-;B[ed]
-;W[ee]
-;B[dc]
-;W[ec]
-;B[cd]
-;W[fd]
-;B[de]
-;W[df]
-;B[ed]
-;W[ef]
-;B[dd]TR[dc][cd][dd][ed][de]
-;W[ge]
-;B[fc]
-;W[gc]
-;B[eb]
-;AB[qf][qi][ql][qn]
-;W[nq]
-;B[np])
-`;
 
 const Board = styled.div`
   background-color: brown;
@@ -96,7 +75,6 @@ const Goban = () => {
   const gameCollection = useMemo(() => parseSgf(sgf), [sgf]);
 
   // TODO: This is temporary stuff
-  console.log(gameCollection);
   const gameState: { [key: string]: Point } = useMemo(() => {
     const state: { [key: string]: Point } = {};
     let node = gameCollection[0];
