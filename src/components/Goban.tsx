@@ -6,8 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import styled from 'styled-components';
-import parseSgf from 'parseSgf';
-import sgf from 'parseSgf/snapshots/snapshot1';
+import { GoGameContextProvider, GameState, useGoGameContext } from 'contexts/GoGameContext';
 
 export type Point = 'b' | 'w' | null;
 
@@ -34,6 +33,7 @@ const useBoardHeight: UseBoardHeight = () => {
   return [height, boardRef];
 };
 
+// TODO: Probably write the goban with a canvas
 interface SpaceProps {
   invisible: boolean;
 }
@@ -59,40 +59,10 @@ interface Space {
   point: Point;
   hidden: boolean;
 }
+
 const Goban = () => {
-  // Temporary state
-  // keying an object by point my be a good approach
-  const gameCollection = useMemo(() => parseSgf(sgf), [sgf]);
-
-  // TODO: This is temporary stuff
-  const gameState: { [key: string]: Point } = useMemo(() => {
-    const state: { [key: string]: Point } = {};
-    let node = gameCollection[0];
-    while (node) {
-      const properties = node.properties;
-      if (!properties) {
-        break;
-      }
-
-      if (properties.B) {
-        state[properties.B[0]] = 'b';
-      } else if (properties.W) {
-        state[properties.W[0]] = 'w';
-      } else if (properties.AB) {
-        properties.AB.forEach(property => {
-          state[property] = 'b';
-        });
-      } else if (properties.AW) {
-        properties.AW.forEach(property => {
-          state[property] = 'w';
-        });
-      }
-
-      node = node.children && node.children[0];
-    }
-    return state;
-  }, [gameCollection]);
   const [height, boardRef] = useBoardHeight();
+  const { gameState } = useGoGameContext();
 
   const a = 'a'.charCodeAt(0);
   const spaces: Space[] = [];
