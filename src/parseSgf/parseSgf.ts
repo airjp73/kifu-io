@@ -26,7 +26,8 @@ export interface GameProperties {
 interface SgfParser {
   sgf: string;
   currentChar: number;
-  assertNotDone: () => boolean;
+  assertNotDone: (ignoreWhitespace?: boolean) => boolean;
+  done: (ignoreWhitespace?: boolean) => boolean;
   next: (ignoreWhitespace?: boolean, testValue?: string) => string;
   parse: () => GameNode[];
   peek: (ignoreWhitespace?: boolean) => string;
@@ -71,16 +72,20 @@ class SgfParser {
     };
 
     /**
-     * Checks if we've reached the ned of the file.
+     * Checks if we've reached the end of the file.
+     */
+    this.done = (ignoreWhitespace) => this.currentChar >= this.sgf.length || !this.peek(ignoreWhitespace);
+
+    /**
+     * Checks if we've reached the end of the file.
      * Throws an error if we have.
      * Returns true if we haven't.
      */
-    this.assertNotDone = () => {
-      const done = this.currentChar >= this.sgf.length || !this.sgf.charAt(this.currentChar);
-      if (done) {
+    this.assertNotDone = (ignoreWhitespace) => {
+      if (this.done(ignoreWhitespace)) {
         this.throw('Unexpected end of sgf file.');
       }
-      return done;
+      return true;
     }
 
     /**
@@ -101,7 +106,7 @@ class SgfParser {
     this.processGameTree = parent => {
       const gameTree: GameNode[] = [];
 
-      while (this.assertNotDone()) {
+      while (!this.done()) {
         const token = this.peek();
         if (token === '(') {
           this.next(); // Consume open paren
@@ -115,6 +120,8 @@ class SgfParser {
           );
         }
       }
+
+      return gameTree;
     };
 
     /**
@@ -133,7 +140,7 @@ class SgfParser {
         );
       }
 
-      while (!this.assertNotDone()) {
+      while (this.assertNotDone()) {
         const token = this.peek();
 
         if (token === ';') {
@@ -167,7 +174,7 @@ class SgfParser {
       // Every property must have a value, so we can terminate the loop with the start of a value '['
       let propertyName = '';
       while (this.peek() !== '[' && this.assertNotDone()) {
-        propertyName += this.next(true);
+        propertyName += this.next();
       }
       return propertyName;
     };
@@ -184,7 +191,7 @@ class SgfParser {
 
       // next and peek should not ignore whitespace while processing a value
       let propertyValue = '';
-      while (this.peek(false) !== ']' && this.assertNotDone()) {
+      while (this.peek(false) !== ']' && this.assertNotDone(false)) {
         let nextChar = this.next(false);
 
         // Check for characters escaped with '\'
