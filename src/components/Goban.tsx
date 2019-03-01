@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import styled from 'styled-components';
-import { GoGameContextProvider, GameState, useGoGameContext } from 'contexts/GoGameContext';
+import { useGoGameContext } from 'contexts/GoGameContext';
 
 export type Point = 'b' | 'w' | null;
 
