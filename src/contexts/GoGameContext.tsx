@@ -1,37 +1,135 @@
 import React, { useContext, useMemo, useReducer, useEffect } from 'react';
 import parseSgf from 'parseSgf';
 import { Point } from 'components/Goban';
+import { GameNode } from 'parseSgf/parseSgf';
 
-export interface GameState {
+// Interfaces
+interface GameContext {
+  forward: (numMoves: number) => void;
+  back: (numMoves: number) => void;
+  gameState: GameState;
+}
+
+interface BoardState {
   [key: string]: Point;
 }
-export interface GameContext {
-  gameState: GameState;
-  properties: {};
-}
-const GoGameContext = React.createContext<GameContext>(null);
-export const useGoGameContext = () => useContext(GoGameContext);
 
-interface GameAction {
-  type: string;
-  point: string;
-  color: 'b' | 'w';
+interface GameProperties {
+  [key: string]: string;
 }
-const gameContextReducer = (
-  state: GameContext,
-  action: GameAction
-): GameContext => {
+
+interface GameState {
+  properties: GameProperties;
+  boardState: BoardState;
+}
+
+interface GameHistoryEntry {
+  node: GameNode;
+  gameState: GameState;
+}
+
+interface Action {
+  type: string;
+}
+
+// Action constants
+const SET_POINT = 'SET_POINT';
+const POP_HISTORY = 'POP_HISTORY';
+const PUSH_HISTORY = 'PUSH_HISTORY';
+
+// Actions
+interface SetPointAction extends Action {
+  type: typeof SET_POINT;
+  points: string[];
+  value: Point;
+}
+const setPoint = (points: string[], value: Point): SetPointAction => ({
+  type: SET_POINT,
+  points,
+  value,
+});
+const setPoints = (state: BoardState, action: SetPointAction) => {
+  const nextState = { ...state };
+  action.points.forEach(point => (nextState[point] = action.value));
+  return nextState;
+};
+
+interface PushHistoryAction {
+  type: typeof PUSH_HISTORY;
+  node: GameNode;
+  moveActions: Action[];
+}
+const pushHistory = (
+  node: GameNode,
+  moveActions: Action[]
+): PushHistoryAction => ({
+  type: PUSH_HISTORY,
+  node,
+  moveActions,
+});
+
+interface PopHistoryAction {
+  type: typeof POP_HISTORY;
+}
+const popHistory = (): PopHistoryAction => ({ type: POP_HISTORY });
+
+// Reducers
+const boardStateReducer = (state: BoardState, action: Action): BoardState => {
   switch (action.type) {
-    case 'add_stone':
-      return {
-        ...state,
-        gameState: { ...state.gameState, [action.point]: action.color },
-      };
+    case SET_POINT:
+      return setPoints(state, action as SetPointAction);
     default:
       return state;
   }
 };
 
+const propertiesReducer = (
+  state: GameProperties,
+  action: Action
+): GameProperties => {
+  return {};
+};
+
+const gameStateReducer = (state: GameState, action: Action): GameState => {
+  const { boardState, properties } = state;
+  return {
+    boardState: boardStateReducer(boardState, action),
+    properties: propertiesReducer(properties, action),
+  };
+};
+
+const gameReducer = (
+  state: GameHistoryEntry[],
+  action: PopHistoryAction | PushHistoryAction
+) => {
+  switch (action.type) {
+    case POP_HISTORY:
+      return state.slice(0, state.length - 1);
+    case PUSH_HISTORY:
+      return [
+        ...state,
+        {
+          node: action.node,
+          gameState: action.moveActions.reduce(
+            (prev, next) => gameStateReducer(prev, next),
+            state.length
+              ? state[state.length - 1].gameState
+              : { boardState: {}, properties: {} }
+          ),
+        },
+      ];
+    default:
+      return state;
+  }
+};
+
+// Context
+const GoGameContext = React.createContext<GameContext>(null);
+
+// Context Consumer hook
+export const useGoGameContext = () => useContext(GoGameContext);
+
+// Context Provider component
 interface GoGameContextProviderProps {
   sgf: string;
 }
@@ -39,42 +137,59 @@ export const GoGameContextProvider: React.FunctionComponent<
   GoGameContextProviderProps
 > = ({ children, sgf }) => {
   const gameTree = useMemo(() => parseSgf(sgf), [sgf]);
-  console.log(sgf);
-  console.log(gameTree);
-  const [gameContext, dispatch] = useReducer(gameContextReducer, {
-    gameState: {},
-    properties: {},
-  });
+  const [gameHistory, dispatch] = useReducer(gameReducer, []);
+  const current = gameHistory.length
+    ? gameHistory[gameHistory.length - 1]
+    : null;
 
-  // useEffect(() => {
-  //   const state: GameState = {};
-  //   let node = gameTree[0];
-  //   while (node) {
-  //     const properties = node.properties;
-  //     if (!properties) {
-  //       break;
-  //     }
+  const nextMove = () => {
+    const nextNode = current ? current.node.children[0] : gameTree[0];
+    const properties = nextNode.properties || {};
+    const moveActions = [];
 
-      // if (properties.B) {
-      //   dispatch({ type: 'add_stone', point: properties.B[0], color: 'b' });
-      // } else if (properties.W) {
-      //   dispatch({ type: 'add_stone', point: properties.W[0], color: 'w' });
-      // } else if (properties.AB) {
-      //   properties.AB.forEach(property => {
-      //     dispatch({ type: 'add_stone', point: property, color: 'b' });
-      //   });
-      // } else if (properties.AW) {
-      //   properties.AW.forEach(property => {
-      //     dispatch({ type: 'add_stone', point: property, color: 'w' });
-      //   });
-      // }
+    if (properties.B) {
+      moveActions.push(setPoint(properties.B, 'b'));
+    }
+    if (properties.W) {
+      moveActions.push(setPoint(properties.W, 'w'));
+    }
+    if (properties.AB) {
+      moveActions.push(setPoint(properties.AB, 'b'));
+    }
+    if (properties.AW) {
+      moveActions.push(setPoint(properties.AW, 'w'));
+    }
 
-  //     node = node.children && node.children[0];
-  //   }
-  // }, [gameTree]);
+    dispatch(pushHistory(nextNode, moveActions));
+  };
+
+  const previousMove = () => dispatch(popHistory());
+
+  const forward = (numMoves: number) => {
+    for (let i = 0; i < numMoves; ++i) {
+      nextMove();
+    }
+  };
+
+  const back = (numMoves: number) => {
+    for (let i = 0; i < numMoves; ++i) {
+      previousMove();
+    }
+  };
+
+  // Go to first move on mount
+  useEffect(() => nextMove(), []);
 
   return (
-    <GoGameContext.Provider value={gameContext}>
+    <GoGameContext.Provider
+      value={{
+        forward,
+        back,
+        gameState: current
+          ? current.gameState
+          : { boardState: {}, properties: {} },
+      }}
+    >
       {children}
     </GoGameContext.Provider>
   );
