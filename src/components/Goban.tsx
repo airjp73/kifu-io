@@ -3,7 +3,6 @@ import React, {
   useRef,
   useLayoutEffect,
   useEffect,
-  useMemo,
 } from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
@@ -63,6 +62,7 @@ interface Space {
 const Goban = () => {
   const [height, boardRef] = useBoardHeight();
   const { gameState } = useGoGameContext();
+  const { boardState } = gameState;
 
   const a = 'a'.charCodeAt(0);
   const spaces: Space[] = [];
@@ -70,8 +70,8 @@ const Goban = () => {
     for (let x = 0; x < 19; ++x) {
       const yChar = String.fromCharCode(y + a);
       const xChar = String.fromCharCode(x + a);
-      const stateKey = `${yChar}${xChar}`;
-      spaces.push({ point: gameState[stateKey], hidden: x === 18 || y === 18 });
+      const stateKey = `${xChar}${yChar}`;
+      spaces.push({ point: boardState[stateKey], hidden: x === 18 || y === 18 });
     }
   }
   return (
