@@ -142,8 +142,8 @@ export const GoGameContextProvider: React.FunctionComponent<
     ? gameHistory[gameHistory.length - 1]
     : null;
 
-  const nextMove = () => {
-    const nextNode = current ? current.node.children[0] : gameTree[0];
+  const nextMove = (node: GameNode) => {
+    const nextNode = node || current.node.children[0];
     const properties = nextNode.properties || {};
     const moveActions = [];
 
@@ -166,19 +166,22 @@ export const GoGameContextProvider: React.FunctionComponent<
   const previousMove = () => dispatch(popHistory());
 
   const forward = (numMoves: number) => {
-    for (let i = 0; i < numMoves; ++i) {
-      nextMove();
+    let nextNode = current.node.children && current.node.children[0];
+    for (let i = 0; (i < numMoves || numMoves === -1) && nextNode; ++i) {
+      nextMove(nextNode);
+      nextNode = nextNode.children && nextNode.children[0];
     }
   };
 
   const back = (numMoves: number) => {
-    for (let i = 0; i < numMoves; ++i) {
+    const targetMove = numMoves === -1 ? 1 : Math.max(gameHistory.length - numMoves, 1);
+    for (let i = gameHistory.length; i > targetMove; --i) {
       previousMove();
     }
   };
 
   // Go to first move on mount
-  useEffect(() => nextMove(), []);
+  useEffect(() => nextMove(gameTree[0]), []);
 
   return (
     <GoGameContext.Provider
