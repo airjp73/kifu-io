@@ -74,7 +74,7 @@
   * 2 - Variations of successor node NO auto-markup
   * 3 - Variations of current node NO auto-markup
 * SZ - Size of the board - number | number:number
-  * SZ[19] = 19x19, SZ[10,5] = 10x5
+  * SZ[19] = 19x19, SZ[10:5] = 10x5
 
 #### Game info properties
 * AN - Name of the person who made the annotations - Simpletext

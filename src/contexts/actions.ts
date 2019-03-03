@@ -1,9 +1,15 @@
-import { Action, BoardState, GameStateWithHistory } from "./GoGameContext";
-import { Point } from "components/Goban";
-import { ThunkAction } from "hooks/useThunkReducer";
-import { GameNode } from "parseSgf/parseSgf";
+import {
+  Action,
+  BoardState,
+  GameStateWithHistory,
+  GameStateProperties,
+} from './GoGameContext';
+import { Point } from 'components/Goban';
+import { ThunkAction } from 'hooks/useThunkReducer';
+import { GameNode } from 'parseSgf/parseSgf';
 
 export const CAPTURE = 'CAPTURE';
+export const SET_BOARD_SIZE = 'SET_BOARD_SIZE';
 export const SET_NODE = 'SET_NODE';
 export const SET_POINT = 'SET_POINT';
 export const POP_HISTORY = 'POP_HISTORY';
@@ -14,7 +20,10 @@ export interface SetPointAction extends Action {
   points: string[];
   value: Point;
 }
-export const setPoint = (points: string[], value: Point | null): SetPointAction => ({
+export const setPoint = (
+  points: string[],
+  value: Point | null
+): SetPointAction => ({
   type: SET_POINT,
   points,
   value,
@@ -30,28 +39,33 @@ export const captureStones = (points: string[]): CaptureAction => ({
 });
 
 //// placeStone action
-const charAdd = (char: string, num: number): string =>
-  String.fromCharCode(char.charCodeAt(0) + num);
-
-const getLibertiesForPoint = (point: string): string[] => {
-  const xChar = point.charAt(0);
-  const yChar = point.charAt(1);
-  // TODO: filter on board size
-  return [
-    `${charAdd(xChar, 1)}${yChar}`,
-    `${charAdd(xChar, -1)}${yChar}`,
-    `${xChar}${charAdd(yChar, -1)}`,
-    `${xChar}${charAdd(yChar, 1)}`,
-  ];
+const getLiberties = (
+  point: string,
+  boardSize: [number, number] = [19, 19]
+): string[] => {
+  const A = 'a'.charCodeAt(0);
+  const x = point.charCodeAt(0) - A;
+  const y = point.charCodeAt(1) - A;
+  return [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]]
+    .filter(
+      ([xLib, yLib]) =>
+        xLib < boardSize[0] && xLib >= 0 && yLib < boardSize[1] && yLib >= 0
+    )
+    .map(
+      ([xLib, yLib]) =>
+        `${String.fromCharCode(xLib + A)}${String.fromCharCode(yLib + A)}`
+    );
 };
 
 const checkForCaptures = (
   addedStone: string,
   boardState: BoardState,
+  properties: GameStateProperties
 ): string[] => {
-  const contactedStones = getLibertiesForPoint(addedStone).filter(
-    liberty => !!boardState[liberty]
-  );
+  const contactedStones = getLiberties(
+    addedStone,
+    properties.boardSize
+  ).filter(liberty => !!boardState[liberty]);
   const capturedStones: string[] = [];
   const selfCapturedStones: string[] = [];
   const safeStones: string[] = [];
@@ -65,7 +79,10 @@ const checkForCaptures = (
     const stonesToCheck = [point];
     for (let i = 0; i < stonesToCheck.length; ++i) {
       checkedStones.push(stonesToCheck[i]);
-      const liberties = getLibertiesForPoint(stonesToCheck[i]);
+      const liberties = getLiberties(
+        stonesToCheck[i],
+        properties.boardSize
+      );
       for (let liberty of liberties) {
         if (!boardState[liberty] && liberty !== addedStone) {
           // Empty space, don't capture
@@ -101,13 +118,36 @@ export const placeStone = (point: string, value: Point) => {
   ];
 
   actions.push((dispatch, gameState) => {
-    const capturedStones = checkForCaptures(point, gameState.boardState);
+    const capturedStones = checkForCaptures(
+      point,
+      gameState.boardState,
+      gameState.properties
+    );
     capturedStones && dispatch(captureStones(capturedStones));
   });
 
   return actions;
 };
 
+// Properties
+//
+export interface SetBoardSize {
+  type: typeof SET_BOARD_SIZE;
+  boardSize: [number, number];
+}
+export const setBoardSize = (sizeProperty: string[]) => {
+  // One value (SZ[19]) means square board
+  // Two values (SZ[19:10]) means rectangular board
+  const value = sizeProperty[0].split(':');
+  const x = parseInt(value[0]);
+  const y = value[1] ? parseInt(value[1]) : x;
+  return {
+    type: SET_BOARD_SIZE,
+    boardSize: [x, y],
+  };
+};
+
+// State management
 export interface SetNodeAction {
   type: typeof SET_NODE;
   node: GameNode;
@@ -120,7 +160,7 @@ export const setNode = (node: GameNode): SetNodeAction => ({
 export interface PushHistoryAction {
   type: typeof PUSH_HISTORY;
 }
-export const pushHistory = (): PushHistoryAction => ({ type: PUSH_HISTORY, });
+export const pushHistory = (): PushHistoryAction => ({ type: PUSH_HISTORY });
 
 export interface PopHistoryAction {
   type: typeof POP_HISTORY;

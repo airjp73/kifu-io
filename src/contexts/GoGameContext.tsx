@@ -10,6 +10,7 @@ import {
   placeStone,
   setPoint,
   popHistory,
+  setBoardSize,
 } from './actions';
 
 // Interfaces
@@ -24,7 +25,7 @@ export interface BoardState {
 }
 
 export interface GameStateProperties {
-  [key: string]: string;
+  boardSize?: [number, number],
 }
 
 export interface GameState {
@@ -77,6 +78,12 @@ export const GoGameContextProvider: React.FunctionComponent<
     }
     if (properties.AW) {
       dispatch(setPoint(properties.AW, 'w'));
+    }
+
+    // Root only
+    // TODO: Validate these -- they should only appear in root nodes
+    if (properties.SZ) {
+      dispatch(setBoardSize(properties.SZ));
     }
   };
 
