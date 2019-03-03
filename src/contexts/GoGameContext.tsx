@@ -2,9 +2,15 @@ import React, { useContext, useMemo, useEffect } from 'react';
 import parseSgf from 'parseSgf';
 import { Point } from 'components/Goban';
 import { GameNode } from 'parseSgf/parseSgf';
-import useThunkReducer, { ThunkAction } from 'hooks/useThunkReducer';
+import useThunkReducer from 'hooks/useThunkReducer';
 import gameStateReducer from './reducers';
-import { pushHistory, setNode, placeStone, setPoint, popHistory } from './actions';
+import {
+  pushHistory,
+  setNode,
+  placeStone,
+  setPoint,
+  popHistory,
+} from './actions';
 
 // Interfaces
 export interface GameContext {
@@ -49,12 +55,10 @@ export const GoGameContextProvider: React.FunctionComponent<
   GoGameContextProviderProps
 > = ({ children, sgf }) => {
   const gameTree = useMemo(() => parseSgf(sgf), [sgf]);
-  const [gameState, dispatch] = useThunkReducer(gameStateReducer, {
-    boardState: {},
-    properties: {},
-    node: {},
-    history: [],
-  });
+  const [gameState, dispatch] = useThunkReducer(
+    gameStateReducer,
+    gameStateReducer(undefined, { type: 'none' }) // TODO: tweak hook to allow an init function
+  );
 
   const nextMove = (node: GameNode) => {
     const nextNode = node || gameState.node.children[0];

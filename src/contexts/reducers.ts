@@ -32,8 +32,14 @@ const nodeReducer = (state: GameNode, action: Action): GameNode => {
   else return state;
 };
 
+const defaultState: GameStateWithHistory = {
+  boardState: {},
+  properties: {},
+  node: {},
+  history: [],
+};
 const gameStateReducer = (
-  state: GameStateWithHistory,
+  state: GameStateWithHistory = defaultState,
   action: Action
 ): GameStateWithHistory => {
   const { boardState, properties, node, history } = state;
