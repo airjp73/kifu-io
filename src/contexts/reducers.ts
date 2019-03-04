@@ -1,6 +1,20 @@
 import omit from 'lodash/omit';
-import { BoardState, Action, GameStateProperties, GameStateWithHistory } from "./GoGameContext";
-import { SetPointAction, SET_POINT, CAPTURE, CaptureAction, SET_NODE, SetNodeAction, POP_HISTORY, PUSH_HISTORY } from "./actions";
+import {
+  BoardState,
+  Action,
+  GameStateProperties,
+  GameStateWithHistory,
+} from './GoGameContext';
+import {
+  SetPointAction,
+  SET_POINT,
+  CAPTURE,
+  CaptureAction,
+  SET_NODE,
+  SetNodeAction,
+  POP_HISTORY,
+  PUSH_HISTORY,
+} from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
 
 const setPoints = (state: BoardState, action: SetPointAction) => {
@@ -8,7 +22,6 @@ const setPoints = (state: BoardState, action: SetPointAction) => {
   action.points.forEach(point => (nextState[point] = action.value));
   return nextState;
 };
-// Reducers
 const boardStateReducer = (state: BoardState, action: Action): BoardState => {
   switch (action.type) {
     case SET_POINT:
@@ -28,8 +41,11 @@ const propertiesReducer = (
 };
 
 const nodeReducer = (state: GameNode, action: Action): GameNode => {
-  if (action.type === SET_NODE) return (action as SetNodeAction).node;
-  else return state;
+  if (action.type === SET_NODE) {
+    return (action as SetNodeAction).node;
+  } else {
+    return state;
+  }
 };
 
 const defaultState: GameStateWithHistory = {
