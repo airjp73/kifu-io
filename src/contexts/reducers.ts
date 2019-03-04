@@ -63,7 +63,7 @@ const gameStateReducer = (
   switch (action.type) {
     case POP_HISTORY:
       return {
-        ...history[history.length - 1], // TODO: Fix state when undoing
+        ...history[history.length - 1],
         history: history.slice(0, history.length - 1),
       };
     case PUSH_HISTORY:
