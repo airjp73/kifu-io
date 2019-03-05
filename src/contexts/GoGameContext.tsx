@@ -7,11 +7,11 @@ import gameStateReducer from './reducers';
 import {
   pushHistory,
   setNode,
-  placeStone,
   setPoint,
   popHistory,
   setBoardSize,
 } from './actions';
+import placeStone from './placeStone';
 
 // Interfaces
 export interface GameContext {
