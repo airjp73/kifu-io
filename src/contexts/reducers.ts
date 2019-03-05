@@ -14,6 +14,8 @@ import {
   SetNodeAction,
   POP_HISTORY,
   PUSH_HISTORY,
+  SetBoardSizeAction,
+  SET_BOARD_SIZE,
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
 
@@ -37,7 +39,15 @@ const propertiesReducer = (
   state: GameStateProperties,
   action: Action
 ): GameStateProperties => {
-  return state;
+  switch (action.type) {
+    case SET_BOARD_SIZE:
+      return {
+        ...state,
+        boardSize: (action as SetBoardSizeAction).boardSize,
+      };
+    default:
+      return state;
+  };
 };
 
 const nodeReducer = (state: GameNode, action: Action): GameNode => {

@@ -34,7 +34,7 @@ export const captureStones = (points: string[]): CaptureAction => ({
 });
 
 // Properties
-export interface SetBoardSize {
+export interface SetBoardSizeAction {
   type: typeof SET_BOARD_SIZE;
   boardSize: [number, number];
 }
