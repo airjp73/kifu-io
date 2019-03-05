@@ -3,7 +3,7 @@ import {
   GameStateWithHistory,
   GameStateProperties,
 } from './GoGameContext';
-import { ThunkAction } from 'hooks/useThunkReducer';
+import { ThunkAction, ThunkDispatch } from 'hooks/useThunkReducer';
 import { setPoint, captureStones } from './actions';
 import { Point } from 'components/Goban';
 
@@ -77,12 +77,13 @@ const checkForCaptures = (
   return capturedStones.length ? capturedStones : selfCapturedStones;
 };
 
-const placeStone = (point: string, value: Point) => {
-  const actions: ThunkAction<GameStateWithHistory>[] = [
-    setPoint([point], value),
-  ];
-
-  actions.push((dispatch, gameState) => {
+const placeStone = (
+  point: string,
+  value: Point,
+  dispatch: ThunkDispatch<GameStateWithHistory>
+) => {
+  dispatch(setPoint([point], value));
+  dispatch((dispatch, gameState) => {
     const capturedStones = checkForCaptures(
       point,
       gameState.boardState,
@@ -90,8 +91,6 @@ const placeStone = (point: string, value: Point) => {
     );
     capturedStones && dispatch(captureStones(capturedStones));
   });
-
-  return actions;
 };
 
 export default placeStone;

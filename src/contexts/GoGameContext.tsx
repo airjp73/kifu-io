@@ -68,10 +68,10 @@ export const GoGameContextProvider: React.FunctionComponent<
     dispatch(setNode(node));
 
     if (properties.B) {
-      placeStone(properties.B[0], 'b').forEach(dispatch);
+      placeStone(properties.B[0], 'b', dispatch);
     }
     if (properties.W) {
-      placeStone(properties.W[0], 'w').forEach(dispatch);
+      placeStone(properties.W[0], 'w', dispatch);
     }
     if (properties.AB) {
       dispatch(setPoint(properties.AB, 'b'));
