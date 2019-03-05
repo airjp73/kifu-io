@@ -3,7 +3,7 @@ import {
   GameStateWithHistory,
   GameStateProperties,
 } from './GoGameContext';
-import { ThunkAction, ThunkDispatch } from 'hooks/useThunkReducer';
+import { ThunkDispatch } from 'hooks/useThunkReducer';
 import { setPoint, captureStones } from './actions';
 import { Point } from 'components/Goban';
 
