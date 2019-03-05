@@ -9,7 +9,7 @@ type Reducer<S> = (state: S, action: Action) => S;
 type Dispatch = (action: Action) => void;
 type ActionFunction<S> = (dispatch: Dispatch, getState: S) => void;
 export type ThunkAction<S> = Action | ActionFunction<S>;
-type ThunkDispatch<S> = (action: ThunkAction<S>) => void;
+export type ThunkDispatch<S> = (action: ThunkAction<S>) => void;
 
 const useThunkReducer = <S>(
   reducer: Reducer<S>,
