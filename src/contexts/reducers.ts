@@ -21,7 +21,7 @@ import {
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
 
-type GameStateAction =
+export type GameStateAction =
   | CaptureAction
   | InitAction
   | PopHistoryAction
