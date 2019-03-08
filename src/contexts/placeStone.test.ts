@@ -15,6 +15,28 @@ describe('placeStone', () => {
       ['kk', 'w'],
       { aa: 'b', kk: 'w' },
     ],
+    [
+      'Touching move - no capture',
+      { aa: 'b' },
+      [3, 3],
+      ['ab', 'w'],
+      { aa: 'b', ab: 'w' }
+    ],
+    [
+      'Self atari - no capture',
+      `
+        . . .
+        b . b
+        . b .
+      `,
+      [3, 3],
+      ['bb', 'w'],
+      `
+        . . .
+        b w b
+        . b .
+      `
+    ],
 
     // Corner captures
     [
@@ -107,6 +129,40 @@ describe('placeStone', () => {
         w . . w .
         . w . . w
         . . w . w
+      `
+    ],
+
+    // Other
+    [
+      'Suicide moves',
+      `
+        . b .
+        b . b
+        . b .
+      `,
+      [3, 3],
+      ['bb', 'w'],
+      `
+        . b .
+        b . b
+        . b .
+      `
+    ],
+    [
+      'Ko',
+      `
+        . b .
+        b . b
+        w b w
+        . w .
+      `,
+      [3, 4],
+      ['bb', 'w'],
+      `
+        . b .
+        b w b
+        w . w
+        . w .
       `
     ]
   ]).test(
