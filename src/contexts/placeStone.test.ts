@@ -3,6 +3,7 @@ import each from 'jest-each';
 import gameStateReducer from './reducers';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import placeStone from './placeStone';
+import createBoardStateFromString from './createBoardStateFromString';
 
 describe('placeStone', () => {
   each([
@@ -78,33 +79,58 @@ describe('placeStone', () => {
     // Bulk captures
     [
       'Capture every other stone on the board',
-      {
-        aa: 'b',
-        ab: 'b',
-        ac: 'b',
-        ba: 'b',
-        bc: 'b',
-        ca: 'b',
-        cb: 'b',
-        cc: 'b',
-      },
+      `
+        b b b
+        b . b
+        b b b
+      `,
       [3, 3],
       ['bb', 'w'],
       { bb: 'w' },
     ],
+    [
+      'Ladder capture',
+      `
+        . . . . .
+        b w . . .
+        b b w . .
+        w b b w .
+        . w b b w
+        . . w b w
+      `,
+      [5, 6],
+      ['aa', 'w'],
+      `
+        w . . . .
+        . w . . .
+        . . w . .
+        w . . w .
+        . w . . w
+        . . w . w
+      `
+    ]
   ]).test(
-    'should correctly hande %d',
+    'should correctly hande %s',
     (description, initialBoard, boardSize, newStone, expectedBoard) => {
-      // TODO: each this to test every corner
+      const initialBoardState =
+        typeof initialBoard === 'string'
+          ? createBoardStateFromString(initialBoard, boardSize)
+          : initialBoard;
+
+      const expectedBoardState =
+        typeof expectedBoard === 'string'
+          ? createBoardStateFromString(expectedBoard, boardSize)
+          : expectedBoard;
+
       const state: GameStateWithHistory = {
-        boardState: initialBoard,
+        boardState: initialBoardState,
         properties: { boardSize },
         node: {},
         history: [],
       };
 
       let newState = state;
-      const dispatch = jest.fn((action) => {
+      const dispatch = jest.fn(action => {
         if (typeof action === 'function') {
           action(dispatch, state);
         } else {
@@ -114,7 +140,7 @@ describe('placeStone', () => {
 
       placeStone(newStone[0], newStone[1], dispatch);
       expect(newState).toEqual({
-        boardState: expectedBoard,
+        boardState: expectedBoardState,
         properties: { boardSize },
         node: {},
         history: [],
