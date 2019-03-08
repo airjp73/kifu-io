@@ -1,7 +1,6 @@
 import { GameStateWithHistory } from './GoGameContext';
 import each from 'jest-each';
 import gameStateReducer from './reducers';
-import { ThunkDispatch } from 'hooks/useThunkReducer';
 import placeStone from './placeStone';
 import createBoardStateFromString from './createBoardStateFromString';
 
@@ -20,7 +19,7 @@ describe('placeStone', () => {
       { aa: 'b' },
       [3, 3],
       ['ab', 'w'],
-      { aa: 'b', ab: 'w' }
+      { aa: 'b', ab: 'w' },
     ],
     [
       'Self atari - no capture',
@@ -35,7 +34,24 @@ describe('placeStone', () => {
         . . .
         b w b
         . b .
+      `,
+    ],
+    [
+      'Self atari - bulk - no capture',
       `
+        b b b b
+        b w . b
+        b . b b
+        b b b b
+      `,
+      [4, 4],
+      ['cb', 'w'],
+      `
+        b b b b
+        b w w b
+        b . b b
+        b b b b
+      `,
     ],
 
     // Corner captures
@@ -129,10 +145,10 @@ describe('placeStone', () => {
         w . . w .
         . w . . w
         . . w . w
-      `
+      `,
     ],
 
-    // Other
+    // Suicide
     [
       'Suicide moves',
       `
@@ -146,8 +162,53 @@ describe('placeStone', () => {
         . b .
         b . b
         . b .
+      `,
+    ],
+    [
+      'Suicide moves - bulk',
+      `
+        . b b .
+        b . w b
+        b w b .
+        . b . .
+      `,
+      [4, 4],
+      ['bb', 'w'],
+      `
+        . b b .
+        b . . b
+        b . b .
+        . b . .
+      `,
+    ],
+    [
+      'Suicide Moves - corner',
+      `
+        . b
+        b .
+      `,
+      [2, 2],
+      ['aa', 'w'],
+      `
+        . b
+        b .
       `
     ],
+    [
+      'Suicide Moves - whole board',
+      `
+        b b
+        b .
+      `,
+      [2, 2],
+      ['bb', 'b'],
+      `
+        . .
+        . .
+      `
+    ],
+
+    // Ko
     [
       'Ko',
       `
@@ -163,10 +224,31 @@ describe('placeStone', () => {
         b w b
         w . w
         . w .
+      `,
+    ],
+
+    // Multi group captures
+    [
+      'Multi-group capture',
       `
+        . . b b .
+        . b w w b
+        b w . w b
+        . b w b .
+        . . b . .
+      `,
+      [5, 5],
+      ['cc', 'b'],
+      `
+        . . b b .
+        . b . . b
+        b . b . b
+        . b . b .
+        . . b . .
+      `,
     ]
   ]).test(
-    'should correctly hande %s',
+    'should correctly handle %s',
     (description, initialBoard, boardSize, newStone, expectedBoard) => {
       const initialBoardState =
         typeof initialBoard === 'string'
@@ -188,7 +270,7 @@ describe('placeStone', () => {
       let newState = state;
       const dispatch = jest.fn(action => {
         if (typeof action === 'function') {
-          action(dispatch, state);
+          action(dispatch, newState);
         } else {
           newState = gameStateReducer(newState, action);
         }

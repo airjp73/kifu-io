@@ -31,34 +31,41 @@ const checkForCaptures = (
   boardState: BoardState,
   properties: GameStateProperties
 ): string[] => {
-  const contactedStones = getLiberties(addedStone, properties.boardSize).filter(
+  const affectedStones = getLiberties(addedStone, properties.boardSize).filter(
     liberty => !!boardState[liberty]
   );
+  affectedStones.push(addedStone); // Include addedStone to account for self-capture
+
   const capturedStones: string[] = [];
   const selfCapturedStones: string[] = [];
   const safeStones: string[] = [];
 
-  contactedStones.forEach(point => {
+  affectedStones.forEach(point => {
     // If stone has already been captured, or is already safe, abort
-    if (capturedStones.includes(point) || safeStones.includes(point)) return;
-    const color = boardState[point];
-    const checkedStones: string[] = [];
+    if (
+      capturedStones.includes(point) ||
+      selfCapturedStones.includes(point) ||
+      safeStones.includes(point)
+    ) {
+      return;
+    }
 
-    const stonesToCheck = [point];
-    for (let i = 0; i < stonesToCheck.length; ++i) {
-      checkedStones.push(stonesToCheck[i]);
-      const liberties = getLiberties(stonesToCheck[i], properties.boardSize);
+    const color = boardState[point];
+    const stonesInGroup: string[] = [point];
+
+    for (let i = 0; i < stonesInGroup.length; ++i) {
+      const liberties = getLiberties(stonesInGroup[i], properties.boardSize);
       for (let liberty of liberties) {
-        if (!boardState[liberty] && liberty !== addedStone) {
-          // Empty space, don't capture
-          safeStones.push(...checkedStones);
+        if (!boardState[liberty]) {
+          // Empty liberty, don't capture this group
+          safeStones.push(...stonesInGroup);
           return;
         } else if (boardState[liberty] === color) {
-          // If we've checked this stone already, then we know this group has liberties
+          // If this stone is safe already, then we know this group has liberties
           if (safeStones.includes(liberty)) return;
-          // Same color, add to check list if we haven't checked it already
-          if (!checkedStones.includes(liberty)) {
-            stonesToCheck.push(liberty);
+          // Same color means it's part of the group we're currently checking
+          if (!stonesInGroup.includes(liberty)) {
+            stonesInGroup.push(liberty);
           }
         }
         // Different color, do nothing
@@ -66,10 +73,10 @@ const checkForCaptures = (
     }
 
     // There are rule-sets that allow suicide moves so we have to check
-    if (checkedStones.includes(addedStone)) {
-      selfCapturedStones.push(...checkedStones);
+    if (stonesInGroup.includes(addedStone)) {
+      selfCapturedStones.push(...stonesInGroup);
     } else {
-      capturedStones.push(...checkedStones);
+      capturedStones.push(...stonesInGroup);
     }
   });
 
