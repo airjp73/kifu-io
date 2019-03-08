@@ -3,6 +3,7 @@ import { Point } from 'components/Goban';
 import { GameNode } from 'parseSgf/parseSgf';
 
 export const CAPTURE = 'CAPTURE';
+export const INIT = 'INIT';
 export const SET_BOARD_SIZE = 'SET_BOARD_SIZE';
 export const SET_NODE = 'SET_NODE';
 export const SET_POINT = 'SET_POINT';
@@ -69,3 +70,8 @@ export interface PopHistoryAction {
   type: typeof POP_HISTORY;
 }
 export const popHistory = (): PopHistoryAction => ({ type: POP_HISTORY });
+
+export interface InitAction {
+  type: typeof INIT;
+}
+export const init = (): InitAction => ({ type: INIT });

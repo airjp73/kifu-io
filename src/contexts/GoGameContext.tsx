@@ -10,6 +10,7 @@ import {
   setPoint,
   popHistory,
   setBoardSize,
+  init,
 } from './actions';
 import placeStone from './placeStone';
 
@@ -58,7 +59,7 @@ export const GoGameContextProvider: React.FunctionComponent<
   const gameTree = useMemo(() => parseSgf(sgf), [sgf]);
   const [gameState, dispatch] = useThunkReducer(
     gameStateReducer,
-    gameStateReducer(undefined, { type: 'none' }) // TODO: tweak hook to allow an init function
+    gameStateReducer(undefined, init()) // TODO: tweak hook to allow an init function
   );
 
   const nextMove = (node: GameNode) => {

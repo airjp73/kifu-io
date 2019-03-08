@@ -1,7 +1,6 @@
 import omit from 'lodash/omit';
 import {
   BoardState,
-  Action,
   GameStateProperties,
   GameStateWithHistory,
 } from './GoGameContext';
@@ -16,20 +15,32 @@ import {
   PUSH_HISTORY,
   SetBoardSizeAction,
   SET_BOARD_SIZE,
+  PushHistoryAction,
+  PopHistoryAction,
+  InitAction,
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
+
+type GameStateAction =
+  | CaptureAction
+  | InitAction
+  | PopHistoryAction
+  | PushHistoryAction
+  | SetBoardSizeAction
+  | SetNodeAction
+  | SetPointAction;
 
 const setPoints = (state: BoardState, action: SetPointAction) => {
   const nextState = { ...state };
   action.points.forEach(point => (nextState[point] = action.value));
   return nextState;
 };
-const boardStateReducer = (state: BoardState, action: Action): BoardState => {
+const boardStateReducer = (state: BoardState, action: GameStateAction): BoardState => {
   switch (action.type) {
     case SET_POINT:
-      return setPoints(state, action as SetPointAction);
+      return setPoints(state, action);
     case CAPTURE:
-      return omit(state, (action as CaptureAction).points);
+      return omit(state, action.points);
     default:
       return state;
   }
@@ -37,22 +48,22 @@ const boardStateReducer = (state: BoardState, action: Action): BoardState => {
 
 const propertiesReducer = (
   state: GameStateProperties,
-  action: Action
+  action: GameStateAction
 ): GameStateProperties => {
   switch (action.type) {
     case SET_BOARD_SIZE:
       return {
         ...state,
-        boardSize: (action as SetBoardSizeAction).boardSize,
+        boardSize: action.boardSize,
       };
     default:
       return state;
-  };
+  }
 };
 
-const nodeReducer = (state: GameNode, action: Action): GameNode => {
+const nodeReducer = (state: GameNode, action: GameStateAction): GameNode => {
   if (action.type === SET_NODE) {
-    return (action as SetNodeAction).node;
+    return action.node;
   } else {
     return state;
   }
@@ -66,7 +77,7 @@ const defaultState: GameStateWithHistory = {
 };
 const gameStateReducer = (
   state: GameStateWithHistory = defaultState,
-  action: Action
+  action: GameStateAction
 ): GameStateWithHistory => {
   const { boardState, properties, node, history } = state;
 
