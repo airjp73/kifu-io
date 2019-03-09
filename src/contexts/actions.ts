@@ -39,7 +39,7 @@ export interface SetBoardSizeAction {
   type: typeof SET_BOARD_SIZE;
   boardSize: [number, number];
 }
-export const setBoardSize = (sizeProperty: string[]) => {
+export const setBoardSize = (sizeProperty: string[]): SetBoardSizeAction => {
   // One value (SZ[19]) means square board
   // Two values (SZ[19:10]) means rectangular board
   const value = sizeProperty[0].split(':');

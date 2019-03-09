@@ -7,7 +7,7 @@ import { useState } from 'react';
 type Action = { type: string };
 type Reducer<S> = (state: S, action: Action) => S;
 type Dispatch = (action: Action) => void;
-type ActionFunction<S> = (dispatch: Dispatch, getState: S) => void;
+type ActionFunction<S> = (dispatch: Dispatch, state: S) => void;
 export type ThunkAction<S> = Action | ActionFunction<S>;
 export type ThunkDispatch<S> = (action: ThunkAction<S>) => void;
 

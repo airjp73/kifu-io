@@ -68,6 +68,7 @@ export const GoGameContextProvider: React.FunctionComponent<
     dispatch(pushHistory());
     dispatch(setNode(node));
 
+    // Board State
     if (properties.B) {
       placeStone(properties.B[0], 'b', dispatch);
     }
