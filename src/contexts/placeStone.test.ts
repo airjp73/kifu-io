@@ -2,7 +2,7 @@ import { GameStateWithHistory } from './GoGameContext';
 import each from 'jest-each';
 import gameStateReducer from './reducers';
 import placeStone from './placeStone';
-import createBoardStateFromString from './createBoardStateFromString';
+import { createBoardStateFromString } from './boardStateTestHelpers';
 
 describe('placeStone', () => {
   each([
