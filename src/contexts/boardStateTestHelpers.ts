@@ -44,6 +44,7 @@ export const createStringFromBoardState = (
         boardString += '. ';
       }
     }
+    boardString += '\n';
   }
 
   return boardString;
