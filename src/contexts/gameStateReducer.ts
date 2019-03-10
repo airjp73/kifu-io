@@ -16,6 +16,7 @@ import {
   SetApplicationAction,
   SetVariationDisplaySettingsAction,
   SET_APPLICATION,
+  SET_VARIATION_DISPLAY_SETTINGS,
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
 import { Point } from 'components/Goban';
@@ -56,6 +57,7 @@ const boardStateReducer = (
 export interface GameStateProperties {
   boardSize?: [number, number];
   application?: { name: string; version: string };
+  variationDisplay?: { show: boolean; showFor: 'NEXT_MOVE' | 'CURRENT_MOVE' };
 }
 const propertiesReducer = (
   state: GameStateProperties,
@@ -71,6 +73,11 @@ const propertiesReducer = (
       return {
         ...state,
         application: action.application,
+      };
+    case SET_VARIATION_DISPLAY_SETTINGS:
+      return {
+        ...state,
+        variationDisplay: action.variationDisplay,
       };
     default:
       return state;

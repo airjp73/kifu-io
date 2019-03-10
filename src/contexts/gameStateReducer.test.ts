@@ -1,3 +1,4 @@
+import each from 'jest-each';
 import {
   setPoint,
   captureStones,
@@ -5,6 +6,8 @@ import {
   popHistory,
   pushHistory,
   setBoardSize,
+  setApplication,
+  SetVariationDisplaySettings,
 } from './actions';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 
@@ -79,6 +82,19 @@ describe('GoGameContext reducer', () => {
     ]);
   });
 
+  test('should handle setApplication action', () => {
+    const result = gameStateReducer(
+      emptyState,
+      setApplication(['GoReviews:1.0'])
+    );
+    expect(result.properties).toEqual({
+      application: {
+        name: 'GoReviews',
+        version: '1.0',
+      },
+    });
+  });
+
   describe('setBoardSize action', () => {
     test('should treat single values as square sizes', () => {
       const result = gameStateReducer(emptyState, setBoardSize(['19']));
@@ -89,5 +105,25 @@ describe('GoGameContext reducer', () => {
       const result = gameStateReducer(emptyState, setBoardSize(['19:20']));
       expect(result.properties).toEqual({ boardSize: [19, 20] });
     });
+  });
+
+  describe('setVariationDisplaySettings action', () => {
+    each([
+      [0, false, 'NEXT_MOVE'],
+      [1, false, 'CURRENT_MOVE'],
+      [2, true, 'NEXT_MOVE'],
+      [3, true, 'CURRENT_MOVE'],
+    ]).test(
+      'should handle setVariationDisplaySettings action',
+      (value, show, showFor) => {
+        const result = gameStateReducer(
+          emptyState,
+          SetVariationDisplaySettings([value])
+        );
+        expect(result.properties).toEqual({
+          variationDisplay: { show, showFor },
+        });
+      }
+    );
   });
 });
