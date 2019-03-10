@@ -89,9 +89,9 @@ const processNode = (
     // TODO: Support old versions of the spec
     throw 'Currently only version 4 of the sgf spec is supported';
   }
-  if (properties.GM && properties.GM[1] !== '1') {
+  if (properties.GM && properties.GM[0] !== '1') {
     // IGNORE: This will always be 1
-    throw 'Games other than GO or not supported';
+    throw 'Games other than Go or not supported';
   }
   if (properties.ST) {
     dispatch(SetVariationDisplaySettings(properties.ST));
