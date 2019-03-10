@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useEffect } from 'react';
 import parseSgf from 'parseSgf';
 import { GameNode } from 'parseSgf/parseSgf';
 import useThunkReducer from 'hooks/useThunkReducer';
-import gameStateReducer, { GameState } from './reducers';
+import gameStateReducer, { GameState } from './gameStateReducer';
 import {
   pushHistory,
   setNode,

@@ -6,8 +6,7 @@ import {
   pushHistory,
   setBoardSize,
 } from './actions';
-import gameStateReducer from './reducers';
-import { GameStateWithHistory } from './GoGameContext';
+import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 
 const emptyState: GameStateWithHistory = {
   boardState: {},
