@@ -1,10 +1,5 @@
 import omit from 'lodash/omit';
 import {
-  BoardState,
-  GameStateProperties,
-  GameStateWithHistory,
-} from './GoGameContext';
-import {
   SetPointAction,
   SET_POINT,
   CAPTURE,
@@ -18,24 +13,36 @@ import {
   PushHistoryAction,
   PopHistoryAction,
   InitAction,
+  SetApplicationAction,
+  SetVariationDisplaySettingsAction,
+  SET_APPLICATION,
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
+import { Point } from 'components/Goban';
 
 export type GameStateAction =
   | CaptureAction
   | InitAction
   | PopHistoryAction
   | PushHistoryAction
+  | SetApplicationAction
   | SetBoardSizeAction
   | SetNodeAction
-  | SetPointAction;
+  | SetPointAction
+  | SetVariationDisplaySettingsAction;
 
+export interface BoardState {
+  [key: string]: Point;
+}
 const setPoints = (state: BoardState, action: SetPointAction) => {
   const nextState = { ...state };
   action.points.forEach(point => (nextState[point] = action.value));
   return nextState;
 };
-const boardStateReducer = (state: BoardState, action: GameStateAction): BoardState => {
+const boardStateReducer = (
+  state: BoardState,
+  action: GameStateAction
+): BoardState => {
   switch (action.type) {
     case SET_POINT:
       return setPoints(state, action);
@@ -46,6 +53,10 @@ const boardStateReducer = (state: BoardState, action: GameStateAction): BoardSta
   }
 };
 
+export interface GameStateProperties {
+  boardSize?: [number, number];
+  application?: { name: string; version: string };
+}
 const propertiesReducer = (
   state: GameStateProperties,
   action: GameStateAction
@@ -55,6 +66,11 @@ const propertiesReducer = (
       return {
         ...state,
         boardSize: action.boardSize,
+      };
+    case SET_APPLICATION:
+      return {
+        ...state,
+        application: action.application,
       };
     default:
       return state;
@@ -69,6 +85,14 @@ const nodeReducer = (state: GameNode, action: GameStateAction): GameNode => {
   }
 };
 
+export interface GameState {
+  properties: GameStateProperties;
+  boardState: BoardState;
+  node: GameNode;
+}
+export interface GameStateWithHistory extends GameState {
+  history: GameState[];
+}
 const defaultState: GameStateWithHistory = {
   boardState: {},
   properties: {},

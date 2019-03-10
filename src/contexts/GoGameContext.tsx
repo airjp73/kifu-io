@@ -1,18 +1,14 @@
 import React, { useContext, useMemo, useEffect } from 'react';
 import parseSgf from 'parseSgf';
-import { Point } from 'components/Goban';
 import { GameNode } from 'parseSgf/parseSgf';
 import useThunkReducer from 'hooks/useThunkReducer';
-import gameStateReducer from './reducers';
+import gameStateReducer, { GameState } from './reducers';
 import {
   pushHistory,
   setNode,
-  setPoint,
   popHistory,
-  setBoardSize,
   init,
 } from './actions';
-import placeStone from './placeStone';
 import processNode from './processNode';
 
 // Interfaces
@@ -20,24 +16,6 @@ export interface GameContext {
   forward: (numMoves: number) => void;
   back: (numMoves: number) => void;
   gameState: GameState;
-}
-
-export interface BoardState {
-  [key: string]: Point;
-}
-
-export interface GameStateProperties {
-  boardSize?: [number, number];
-}
-
-export interface GameState {
-  properties: GameStateProperties;
-  boardState: BoardState;
-  node: GameNode;
-}
-
-export interface GameStateWithHistory extends GameState {
-  history: GameState[];
 }
 
 export interface Action {
