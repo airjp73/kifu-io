@@ -10,7 +10,8 @@ interface HeaderProps {
 
 const HeaderContainer = styled.header`
   background-color: ${panelBackground};
-  padding: .5rem 2rem .5rem 1.5rem;
+  padding: .5rem;
+  padding-right: 1rem;
 
   position: sticky;
   top: 0;
@@ -19,17 +20,13 @@ const HeaderContainer = styled.header`
 
   display: flex;
   color: ${highlight};
-  font-size: 3rem;
+  font-size: 1.5rem;
   align-items: center;
 
   strong {
     display: flex;
     align-items: center;
   }
-`;
-
-const MenuIcon = styled(FontIcon)`
-  font-size: 4rem;
 `;
 
 const SiteTitle = styled.span`
@@ -43,7 +40,7 @@ const ChildContainer = styled.div`
 const Header: React.FunctionComponent<HeaderProps> = ({ children, onMenuClick }) => (
   <HeaderContainer>
     <FlatButton onClick={onMenuClick}>
-      <MenuIcon icon="menu" />
+      <FontIcon icon="menu" />
     </FlatButton>
     <SiteTitle>Go Reviews</SiteTitle>
     <ChildContainer>{children}</ChildContainer>

@@ -22,6 +22,7 @@ const NavListItem = styled.li`
   :hover {
     background-color: ${panelHighlight};
   }
+  font-size: 1rem;
 `;
 
 const Nav = styled.nav`
@@ -48,6 +49,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
           css={`
             margin-right: 1rem;
           `}
+          size="SMALL"
           icon={icon}
         />
         {label}

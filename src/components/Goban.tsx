@@ -28,9 +28,10 @@ class GobanCanvas {
   };
 
   private calculateDimensions = () => {
+    const pixelRatio = window.devicePixelRatio || 1;
     this.size = [19, 19]; // TODO: Make this dynamic
-    this.canvas.width = this.canvas.clientWidth;
-    this.canvas.height = this.canvas.clientWidth;
+    this.canvas.width = this.canvas.clientWidth * pixelRatio;
+    this.canvas.height = this.canvas.clientWidth * pixelRatio;
     this.unit = this.canvas.width / 20; // 19 points + edges
     this.stoneRadius = (this.unit - 2) / 2;
   };

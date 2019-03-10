@@ -8,7 +8,14 @@ const GameControlButtonBar = styled.div`
   display: flex;
   justify-content: space-evenly;
   color: black;
-  height: 35px;
+  background-color: white;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  border-top: 1px solid rgba(0, 0, 0, .2);
 `;
 
 const GameControlButtons = () => {
