@@ -9,7 +9,6 @@ class GobanCanvas {
   canvas: HTMLCanvasElement;
 
   private spritePadding = 2;
-  private stoneShadowOffset = 3;
 
   private unit: number;
   private stoneRadius: number;
@@ -37,11 +36,15 @@ class GobanCanvas {
   };
 
   private initSprites = () => {
-    this.blackStone = this.createStoneSprite('#555', '#000', .5);
-    this.whiteStone = this.createStoneSprite('#fff', '#ccc', .9);
+    this.blackStone = this.createStoneSprite('#444', '#111', 0.5);
+    this.whiteStone = this.createStoneSprite('#fff', '#ccc', 0.9);
   };
 
-  private createStoneSprite = (highlightColor: string, baseColor: string, gradientEnd: number) => {
+  private createStoneSprite = (
+    highlightColor: string,
+    baseColor: string,
+    gradientEnd: number
+  ) => {
     const canvas = document.createElement('canvas');
     canvas.width = this.stoneRadius * 2 + this.spritePadding + 10;
     canvas.height = this.stoneRadius * 2 + this.spritePadding + 10;
@@ -51,7 +54,14 @@ class GobanCanvas {
     const ctx = canvas.getContext('2d');
 
     const highlightCenter = stoneCenter - this.stoneRadius / 2;
-    const gradient = ctx.createRadialGradient(highlightCenter, highlightCenter, 2, stoneCenter, stoneCenter, this.stoneRadius);
+    const gradient = ctx.createRadialGradient(
+      highlightCenter,
+      highlightCenter,
+      2,
+      stoneCenter,
+      stoneCenter,
+      this.stoneRadius
+    );
     gradient.addColorStop(0, highlightColor);
     gradient.addColorStop(gradientEnd, baseColor);
 
@@ -105,9 +115,37 @@ class GobanCanvas {
       ctx.lineTo(xEnd, yCoord);
     }
 
-    // Draw
+    // Draw lines
     ctx.stroke();
     ctx.closePath();
+
+    // Star points
+    // TODO: Draw for 9x9, 13x13, and 19x19 but not other sizes
+    const starPointRadius = this.stoneRadius / 4;
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+
+    [
+      [3, 3],
+      [9, 3],
+      [15, 3],
+      [3, 9],
+      [9, 9],
+      [15, 9],
+      [3, 15],
+      [9, 15],
+      [15, 15],
+    ].forEach(([x, y]) => {
+      const xCoord = this.getCoord(x);
+      const yCoord = this.getCoord(y);
+      ctx.moveTo(xCoord - starPointRadius, yCoord - starPointRadius);
+      ctx.arc(xCoord, yCoord, starPointRadius, 0, Math.PI * 2);
+    });
+
+    ctx.closePath();
+    ctx.fill();
+
+    // TODO: Draw coordinates
   };
 
   private getCoord = (coord: number) => coord * this.unit + this.unit;
