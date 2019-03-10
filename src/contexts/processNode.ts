@@ -1,7 +1,12 @@
 import { GameNode } from 'parseSgf/parseSgf';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import placeStone from './placeStone';
-import { setPoint, setBoardSize, setApplication, SetVariationDisplaySettings } from './actions';
+import {
+  setPoint,
+  setBoardSize,
+  setApplication,
+  SetVariationDisplaySettings,
+} from './actions';
 import { GameStateWithHistory } from './gameStateReducer';
 
 /**
@@ -15,7 +20,7 @@ import { GameStateWithHistory } from './gameStateReducer';
  */
 
 type LogMessage = (message: string, node: GameNode) => void;
-const defaultLog = (message: string) => console.log(message);
+const defaultLog = (message: string) => console.log(message); // eslint-disable-line no-console
 
 const processNode = (
   node: GameNode,
