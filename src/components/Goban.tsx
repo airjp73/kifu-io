@@ -1,118 +1,192 @@
-import React, {
-  useState,
-  useRef,
-  useLayoutEffect,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import parseSgf from 'parseSgf';
-import sgf from 'parseSgf/snapshots/snapshot1';
+import { useGoGameContext } from 'contexts/GoGameContext';
 
 export type Point = 'b' | 'w' | null;
 
-const Board = styled.div`
-  background-color: brown;
-  display: grid;
-  grid-template-columns: repeat(19, 1fr);
-  grid-template-rows: repeat(19, 1fr);
-  grid-gap: 1px;
-`;
+class GobanCanvas {
+  private size: [number, number];
+  private canvas: HTMLCanvasElement;
 
-// TODO: Come up with an alternative method since this doesn't work server-side
-type UseBoardHeight = () => [number, React.MutableRefObject<HTMLDivElement>];
-const useBoardHeight: UseBoardHeight = () => {
-  const [height, setHeight] = useState(0);
-  const boardRef = useRef<HTMLDivElement>(null);
-  const setSize = () => setHeight(boardRef.current.offsetWidth);
-  useLayoutEffect(setSize, []);
-  useEffect(() => {
-    window.addEventListener('resize', setSize);
-    return () => window.removeEventListener('resize', setSize);
-  });
+  private spritePadding = 2;
 
-  return [height, boardRef];
-};
+  private unit: number;
+  private stoneRadius: number;
+  private blackStone: HTMLCanvasElement;
+  private whiteStone: HTMLCanvasElement;
 
-interface SpaceProps {
-  invisible: boolean;
+  public constructor(canvas: HTMLCanvasElement) {
+    this.canvas = canvas;
+    canvas.getContext('2d').imageSmoothingEnabled = false;
+    this.init();
+  }
+
+  public init = () => {
+    this.calculateDimensions();
+    this.initSprites();
+    this.drawBoard();
+  };
+
+  private calculateDimensions = () => {
+    this.size = [19, 19]; // TODO: Make this dynamic
+    const pixelRatio = window.devicePixelRatio || 1;
+    this.canvas.width = this.canvas.clientWidth * pixelRatio;
+    this.canvas.height = this.canvas.clientWidth * pixelRatio;
+    this.unit = this.canvas.width / 20; // 19 points + edges
+    this.stoneRadius = (this.unit - 2) / 2;
+  };
+
+  private initSprites = () => {
+    this.blackStone = this.createStoneSprite('#555', '#000', 0.85);
+    this.whiteStone = this.createStoneSprite('#fff', '#bbb', 0.95);
+  };
+
+  private createStoneSprite = (
+    highlightColor: string,
+    baseColor: string,
+    gradientEnd: number
+  ) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = this.stoneRadius * 2 + this.spritePadding + 10;
+    canvas.height = this.stoneRadius * 2 + this.spritePadding + 10;
+
+    const stoneCenter = this.stoneRadius + this.spritePadding;
+
+    const ctx = canvas.getContext('2d');
+
+    const highlightCenter = stoneCenter - this.stoneRadius / 3;
+    const gradient = ctx.createRadialGradient(
+      highlightCenter,
+      highlightCenter,
+      2,
+      stoneCenter,
+      stoneCenter,
+      this.stoneRadius
+    );
+    gradient.addColorStop(0, highlightColor);
+    gradient.addColorStop(gradientEnd, baseColor);
+
+    ctx.fillStyle = gradient;
+    ctx.shadowBlur = 2;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.shadowColor = 'rgba(0, 0, 0, .35)';
+
+    ctx.beginPath();
+    ctx.moveTo(stoneCenter, this.spritePadding);
+    ctx.arc(stoneCenter, stoneCenter, this.stoneRadius, 0, Math.PI * 2);
+    ctx.fill();
+    return canvas;
+  };
+
+  public drawStone = (x: number, y: number, color: Point) => {
+    const ctx = this.canvas.getContext('2d');
+
+    // We want the center of the stone sprite on the point, so subtract the radius and sprite padding
+    const xCoord = this.getCoord(x) - this.stoneRadius - this.spritePadding;
+    const yCoord = this.getCoord(y) - this.stoneRadius - this.spritePadding;
+    const stone = color === 'b' ? this.blackStone : this.whiteStone;
+    ctx.drawImage(stone, xCoord, yCoord);
+  };
+
+  public drawBoard = () => {
+    const ctx = this.canvas.getContext('2d');
+
+    // Background color
+    ctx.fillStyle = '#DDAE68';
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    const start = this.getCoord(0);
+    const xEnd = this.getCoord(this.size[0] - 1);
+    const yEnd = this.getCoord(this.size[1] - 1);
+
+    ctx.beginPath();
+
+    // Vertical lines
+    for (let x = 0; x < this.size[0]; ++x) {
+      const xCoord = this.getCoord(x);
+      ctx.moveTo(xCoord, start);
+      ctx.lineTo(xCoord, yEnd);
+    }
+
+    // Horizontal lines
+    for (let y = 0; y < this.size[0]; ++y) {
+      const yCoord = this.getCoord(y);
+      ctx.moveTo(start, yCoord);
+      ctx.lineTo(xEnd, yCoord);
+    }
+
+    // Draw lines
+    ctx.stroke();
+    ctx.closePath();
+
+    // Star points
+    // TODO: Draw for 9x9, 13x13, and 19x19 but not other sizes
+    const starPointRadius = this.stoneRadius / 4;
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+
+    [
+      [3, 3],
+      [9, 3],
+      [15, 3],
+      [3, 9],
+      [9, 9],
+      [15, 9],
+      [3, 15],
+      [9, 15],
+      [15, 15],
+    ].forEach(([x, y]) => {
+      const xCoord = this.getCoord(x);
+      const yCoord = this.getCoord(y);
+      ctx.moveTo(xCoord - starPointRadius, yCoord - starPointRadius);
+      ctx.arc(xCoord, yCoord, starPointRadius, 0, Math.PI * 2);
+    });
+
+    ctx.closePath();
+    ctx.fill();
+
+    // TODO: Draw coordinates
+  };
+
+  private getCoord = (coord: number) => coord * this.unit + this.unit;
 }
-const Space = styled.div`
-  ${(props: SpaceProps) =>
-    !props.invisible ? 'background-color: tan;' : 'blackground-color: blue;'};
-  transform: translate(50%, 50%);
-`;
 
-interface PieceProps {
-  type: 'b' | 'w';
-}
-const Piece = styled.div`
-  background-color: ${(props: PieceProps) =>
-    props.type === 'b' ? 'black' : 'white'};
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  height: 100%;
+const Board = styled.canvas`
   width: 100%;
 `;
 
-interface Space {
-  point: Point;
-  hidden: boolean;
-}
 const Goban = () => {
-  // Temporary state
-  // keying an object by point my be a good approach
-  const gameCollection = useMemo(() => parseSgf(sgf), [sgf]);
+  const { gameState } = useGoGameContext();
+  const { boardState } = gameState;
+  const boardRef: React.Ref<HTMLCanvasElement> = useRef(null);
+  const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
-  // TODO: This is temporary stuff
-  const gameState: { [key: string]: Point } = useMemo(() => {
-    const state: { [key: string]: Point } = {};
-    let node = gameCollection[0];
-    while (node) {
-      const properties = node.properties;
-      if (!properties) {
-        break;
-      }
+  const drawBoardState = () => {
+    if (!goban.current) goban.current = new GobanCanvas(boardRef.current);
+    else goban.current.drawBoard();
 
-      if (properties.B) {
-        state[properties.B[0]] = 'b';
-      } else if (properties.W) {
-        state[properties.W[0]] = 'w';
-      } else if (properties.AB) {
-        properties.AB.forEach(property => {
-          state[property] = 'b';
-        });
-      } else if (properties.AW) {
-        properties.AW.forEach(property => {
-          state[property] = 'w';
-        });
-      }
+    Object.entries(boardState).forEach(([point, color]) => {
+      const A = 'a'.charCodeAt(0);
+      const x = point.charCodeAt(0) - A;
+      const y = point.charCodeAt(1) - A;
+      goban.current.drawStone(x, y, color);
+    });
+  };
 
-      node = node.children && node.children[0];
-    }
-    return state;
-  }, [gameCollection]);
-  const [height, boardRef] = useBoardHeight();
+  useEffect(() => drawBoardState(), [boardState]);
 
-  const a = 'a'.charCodeAt(0);
-  const spaces: Space[] = [];
-  for (let y = 0; y < 19; ++y) {
-    for (let x = 0; x < 19; ++x) {
-      const yChar = String.fromCharCode(y + a);
-      const xChar = String.fromCharCode(x + a);
-      const stateKey = `${yChar}${xChar}`;
-      spaces.push({ point: gameState[stateKey], hidden: x === 18 || y === 18 });
-    }
-  }
-  return (
-    <Board ref={boardRef} style={{ height }}>
-      {spaces.map((space, index) => (
-        <Space key={index} invisible={space.hidden}>
-          {space.point && <Piece type={space.point} />}
-        </Space>
-      ))}
-    </Board>
-  );
+  const handleResize = () => {
+    goban.current.init();
+    drawBoardState();
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  });
+
+  return <Board ref={boardRef}>Go board not supported on your browser</Board>;
 };
 
 export default Goban;

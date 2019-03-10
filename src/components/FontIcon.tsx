@@ -1,8 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
 
 interface FontIconProps {
   className?: string;
   icon: string;
+  size?: 'MEDIUM' | 'SMALL';
 }
 
 const FontIcon: React.FunctionComponent<FontIconProps> = ({
@@ -10,4 +12,12 @@ const FontIcon: React.FunctionComponent<FontIconProps> = ({
   icon,
 }) => <span className={`material-icons ${className}`}>{icon}</span>;
 
-export default FontIcon;
+const StyledFontIcon = styled(FontIcon)`
+  font-size: ${props => (props.size === 'MEDIUM' ? '3rem' : '1.5rem')};
+`;
+
+StyledFontIcon.defaultProps = {
+  size: 'MEDIUM',
+};
+
+export default StyledFontIcon;

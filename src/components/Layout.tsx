@@ -6,7 +6,6 @@ import NavMenu from 'components/NavMenu';
 
 // TODO: Add styles for larger screens
 const MainContent = styled.main`
-  width: 50%;
   margin: 50px auto;
 `;
 

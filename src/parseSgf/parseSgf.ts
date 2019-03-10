@@ -26,8 +26,8 @@ export interface GameProperties {
 interface SgfParser {
   sgf: string;
   currentChar: number;
-  assertNotDone: () => void;
-  done: () => boolean;
+  assertNotDone: (ignoreWhitespace?: boolean) => boolean;
+  done: (ignoreWhitespace?: boolean) => boolean;
   next: (ignoreWhitespace?: boolean, testValue?: string) => string;
   parse: () => GameNode[];
   peek: (ignoreWhitespace?: boolean) => string;
@@ -43,6 +43,16 @@ class SgfParser {
     this.sgf = sgf;
     this.currentChar = 0;
 
+    /**
+     * The entry point for outside usage.
+     * Returns the fully processed game collection.
+     */
+    this.parse = () => this.processGameTree();
+
+    /**
+     * Peek looks at the next char but doesn't 'consume' it.
+     * Technically this manipulates the state by skipping over whitespace.
+     */
     this.peek = (ignoreWhitespace = true) => {
       let nextChar = this.sgf.charAt(this.currentChar);
       while (ignoreWhitespace && /\s/.test(nextChar)) {
@@ -52,32 +62,47 @@ class SgfParser {
       return nextChar;
     };
 
-    this.next = (ignoreWhitespace = true, testValue) => {
-      if (this.currentChar >= this.sgf.length) {
-        this.throw('Unexpected end of sgf file. ' + testValue);
-      }
+    /**
+     * Consumes the next char and returns it.
+     */
+    this.next = (ignoreWhitespace = true) => {
       let nextChar = this.peek(ignoreWhitespace);
       ++this.currentChar;
       return nextChar;
     };
 
-    this.done = () => this.currentChar >= this.sgf.length || !this.peek();
+    /**
+     * Checks if we've reached the end of the file.
+     */
+    this.done = (ignoreWhitespace) => this.currentChar >= this.sgf.length || !this.peek(ignoreWhitespace);
 
-    this.assertNotDone = () => {
-      if (this.done()) {
+    /**
+     * Checks if we've reached the end of the file.
+     * Throws an error if we have.
+     * Returns true if we haven't.
+     */
+    this.assertNotDone = (ignoreWhitespace) => {
+      if (this.done(ignoreWhitespace)) {
         this.throw('Unexpected end of sgf file.');
       }
-    };
+      return true;
+    }
 
+    /**
+     * Used for throwing an error with a nice message and a snippet of the offending part of the sgf.
+     */
     this.throw = message => {
       const firstChar = Math.max(this.currentChar - 10, 0);
       const lastChar = Math.min(this.currentChar + 10, this.sgf.length - 1);
 
-      throw new Error(message + ' ' + this.sgf.substr(firstChar, lastChar));
+      throw new Error(message + ". Happened at: '" + this.sgf.substr(firstChar, lastChar) + "'");
     };
 
-    this.parse = () => this.processGameTree();
-
+    /**
+     * Processess multiple sub-trees.
+     * 
+     * Example: (;B[aa])(;B[bb])(;B[cc])
+     */
     this.processGameTree = parent => {
       const gameTree: GameNode[] = [];
 
@@ -99,6 +124,11 @@ class SgfParser {
       return gameTree;
     };
 
+    /**
+     * Processes a single game node, and then continues down the tree.
+     * 
+     * Example: ;B[aa]
+     */
     this.processGameNode = parent => {
       const gameNode: GameNode = { parent };
 
@@ -110,9 +140,7 @@ class SgfParser {
         );
       }
 
-      // keeping the terminal logic all together in the if statements is cleaner, I think
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
+      while (this.assertNotDone()) {
         const token = this.peek();
 
         if (token === ';') {
@@ -136,22 +164,34 @@ class SgfParser {
       }
     };
 
+    /**
+     * Processes the name of the property.
+     * 
+     * Example: B[aa]
+     * In this example 'B' is the name of the property.
+     */
     this.processPropertyName = () => {
       // Every property must have a value, so we can terminate the loop with the start of a value '['
       let propertyName = '';
-      while (this.peek() !== '[') {
-        propertyName += this.next(true, propertyName);
+      while (this.peek() !== '[' && this.assertNotDone()) {
+        propertyName += this.next();
       }
       return propertyName;
     };
 
+    /**
+     * Processes the value of a property.
+     * 
+     * Example: B[aa]
+     * The value is everything between the square brackets '[aa]'
+     */
     this.processPropertyValue = () => {
       // Consume opening '[' character
       this.next();
 
       // next and peek should not ignore whitespace while processing a value
       let propertyValue = '';
-      while (this.peek(false) !== ']') {
+      while (this.peek(false) !== ']' && this.assertNotDone(false)) {
         let nextChar = this.next(false);
 
         // Check for characters escaped with '\'
