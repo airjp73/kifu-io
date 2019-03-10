@@ -36,8 +36,8 @@ class GobanCanvas {
   };
 
   private initSprites = () => {
-    this.blackStone = this.createStoneSprite('#444', '#111', 0.5);
-    this.whiteStone = this.createStoneSprite('#fff', '#ccc', 0.9);
+    this.blackStone = this.createStoneSprite('#555', '#000', 0.85);
+    this.whiteStone = this.createStoneSprite('#fff', '#bbb', 0.95);
   };
 
   private createStoneSprite = (
@@ -53,7 +53,7 @@ class GobanCanvas {
 
     const ctx = canvas.getContext('2d');
 
-    const highlightCenter = stoneCenter - this.stoneRadius / 2;
+    const highlightCenter = stoneCenter - this.stoneRadius / 3;
     const gradient = ctx.createRadialGradient(
       highlightCenter,
       highlightCenter,
