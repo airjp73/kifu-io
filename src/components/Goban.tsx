@@ -5,8 +5,8 @@ import { useGoGameContext } from 'contexts/GoGameContext';
 export type Point = 'b' | 'w' | null;
 
 class GobanCanvas {
-  size: [number, number];
-  canvas: HTMLCanvasElement;
+  private size: [number, number];
+  private canvas: HTMLCanvasElement;
 
   private spritePadding = 2;
 
@@ -15,7 +15,7 @@ class GobanCanvas {
   private blackStone: HTMLCanvasElement;
   private whiteStone: HTMLCanvasElement;
 
-  constructor(canvas: HTMLCanvasElement) {
+  public constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     canvas.getContext('2d').imageSmoothingEnabled = false;
     this.init();
@@ -28,8 +28,8 @@ class GobanCanvas {
   };
 
   private calculateDimensions = () => {
-    const pixelRatio = window.devicePixelRatio || 1;
     this.size = [19, 19]; // TODO: Make this dynamic
+    const pixelRatio = window.devicePixelRatio || 1;
     this.canvas.width = this.canvas.clientWidth * pixelRatio;
     this.canvas.height = this.canvas.clientWidth * pixelRatio;
     this.unit = this.canvas.width / 20; // 19 points + edges

@@ -4,7 +4,9 @@ import { useState } from 'react';
  * Implements a very simple, thunk-style reducer
  * to ease dispatching several actions in a row that rely on previous state.
  */
-type Action = { type: string };
+interface Action {
+  type: string;
+}
 type Reducer<S> = (state: S, action: Action) => S;
 type Dispatch = (action: Action) => void;
 type ActionFunction<S> = (dispatch: Dispatch, state: S) => void;

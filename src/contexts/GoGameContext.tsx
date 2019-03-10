@@ -26,7 +26,7 @@ export interface BoardState {
 }
 
 export interface GameStateProperties {
-  boardSize?: [number, number],
+  boardSize?: [number, number];
 }
 
 export interface GameState {
