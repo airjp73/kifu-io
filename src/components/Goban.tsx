@@ -9,6 +9,8 @@ class GobanCanvas {
   canvas: HTMLCanvasElement;
 
   private spritePadding = 2;
+  private stoneShadowOffset = 3;
+
   private unit: number;
   private stoneRadius: number;
   private blackStone: HTMLCanvasElement;
@@ -35,26 +37,33 @@ class GobanCanvas {
   };
 
   private initSprites = () => {
-    this.blackStone = this.createStoneSprite('#000');
-    this.whiteStone = this.createStoneSprite('#fff');
+    this.blackStone = this.createStoneSprite('#555', '#000', .5);
+    this.whiteStone = this.createStoneSprite('#fff', '#ccc', .9);
   };
 
-  private createStoneSprite = (color: string) => {
+  private createStoneSprite = (highlightColor: string, baseColor: string, gradientEnd: number) => {
     const canvas = document.createElement('canvas');
     canvas.width = this.stoneRadius * 2 + this.spritePadding + 10;
     canvas.height = this.stoneRadius * 2 + this.spritePadding + 10;
 
+    const stoneCenter = this.stoneRadius + this.spritePadding;
+
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = color;
+
+    const highlightCenter = stoneCenter - this.stoneRadius / 2;
+    const gradient = ctx.createRadialGradient(highlightCenter, highlightCenter, 2, stoneCenter, stoneCenter, this.stoneRadius);
+    gradient.addColorStop(0, highlightColor);
+    gradient.addColorStop(gradientEnd, baseColor);
+
+    ctx.fillStyle = gradient;
+    ctx.shadowBlur = 2;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.shadowColor = 'rgba(0, 0, 0, .35)';
+
     ctx.beginPath();
-    ctx.moveTo(this.stoneRadius + this.spritePadding, this.spritePadding);
-    ctx.arc(
-      this.stoneRadius + this.spritePadding,
-      this.stoneRadius + this.spritePadding,
-      this.stoneRadius,
-      0,
-      Math.PI * 2
-    );
+    ctx.moveTo(stoneCenter, this.spritePadding);
+    ctx.arc(stoneCenter, stoneCenter, this.stoneRadius, 0, Math.PI * 2);
     ctx.fill();
     return canvas;
   };
