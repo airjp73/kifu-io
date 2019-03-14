@@ -14,6 +14,7 @@ class GobanCanvas {
   private stoneRadius: number;
   private blackStone: HTMLCanvasElement;
   private whiteStone: HTMLCanvasElement;
+  private triangle: HTMLCanvasElement;
 
   public constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -39,6 +40,7 @@ class GobanCanvas {
   private initSprites = () => {
     this.blackStone = this.createStoneSprite('#555', '#000', 0.85);
     this.whiteStone = this.createStoneSprite('#fff', '#bbb', 0.95);
+    this.triangle = this.createTriangleSprite();
   };
 
   private createStoneSprite = (
@@ -79,14 +81,42 @@ class GobanCanvas {
     return canvas;
   };
 
+  private createTriangleSprite = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = this.stoneRadius * 2 + this.spritePadding + 10;
+    canvas.height = this.stoneRadius * 2 + this.spritePadding + 10;
+
+    const ctx = canvas.getContext('2d');
+
+    // ctx.beginPath();
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.lineTo(0, canvas.height);
+    ctx.lineTo(canvas.width / 2, 0);
+    ctx.stroke();
+    ctx.closePath();
+
+    return canvas;
+  };
+
   public drawStone = (x: number, y: number, color: Point) => {
+    const stone = color === 'b' ? this.blackStone : this.whiteStone;
+    this.drawSprite(x, y, stone);
+  };
+
+  public drawTriangle = (x: number, y: number) => {
+    this.drawSprite(x, y, this.triangle);
+  };
+
+  private drawSprite = (x: number, y: number, sprite: HTMLCanvasElement) => {
     const ctx = this.canvas.getContext('2d');
 
-    // We want the center of the stone sprite on the point, so subtract the radius and sprite padding
+    // We want the center of the sprite on the point, so subtract the radius and sprite padding
     const xCoord = this.getCoord(x) - this.stoneRadius - this.spritePadding;
     const yCoord = this.getCoord(y) - this.stoneRadius - this.spritePadding;
-    const stone = color === 'b' ? this.blackStone : this.whiteStone;
-    ctx.drawImage(stone, xCoord, yCoord);
+    ctx.drawImage(sprite, xCoord, yCoord);
   };
 
   public drawBoard = () => {
@@ -166,11 +196,20 @@ const Goban = () => {
     if (!goban.current) goban.current = new GobanCanvas(boardRef.current);
     else goban.current.drawBoard();
 
-    Object.entries(boardState).forEach(([point, color]) => {
+    const pointToXY = (point: string): [number, number] => {
       const A = 'a'.charCodeAt(0);
       const x = point.charCodeAt(0) - A;
       const y = point.charCodeAt(1) - A;
+      return [x, y];
+    }
+
+    Object.entries(boardState).forEach(([point, color]) => {
+      const [x, y] = pointToXY(point);
       goban.current.drawStone(x, y, color);
+    });
+
+    gameState.moveState.triangles.forEach(point => {
+      goban.current.drawTriangle(...pointToXY(point));
     });
   };
 
