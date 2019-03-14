@@ -9,22 +9,30 @@ import {
   setApplication,
   SetVariationDisplaySettings,
 } from './actions';
-import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
+import gameStateReducer, {
+  GameStateWithHistory,
+  MoveState,
+} from './gameStateReducer';
+import { addCircles } from './moveStateActions';
 
+const emptyMoveState: MoveState = {
+  circles: [],
+  squares: [],
+  triangles: [],
+};
 const emptyState: GameStateWithHistory = {
   boardState: {},
   properties: {},
   node: {},
+  moveState: emptyMoveState,
   history: [],
 };
 
 describe('GoGameContext reducer', () => {
   test('should handle setPoint action', () => {
     const state: GameStateWithHistory = {
+      ...emptyState,
       boardState: { cc: 'w' },
-      properties: {},
-      node: {},
-      history: [],
     };
     const result = gameStateReducer(state, setPoint(['aa', 'bb'], 'b'));
     expect(result.boardState).toEqual({ aa: 'b', bb: 'b', cc: 'w' });
@@ -33,10 +41,8 @@ describe('GoGameContext reducer', () => {
   test('should handle captureStones action', () => {
     // TODO: test capture count update
     const state: GameStateWithHistory = {
+      ...emptyState,
       boardState: { aa: 'b', bb: 'w', cc: 'b' },
-      properties: {},
-      node: {},
-      history: [],
     };
     const result = gameStateReducer(state, captureStones(['aa', 'bb']));
     expect(result.boardState).toEqual({ cc: 'b' });
@@ -50,34 +56,28 @@ describe('GoGameContext reducer', () => {
 
   test('should handle popHistory action', () => {
     const state: GameStateWithHistory = {
-      boardState: {},
-      properties: {},
-      node: {},
-      history: [
-        { boardState: {}, properties: {}, node: {} },
-        { boardState: { aa: 'b' }, properties: {}, node: {} },
-      ],
+      ...emptyState,
+      history: [emptyState, { ...emptyState, boardState: { aa: 'b' } }],
     };
     const result = gameStateReducer(state, popHistory());
-    expect(result.history).toEqual([
-      { boardState: {}, properties: {}, node: {} },
-    ]);
+    expect(result.history).toEqual([emptyState]);
   });
 
   test('should handle pushHistory action', () => {
     const state: GameStateWithHistory = {
+      ...emptyState,
       boardState: { aa: 'w' },
       properties: { boardSize: [19, 19] },
-      node: {},
-      history: [{ boardState: {}, properties: {}, node: {} }],
+      history: [emptyState],
     };
     const result = gameStateReducer(state, pushHistory());
     expect(result.history).toEqual([
-      { boardState: {}, properties: {}, node: {} },
+      emptyState,
       {
         boardState: { aa: 'w' },
         properties: { boardSize: [19, 19] },
         node: {},
+        moveState: emptyMoveState,
       },
     ]);
   });
