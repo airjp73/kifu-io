@@ -1,4 +1,4 @@
-import { BoardState } from "./GoGameContext";
+import { BoardState } from "./gameStateReducer";
 
 /**
  * A test helper to allow for creating board states for tests in a visual way.

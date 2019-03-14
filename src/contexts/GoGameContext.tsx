@@ -1,42 +1,21 @@
 import React, { useContext, useMemo, useEffect } from 'react';
 import parseSgf from 'parseSgf';
-import { Point } from 'components/Goban';
 import { GameNode } from 'parseSgf/parseSgf';
 import useThunkReducer from 'hooks/useThunkReducer';
-import gameStateReducer from './reducers';
+import gameStateReducer, { GameState } from './gameStateReducer';
 import {
   pushHistory,
   setNode,
-  setPoint,
   popHistory,
-  setBoardSize,
   init,
 } from './actions';
-import placeStone from './placeStone';
+import processNode from './processNode';
 
 // Interfaces
 export interface GameContext {
   forward: (numMoves: number) => void;
   back: (numMoves: number) => void;
   gameState: GameState;
-}
-
-export interface BoardState {
-  [key: string]: Point;
-}
-
-export interface GameStateProperties {
-  boardSize?: [number, number];
-}
-
-export interface GameState {
-  properties: GameStateProperties;
-  boardState: BoardState;
-  node: GameNode;
-}
-
-export interface GameStateWithHistory extends GameState {
-  history: GameState[];
 }
 
 export interface Action {
@@ -64,29 +43,9 @@ export const GoGameContextProvider: React.FunctionComponent<
 
   const nextMove = (node: GameNode) => {
     const nextNode = node || gameState.node.children[0];
-    const properties = nextNode.properties || {};
     dispatch(pushHistory());
     dispatch(setNode(node));
-
-    // Board State
-    if (properties.B) {
-      placeStone(properties.B[0], 'b', dispatch);
-    }
-    if (properties.W) {
-      placeStone(properties.W[0], 'w', dispatch);
-    }
-    if (properties.AB) {
-      dispatch(setPoint(properties.AB, 'b'));
-    }
-    if (properties.AW) {
-      dispatch(setPoint(properties.AW, 'w'));
-    }
-
-    // Root only
-    // TODO: Validate these -- they should only appear in root nodes
-    if (properties.SZ) {
-      dispatch(setBoardSize(properties.SZ));
-    }
+    processNode(nextNode, dispatch);
   };
 
   const previousMove = () => dispatch(popHistory());

@@ -2,7 +2,7 @@ import {
   BoardState,
   GameStateWithHistory,
   GameStateProperties,
-} from './GoGameContext';
+} from './gameStateReducer';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import { setPoint, captureStones } from './actions';
 import { Point } from 'components/Goban';

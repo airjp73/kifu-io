@@ -1,6 +1,5 @@
-import { GameStateWithHistory } from './GoGameContext';
 import each from 'jest-each';
-import gameStateReducer from './reducers';
+import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import placeStone from './placeStone';
 import { createBoardStateFromString } from './boardStateTestHelpers';
 
