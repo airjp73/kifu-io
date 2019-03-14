@@ -8,6 +8,7 @@ import {
   SetVariationDisplaySettings,
 } from './actions';
 import { GameStateWithHistory } from './gameStateReducer';
+import { addCircles, addTriangles, addSquares } from './moveStateActions';
 
 /**
  * Some properties are not-yet-implemented or deliberately ignored.
@@ -79,6 +80,45 @@ const processNode = (
   // Node annotation properties
   if (properties.C) {
     // TODO
+  }
+
+  // Markup properties
+  // Validation IGNORED -- a single point may not have more than one of CR, MA, SL, SQ, TR
+  if (properties.AR) {
+    // TODO
+    // point:point
+    // draw an arror from first point to the second point
+  }
+  if (properties.CR) {
+    dispatch(addCircles(properties.CR));
+  }
+  if (properties.DD) {
+    // TODO
+    // Dim the points
+    // inherited
+  }
+  if (properties.LB) {
+    // TODO: Tackle at the same time as coordinates
+    // Text label centered on point
+  }
+  if (properties.LN) {
+    // TODO
+    // Line from one point to the other
+  }
+  if (properties.MA) {
+    // TODO: Same as LB
+    // Mark with X
+  }
+  if (properties.SL) {
+    // TODO
+    // 'select' points -- exact markup not specified
+    // Maybe highlight or something
+  }
+  if (properties.SW) {
+    dispatch(addSquares(properties.SW));
+  }
+  if (properties.TR) {
+    dispatch(addTriangles(properties.TR));
   }
 
   // Root Properties
