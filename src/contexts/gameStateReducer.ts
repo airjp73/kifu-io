@@ -20,8 +20,19 @@ import {
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
 import { Point } from 'components/Goban';
+import {
+  AddCirclesAction,
+  AddSquaresAction,
+  AddTrianglesAction,
+  ADD_CIRCLES,
+  ADD_SQUARES,
+  ADD_TRIANGLES,
+} from './moveStateActions';
 
 export type GameStateAction =
+  | AddCirclesAction
+  | AddSquaresAction
+  | AddTrianglesAction
   | CaptureAction
   | InitAction
   | PopHistoryAction
@@ -106,7 +117,25 @@ const moveStateReducer = (
   state: MoveState = defaultMoveState,
   action: GameStateAction
 ): MoveState => {
-  return state;
+  switch (action.type) {
+    case ADD_CIRCLES:
+      return {
+        ...state,
+        circles: action.circles,
+      };
+    case ADD_SQUARES:
+      return {
+        ...state,
+        squares: action.squares,
+      };
+    case ADD_TRIANGLES:
+      return {
+        ...state,
+        triangles: action.triangles,
+      };
+    default:
+      return state;
+  }
 };
 
 export interface GameState {
