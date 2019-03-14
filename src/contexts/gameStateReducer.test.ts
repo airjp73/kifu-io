@@ -13,7 +13,7 @@ import gameStateReducer, {
   GameStateWithHistory,
   MoveState,
 } from './gameStateReducer';
-import { addCircles } from './moveStateActions';
+import { addCircles, addTriangles, addSquares } from './moveStateActions';
 
 const emptyMoveState: MoveState = {
   circles: [],
@@ -92,6 +92,30 @@ describe('GoGameContext reducer', () => {
         name: 'GoReviews',
         version: '1.0',
       },
+    });
+  });
+
+  test('should handle addCircles action', () => {
+    const result = gameStateReducer(emptyState, addCircles(['aa', 'bb']));
+    expect(result.moveState).toEqual({
+      ...emptyMoveState,
+      circles: ['aa', 'bb'],
+    });
+  });
+
+  test('should handle addSquares action', () => {
+    const result = gameStateReducer(emptyState, addSquares(['aa', 'bb']));
+    expect(result.moveState).toEqual({
+      ...emptyMoveState,
+      squares: ['aa', 'bb'],
+    });
+  });
+
+  test('should handle addTriangles action', () => {
+    const result = gameStateReducer(emptyState, addTriangles(['aa', 'bb']));
+    expect(result.moveState).toEqual({
+      ...emptyMoveState,
+      triangles: ['aa', 'bb'],
     });
   });
 
