@@ -126,26 +126,26 @@ class GobanCanvas {
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
-    const ctx =this.canvas.getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
 
     ctx.beginPath();
-    ctx.moveTo(xCoord - squareWidth/2, yCoord - squareWidth/2);
-    ctx.lineTo(xCoord + squareWidth/2, yCoord - squareWidth/2);
-    ctx.lineTo(xCoord + squareWidth/2, yCoord + squareWidth/2);
-    ctx.lineTo(xCoord - squareWidth/2, yCoord + squareWidth/2);
-    ctx.lineTo(xCoord - squareWidth/2, yCoord - squareWidth/2);
+    ctx.moveTo(xCoord - squareWidth / 2, yCoord - squareWidth / 2);
+    ctx.lineTo(xCoord + squareWidth / 2, yCoord - squareWidth / 2);
+    ctx.lineTo(xCoord + squareWidth / 2, yCoord + squareWidth / 2);
+    ctx.lineTo(xCoord - squareWidth / 2, yCoord + squareWidth / 2);
+    ctx.lineTo(xCoord - squareWidth / 2, yCoord - squareWidth / 2);
     ctx.closePath();
     ctx.stroke();
-  }
+  };
 
   public drawCircle = (x: number, y: number, color: string) => {
-    const circleRadius = this.stoneRadius * .7;
+    const circleRadius = this.stoneRadius * 0.7;
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
-    const ctx =this.canvas.getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
 
@@ -153,7 +153,23 @@ class GobanCanvas {
     ctx.moveTo(xCoord + circleRadius, yCoord);
     ctx.arc(xCoord, yCoord, circleRadius, 0, Math.PI * 2);
     ctx.stroke();
-  }
+  };
+
+  public drawLine = (x1: number, y1: number, x2: number, y2: number) => {
+    const x1Coord = this.getCoord(x1);
+    const y1Coord = this.getCoord(y1);
+    const x2Coord = this.getCoord(x2);
+    const y2Coord = this.getCoord(y2);
+
+    const ctx = this.canvas.getContext('2d');
+    ctx.strokeStyle = '#000'; // Maybe try other colors?
+    ctx.lineWidth = this.unit / 10;
+
+    ctx.beginPath();
+    ctx.moveTo(x1Coord, y1Coord);
+    ctx.lineTo(x2Coord, y2Coord);
+    ctx.stroke();
+  };
 
   public drawBoard = () => {
     const ctx = this.canvas.getContext('2d');
@@ -261,6 +277,12 @@ const Goban = () => {
       const coord = pointToXY(point);
       const color = boardState[point] === 'b' ? '#fff' : '#000';
       goban.current.drawCircle(coord[0], coord[1], color);
+    });
+
+    gameState.moveState.lines.forEach(line => {
+      const coord1 = pointToXY(line[0]);
+      const coord2 = pointToXY(line[1]);
+      goban.current.drawLine(coord1[0], coord1[1], coord2[0], coord2[1]);
     });
   };
 
