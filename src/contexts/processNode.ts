@@ -8,7 +8,7 @@ import {
   SetVariationDisplaySettings,
 } from './actions';
 import { GameStateWithHistory } from './gameStateReducer';
-import { addCircles, addTriangles, addSquares } from './moveStateActions';
+import { addCircles, addTriangles, addSquares, addLines } from './moveStateActions';
 
 /**
  * Some properties are not-yet-implemented or deliberately ignored.
@@ -102,8 +102,7 @@ const processNode = (
     // Text label centered on point
   }
   if (properties.LN) {
-    // TODO
-    // Line from one point to the other
+    dispatch(addLines(properties.LN));
   }
   if (properties.MA) {
     // TODO: Same as LB
