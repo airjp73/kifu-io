@@ -8,5 +8,6 @@ PW[White]PB[Black]
 ;W[dp]
 ;AB[jf][jg][jh][ji][jj]AW[kf][kg][kh][ki][kj]CR[ih][jh][kh]LB[ii:A][ji:B][ki:C][ij:1][jj:2][kj:3]TR[if][jf][kf]SQ[ig][jg][kg]
   LN[ad:fg][ll:bo][ca:cm][ad:md]
+  SL[pd][dd][kk][aa][ab][bb]
 )
 `;
