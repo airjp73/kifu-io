@@ -106,8 +106,36 @@ class GobanCanvas {
     this.drawSprite(x, y, stone);
   };
 
-  public drawTriangle = (x: number, y: number) => {
-    this.drawSprite(x, y, this.triangle);
+  public drawTriangle = (x: number, y: number, color: string) => {
+    const triangleRadius = this.stoneRadius - this.stoneRadius / 6;
+    const xCoord = this.getCoord(x);
+    const yCoord = this.getCoord(y);
+    const angle1 = Math.PI * 1.5;
+    const angle2 = (2 * Math.PI) / 3 - 0.5 * Math.PI;
+    const angle3 = (4 * Math.PI) / 3 - 0.5 * Math.PI;
+    const point1 = [
+      xCoord + triangleRadius * Math.cos(angle1),
+      yCoord + triangleRadius * Math.sin(angle1),
+    ];
+    const point2 = [
+      xCoord + triangleRadius * Math.cos(angle2),
+      yCoord + triangleRadius * Math.sin(angle2),
+    ];
+    const point3 = [
+      xCoord + triangleRadius * Math.cos(angle3),
+      yCoord + triangleRadius * Math.sin(angle3),
+    ];
+
+    const ctx = this.canvas.getContext('2d');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = this.unit / 18;
+    ctx.beginPath();
+    ctx.moveTo(point1[0], point1[1]);
+    ctx.lineTo(point2[0], point2[1]);
+    ctx.lineTo(point3[0], point3[1]);
+    ctx.lineTo(point1[0], point1[1]);
+    ctx.closePath();
+    ctx.stroke();
   };
 
   private drawSprite = (x: number, y: number, sprite: HTMLCanvasElement) => {
@@ -131,6 +159,7 @@ class GobanCanvas {
     const yEnd = this.getCoord(this.size[1] - 1);
 
     ctx.beginPath();
+    ctx.lineWidth = this.unit / 30;
 
     // Vertical lines
     for (let x = 0; x < this.size[0]; ++x) {
@@ -201,7 +230,7 @@ const Goban = () => {
       const x = point.charCodeAt(0) - A;
       const y = point.charCodeAt(1) - A;
       return [x, y];
-    }
+    };
 
     Object.entries(boardState).forEach(([point, color]) => {
       const [x, y] = pointToXY(point);
@@ -209,7 +238,9 @@ const Goban = () => {
     });
 
     gameState.moveState.triangles.forEach(point => {
-      goban.current.drawTriangle(...pointToXY(point));
+      const coord = pointToXY(point);
+      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      goban.current.drawTriangle(coord[0], coord[1], color);
     });
   };
 
