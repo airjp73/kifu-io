@@ -121,6 +121,25 @@ class GobanCanvas {
     ctx.stroke();
   };
 
+  public drawSquare = (x: number, y: number, color: string) => {
+    const squareWidth = this.stoneRadius * 1.25;
+    const xCoord = this.getCoord(x);
+    const yCoord = this.getCoord(y);
+
+    const ctx =this.canvas.getContext('2d');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = this.unit / 18;
+
+    ctx.beginPath();
+    ctx.moveTo(xCoord - squareWidth/2, yCoord - squareWidth/2);
+    ctx.lineTo(xCoord + squareWidth/2, yCoord - squareWidth/2);
+    ctx.lineTo(xCoord + squareWidth/2, yCoord + squareWidth/2);
+    ctx.lineTo(xCoord - squareWidth/2, yCoord + squareWidth/2);
+    ctx.lineTo(xCoord - squareWidth/2, yCoord - squareWidth/2);
+    ctx.closePath();
+    ctx.stroke();
+  }
+
   private drawSprite = (x: number, y: number, sprite: HTMLCanvasElement) => {};
 
   public drawBoard = () => {
@@ -217,6 +236,12 @@ const Goban = () => {
       const coord = pointToXY(point);
       const color = boardState[point] === 'b' ? '#fff' : '#000';
       goban.current.drawTriangle(coord[0], coord[1], color);
+    });
+
+    gameState.moveState.squares.forEach(point => {
+      const coord = pointToXY(point);
+      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      goban.current.drawSquare(coord[0], coord[1], color);
     });
   };
 

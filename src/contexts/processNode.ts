@@ -114,8 +114,8 @@ const processNode = (
     // 'select' points -- exact markup not specified
     // Maybe highlight or something
   }
-  if (properties.SW) {
-    dispatch(addSquares(properties.SW));
+  if (properties.SQ) {
+    dispatch(addSquares(properties.SQ));
   }
   if (properties.TR) {
     dispatch(addTriangles(properties.TR));
