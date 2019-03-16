@@ -25,9 +25,9 @@ export interface AddLinesAction {
   type: typeof ADD_LINES;
   lines: [string, string][];
 }
-export const addLines = (lines: [string, string][]): AddLinesAction => ({
+export const addLines = (lines: string[]): AddLinesAction => ({
   type: ADD_LINES,
-  lines,
+  lines: lines.map(line => line.split(':') as [string, string]),
 });
 
 export interface AddTrianglesAction {

@@ -110,10 +110,7 @@ describe('GoGameContext reducer', () => {
   });
 
   test('should handle addLines action', () => {
-    const result = gameStateReducer(
-      emptyState,
-      addLines([['aa', 'cc'], ['bb', 'bd']])
-    );
+    const result = gameStateReducer(emptyState, addLines(['aa:cc', 'bb:bd']));
     expect(result.moveState).toEqual({
       ...emptyMoveState,
       lines: [['aa', 'cc'], ['bb', 'bd']],
