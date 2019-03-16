@@ -140,7 +140,20 @@ class GobanCanvas {
     ctx.stroke();
   }
 
-  private drawSprite = (x: number, y: number, sprite: HTMLCanvasElement) => {};
+  public drawCircle = (x: number, y: number, color: string) => {
+    const circleRadius = this.stoneRadius * .7;
+    const xCoord = this.getCoord(x);
+    const yCoord = this.getCoord(y);
+
+    const ctx =this.canvas.getContext('2d');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = this.unit / 18;
+
+    ctx.beginPath();
+    ctx.moveTo(xCoord + circleRadius, yCoord);
+    ctx.arc(xCoord, yCoord, circleRadius, 0, Math.PI * 2);
+    ctx.stroke();
+  }
 
   public drawBoard = () => {
     const ctx = this.canvas.getContext('2d');
@@ -242,6 +255,12 @@ const Goban = () => {
       const coord = pointToXY(point);
       const color = boardState[point] === 'b' ? '#fff' : '#000';
       goban.current.drawSquare(coord[0], coord[1], color);
+    });
+
+    gameState.moveState.circles.forEach(point => {
+      const coord = pointToXY(point);
+      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      goban.current.drawCircle(coord[0], coord[1], color);
     });
   };
 
