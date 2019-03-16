@@ -13,12 +13,18 @@ import gameStateReducer, {
   GameStateWithHistory,
   MoveState,
 } from './gameStateReducer';
-import { addCircles, addTriangles, addSquares } from './moveStateActions';
+import {
+  addCircles,
+  addTriangles,
+  addSquares,
+  addLines,
+} from './moveStateActions';
 
 const emptyMoveState: MoveState = {
   circles: [],
   squares: [],
   triangles: [],
+  lines: [],
 };
 const emptyState: GameStateWithHistory = {
   boardState: {},
@@ -100,6 +106,17 @@ describe('GoGameContext reducer', () => {
     expect(result.moveState).toEqual({
       ...emptyMoveState,
       circles: ['aa', 'bb'],
+    });
+  });
+
+  test('should handle addLines action', () => {
+    const result = gameStateReducer(
+      emptyState,
+      addLines([['aa', 'cc'], ['bb', 'bd']])
+    );
+    expect(result.moveState).toEqual({
+      ...emptyMoveState,
+      lines: [['aa', 'cc'], ['bb', 'bd']],
     });
   });
 

@@ -27,10 +27,13 @@ import {
   ADD_CIRCLES,
   ADD_SQUARES,
   ADD_TRIANGLES,
+  ADD_LINES,
+  AddLinesAction,
 } from './moveStateActions';
 
 export type GameStateAction =
   | AddCirclesAction
+  | AddLinesAction
   | AddSquaresAction
   | AddTrianglesAction
   | CaptureAction
@@ -107,11 +110,13 @@ export interface MoveState {
   circles: string[];
   squares: string[];
   triangles: string[];
+  lines: [string, string][];
 }
 const defaultMoveState: MoveState = {
   circles: [],
   squares: [],
   triangles: [],
+  lines: [],
 };
 const moveStateReducer = (
   state: MoveState = defaultMoveState,
@@ -132,6 +137,11 @@ const moveStateReducer = (
       return {
         ...state,
         triangles: action.triangles,
+      };
+    case ADD_LINES:
+      return {
+        ...state,
+        lines: action.lines,
       };
     default:
       return state;
