@@ -272,12 +272,19 @@ class GobanCanvas {
           ? String.fromCharCode(charCode) + (number + 1).toString()
           : String.fromCharCode(charCode);
       ctx.fillText(coordString, this.getCoord(x), this.getCoord(-0.5));
+      ctx.fillText(
+        coordString,
+        this.getCoord(x),
+        this.getCoord(this.size[1] - 0.5)
+      );
     }
 
     for (let y = 0; y < this.size[1]; ++y) {
+      const coordString = (this.size[1] - y).toString();
+      ctx.fillText(coordString, this.getCoord(-0.5), this.getCoord(y));
       ctx.fillText(
-        (this.size[1] - y).toString(),
-        this.getCoord(-0.5),
+        coordString,
+        this.getCoord(this.size[0] - 0.5),
         this.getCoord(y)
       );
     }
