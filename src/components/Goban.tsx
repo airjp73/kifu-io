@@ -15,11 +15,19 @@ class GobanCanvas {
   private blackStone: HTMLCanvasElement;
   private whiteStone: HTMLCanvasElement;
 
-  public constructor(canvas: HTMLCanvasElement) {
+  public constructor(canvas: HTMLCanvasElement, boardSize: [number, number]) {
     this.canvas = canvas;
+    this.size = boardSize;
     canvas.getContext('2d').imageSmoothingEnabled = false;
     this.init();
   }
+
+  public setSize = (boardSize: [number, number]) => {
+    if (boardSize[0] !== this.size[0] || boardSize[1] !== this.size[1]) {
+      this.size = boardSize;
+      this.init();
+    }
+  };
 
   public init = () => {
     this.calculateDimensions();
@@ -28,11 +36,10 @@ class GobanCanvas {
   };
 
   private calculateDimensions = () => {
-    this.size = [19, 19]; // TODO: Make this dynamic
     const pixelRatio = window.devicePixelRatio || 1;
     this.canvas.width = this.canvas.clientWidth * pixelRatio;
-    this.canvas.height = this.canvas.clientWidth * pixelRatio;
-    this.unit = this.canvas.width / 20; // 19 points + edges
+    this.unit = this.canvas.width / (this.size[0] + 1);
+    this.canvas.height = this.unit * (this.size[1] + 1);
     this.stoneRadius = (this.unit - 2) / 2;
   };
 
@@ -241,13 +248,17 @@ const Board = styled.canvas`
 
 const Goban = () => {
   const { gameState } = useGoGameContext();
-  const { boardState } = gameState;
+  const { boardState, properties } = gameState;
   const boardRef: React.Ref<HTMLCanvasElement> = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
   const drawBoardState = () => {
-    if (!goban.current) goban.current = new GobanCanvas(boardRef.current);
-    else goban.current.drawBoard();
+    const boardSize = properties.boardSize || [19, 19];
+    if (goban.current) goban.current.setSize(boardSize);
+    else goban.current = new GobanCanvas(boardRef.current, boardSize);
+
+    goban.current.setSize(properties.boardSize || [19, 19]);
+    goban.current.drawBoard();
 
     const pointToXY = (point: string): [number, number] => {
       const A = 'a'.charCodeAt(0);
