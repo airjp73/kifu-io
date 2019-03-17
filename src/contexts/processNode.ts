@@ -83,7 +83,7 @@ const processNode = (
   }
 
   // Markup properties
-  // Validation IGNORED -- a single point may not have more than one of CR, MA, SL, SQ, TR
+  // Validation TODO -- a single point may not have more than one of CR, MA, SL, SQ, TR
   if (properties.AR) {
     // TODO
     // point:point
