@@ -1,4 +1,3 @@
-import { Action } from './GoGameContext';
 import { Point } from 'components/Goban';
 import { GameNode } from 'parseSgf/parseSgf';
 
@@ -13,7 +12,7 @@ export const POP_HISTORY = 'POP_HISTORY';
 export const PUSH_HISTORY = 'PUSH_HISTORY';
 
 // Board state
-export interface SetPointAction extends Action {
+export interface SetPointAction {
   type: typeof SET_POINT;
   points: string[];
   value: Point;
@@ -27,7 +26,7 @@ export const setPoint = (
   value,
 });
 
-export interface CaptureAction extends Action {
+export interface CaptureAction {
   type: typeof CAPTURE;
   points: string[];
 }

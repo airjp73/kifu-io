@@ -20,8 +20,22 @@ import {
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
 import { Point } from 'components/Goban';
+import {
+  AddCirclesAction,
+  AddSquaresAction,
+  AddTrianglesAction,
+  ADD_CIRCLES,
+  ADD_SQUARES,
+  ADD_TRIANGLES,
+  ADD_LINES,
+  AddLinesAction,
+} from './moveStateActions';
 
 export type GameStateAction =
+  | AddCirclesAction
+  | AddLinesAction
+  | AddSquaresAction
+  | AddTrianglesAction
   | CaptureAction
   | InitAction
   | PopHistoryAction
@@ -92,10 +106,53 @@ const nodeReducer = (state: GameNode, action: GameStateAction): GameNode => {
   }
 };
 
+export interface MoveState {
+  circles: string[];
+  squares: string[];
+  triangles: string[];
+  lines: [string, string][];
+}
+const defaultMoveState: MoveState = {
+  circles: [],
+  squares: [],
+  triangles: [],
+  lines: [],
+};
+const moveStateReducer = (
+  state: MoveState = defaultMoveState,
+  action: GameStateAction
+): MoveState => {
+  switch (action.type) {
+    case ADD_CIRCLES:
+      return {
+        ...state,
+        circles: action.circles,
+      };
+    case ADD_SQUARES:
+      return {
+        ...state,
+        squares: action.squares,
+      };
+    case ADD_TRIANGLES:
+      return {
+        ...state,
+        triangles: action.triangles,
+      };
+    case ADD_LINES:
+      return {
+        ...state,
+        lines: action.lines,
+      };
+    default:
+      return state;
+  }
+};
+
 export interface GameState {
   properties: GameStateProperties;
   boardState: BoardState;
   node: GameNode;
+  moveState: MoveState;
 }
 export interface GameStateWithHistory extends GameState {
   history: GameState[];
@@ -104,13 +161,14 @@ const defaultState: GameStateWithHistory = {
   boardState: {},
   properties: {},
   node: {},
+  moveState: defaultMoveState,
   history: [],
 };
 const gameStateReducer = (
   state: GameStateWithHistory = defaultState,
   action: GameStateAction
 ): GameStateWithHistory => {
-  const { boardState, properties, node, history } = state;
+  const { boardState, properties, node, moveState, history } = state;
 
   switch (action.type) {
     case POP_HISTORY:
@@ -121,13 +179,15 @@ const gameStateReducer = (
     case PUSH_HISTORY:
       return {
         ...state,
-        history: [...history, { boardState, properties, node }],
+        moveState: defaultMoveState, // Wipe move state
+        history: [...history, { boardState, properties, node, moveState }],
       };
     default:
       return {
         boardState: boardStateReducer(boardState, action),
         properties: propertiesReducer(properties, action),
         node: nodeReducer(node, action),
+        moveState: moveStateReducer(moveState, action),
         history: history,
       };
   }

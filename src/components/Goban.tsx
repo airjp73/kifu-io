@@ -80,13 +80,95 @@ class GobanCanvas {
   };
 
   public drawStone = (x: number, y: number, color: Point) => {
-    const ctx = this.canvas.getContext('2d');
+    const stone = color === 'b' ? this.blackStone : this.whiteStone;
 
-    // We want the center of the stone sprite on the point, so subtract the radius and sprite padding
+    // We want the center of the sprite on the point, so subtract the radius and sprite padding
+    const ctx = this.canvas.getContext('2d');
     const xCoord = this.getCoord(x) - this.stoneRadius - this.spritePadding;
     const yCoord = this.getCoord(y) - this.stoneRadius - this.spritePadding;
-    const stone = color === 'b' ? this.blackStone : this.whiteStone;
     ctx.drawImage(stone, xCoord, yCoord);
+  };
+
+  public drawTriangle = (x: number, y: number, color: string) => {
+    const triangleRadius = this.stoneRadius - this.stoneRadius / 6;
+    const xCoord = this.getCoord(x);
+    const yCoord = this.getCoord(y);
+    const angle1 = Math.PI * 1.5;
+    const angle2 = (2 * Math.PI) / 3 - 0.5 * Math.PI;
+    const angle3 = (4 * Math.PI) / 3 - 0.5 * Math.PI;
+    const point1 = [
+      xCoord + triangleRadius * Math.cos(angle1),
+      yCoord + triangleRadius * Math.sin(angle1),
+    ];
+    const point2 = [
+      xCoord + triangleRadius * Math.cos(angle2),
+      yCoord + triangleRadius * Math.sin(angle2),
+    ];
+    const point3 = [
+      xCoord + triangleRadius * Math.cos(angle3),
+      yCoord + triangleRadius * Math.sin(angle3),
+    ];
+
+    const ctx = this.canvas.getContext('2d');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = this.unit / 18;
+    ctx.beginPath();
+    ctx.moveTo(point1[0], point1[1]);
+    ctx.lineTo(point2[0], point2[1]);
+    ctx.lineTo(point3[0], point3[1]);
+    ctx.lineTo(point1[0], point1[1]);
+    ctx.closePath();
+    ctx.stroke();
+  };
+
+  public drawSquare = (x: number, y: number, color: string) => {
+    const squareWidth = this.stoneRadius * 1.25;
+    const xCoord = this.getCoord(x);
+    const yCoord = this.getCoord(y);
+
+    const ctx = this.canvas.getContext('2d');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = this.unit / 18;
+
+    ctx.beginPath();
+    ctx.moveTo(xCoord - squareWidth / 2, yCoord - squareWidth / 2);
+    ctx.lineTo(xCoord + squareWidth / 2, yCoord - squareWidth / 2);
+    ctx.lineTo(xCoord + squareWidth / 2, yCoord + squareWidth / 2);
+    ctx.lineTo(xCoord - squareWidth / 2, yCoord + squareWidth / 2);
+    ctx.lineTo(xCoord - squareWidth / 2, yCoord - squareWidth / 2);
+    ctx.closePath();
+    ctx.stroke();
+  };
+
+  public drawCircle = (x: number, y: number, color: string) => {
+    const circleRadius = this.stoneRadius * 0.7;
+    const xCoord = this.getCoord(x);
+    const yCoord = this.getCoord(y);
+
+    const ctx = this.canvas.getContext('2d');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = this.unit / 18;
+
+    ctx.beginPath();
+    ctx.moveTo(xCoord + circleRadius, yCoord);
+    ctx.arc(xCoord, yCoord, circleRadius, 0, Math.PI * 2);
+    ctx.stroke();
+  };
+
+  public drawLine = (x1: number, y1: number, x2: number, y2: number) => {
+    const x1Coord = this.getCoord(x1);
+    const y1Coord = this.getCoord(y1);
+    const x2Coord = this.getCoord(x2);
+    const y2Coord = this.getCoord(y2);
+
+    const ctx = this.canvas.getContext('2d');
+    ctx.strokeStyle = '#000'; // Maybe try other colors?
+    ctx.lineWidth = this.unit / 10;
+
+    ctx.beginPath();
+    ctx.moveTo(x1Coord, y1Coord);
+    ctx.lineTo(x2Coord, y2Coord);
+    ctx.stroke();
   };
 
   public drawBoard = () => {
@@ -101,6 +183,7 @@ class GobanCanvas {
     const yEnd = this.getCoord(this.size[1] - 1);
 
     ctx.beginPath();
+    ctx.lineWidth = this.unit / 30;
 
     // Vertical lines
     for (let x = 0; x < this.size[0]; ++x) {
@@ -166,11 +249,40 @@ const Goban = () => {
     if (!goban.current) goban.current = new GobanCanvas(boardRef.current);
     else goban.current.drawBoard();
 
-    Object.entries(boardState).forEach(([point, color]) => {
+    const pointToXY = (point: string): [number, number] => {
       const A = 'a'.charCodeAt(0);
       const x = point.charCodeAt(0) - A;
       const y = point.charCodeAt(1) - A;
+      return [x, y];
+    };
+
+    Object.entries(boardState).forEach(([point, color]) => {
+      const [x, y] = pointToXY(point);
       goban.current.drawStone(x, y, color);
+    });
+
+    gameState.moveState.triangles.forEach(point => {
+      const coord = pointToXY(point);
+      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      goban.current.drawTriangle(coord[0], coord[1], color);
+    });
+
+    gameState.moveState.squares.forEach(point => {
+      const coord = pointToXY(point);
+      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      goban.current.drawSquare(coord[0], coord[1], color);
+    });
+
+    gameState.moveState.circles.forEach(point => {
+      const coord = pointToXY(point);
+      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      goban.current.drawCircle(coord[0], coord[1], color);
+    });
+
+    gameState.moveState.lines.forEach(line => {
+      const coord1 = pointToXY(line[0]);
+      const coord2 = pointToXY(line[1]);
+      goban.current.drawLine(coord1[0], coord1[1], coord2[0], coord2[1]);
     });
   };
 

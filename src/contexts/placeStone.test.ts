@@ -2,6 +2,7 @@ import each from 'jest-each';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import placeStone from './placeStone';
 import { createBoardStateFromString } from './boardStateTestHelpers';
+import { init } from './actions';
 
 describe('placeStone', () => {
   each([
@@ -191,7 +192,7 @@ describe('placeStone', () => {
       `
         . b
         b .
-      `
+      `,
     ],
     [
       'Suicide Moves - whole board',
@@ -204,7 +205,7 @@ describe('placeStone', () => {
       `
         . .
         . .
-      `
+      `,
     ],
 
     // Ko
@@ -245,7 +246,7 @@ describe('placeStone', () => {
         . b . b .
         . . b . .
       `,
-    ]
+    ],
   ]).test(
     'should correctly handle %s',
     (description, initialBoard, boardSize, newStone, expectedBoard) => {
@@ -260,10 +261,9 @@ describe('placeStone', () => {
           : expectedBoard;
 
       const state: GameStateWithHistory = {
+        ...gameStateReducer(undefined, init()),
         boardState: initialBoardState,
         properties: { boardSize },
-        node: {},
-        history: [],
       };
 
       let newState = state;
@@ -277,10 +277,9 @@ describe('placeStone', () => {
 
       placeStone(newStone[0], newStone[1], dispatch);
       expect(newState).toEqual({
+        ...state,
         boardState: expectedBoardState,
         properties: { boardSize },
-        node: {},
-        history: [],
       });
     }
   );
