@@ -247,7 +247,40 @@ class GobanCanvas {
     ctx.closePath();
     ctx.fill();
 
-    // TODO: Draw coordinates
+    // Coordinates
+    ctx.font = `bold ${this.unit * 0.4}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const A = 'A'.charCodeAt(0);
+    const I = 'I'.charCodeAt(0);
+    const Z = 'Z'.charCodeAt(0);
+    for (let x = 0; x < this.size[0]; ++x) {
+      // The spec technically allows boards up to 52x52
+      // Other sgf views don't seem to support this at all
+      // so just appending a number like A1, A2 seems good enough
+      let charCode = A + x;
+      let number = 0;
+      if (charCode >= I) charCode++;
+      while (charCode > Z) {
+        charCode -= Z - A + 1;
+        ++number;
+        if (charCode >= I) charCode++;
+      }
+      const coordString =
+        number > 0
+          ? String.fromCharCode(charCode) + (number + 1).toString()
+          : String.fromCharCode(charCode);
+      ctx.fillText(coordString, this.getCoord(x), this.getCoord(-0.5));
+    }
+
+    for (let y = 0; y < this.size[1]; ++y) {
+      ctx.fillText(
+        (this.size[1] - y).toString(),
+        this.getCoord(-0.5),
+        this.getCoord(y)
+      );
+    }
   };
 
   private getCoord = (coord: number) => coord * this.unit + this.unit;
