@@ -3,6 +3,21 @@ import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
 
 export type Point = 'b' | 'w' | null;
+type StarPoints = [number, number][];
+
+const starPoints9: StarPoints = [[2, 2], [6, 2], [2, 6], [6, 6], [4, 4]];
+const starPoints13: StarPoints = [[3, 3], [9, 3], [3, 9], [9, 9], [6, 6]];
+const starPoints19: StarPoints = [
+  [3, 3],
+  [9, 3],
+  [15, 3],
+  [3, 9],
+  [9, 9],
+  [15, 9],
+  [3, 15],
+  [9, 15],
+  [15, 15],
+];
 
 class GobanCanvas {
   private size: [number, number];
@@ -211,22 +226,18 @@ class GobanCanvas {
     ctx.closePath();
 
     // Star points
-    // TODO: Draw for 9x9, 13x13, and 19x19 but not other sizes
     const starPointRadius = this.stoneRadius / 4;
     ctx.fillStyle = '#000';
     ctx.beginPath();
 
-    [
-      [3, 3],
-      [9, 3],
-      [15, 3],
-      [3, 9],
-      [9, 9],
-      [15, 9],
-      [3, 15],
-      [9, 15],
-      [15, 15],
-    ].forEach(([x, y]) => {
+    let starPoints: StarPoints;
+    if (this.size[0] !== this.size[1]) starPoints = [];
+    else if (this.size[0] === 19) starPoints = starPoints19;
+    else if (this.size[0] === 13) starPoints = starPoints13;
+    else if (this.size[0] === 9) starPoints = starPoints9;
+    else starPoints = [];
+
+    starPoints.forEach(([x, y]) => {
       const xCoord = this.getCoord(x);
       const yCoord = this.getCoord(y);
       ctx.moveTo(xCoord - starPointRadius, yCoord - starPointRadius);
@@ -297,7 +308,7 @@ const Goban = () => {
     });
   };
 
-  useEffect(() => drawBoardState(), [boardState]);
+  useEffect(() => drawBoardState(), [boardState, properties.boardSize]);
 
   const handleResize = () => {
     goban.current.init();
