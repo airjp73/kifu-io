@@ -52,7 +52,10 @@ class GobanCanvas {
 
   private calculateDimensions = () => {
     const pixelRatio = window.devicePixelRatio || 1;
-    this.canvas.width = this.canvas.clientWidth * pixelRatio;
+    const canvasRect = this.canvas.getBoundingClientRect();
+    this.canvas.width =
+      Math.round(canvasRect.right * pixelRatio) -
+      Math.round(canvasRect.left * pixelRatio);
     this.unit = this.canvas.width / (this.size[0] + 1);
     this.canvas.height = this.unit * (this.size[1] + 1);
     this.stoneRadius = (this.unit - 2) / 2;
