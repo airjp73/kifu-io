@@ -8,3 +8,5 @@ export const dark = '#1A2C5B';
 export const panelHighlight = 'rgba(0, 0, 0, .25)';
 export const panelActiveButton = 'rgba(180, 180, 180, .25)';
 export const boxShadowLow = '0 1px 2px';
+
+export const headerHeight = '4rem';

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { highlight, panelBackground } from 'style';
+import { headerHeight, highlight, panelBackground } from 'style';
 import FontIcon from './FontIcon';
 import FlatButton from './FlatButton';
 
@@ -10,8 +10,10 @@ interface HeaderProps {
 
 const HeaderContainer = styled.header`
   background-color: ${panelBackground};
-  padding: .5rem;
+  padding-left: .5rem;
   padding-right: 1rem;
+  height: ${headerHeight};
+  box-sizing: border-box;
 
   position: sticky;
   top: 0;
@@ -22,6 +24,7 @@ const HeaderContainer = styled.header`
   color: ${highlight};
   font-size: 1.5rem;
   align-items: center;
+  z-index: 1;
 
   strong {
     display: flex;
