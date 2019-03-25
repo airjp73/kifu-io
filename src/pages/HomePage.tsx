@@ -4,14 +4,13 @@ import Layout from 'components/Layout';
 import Goban from 'components/Goban';
 import { GoGameContextProvider } from 'contexts/GoGameContext';
 import GameControlButtons from 'components/GameControlButtons';
-import sgf from 'parseSgf/snapshots/snapshot5';
+import sgf from 'parseSgf/snapshots/snapshot1';
 import GameInfo from 'components/GameInfo';
 
 const GameView = styled.div`
   height: 100%;
   display: grid;
   grid-template-rows: 1fr 1fr auto;
-  overflow: hidden;
 `;
 
 const HelloPage: React.FunctionComponent = () => (

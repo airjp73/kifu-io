@@ -78,10 +78,11 @@ class GameTree {
 
   public drawNodeConnection = (x1: number, y1: number, x2: number, y2: number) => {
     const ctx = this.lineLayer.getContext('2d');
-    const x1Coord = this.getCoord(x1) + GameTree.stoneRadius;
-    const y1Coord = this.getCoord(y1) + GameTree.stoneRadius;
-    const x2Coord = this.getCoord(x2) + GameTree.stoneRadius;
-    const y2Coord = this.getCoord(y2) + GameTree.stoneRadius;
+    const stonePadding = 2;
+    const x1Coord = this.getCoord(x1) + GameTree.stoneRadius + stonePadding;
+    const y1Coord = this.getCoord(y1) + GameTree.stoneRadius + stonePadding;
+    const x2Coord = this.getCoord(x2) + GameTree.stoneRadius + stonePadding;
+    const y2Coord = this.getCoord(y2) + GameTree.stoneRadius + stonePadding;
 
     ctx.strokeStyle = '#000'; // Maybe try other colors?
     ctx.lineWidth = 2;
@@ -114,6 +115,7 @@ const GameTreeView = () => {
     const grid: TreeGrid = [];
 
     // TODO: Actually handle tree and not just first branch
+    // probably involves pulling it out into a recursive function
     let currentNode = gameTree[0];
     let x = 0;
     let y = 0;
