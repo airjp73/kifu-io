@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useEffect } from 'react';
 import parseSgf from 'parseSgf';
 import { GameNode } from 'parseSgf/parseSgf';
 import useThunkReducer from 'hooks/useThunkReducer';
-import gameStateReducer, { GameState } from './gameStateReducer';
+import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import {
   pushHistory,
   setNode,
@@ -15,7 +15,8 @@ import processNode from './processNode';
 export interface GameContext {
   forward: (numMoves: number) => void;
   back: (numMoves: number) => void;
-  gameState: GameState;
+  gameState: GameStateWithHistory;
+  gameTree: GameNode[];
 }
 
 export interface Action {
@@ -72,9 +73,10 @@ export const GoGameContextProvider: React.FunctionComponent<
   return (
     <GoGameContext.Provider
       value={{
-        forward,
         back,
+        forward,
         gameState,
+        gameTree,
       }}
     >
       {children}

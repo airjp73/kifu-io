@@ -11,6 +11,7 @@ const GameView = styled.div`
   height: 100%;
   display: grid;
   grid-template-rows: 1fr 1fr auto;
+  overflow: hidden;
 `;
 
 const HelloPage: React.FunctionComponent = () => (
