@@ -5,6 +5,7 @@ import Goban from 'components/Goban';
 import { GoGameContextProvider } from 'contexts/GoGameContext';
 import GameControlButtons from 'components/GameControlButtons';
 import sgf from 'parseSgf/snapshots/snapshot5';
+import GameInfo from 'components/GameInfo';
 
 const GameView = styled.div`
   height: 100%;
@@ -17,7 +18,7 @@ const HelloPage: React.FunctionComponent = () => (
     <GameView>
       <GoGameContextProvider sgf={sgf}>
         <Goban />
-        <span>Hi</span>
+        <GameInfo />
         <GameControlButtons />
       </GoGameContextProvider>
     </GameView>
