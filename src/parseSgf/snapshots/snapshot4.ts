@@ -1,4 +1,22 @@
 export default `
-(;CA[Windows-1252]SZ[19]AP[MultiGo:4.4.4]MULTIGOGM[1]
-;B[pd];W[md];B[jd];W[gd];B[dd];AB[hl][jl][ll]AW[hj][jj][lj];W[dp];B[jp];W[pp])
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
+RU[Japanese]SZ[13]KM[0.00]
+PW[White]PB[Black]
+;B[jd]
+;W[dj]
+;B[jj]
+;W[dd]
+;B[cc]
+;W[cd]
+;B[dc]C[This is a test comment]
+;W[ed]
+;B[fb]
+;W[fk]
+;B[jf]C[This is a test comment again]
+;W[gc]
+;B[fc]
+;W[fd]
+;B[gd]
+;W[ge]
+;B[hd])
 `;
