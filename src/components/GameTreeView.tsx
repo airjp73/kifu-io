@@ -1,12 +1,18 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
+import { GameNode } from 'parseSgf/parseSgf';
 
 const BLACK = 'b';
 const WHITE = 'w';
 const SETUP = 's';
 
-type TreeCell = typeof BLACK | typeof WHITE | typeof SETUP;
+type TreeCellType = typeof BLACK | typeof WHITE | typeof SETUP;
+interface TreeCell {
+  type: TreeCellType;
+  gridLocation: [number, number];
+  parentLocation?: [number, number];
+}
 type TreeGrid = TreeCell[][];
 
 class GameTree {
@@ -56,9 +62,9 @@ class GameTree {
     return canvas;
   };
 
-  public drawNode = (x: number, y: number, type: TreeCell) => {
+  public drawNode = (x: number, y: number, treeCell: TreeCell) => {
     let stone;
-    switch (type) {
+    switch (treeCell.type) {
       case BLACK:
         stone = this.blackStone;
         break;
@@ -76,7 +82,12 @@ class GameTree {
     ctx.drawImage(stone, xCoord, yCoord);
   };
 
-  public drawNodeConnection = (x1: number, y1: number, x2: number, y2: number) => {
+  public drawNodeConnection = (
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number
+  ) => {
     const ctx = this.lineLayer.getContext('2d');
     const stonePadding = 2;
     const x1Coord = this.getCoord(x1) + GameTree.stoneRadius + stonePadding;
@@ -91,16 +102,65 @@ class GameTree {
     ctx.moveTo(x1Coord, y1Coord);
     ctx.lineTo(x2Coord, y2Coord);
     ctx.stroke();
-  }
+  };
 
   public commitDraw = () => {
     const ctx = this.canvas.getContext('2d');
     ctx.drawImage(this.lineLayer, 0, 0);
-    ctx.drawImage(this.stoneLayer, 0, 0);
+    ctx.drawImage(this.stoneLayer, 0, 1);
   };
 
   private getCoord = (coord: number) => coord * GameTree.stoneRadius * 3.5;
 }
+
+const createGridFromTree = (
+  node: GameNode,
+  grid: TreeGrid,
+  x: number = 0,
+  y: number = 0
+) => {
+  let type: TreeCellType;
+  if (node.properties) {
+    if (node.properties.B) type = BLACK;
+    else if (node.properties.W) type = WHITE;
+    else type = SETUP;
+  }
+
+  // If this branch collides with an existing branch,
+  // then we need this branch to be lower
+  let adjustedY = y;
+  while (grid[adjustedY] && grid[adjustedY][x]) {
+    adjustedY++;
+  }
+
+  node.children &&
+    node.children.forEach((child, index) => {
+      const childCell = createGridFromTree(
+        child,
+        grid,
+        x + 1,
+        adjustedY + index
+      );
+
+      // If children in the first variation were adjusted due to collisions
+      // Then we want to adjust the Y value of this cell too
+      if (index === 0) adjustedY = childCell.gridLocation[1];
+
+      // Parent location of a cell is set by the parent cell
+      childCell.parentLocation = [x, adjustedY];
+    });
+
+  const cell: TreeCell = {
+    type,
+    gridLocation: [x, adjustedY],
+  };
+
+  // Add the cell to the grid
+  grid[adjustedY] = grid[adjustedY] || [];
+  grid[adjustedY][x] = cell;
+
+  return cell;
+};
 
 const GameTreeView = () => {
   const gameTreeRef = useRef(null);
@@ -111,31 +171,11 @@ const GameTreeView = () => {
   // when drawing the tree
   // TODO: Will need to handle updating this when implementing sgf editing
   // TODO: This may need to be an effect instead of a memo?
-  const treeGrid = useMemo(() => {
-    const grid: TreeGrid = [];
-
-    // TODO: Actually handle tree and not just first branch
-    // probably involves pulling it out into a recursive function
-    let currentNode = gameTree[0];
-    let x = 0;
-    let y = 0;
-
-    while (currentNode) {
-      grid[x] = grid[x] || [];
-      if (currentNode.properties) {
-        if (currentNode.properties.B) grid[x][y] = BLACK;
-        else if (currentNode.properties.W) grid[x][y] = WHITE;
-        else grid[x][y] = SETUP;
-      }
-
-      y++;
-      currentNode = currentNode.children && currentNode.children[0];
-    }
-
-    return grid;
-  }, []);
 
   useEffect(() => {
+    const treeGrid: TreeGrid = [];
+    createGridFromTree(gameTree[0], treeGrid);
+
     if (!gameTreeRenderer.current) {
       gameTreeRenderer.current = new GameTree(
         gameTreeRef.current,
@@ -144,11 +184,18 @@ const GameTreeView = () => {
       );
     }
 
-    treeGrid[0].forEach((treeNode, index) => {
-      gameTreeRenderer.current.drawNode(index, 0, treeNode);
-      if (treeGrid[0][index - 1]) {
-        gameTreeRenderer.current.drawNodeConnection(index - 1, 0, index, 0);
-      }
+    treeGrid.forEach((row, yIndex) => {
+      row.forEach((treeNode, xIndex) => {
+        gameTreeRenderer.current.drawNode(xIndex, yIndex, treeNode);
+        if (treeNode.parentLocation) {
+          gameTreeRenderer.current.drawNodeConnection(
+            treeNode.parentLocation[0],
+            treeNode.parentLocation[1],
+            xIndex,
+            yIndex
+          );
+        }
+      });
     });
 
     gameTreeRenderer.current.commitDraw();
