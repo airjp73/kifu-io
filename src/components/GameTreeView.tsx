@@ -26,7 +26,12 @@ class GameTree {
   private stoneLayer: HTMLCanvasElement;
   private lineLayer: HTMLCanvasElement;
 
-  constructor(stoneLayer: HTMLCanvasElement, lineLayer: HTMLCanvasElement, width: number, height: number) {
+  constructor(
+    stoneLayer: HTMLCanvasElement,
+    lineLayer: HTMLCanvasElement,
+    width: number,
+    height: number
+  ) {
     const canvasWidth = (width + 1) * GameTree.stoneRadius * 3.5;
     const canvasHeight = (height + 1) * GameTree.stoneRadius * 3.5;
 
