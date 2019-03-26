@@ -4,7 +4,7 @@ import Layout from 'components/Layout';
 import Goban from 'components/Goban';
 import { GoGameContextProvider } from 'contexts/GoGameContext';
 import GameControlButtons from 'components/GameControlButtons';
-import sgf from 'parseSgf/snapshots/snapshot1';
+import sgf from 'parseSgf/snapshots/snapshot6';
 import GameInfo from 'components/GameInfo';
 
 const GameView = styled.div`
