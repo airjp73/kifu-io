@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useMemo } from 'react';
 import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameNode } from 'parseSgf/parseSgf';
+import styled from 'styled-components';
 
 const BLACK = 'b';
 const WHITE = 'w';
@@ -19,26 +20,25 @@ class GameTree {
   // Stone radius won't change on resize
   private static stoneRadius = 15;
 
-  private canvas: HTMLCanvasElement;
   private blackStone: HTMLCanvasElement;
   private whiteStone: HTMLCanvasElement;
   private setupNode: HTMLCanvasElement;
   private stoneLayer: HTMLCanvasElement;
   private lineLayer: HTMLCanvasElement;
 
-  constructor(canvas: HTMLCanvasElement, width: number, height: number) {
-    this.canvas = canvas;
-    canvas.width = (width + 1) * GameTree.stoneRadius * 3.5;
-    canvas.height = (height + 1) * GameTree.stoneRadius * 3.5;
-    canvas.getContext('2d').imageSmoothingEnabled = false;
+  constructor(stoneLayer: HTMLCanvasElement, lineLayer: HTMLCanvasElement, width: number, height: number) {
+    const canvasWidth = (width + 1) * GameTree.stoneRadius * 3.5;
+    const canvasHeight = (height + 1) * GameTree.stoneRadius * 3.5;
 
-    this.stoneLayer = document.createElement('canvas');
-    this.stoneLayer.width = canvas.width;
-    this.stoneLayer.height = canvas.height;
+    this.stoneLayer = stoneLayer;
+    this.stoneLayer.width = canvasWidth;
+    this.stoneLayer.height = canvasHeight;
+    this.stoneLayer.getContext('2d').imageSmoothingEnabled = false;
 
-    this.lineLayer = document.createElement('canvas');
-    this.lineLayer.width = canvas.width;
-    this.lineLayer.height = canvas.height;
+    this.lineLayer = lineLayer;
+    this.lineLayer.width = canvasWidth;
+    this.lineLayer.height = canvasHeight;
+    this.lineLayer.getContext('2d').imageSmoothingEnabled = false;
 
     this.blackStone = createBlackStone(GameTree.stoneRadius);
     this.whiteStone = createWhiteStone(GameTree.stoneRadius);
@@ -104,12 +104,6 @@ class GameTree {
     ctx.stroke();
   };
 
-  public commitDraw = () => {
-    const ctx = this.canvas.getContext('2d');
-    ctx.drawImage(this.lineLayer, 0, 0);
-    ctx.drawImage(this.stoneLayer, 0, 1);
-  };
-
   private getCoord = (coord: number) => coord * GameTree.stoneRadius * 3.5;
 }
 
@@ -162,8 +156,15 @@ const createGridFromTree = (
   return cell;
 };
 
+const GameTreeCanvas = styled.canvas`
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
 const GameTreeView = () => {
-  const gameTreeRef = useRef(null);
+  const nodeLayerRef = useRef(null);
+  const lineLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
   const { gameTree } = useGoGameContext();
 
@@ -178,7 +179,8 @@ const GameTreeView = () => {
 
     if (!gameTreeRenderer.current) {
       gameTreeRenderer.current = new GameTree(
-        gameTreeRef.current,
+        nodeLayerRef.current,
+        lineLayerRef.current,
         Math.max(...treeGrid.map(row => row.length)),
         treeGrid.length
       );
@@ -197,11 +199,14 @@ const GameTreeView = () => {
         }
       });
     });
-
-    gameTreeRenderer.current.commitDraw();
   }, []);
 
-  return <canvas ref={gameTreeRef} />;
+  return (
+    <div style={{ position: 'relative' }}>
+      <GameTreeCanvas ref={lineLayerRef} />
+      <GameTreeCanvas ref={nodeLayerRef} />
+    </div>
+  );
 };
 
 export default GameTreeView;
