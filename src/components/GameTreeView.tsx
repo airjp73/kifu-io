@@ -134,16 +134,7 @@ const createGridFromTree = (
 
   node.children &&
     node.children.forEach((child, index) => {
-      const childCell = createGridFromTree(
-        child,
-        grid,
-        x + 1,
-        adjustedY + index
-      );
-
-      // If children in the first variation were adjusted due to collisions
-      // Then we want to adjust the Y value of this cell too
-      if (index === 0) adjustedY = childCell.gridLocation[1];
+      const childCell = createGridFromTree(child, grid, x + 1, adjustedY);
 
       // Parent location of a cell is set by the parent cell
       childCell.parentLocation = [x, adjustedY];
