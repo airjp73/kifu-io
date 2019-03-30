@@ -131,7 +131,7 @@ const createGridFromTree = (
   }
 
   node.children &&
-    node.children.forEach((child, index) => {
+    node.children.forEach(child => {
       const childCell = createGridFromTree(child, grid, x + 1, adjustedY);
 
       // Parent location of a cell is set by the parent cell
