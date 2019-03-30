@@ -1,40 +1,28 @@
-export const ADD_CIRCLES = 'ADD_CIRCLES';
-export const ADD_LINES = 'ADD_LINES';
-export const ADD_SQUARES = 'ADD_SQUARES';
-export const ADD_TRIANGLES = 'ADD_TRIANGLES';
+import { MoveState } from './gameStateReducer';
 
-export interface AddCirclesAction {
-  type: typeof ADD_CIRCLES;
-  circles: string[];
+export const SET_MOVE_STATE = 'SET_MOVE_STATE';
+
+type MoveStateActionPayload = Partial<MoveState>;
+export interface SetMoveStateAction {
+  type: typeof SET_MOVE_STATE;
+  moveState: MoveStateActionPayload;
 }
-export const addCircles = (circles: string[]): AddCirclesAction => ({
-  type: ADD_CIRCLES,
-  circles,
+
+const setMoveState = (
+  moveState: MoveStateActionPayload
+): SetMoveStateAction => ({
+  type: SET_MOVE_STATE,
+  moveState,
 });
 
-export interface AddSquaresAction {
-  type: typeof ADD_SQUARES;
-  squares: string[];
-}
-export const addSquares = (squares: string[]): AddSquaresAction => ({
-  type: ADD_SQUARES,
-  squares,
-});
-
-export interface AddLinesAction {
-  type: typeof ADD_LINES;
-  lines: [string, string][];
-}
-export const addLines = (lines: string[]): AddLinesAction => ({
-  type: ADD_LINES,
-  lines: lines.map(line => line.split(':') as [string, string]),
-});
-
-export interface AddTrianglesAction {
-  type: typeof ADD_TRIANGLES;
-  triangles: string[];
-}
-export const addTriangles = (triangles: string[]): AddTrianglesAction => ({
-  type: ADD_TRIANGLES,
-  triangles,
-});
+export const addCircles = (circles: string[]) => setMoveState({ circles });
+export const addComment = (comment: string[]) =>
+  setMoveState({ comment: comment[0] });
+export const addLines = (lines: string[]) =>
+  setMoveState({
+    lines: lines.map(line => line.split(':') as [string, string]),
+  });
+export const addName = (name: string[]) => setMoveState({ name: name[0] });
+export const addSquares = (squares: string[]) => setMoveState({ squares });
+export const addTriangles = (triangles: string[]) =>
+  setMoveState({ triangles });

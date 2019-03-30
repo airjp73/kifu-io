@@ -1,14 +1,21 @@
 import { GameNode } from 'parseSgf/parseSgf';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import placeStone from './placeStone';
+import { setPoint } from './actions';
 import {
-  setPoint,
   setBoardSize,
   setApplication,
   SetVariationDisplaySettings,
-} from './actions';
+} from './propertiesActions';
 import { GameStateWithHistory } from './gameStateReducer';
-import { addCircles, addTriangles, addSquares, addLines } from './moveStateActions';
+import {
+  addCircles,
+  addTriangles,
+  addSquares,
+  addLines,
+  addComment,
+  addName,
+} from './moveStateActions';
 
 /**
  * Some properties are not-yet-implemented or deliberately ignored.
@@ -79,7 +86,11 @@ const processNode = (
 
   // Node annotation properties
   if (properties.C) {
-    // TODO
+    dispatch(addComment(properties.C));
+  }
+
+  if (properties.N) {
+    dispatch(addName(properties.N));
   }
 
   // Markup properties
