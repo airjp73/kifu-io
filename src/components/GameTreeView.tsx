@@ -193,6 +193,12 @@ const createGridFromTree = (
   return cell;
 };
 
+const GameTreeContainer = styled.div`
+  overflow: scroll;
+  background-color: #ccc;
+  position: relative;
+`;
+
 const GameTreeCanvas = styled.canvas`
   position: absolute;
   top: 0;
@@ -206,7 +212,7 @@ const GameTreeView = () => {
   const lineLayerRef = useRef(null);
   const selectionLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
-  const scrollTargetRef = useRef(null);
+  const containerRef = useRef(null);
   const { gameState, gameTree, goToNode } = useGoGameContext();
 
   // Turn the game tree into a format that's easier to work with
@@ -256,12 +262,10 @@ const GameTreeView = () => {
           gameTreeRenderer.current.drawNodeSelection(xIndex, yIndex);
           const nodeX = gameTreeRenderer.current.getCoord(xIndex);
           const nodeY = gameTreeRenderer.current.getCoord(yIndex);
-          scrollTargetRef.current.style.left = `${nodeX}px`;
-          scrollTargetRef.current.style.top = `${nodeY}px`;
-          scrollTargetRef.current.scrollIntoView({
+          containerRef.current.scrollTo({
+            left: nodeX,
+            top: nodeY,
             behavior: 'smooth',
-            block: 'center',
-            inline: 'center',
           });
           return;
         }
@@ -280,12 +284,11 @@ const GameTreeView = () => {
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <GameTreeContainer ref={containerRef}>
       <GameTreeCanvas ref={selectionLayerRef} />
       <GameTreeCanvas ref={lineLayerRef} />
       <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
-      <div style={{ position: 'absolute' }} ref={scrollTargetRef} />
-    </div>
+    </GameTreeContainer>
   );
 };
 
