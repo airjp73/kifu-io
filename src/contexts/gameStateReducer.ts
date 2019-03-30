@@ -17,6 +17,7 @@ import {
   SetVariationDisplaySettingsAction,
   SET_APPLICATION,
   SET_VARIATION_DISPLAY_SETTINGS,
+  INIT,
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
 import { Point } from 'components/Goban';
@@ -171,6 +172,8 @@ const gameStateReducer = (
   const { boardState, properties, node, moveState, history } = state;
 
   switch (action.type) {
+    case INIT:
+      return defaultState;
     case POP_HISTORY:
       return {
         ...history[history.length - 1],

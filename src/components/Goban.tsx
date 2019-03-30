@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
+import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
 
 export type Point = 'b' | 'w' | null;
 type StarPoints = [number, number][];
@@ -52,53 +53,18 @@ class GobanCanvas {
 
   private calculateDimensions = () => {
     const pixelRatio = window.devicePixelRatio || 1;
-    this.canvas.width = this.canvas.clientWidth * pixelRatio;
+    const canvasRect = this.canvas.getBoundingClientRect();
+    this.canvas.width =
+      Math.round(canvasRect.right * pixelRatio) -
+      Math.round(canvasRect.left * pixelRatio);
     this.unit = this.canvas.width / (this.size[0] + 1);
     this.canvas.height = this.unit * (this.size[1] + 1);
     this.stoneRadius = (this.unit - 2) / 2;
   };
 
   private initSprites = () => {
-    this.blackStone = this.createStoneSprite('#555', '#000', 0.85);
-    this.whiteStone = this.createStoneSprite('#fff', '#bbb', 0.95);
-  };
-
-  private createStoneSprite = (
-    highlightColor: string,
-    baseColor: string,
-    gradientEnd: number
-  ) => {
-    const canvas = document.createElement('canvas');
-    canvas.width = this.stoneRadius * 2 + this.spritePadding + 10;
-    canvas.height = this.stoneRadius * 2 + this.spritePadding + 10;
-
-    const stoneCenter = this.stoneRadius + this.spritePadding;
-
-    const ctx = canvas.getContext('2d');
-
-    const highlightCenter = stoneCenter - this.stoneRadius / 3;
-    const gradient = ctx.createRadialGradient(
-      highlightCenter,
-      highlightCenter,
-      2,
-      stoneCenter,
-      stoneCenter,
-      this.stoneRadius
-    );
-    gradient.addColorStop(0, highlightColor);
-    gradient.addColorStop(gradientEnd, baseColor);
-
-    ctx.fillStyle = gradient;
-    ctx.shadowBlur = 2;
-    ctx.shadowOffsetX = 2;
-    ctx.shadowOffsetY = 2;
-    ctx.shadowColor = 'rgba(0, 0, 0, .35)';
-
-    ctx.beginPath();
-    ctx.moveTo(stoneCenter, this.spritePadding);
-    ctx.arc(stoneCenter, stoneCenter, this.stoneRadius, 0, Math.PI * 2);
-    ctx.fill();
-    return canvas;
+    this.blackStone = createBlackStone(this.stoneRadius);
+    this.whiteStone = createWhiteStone(this.stoneRadius);
   };
 
   public drawStone = (x: number, y: number, color: Point) => {

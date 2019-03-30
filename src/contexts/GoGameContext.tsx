@@ -2,20 +2,17 @@ import React, { useContext, useMemo, useEffect } from 'react';
 import parseSgf from 'parseSgf';
 import { GameNode } from 'parseSgf/parseSgf';
 import useThunkReducer from 'hooks/useThunkReducer';
-import gameStateReducer, { GameState } from './gameStateReducer';
-import {
-  pushHistory,
-  setNode,
-  popHistory,
-  init,
-} from './actions';
+import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
+import { pushHistory, setNode, popHistory, init } from './actions';
 import processNode from './processNode';
 
 // Interfaces
 export interface GameContext {
   forward: (numMoves: number) => void;
   back: (numMoves: number) => void;
-  gameState: GameState;
+  goToNode: (node: GameNode) => void;
+  gameState: GameStateWithHistory;
+  gameTree: GameNode[];
 }
 
 export interface Action {
@@ -66,15 +63,23 @@ export const GoGameContextProvider: React.FunctionComponent<
     }
   };
 
+  const goToNode = (node: GameNode) => {
+    if (node.parent) goToNode(node.parent);
+    else dispatch(init());
+    nextMove(node);
+  };
+
   // Go to first move on mount
   useEffect(() => nextMove(gameTree[0]), []);
 
   return (
     <GoGameContext.Provider
       value={{
-        forward,
         back,
+        forward,
         gameState,
+        gameTree,
+        goToNode,
       }}
     >
       {children}
