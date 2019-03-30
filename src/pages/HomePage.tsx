@@ -6,17 +6,19 @@ import { GoGameContextProvider } from 'contexts/GoGameContext';
 import GameControlButtons from 'components/GameControlButtons';
 import sgf from 'parseSgf/snapshots/snapshot3';
 import GameInfo from 'components/GameInfo';
+import CaptureCounts from 'components/CaptureCounts';
 
 const GameView = styled.div`
   height: 100%;
   display: grid;
-  grid-template-rows: 1fr 1fr auto;
+  grid-template-rows: min-content min-content auto min-content;
 `;
 
 const HelloPage: React.FunctionComponent = () => (
   <Layout>
     <GameView>
       <GoGameContextProvider sgf={sgf}>
+        <CaptureCounts />
         <Goban />
         <GameInfo />
         <GameControlButtons />
