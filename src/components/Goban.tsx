@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { createBlackStone, createWhiteStone, calculateStonePadding } from 'canvas/createStoneSprite';
 
-export type Point = 'b' | 'w' | null;
+export type StoneColor = 'b' | 'w' | null;
 type StarPoints = [number, number][];
 
 const starPoints9: StarPoints = [[2, 2], [6, 2], [2, 6], [6, 6], [4, 4]];
@@ -65,7 +65,7 @@ class GobanCanvas {
     this.whiteStone = createWhiteStone(this.stoneRadius);
   };
 
-  public drawStone = (x: number, y: number, color: Point) => {
+  public drawStone = (x: number, y: number, color: StoneColor) => {
     const stone = color === 'b' ? this.blackStone : this.whiteStone;
 
     // We want the center of the sprite on the point, so subtract the radius and sprite padding
