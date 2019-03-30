@@ -3,6 +3,7 @@ import {
   createBlackStone,
   createWhiteStone,
   createSelectionHighlight,
+  calculateStonePadding,
 } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameNode } from 'parseSgf/parseSgf';
@@ -25,7 +26,6 @@ class GameTree {
   // Stone radius won't change on resize
   private static stoneRadius = 15;
   private static highlightRadius = 15 * 1.5;
-  private static canvasPadding = 15;
 
   // Sprites
   private blackStone: HTMLCanvasElement;
@@ -70,17 +70,18 @@ class GameTree {
 
   private createSetupNode = () => {
     const radius = (3 * GameTree.stoneRadius) / 4;
+    const padding = calculateStonePadding(radius);
     const black = createBlackStone(radius);
     const white = createWhiteStone(radius);
 
     const canvas = document.createElement('canvas');
-    canvas.width = radius * 4;
-    canvas.height = radius * 4;
+    canvas.width = radius * 4 + padding;
+    canvas.height = radius * 4 + padding;
 
     const ctx = canvas.getContext('2d');
 
-    ctx.drawImage(black, 0, 0);
-    ctx.drawImage(white, radius, radius / 2);
+    ctx.drawImage(black, padding / 4, padding / 4);
+    ctx.drawImage(white, radius + padding / 4, radius / 2 + padding / 4);
 
     return canvas;
   };
@@ -112,7 +113,7 @@ class GameTree {
     y2: number
   ) => {
     const ctx = this.lineLayer.getContext('2d');
-    const stonePadding = 2;
+    const stonePadding = calculateStonePadding(GameTree.stoneRadius);
     const x1Coord = this.getCoord(x1) + GameTree.stoneRadius + stonePadding;
     const y1Coord = this.getCoord(y1) + GameTree.stoneRadius + stonePadding;
     const x2Coord = this.getCoord(x2) + GameTree.stoneRadius + stonePadding;
@@ -129,7 +130,13 @@ class GameTree {
 
   public drawNodeSelection = (x: never, y: number) => {
     const ctx = this.selectionLayer.getContext('2d');
-    const radiusDiff = GameTree.highlightRadius - GameTree.stoneRadius;
+    const stonePadding = calculateStonePadding(GameTree.stoneRadius);
+    const highlightPadding = 2;
+    const radiusDiff =
+      GameTree.highlightRadius -
+      GameTree.stoneRadius -
+      stonePadding +
+      highlightPadding;
     const xCoord = this.getCoord(x) - radiusDiff;
     const yCoord = this.getCoord(y) - radiusDiff;
 
@@ -139,10 +146,10 @@ class GameTree {
   };
 
   public getCoord = (gridLocation: number) =>
-    gridLocation * GameTree.stoneRadius * 3.5 + GameTree.canvasPadding;
+    gridLocation * GameTree.stoneRadius * 3.5;
 
   public coordToGridLocation = (coord: number) =>
-    (coord - GameTree.canvasPadding) / 3.5 / GameTree.stoneRadius;
+    coord / 3.5 / GameTree.stoneRadius;
 }
 
 const createGridFromTree = (

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
-import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
+import { createBlackStone, createWhiteStone, calculateStonePadding } from 'canvas/createStoneSprite';
 
 export type Point = 'b' | 'w' | null;
 type StarPoints = [number, number][];
@@ -23,8 +23,6 @@ const starPoints19: StarPoints = [
 class GobanCanvas {
   private size: [number, number];
   private canvas: HTMLCanvasElement;
-
-  private spritePadding = 2;
 
   private unit: number;
   private stoneRadius: number;
@@ -72,8 +70,9 @@ class GobanCanvas {
 
     // We want the center of the sprite on the point, so subtract the radius and sprite padding
     const ctx = this.canvas.getContext('2d');
-    const xCoord = this.getCoord(x) - this.stoneRadius - this.spritePadding;
-    const yCoord = this.getCoord(y) - this.stoneRadius - this.spritePadding;
+    const stonePadding = calculateStonePadding(this.stoneRadius);
+    const xCoord = this.getCoord(x) - this.stoneRadius - stonePadding;
+    const yCoord = this.getCoord(y) - this.stoneRadius - stonePadding;
     ctx.drawImage(stone, xCoord, yCoord);
   };
 
