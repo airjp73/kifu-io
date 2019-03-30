@@ -38,12 +38,10 @@ class GameTree {
     this.stoneLayer = stoneLayer;
     this.stoneLayer.width = canvasWidth;
     this.stoneLayer.height = canvasHeight;
-    this.stoneLayer.getContext('2d').imageSmoothingEnabled = false;
 
     this.lineLayer = lineLayer;
     this.lineLayer.width = canvasWidth;
     this.lineLayer.height = canvasHeight;
-    this.lineLayer.getContext('2d').imageSmoothingEnabled = false;
 
     this.blackStone = createBlackStone(GameTree.stoneRadius);
     this.whiteStone = createWhiteStone(GameTree.stoneRadius);
