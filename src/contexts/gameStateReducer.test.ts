@@ -20,6 +20,8 @@ import {
   addTriangles,
   addSquares,
   addLines,
+  addName,
+  addComment,
 } from './moveStateActions';
 
 const emptyMoveState: MoveState = {
@@ -173,6 +175,20 @@ describe('GoGameContext reducer', () => {
       emptyState,
       addSquares(['aa', 'bb']),
       { moveState: { squares: ['aa', 'bb'] } },
+    ],
+
+    [
+      'addComment',
+      emptyState,
+      addComment(['A comment']),
+      { moveState: { comment: 'A comment' } },
+    ],
+
+    [
+      'addName',
+      emptyState,
+      addName(['This is a move']),
+      { moveState: { name: 'This is a move' } },
     ],
   ]).test(
     'should correctly handle %s action',

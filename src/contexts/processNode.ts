@@ -86,11 +86,11 @@ const processNode = (
 
   // Node annotation properties
   if (properties.C) {
-    dispatch(addComment(properties.C[0]));
+    dispatch(addComment(properties.C));
   }
 
   if (properties.N) {
-    dispatch(addName(properties.N[0]));
+    dispatch(addName(properties.N));
   }
 
   // Markup properties
