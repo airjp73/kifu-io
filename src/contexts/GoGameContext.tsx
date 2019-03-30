@@ -10,6 +10,7 @@ import processNode from './processNode';
 export interface GameContext {
   forward: (numMoves: number) => void;
   back: (numMoves: number) => void;
+  goToNode: (node: GameNode) => void;
   gameState: GameStateWithHistory;
   gameTree: GameNode[];
 }
@@ -72,6 +73,7 @@ export const GoGameContextProvider: React.FunctionComponent<
         forward,
         gameState,
         gameTree,
+        goToNode: node => console.log(node.properties),
       }}
     >
       {children}

@@ -62,7 +62,9 @@ class GameTree {
 
     this.blackStone = createBlackStone(GameTree.stoneRadius);
     this.whiteStone = createWhiteStone(GameTree.stoneRadius);
-    this.selectionHighlight = createSelectionHighlight(GameTree.highlightRadius);
+    this.selectionHighlight = createSelectionHighlight(
+      GameTree.highlightRadius
+    );
     this.setupNode = this.createSetupNode();
   }
 
@@ -136,7 +138,11 @@ class GameTree {
     ctx.drawImage(this.selectionHighlight, xCoord, yCoord);
   };
 
-  private getCoord = (coord: number) => coord * GameTree.stoneRadius * 3.5 + GameTree.canvasPadding;
+  private getCoord = (gridLocation: number) =>
+    gridLocation * GameTree.stoneRadius * 3.5 + GameTree.canvasPadding;
+
+  public coordToGridLocation = (coord: number) =>
+    (coord - GameTree.canvasPadding) / 3.5 / GameTree.stoneRadius;
 }
 
 const createGridFromTree = (
@@ -184,6 +190,7 @@ const GameTreeCanvas = styled.canvas`
   position: absolute;
   top: 0;
   left: 0;
+  cursor: pointer;
 `;
 
 const GameTreeView = () => {
@@ -191,7 +198,7 @@ const GameTreeView = () => {
   const lineLayerRef = useRef(null);
   const selectionLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
-  const { gameState, gameTree } = useGoGameContext();
+  const { gameState, gameTree, goToNode } = useGoGameContext();
 
   // Turn the game tree into a format that's easier to work with
   // when drawing the tree
@@ -243,7 +250,15 @@ const GameTreeView = () => {
     }
   }, [gameState.node]);
 
-  const handleCanvasClick = console.log;
+  const handleCanvasClick: React.MouseEventHandler = event => {
+    const xCoord = event.nativeEvent.offsetX;
+    const yCoord = event.nativeEvent.offsetY;
+    const x = Math.floor(gameTreeRenderer.current.coordToGridLocation(xCoord));
+    const y = Math.floor(gameTreeRenderer.current.coordToGridLocation(yCoord));
+    if (treeGrid[y][x]) {
+      goToNode(treeGrid[y][x].node);
+    }
+  };
 
   return (
     <div style={{ position: 'relative' }}>
