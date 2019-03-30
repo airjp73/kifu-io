@@ -138,7 +138,7 @@ class GameTree {
     ctx.drawImage(this.selectionHighlight, xCoord, yCoord);
   };
 
-  private getCoord = (gridLocation: number) =>
+  public getCoord = (gridLocation: number) =>
     gridLocation * GameTree.stoneRadius * 3.5 + GameTree.canvasPadding;
 
   public coordToGridLocation = (coord: number) =>
@@ -199,6 +199,7 @@ const GameTreeView = () => {
   const lineLayerRef = useRef(null);
   const selectionLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
+  const scrollTargetRef = useRef(null);
   const { gameState, gameTree, goToNode } = useGoGameContext();
 
   // Turn the game tree into a format that's easier to work with
@@ -240,11 +241,21 @@ const GameTreeView = () => {
 
   // Draw currently selected node
   useEffect(() => {
+    if (!gameTreeRenderer.current) return;
     for (let [yIndex, row] of treeGrid.entries()) {
       for (let [xIndex, treeNode] of row.entries()) {
         if (!treeNode) continue;
         if (treeNode.node === gameState.node) {
           gameTreeRenderer.current.drawNodeSelection(xIndex, yIndex);
+          const nodeX = gameTreeRenderer.current.getCoord(xIndex);
+          const nodeY = gameTreeRenderer.current.getCoord(yIndex);
+          scrollTargetRef.current.style.left = `${nodeX}px`;
+          scrollTargetRef.current.style.top = `${nodeY}px`;
+          scrollTargetRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center',
+          });
           return;
         }
       }
@@ -266,6 +277,7 @@ const GameTreeView = () => {
       <GameTreeCanvas ref={selectionLayerRef} />
       <GameTreeCanvas ref={lineLayerRef} />
       <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
+      <div style={{ position: 'absolute' }} ref={scrollTargetRef} />
     </div>
   );
 };
