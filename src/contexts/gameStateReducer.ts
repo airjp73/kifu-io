@@ -8,44 +8,25 @@ import {
   SetNodeAction,
   POP_HISTORY,
   PUSH_HISTORY,
-  SetBoardSizeAction,
-  SET_BOARD_SIZE,
   PushHistoryAction,
   PopHistoryAction,
   InitAction,
-  SetApplicationAction,
-  SetVariationDisplaySettingsAction,
-  SET_APPLICATION,
-  SET_VARIATION_DISPLAY_SETTINGS,
   INIT,
 } from './actions';
+import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { GameNode } from 'parseSgf/parseSgf';
 import { StoneColor } from 'components/Goban';
-import {
-  AddCirclesAction,
-  AddSquaresAction,
-  AddTrianglesAction,
-  ADD_CIRCLES,
-  ADD_SQUARES,
-  ADD_TRIANGLES,
-  ADD_LINES,
-  AddLinesAction,
-} from './moveStateActions';
+import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
 
 export type GameStateAction =
-  | AddCirclesAction
-  | AddLinesAction
-  | AddSquaresAction
-  | AddTrianglesAction
   | CaptureAction
   | InitAction
   | PopHistoryAction
   | PushHistoryAction
-  | SetApplicationAction
-  | SetBoardSizeAction
+  | SetMoveStateAction
   | SetNodeAction
   | SetPointAction
-  | SetVariationDisplaySettingsAction;
+  | SetPropertyAction;
 
 export interface BoardState {
   [key: string]: StoneColor;
@@ -79,20 +60,10 @@ const propertiesReducer = (
   action: GameStateAction
 ): GameStateProperties => {
   switch (action.type) {
-    case SET_BOARD_SIZE:
+    case SET_PROPERTY:
       return {
         ...state,
-        boardSize: action.boardSize,
-      };
-    case SET_APPLICATION:
-      return {
-        ...state,
-        application: action.application,
-      };
-    case SET_VARIATION_DISPLAY_SETTINGS:
-      return {
-        ...state,
-        variationDisplay: action.variationDisplay,
+        ...action.properties,
       };
     default:
       return state;
@@ -112,6 +83,8 @@ export interface MoveState {
   squares: string[];
   triangles: string[];
   lines: [string, string][];
+  comment?: string;
+  name?: string;
 }
 const defaultMoveState: MoveState = {
   circles: [],
@@ -124,25 +97,10 @@ const moveStateReducer = (
   action: GameStateAction
 ): MoveState => {
   switch (action.type) {
-    case ADD_CIRCLES:
+    case SET_MOVE_STATE:
       return {
         ...state,
-        circles: action.circles,
-      };
-    case ADD_SQUARES:
-      return {
-        ...state,
-        squares: action.squares,
-      };
-    case ADD_TRIANGLES:
-      return {
-        ...state,
-        triangles: action.triangles,
-      };
-    case ADD_LINES:
-      return {
-        ...state,
-        lines: action.lines,
+        ...action.moveState,
       };
     default:
       return state;

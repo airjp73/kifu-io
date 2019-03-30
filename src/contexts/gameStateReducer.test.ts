@@ -5,10 +5,12 @@ import {
   setNode,
   popHistory,
   pushHistory,
+} from './actions';
+import {
   setBoardSize,
   setApplication,
   SetVariationDisplaySettings,
-} from './actions';
+} from './propertiesActions';
 import gameStateReducer, {
   GameStateWithHistory,
   MoveState,
@@ -40,28 +42,6 @@ const emptyState: GameStateWithHistory = {
 };
 
 describe('GoGameContext reducer', () => {
-  test('should handle setPoint action', () => {
-    const state: GameStateWithHistory = {
-      ...emptyState,
-      boardState: { cc: 'w' },
-    };
-    const result = gameStateReducer(state, setPoint(['aa', 'bb'], 'b'));
-    expect(result.boardState).toEqual({ aa: 'b', bb: 'b', cc: 'w' });
-  });
-
-  test('should handle captureStones action', () => {
-    const state: GameStateWithHistory = {
-      ...emptyState,
-      boardState: { aa: 'b', bb: 'w', cc: 'b' },
-    };
-    const result = gameStateReducer(state, captureStones(['aa', 'cc'], 'b'));
-    expect(result.boardState).toEqual({ bb: 'w' });
-    expect(result.captureCounts).toEqual({
-      b: 0,
-      w: 2,
-    });
-  });
-
   test('should handle setNode action', () => {
     const node = {};
     const result = gameStateReducer(emptyState, setNode(node));
@@ -110,38 +90,6 @@ describe('GoGameContext reducer', () => {
     });
   });
 
-  test('should handle addCircles action', () => {
-    const result = gameStateReducer(emptyState, addCircles(['aa', 'bb']));
-    expect(result.moveState).toEqual({
-      ...emptyMoveState,
-      circles: ['aa', 'bb'],
-    });
-  });
-
-  test('should handle addLines action', () => {
-    const result = gameStateReducer(emptyState, addLines(['aa:cc', 'bb:bd']));
-    expect(result.moveState).toEqual({
-      ...emptyMoveState,
-      lines: [['aa', 'cc'], ['bb', 'bd']],
-    });
-  });
-
-  test('should handle addSquares action', () => {
-    const result = gameStateReducer(emptyState, addSquares(['aa', 'bb']));
-    expect(result.moveState).toEqual({
-      ...emptyMoveState,
-      squares: ['aa', 'bb'],
-    });
-  });
-
-  test('should handle addTriangles action', () => {
-    const result = gameStateReducer(emptyState, addTriangles(['aa', 'bb']));
-    expect(result.moveState).toEqual({
-      ...emptyMoveState,
-      triangles: ['aa', 'bb'],
-    });
-  });
-
   describe('setBoardSize action', () => {
     test('should treat single values as square sizes', () => {
       const result = gameStateReducer(emptyState, setBoardSize(['19']));
@@ -173,4 +121,64 @@ describe('GoGameContext reducer', () => {
       }
     );
   });
+
+  each([
+    [
+      'setPoint',
+      { ...emptyState, boardState: { cc: 'w' } },
+      setPoint(['aa', 'bb'], 'b'),
+      { boardState: { aa: 'b', bb: 'b', cc: 'w' } },
+    ],
+
+    [
+      'captureStones',
+      {
+        ...emptyState,
+        captureCounts: { b: 2, w: 3 },
+        boardState: { aa: 'b', bb: 'w', cc: 'b' },
+      },
+      captureStones(['aa', 'cc'], 'b'),
+      {
+        boardState: { bb: 'w' },
+        captureCounts: {
+          b: 2,
+          w: 5,
+        },
+      },
+    ],
+
+    [
+      'addTriangles',
+      emptyState,
+      addTriangles(['aa', 'bb']),
+      { moveState: { triangles: ['aa', 'bb'] } },
+    ],
+
+    [
+      'addCircles',
+      emptyState,
+      addCircles(['aa', 'bb']),
+      { moveState: { circles: ['aa', 'bb'] } },
+    ],
+
+    [
+      'addLines',
+      emptyState,
+      addLines(['aa:cc', 'bb:bd']),
+      { moveState: { lines: [['aa', 'cc'], ['bb', 'bd']] } },
+    ],
+
+    [
+      'addSquares',
+      emptyState,
+      addSquares(['aa', 'bb']),
+      { moveState: { squares: ['aa', 'bb'] } },
+    ],
+  ]).test(
+    'should correctly handle %s action',
+    (description, startingState, action, expected) => {
+      const result = gameStateReducer(startingState, action);
+      expect(result).toMatchObject(expected);
+    }
+  );
 });
