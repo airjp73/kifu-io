@@ -203,6 +203,7 @@ const GameTreeView = () => {
     return grid;
   }, []);
 
+  // Draw whole tree
   useEffect(() => {
     if (!gameTreeRenderer.current) {
       gameTreeRenderer.current = new GameTree(
@@ -229,21 +230,26 @@ const GameTreeView = () => {
     });
   }, []);
 
+  // Draw currently selected node
   useEffect(() => {
-    treeGrid.forEach((row, yIndex) => {
-      row.forEach((treeNode, xIndex) => {
+    for (let [yIndex, row] of treeGrid.entries()) {
+      for (let [xIndex, treeNode] of row.entries()) {
+        if (!treeNode) continue;
         if (treeNode.node === gameState.node) {
           gameTreeRenderer.current.drawNodeSelection(xIndex, yIndex);
+          return;
         }
-      });
-    });
+      }
+    }
   }, [gameState.node]);
+
+  const handleCanvasClick = console.log;
 
   return (
     <div style={{ position: 'relative' }}>
       <GameTreeCanvas ref={selectionLayerRef} />
       <GameTreeCanvas ref={lineLayerRef} />
-      <GameTreeCanvas ref={nodeLayerRef} />
+      <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
     </div>
   );
 };
