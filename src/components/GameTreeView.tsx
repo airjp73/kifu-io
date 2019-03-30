@@ -191,6 +191,7 @@ const GameTreeCanvas = styled.canvas`
   top: 0;
   left: 0;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 `;
 
 const GameTreeView = () => {
@@ -255,7 +256,7 @@ const GameTreeView = () => {
     const yCoord = event.nativeEvent.offsetY;
     const x = Math.floor(gameTreeRenderer.current.coordToGridLocation(xCoord));
     const y = Math.floor(gameTreeRenderer.current.coordToGridLocation(yCoord));
-    if (treeGrid[y][x]) {
+    if (treeGrid[y] && treeGrid[y][x]) {
       goToNode(treeGrid[y][x].node);
     }
   };
