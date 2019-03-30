@@ -1,5 +1,9 @@
 import React, { useRef, useEffect, useMemo } from 'react';
-import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
+import {
+  createBlackStone,
+  createWhiteStone,
+  createSelectionHighlight,
+} from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameNode } from 'parseSgf/parseSgf';
 import styled from 'styled-components';
@@ -13,22 +17,31 @@ interface TreeCell {
   type: TreeCellType;
   gridLocation: [number, number];
   parentLocation?: [number, number];
+  node: GameNode;
 }
 type TreeGrid = TreeCell[][];
 
 class GameTree {
   // Stone radius won't change on resize
   private static stoneRadius = 15;
+  private static highlightRadius = 15 * 1.5;
+  private static canvasPadding = 15;
 
+  // Sprites
   private blackStone: HTMLCanvasElement;
   private whiteStone: HTMLCanvasElement;
   private setupNode: HTMLCanvasElement;
+  private selectionHighlight: HTMLCanvasElement;
+
+  // Canvas layers
   private stoneLayer: HTMLCanvasElement;
   private lineLayer: HTMLCanvasElement;
+  private selectionLayer: HTMLCanvasElement;
 
   constructor(
     stoneLayer: HTMLCanvasElement,
     lineLayer: HTMLCanvasElement,
+    selectionLayer: HTMLCanvasElement,
     width: number,
     height: number
   ) {
@@ -43,8 +56,13 @@ class GameTree {
     this.lineLayer.width = canvasWidth;
     this.lineLayer.height = canvasHeight;
 
+    this.selectionLayer = selectionLayer;
+    this.selectionLayer.width = canvasWidth;
+    this.selectionLayer.height = canvasHeight;
+
     this.blackStone = createBlackStone(GameTree.stoneRadius);
     this.whiteStone = createWhiteStone(GameTree.stoneRadius);
+    this.selectionHighlight = createSelectionHighlight(GameTree.highlightRadius);
     this.setupNode = this.createSetupNode();
   }
 
@@ -107,7 +125,18 @@ class GameTree {
     ctx.stroke();
   };
 
-  private getCoord = (coord: number) => coord * GameTree.stoneRadius * 3.5;
+  public drawNodeSelection = (x: never, y: number) => {
+    const ctx = this.selectionLayer.getContext('2d');
+    const radiusDiff = GameTree.highlightRadius - GameTree.stoneRadius;
+    const xCoord = this.getCoord(x) - radiusDiff;
+    const yCoord = this.getCoord(y) - radiusDiff;
+
+    // Only show one selection at a time
+    ctx.clearRect(0, 0, this.selectionLayer.width, this.selectionLayer.height);
+    ctx.drawImage(this.selectionHighlight, xCoord, yCoord);
+  };
+
+  private getCoord = (coord: number) => coord * GameTree.stoneRadius * 3.5 + GameTree.canvasPadding;
 }
 
 const createGridFromTree = (
@@ -141,6 +170,7 @@ const createGridFromTree = (
   const cell: TreeCell = {
     type,
     gridLocation: [x, adjustedY],
+    node,
   };
 
   // Add the cell to the grid
@@ -159,22 +189,26 @@ const GameTreeCanvas = styled.canvas`
 const GameTreeView = () => {
   const nodeLayerRef = useRef(null);
   const lineLayerRef = useRef(null);
+  const selectionLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
-  const { gameTree } = useGoGameContext();
+  const { gameState, gameTree } = useGoGameContext();
 
   // Turn the game tree into a format that's easier to work with
   // when drawing the tree
   // TODO: Will need to handle updating this when implementing sgf editing
-  // TODO: This may need to be an effect instead of a memo?
+
+  const treeGrid: TreeGrid = useMemo(() => {
+    const grid: TreeGrid = [];
+    createGridFromTree(gameTree[0], grid);
+    return grid;
+  }, []);
 
   useEffect(() => {
-    const treeGrid: TreeGrid = [];
-    createGridFromTree(gameTree[0], treeGrid);
-
     if (!gameTreeRenderer.current) {
       gameTreeRenderer.current = new GameTree(
         nodeLayerRef.current,
         lineLayerRef.current,
+        selectionLayerRef.current,
         Math.max(...treeGrid.map(row => row.length)),
         treeGrid.length
       );
@@ -195,8 +229,19 @@ const GameTreeView = () => {
     });
   }, []);
 
+  useEffect(() => {
+    treeGrid.forEach((row, yIndex) => {
+      row.forEach((treeNode, xIndex) => {
+        if (treeNode.node === gameState.node) {
+          gameTreeRenderer.current.drawNodeSelection(xIndex, yIndex);
+        }
+      });
+    });
+  }, [gameState.node]);
+
   return (
     <div style={{ position: 'relative' }}>
+      <GameTreeCanvas ref={selectionLayerRef} />
       <GameTreeCanvas ref={lineLayerRef} />
       <GameTreeCanvas ref={nodeLayerRef} />
     </div>

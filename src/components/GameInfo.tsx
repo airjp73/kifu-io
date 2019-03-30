@@ -5,7 +5,7 @@ import GameTreeView from 'components/GameTreeView';
 const GameTreeContainer = styled.div`
   overflow: scroll;
   background-color: #ccc;
-  padding: 1rem;
+  /* padding: 1rem; */
 `;
 
 const GameInfo = () => (

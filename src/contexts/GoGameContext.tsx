@@ -3,12 +3,7 @@ import parseSgf from 'parseSgf';
 import { GameNode } from 'parseSgf/parseSgf';
 import useThunkReducer from 'hooks/useThunkReducer';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
-import {
-  pushHistory,
-  setNode,
-  popHistory,
-  init,
-} from './actions';
+import { pushHistory, setNode, popHistory, init } from './actions';
 import processNode from './processNode';
 
 // Interfaces
