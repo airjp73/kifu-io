@@ -38,7 +38,7 @@ class GameTree {
   private lineLayer: HTMLCanvasElement;
   private selectionLayer: HTMLCanvasElement;
 
-  constructor(
+  public constructor(
     stoneLayer: HTMLCanvasElement,
     lineLayer: HTMLCanvasElement,
     selectionLayer: HTMLCanvasElement,
