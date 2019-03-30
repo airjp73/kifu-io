@@ -20,7 +20,7 @@ import {
   INIT,
 } from './actions';
 import { GameNode } from 'parseSgf/parseSgf';
-import { Point } from 'components/Goban';
+import { StoneColor } from 'components/Goban';
 import {
   AddCirclesAction,
   AddSquaresAction,
@@ -48,7 +48,7 @@ export type GameStateAction =
   | SetVariationDisplaySettingsAction;
 
 export interface BoardState {
-  [key: string]: Point;
+  [key: string]: StoneColor;
 }
 const setPoints = (state: BoardState, action: SetPointAction) => {
   const nextState = { ...state };
@@ -149,11 +149,38 @@ const moveStateReducer = (
   }
 };
 
+export interface CaptureCounts {
+  b: number;
+  w: number;
+}
+const defaultCaptureCounts: CaptureCounts = {
+  b: 0,
+  w: 0,
+};
+const captureCountReducer = (
+  state: CaptureCounts = defaultCaptureCounts,
+  action: GameStateAction
+): CaptureCounts => {
+  switch (action.type) {
+    case CAPTURE: {
+      // Increment captures for w if black stones captured
+      const color = action.color === 'b' ? 'w' : 'b';
+      return {
+        ...state,
+        [color]: state[color] + action.points.length,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
 export interface GameState {
   properties: GameStateProperties;
   boardState: BoardState;
   node: GameNode;
   moveState: MoveState;
+  captureCounts: CaptureCounts;
 }
 export interface GameStateWithHistory extends GameState {
   history: GameState[];
@@ -163,13 +190,21 @@ const defaultState: GameStateWithHistory = {
   properties: {},
   node: {},
   moveState: defaultMoveState,
+  captureCounts: defaultCaptureCounts,
   history: [],
 };
 const gameStateReducer = (
   state: GameStateWithHistory = defaultState,
   action: GameStateAction
 ): GameStateWithHistory => {
-  const { boardState, properties, node, moveState, history } = state;
+  const {
+    boardState,
+    properties,
+    node,
+    moveState,
+    captureCounts,
+    history,
+  } = state;
 
   switch (action.type) {
     case INIT:
@@ -183,7 +218,10 @@ const gameStateReducer = (
       return {
         ...state,
         moveState: defaultMoveState, // Wipe move state
-        history: [...history, { boardState, properties, node, moveState }],
+        history: [
+          ...history,
+          { boardState, properties, node, moveState, captureCounts },
+        ],
       };
     default:
       return {
@@ -191,6 +229,7 @@ const gameStateReducer = (
         properties: propertiesReducer(properties, action),
         node: nodeReducer(node, action),
         moveState: moveStateReducer(moveState, action),
+        captureCounts: captureCountReducer(captureCounts, action),
         history: history,
       };
   }

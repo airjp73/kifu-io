@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
+import { useGoGameContext } from 'contexts/GoGameContext';
 
 const CaptureCountContainer = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ const CaptureCountContainer = styled.div`
 const CaptureCounts = () => {
   const blackStoneRef = useRef(null);
   const whiteStoneRef = useRef(null);
+  const { gameState } = useGoGameContext();
 
   // TODO: Get actual capture counts from context
 
@@ -37,11 +39,11 @@ const CaptureCounts = () => {
     <CaptureCountContainer>
       <div>
         <canvas ref={blackStoneRef} />
-        <h4>0 Captures</h4>
+        <h4>{gameState.captureCounts.b} Captures</h4>
       </div>
       <div>
         <canvas ref={whiteStoneRef} />
-        <h4>0 Captures</h4>
+        <h4>{gameState.captureCounts.w} Captures</h4>
       </div>
     </CaptureCountContainer>
   );
