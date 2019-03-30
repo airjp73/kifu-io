@@ -5,7 +5,7 @@ import {
 } from './gameStateReducer';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import { setPoint, captureStones } from './actions';
-import { Point } from 'components/Goban';
+import { StoneColor } from 'components/Goban';
 
 //// placeStone action
 const getLiberties = (
@@ -86,7 +86,7 @@ const checkForCaptures = (
 
 const placeStone = (
   point: string,
-  value: Point,
+  value: StoneColor,
   dispatch: ThunkDispatch<GameStateWithHistory>
 ) => {
   dispatch(setPoint([point], value));
@@ -96,7 +96,12 @@ const placeStone = (
       gameState.boardState,
       gameState.properties
     );
-    capturedStones && dispatch(captureStones(capturedStones));
+    if (capturedStones) {
+      // Only one side can be captured in a single move
+      // so we know they're all the same color
+      const capturedColor = gameState.boardState[capturedStones[0]];
+      dispatch(captureStones(capturedStones, capturedColor));
+    }
   });
 };
 

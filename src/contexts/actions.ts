@@ -1,4 +1,4 @@
-import { Point } from 'components/Goban';
+import { StoneColor } from 'components/Goban';
 import { GameNode } from 'parseSgf/parseSgf';
 
 export const CAPTURE = 'CAPTURE';
@@ -15,11 +15,11 @@ export const PUSH_HISTORY = 'PUSH_HISTORY';
 export interface SetPointAction {
   type: typeof SET_POINT;
   points: string[];
-  value: Point;
+  value: StoneColor;
 }
 export const setPoint = (
   points: string[],
-  value: Point | null
+  value: StoneColor | null
 ): SetPointAction => ({
   type: SET_POINT,
   points,
@@ -29,10 +29,12 @@ export const setPoint = (
 export interface CaptureAction {
   type: typeof CAPTURE;
   points: string[];
+  color: StoneColor;
 }
-export const captureStones = (points: string[]): CaptureAction => ({
+export const captureStones = (points: string[], color: StoneColor): CaptureAction => ({
   type: CAPTURE,
   points,
+  color,
 });
 
 // Root Properties
