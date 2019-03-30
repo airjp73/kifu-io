@@ -63,6 +63,12 @@ export const GoGameContextProvider: React.FunctionComponent<
     }
   };
 
+  const goToNode = (node: GameNode) => {
+    if (node.parent) goToNode(node.parent);
+    else dispatch(init());
+    nextMove(node);
+  };
+
   // Go to first move on mount
   useEffect(() => nextMove(gameTree[0]), []);
 
@@ -73,7 +79,7 @@ export const GoGameContextProvider: React.FunctionComponent<
         forward,
         gameState,
         gameTree,
-        goToNode: node => console.log(node.properties),
+        goToNode,
       }}
     >
       {children}
