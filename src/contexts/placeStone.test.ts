@@ -61,6 +61,7 @@ describe('placeStone', () => {
       [19, 19],
       ['ba', 'w'],
       { ab: 'w', ba: 'w' },
+      { w: 1, b: 0 },
     ],
     [
       'Upper right corner capture',
@@ -68,6 +69,7 @@ describe('placeStone', () => {
       [5, 3],
       ['eb', 'b'],
       { da: 'b', eb: 'b' },
+      { w: 0, b: 1 },
     ],
     [
       'Lower right corner capture',
@@ -75,6 +77,7 @@ describe('placeStone', () => {
       [10, 10],
       ['ij', 'b'],
       { ji: 'b', ij: 'b' },
+      { w: 0, b: 1 },
     ],
     [
       'Lower left corner capture',
@@ -82,6 +85,7 @@ describe('placeStone', () => {
       [19, 19],
       ['bs', 'b'],
       { ar: 'b', bs: 'b' },
+      { w: 0, b: 1 },
     ],
 
     // Edge captures
@@ -91,6 +95,7 @@ describe('placeStone', () => {
       [19, 19],
       ['ac', 'b'],
       { aa: 'b', bb: 'b', ac: 'b' },
+      { w: 0, b: 1 },
     ],
     [
       'Top edge capture',
@@ -98,6 +103,7 @@ describe('placeStone', () => {
       [19, 19],
       ['ca', 'b'],
       { aa: 'b', bb: 'b', ca: 'b' },
+      { w: 0, b: 1 },
     ],
     [
       'Right edge capture',
@@ -105,6 +111,7 @@ describe('placeStone', () => {
       [5, 5],
       ['ec', 'b'],
       { ea: 'b', db: 'b', ec: 'b' },
+      { w: 0, b: 1 },
     ],
     [
       'Bottom edge capture',
@@ -112,6 +119,7 @@ describe('placeStone', () => {
       [5, 5],
       ['ce', 'b'],
       { ee: 'b', dd: 'b', ce: 'b' },
+      { w: 0, b: 1 },
     ],
 
     // Bulk captures
@@ -125,6 +133,7 @@ describe('placeStone', () => {
       [3, 3],
       ['bb', 'w'],
       { bb: 'w' },
+      { w: 8, b: 0 },
     ],
     [
       'Ladder capture',
@@ -146,6 +155,7 @@ describe('placeStone', () => {
         . w . . w
         . . w . w
       `,
+      { w: 8, b: 0 },
     ],
 
     // Suicide
@@ -163,6 +173,7 @@ describe('placeStone', () => {
         b . b
         . b .
       `,
+      { w: 0, b: 1 },
     ],
     [
       'Suicide moves - bulk',
@@ -180,6 +191,7 @@ describe('placeStone', () => {
         b . b .
         . b . .
       `,
+      { w: 0, b: 3 },
     ],
     [
       'Suicide Moves - corner',
@@ -193,6 +205,7 @@ describe('placeStone', () => {
         . b
         b .
       `,
+      { w: 0, b: 1 },
     ],
     [
       'Suicide Moves - whole board',
@@ -206,6 +219,7 @@ describe('placeStone', () => {
         . .
         . .
       `,
+      { w: 4, b: 0 },
     ],
 
     // Ko
@@ -225,6 +239,7 @@ describe('placeStone', () => {
         w . w
         . w .
       `,
+      { w: 1, b: 0 },
     ],
 
     // Multi group captures
@@ -246,10 +261,18 @@ describe('placeStone', () => {
         . b . b .
         . . b . .
       `,
+      { w: 0, b: 5 },
     ],
   ]).test(
     'should correctly handle %s',
-    (description, initialBoard, boardSize, newStone, expectedBoard) => {
+    (
+      description,
+      initialBoard,
+      boardSize,
+      newStone,
+      expectedBoard,
+      expectedCaptureCounts = { b: 0, w: 0 }
+    ) => {
       const initialBoardState =
         typeof initialBoard === 'string'
           ? createBoardStateFromString(initialBoard, boardSize)
@@ -279,6 +302,7 @@ describe('placeStone', () => {
       expect(newState).toEqual({
         ...state,
         boardState: expectedBoardState,
+        captureCounts: expectedCaptureCounts,
         properties: { boardSize },
       });
     }

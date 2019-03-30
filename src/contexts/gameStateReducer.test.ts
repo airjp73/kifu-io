@@ -26,11 +26,16 @@ const emptyMoveState: MoveState = {
   triangles: [],
   lines: [],
 };
+const emptyCaptureCounts = {
+  b: 0,
+  w: 0,
+};
 const emptyState: GameStateWithHistory = {
   boardState: {},
   properties: {},
   node: {},
   moveState: emptyMoveState,
+  captureCounts: emptyCaptureCounts,
   history: [],
 };
 
@@ -45,13 +50,16 @@ describe('GoGameContext reducer', () => {
   });
 
   test('should handle captureStones action', () => {
-    // TODO: test capture count update
     const state: GameStateWithHistory = {
       ...emptyState,
       boardState: { aa: 'b', bb: 'w', cc: 'b' },
     };
-    const result = gameStateReducer(state, captureStones(['aa', 'bb']));
-    expect(result.boardState).toEqual({ cc: 'b' });
+    const result = gameStateReducer(state, captureStones(['aa', 'cc'], 'b'));
+    expect(result.boardState).toEqual({ bb: 'w' });
+    expect(result.captureCounts).toEqual({
+      b: 0,
+      w: 2,
+    });
   });
 
   test('should handle setNode action', () => {
@@ -84,6 +92,7 @@ describe('GoGameContext reducer', () => {
         properties: { boardSize: [19, 19] },
         node: {},
         moveState: emptyMoveState,
+        captureCounts: emptyCaptureCounts,
       },
     ]);
   });
