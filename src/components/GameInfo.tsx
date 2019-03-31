@@ -7,14 +7,15 @@ import TabContent from './Tabs/TabContent';
 import TabContentArea from './Tabs/TabContentArea';
 
 const GameInfo = () => (
-  <Tabs defaultTab="comments">
-    <TabBar
-      tabs={[
-        { value: 'comments', icon: 'comment', label: 'Comments' },
-        { value: 'game-tree', icon: 'linear_scale', label: 'Game Tree' },
-        { value: 'more-info', icon: 'more_vert' },
-      ]}
-    />
+  <Tabs
+    tabs={[
+      { value: 'comments', icon: 'comment', label: 'Comments' },
+      { value: 'game-tree', icon: 'linear_scale', label: 'Game Tree' },
+      { value: 'more-info', icon: 'more_vert' },
+    ]}
+    defaultTab="comments"
+  >
+    <TabBar />
     <TabContentArea>
       <TabContent tab="comments">
         <GameComments />

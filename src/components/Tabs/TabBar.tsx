@@ -23,21 +23,12 @@ const TabBarContainer = styled.div`
   }
 `;
 
-interface TabValue {
-  value: string;
-  icon?: string;
-  label?: string;
-}
-interface TabBarProps {
-  tabs: TabValue[];
-}
-
-const TabBar: React.FunctionComponent<TabBarProps> = ({ children, tabs }) => {
-  const { currentTab, setCurrentTab } = useTabContext();
+const TabBar: React.FunctionComponent = ({ children }) => {
+  const { currentTab, setCurrentTab, tabs } = useTabContext();
   return (
     <TabBarContainer>
       {tabs.map(tab => (
-        <FlatButton onClick={() => setCurrentTab(tab.value)}>
+        <FlatButton key={tab.value} onClick={() => setCurrentTab(tab.value)}>
           {tab.icon && <FontIcon icon={tab.icon} />}
           {tab.label && <span>{tab.label}</span>}
         </FlatButton>
