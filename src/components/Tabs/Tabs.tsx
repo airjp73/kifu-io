@@ -12,6 +12,7 @@ const TabsContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 interface TabsProps {
   defaultTab: string;
 }

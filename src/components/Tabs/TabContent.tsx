@@ -1,32 +1,17 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
-import { useTabContext } from './Tabs';
-import posed from 'react-pose';
-
-const TabContentArea = styled.div`
-  flex: 1;
-`;
-// const TabContentArea = posed(TabContentStyle)({
-//   enter: {
-//     x: 0,
-//   },
-//   exit: {
-//     x: 50,
-//   },
-// });
+import React from 'react';
 
 interface TabContentProps {
+  currentTab?: string;
   tab: string;
+  children: React.ReactElement;
 }
 
 const TabContent: React.FunctionComponent<TabContentProps> = ({
   children,
+  currentTab,
   tab,
 }) => {
-  const { currentTab } = useTabContext();
-  return (
-    currentTab === tab && <TabContentArea key={tab}>{children}</TabContentArea>
-  );
+  return currentTab === tab && children;
 };
 
 export default TabContent;
