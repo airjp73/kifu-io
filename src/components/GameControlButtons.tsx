@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import FontIcon from './FontIcon';
 import FlatButton from './FlatButton';
+import { lightBorder } from 'style';
 
 const GameControlButtonBar = styled.div`
   display: flex;
   justify-content: space-evenly;
   color: black;
   background-color: white;
-
-  border-top: 1px solid rgba(0, 0, 0, .2);
+  border-top: ${lightBorder};
 `;
 
 const GameControlButtons = () => {
@@ -38,6 +38,6 @@ const GameControlButtons = () => {
       </FlatButton>
     </GameControlButtonBar>
   );
-}
+};
 
 export default GameControlButtons;

@@ -197,6 +197,7 @@ const GameTreeContainer = styled.div`
   overflow: scroll;
   background-color: #ccc;
   position: relative;
+  height: 100%;
 `;
 
 const GameTreeCanvas = styled.canvas`
