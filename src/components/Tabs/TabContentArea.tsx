@@ -1,22 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import posed, { PoseGroup } from 'react-pose';
 import { useTabContext } from './Tabs';
 
+const transition = { duration: 250, ease: 'easeInOut' };
+interface TabContentContainerProps {
+  direction: 'left' | 'right';
+}
 const TabContentContainer = posed.div({
+  preEnter: {
+    x: ({ direction }: TabContentContainerProps) =>
+      direction === 'left' ? '-100%' : '100%',
+  },
   enter: {
     x: 0,
-    delay: 300,
-    beforeChildren: true,
+    transition,
   },
   exit: {
-    x: '100%',
+    x: ({ direction }: TabContentContainerProps) =>
+      direction === 'left' ? '100%' : '-100%',
+    transition,
   },
 });
 
 const TabContentArea: React.FunctionComponent = ({ children }) => {
-  const { currentTab } = useTabContext();
+  const { currentTab, tabs } = useTabContext();
+  const [previousTab, setPreviousTab] = useState(currentTab);
+
+  const animDirection = useMemo(() => {
+    const prevIndex = tabs.findIndex(tab => tab.value === previousTab);
+    const currentIndex = tabs.findIndex(tab => tab.value === currentTab);
+    return prevIndex < currentIndex ? 'right' : 'left';
+  }, [currentTab]);
+
+  useEffect(() => {
+    // Not sure why it works without this??
+    // But with this, the enter pose seems to be ignored
+    // setPreviousTab(currentTab);
+  }, [currentTab]);
+
   return (
-    <PoseGroup>
+    <PoseGroup preEnterPose="preEnter" direction={animDirection}>
       <TabContentContainer
         css={`
           flex: 1;
