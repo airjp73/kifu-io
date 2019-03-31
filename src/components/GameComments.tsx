@@ -11,6 +11,9 @@ const GameCommentContainer = styled.div`
   pre {
     white-space: pre-wrap;
   }
+  em {
+    opacity: .5;
+  }
 `;
 
 const GameComments = () => {
@@ -19,7 +22,7 @@ const GameComments = () => {
   return (
     <GameCommentContainer>
       {name && <h4>{name}</h4>}
-      <pre>{comment}</pre>
+      {comment ? <pre>{comment}</pre> : <em>No comments on this move</em>}
     </GameCommentContainer>
   );
 };
