@@ -8,6 +8,7 @@ import { headerHeight } from 'style';
 const GlobalStyles = createGlobalStyle`
   html, body {
     height: 100%;
+    overflow: hidden;
 
     #__next {
       height: 100%;
