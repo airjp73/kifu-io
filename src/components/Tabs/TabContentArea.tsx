@@ -28,7 +28,7 @@ const TabContentArea: React.FunctionComponent = ({ children }) => {
   const previousTab = usePrevious(currentTab);
 
   const animDirection = useMemo(() => {
-    const prevIndex = tabs.findIndex(tab => tab.value === previousTab.current);
+    const prevIndex = tabs.findIndex(tab => tab.value === previousTab);
     const currentIndex = tabs.findIndex(tab => tab.value === currentTab);
     return prevIndex < currentIndex ? 'right' : 'left';
   }, [currentTab]);

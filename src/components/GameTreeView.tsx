@@ -8,6 +8,7 @@ import {
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameNode } from 'parseSgf/parseSgf';
 import styled from 'styled-components';
+import usePrevious from 'hooks/usePrevious';
 
 const BLACK = 'b';
 const WHITE = 'w';
@@ -214,6 +215,7 @@ const GameTreeView = () => {
   const selectionLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
   const containerRef = useRef(null);
+  const previousContainer = usePrevious(containerRef.current);
   const { gameState, gameTree, goToNode } = useGoGameContext();
 
   // Turn the game tree into a format that's easier to work with
@@ -261,13 +263,19 @@ const GameTreeView = () => {
         if (!treeNode) continue;
         if (treeNode.node === gameState.node) {
           gameTreeRenderer.current.drawNodeSelection(xIndex, yIndex);
-          const nodeX = gameTreeRenderer.current.getCoord(xIndex);
-          const nodeY = gameTreeRenderer.current.getCoord(yIndex);
-          containerRef.current.scrollTo({
-            left: nodeX,
-            top: nodeY,
-            behavior: 'smooth',
-          });
+          // TODO: Tweak this calculation
+          const nodeX = gameTreeRenderer.current.getCoord(xIndex) - containerRef.current.offsetWidth / 2;
+          const nodeY = gameTreeRenderer.current.getCoord(yIndex) - containerRef.current.offsetHeight / 2;
+          if (previousContainer === null) {
+            containerRef.current.scrollTop = nodeY;
+            containerRef.current.scrollLeft = nodeX;
+          } else {
+            containerRef.current.scrollTo({
+              left: nodeX,
+              top: nodeY,
+              behavior: 'smooth',
+            });
+          }
           return;
         }
       }
