@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import posed, { PoseGroup } from 'react-pose';
 import { useTabContext } from './Tabs';
+import usePrevious from 'hooks/usePrevious';
 
 const transition = { duration: 250, ease: 'easeInOut' };
 interface TabContentContainerProps {
@@ -24,18 +25,12 @@ const TabContentContainer = posed.div({
 
 const TabContentArea: React.FunctionComponent = ({ children }) => {
   const { currentTab, tabs } = useTabContext();
-  const [previousTab, setPreviousTab] = useState(currentTab);
+  const previousTab = usePrevious(currentTab);
 
   const animDirection = useMemo(() => {
-    const prevIndex = tabs.findIndex(tab => tab.value === previousTab);
+    const prevIndex = tabs.findIndex(tab => tab.value === previousTab.current);
     const currentIndex = tabs.findIndex(tab => tab.value === currentTab);
     return prevIndex < currentIndex ? 'right' : 'left';
-  }, [currentTab]);
-
-  useEffect(() => {
-    // Not sure why it works without this??
-    // But with this, the enter pose seems to be ignored
-    // setPreviousTab(currentTab);
   }, [currentTab]);
 
   return (
