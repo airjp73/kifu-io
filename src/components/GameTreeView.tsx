@@ -8,6 +8,7 @@ import {
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameNode } from 'parseSgf/parseSgf';
 import styled from 'styled-components';
+import { animated, useSpring } from 'react-spring';
 import usePrevious from 'hooks/usePrevious';
 
 const BLACK = 'b';
@@ -194,12 +195,12 @@ const createGridFromTree = (
   return cell;
 };
 
-const GameTreeContainer = styled.div`
+const GameTreeContainer = animated(styled.div`
   overflow: scroll;
   background-color: #ccc;
   position: relative;
   height: 100%;
-`;
+`);
 
 const GameTreeCanvas = styled.canvas`
   position: absolute;
@@ -215,7 +216,10 @@ const GameTreeView = () => {
   const selectionLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
   const containerRef = useRef(null);
-  const previousContainer = usePrevious(containerRef.current);
+  const [containerScroll, setScroll, stopScroll] = useSpring(() => ({
+    scrollTop: 0,
+    scrollLeft: 0,
+  }));
   const { gameState, gameTree, goToNode } = useGoGameContext();
 
   // Turn the game tree into a format that's easier to work with
@@ -264,18 +268,17 @@ const GameTreeView = () => {
         if (treeNode.node === gameState.node) {
           gameTreeRenderer.current.drawNodeSelection(xIndex, yIndex);
           // TODO: Tweak this calculation
-          const nodeX = gameTreeRenderer.current.getCoord(xIndex) - containerRef.current.offsetWidth / 2;
-          const nodeY = gameTreeRenderer.current.getCoord(yIndex) - containerRef.current.offsetHeight / 2;
-          if (previousContainer === null) {
-            containerRef.current.scrollTop = nodeY;
-            containerRef.current.scrollLeft = nodeX;
-          } else {
-            containerRef.current.scrollTo({
-              left: nodeX,
-              top: nodeY,
-              behavior: 'smooth',
-            });
-          }
+          const nodeX =
+            gameTreeRenderer.current.getCoord(xIndex) -
+            containerRef.current.offsetWidth / 2;
+          const nodeY =
+            gameTreeRenderer.current.getCoord(yIndex) -
+            containerRef.current.offsetHeight / 2;
+
+          setScroll({
+            scrollTop: nodeY,
+            scrollLeft: nodeX,
+          });
           return;
         }
       }
@@ -293,7 +296,18 @@ const GameTreeView = () => {
   };
 
   return (
-    <GameTreeContainer ref={containerRef}>
+    <GameTreeContainer
+      {...containerScroll}
+      ref={containerRef}
+      onScroll={event => {
+        event.persist();
+        setScroll({
+          scrollTop: event.target.scrollTop,
+          scrollLeft: event.target.scrollLeft,
+        });
+        stopScroll();
+      }}
+    >
       <GameTreeCanvas ref={selectionLayerRef} />
       <GameTreeCanvas ref={lineLayerRef} />
       <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
