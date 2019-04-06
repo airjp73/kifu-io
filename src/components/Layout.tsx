@@ -27,7 +27,9 @@ const Layout: React.FunctionComponent = ({ children }) => {
   return (
     <>
       <GlobalStyles />
-      <Header onMenuClick={() => setSidePanelOpen(true)}>Home</Header>
+      <Header onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)}>
+        Home
+      </Header>
       <SlideOutPanel
         active={sidePanelOpen}
         onClose={() => setSidePanelOpen(false)}
