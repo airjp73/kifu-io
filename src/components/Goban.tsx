@@ -175,6 +175,7 @@ class GobanCanvas {
 
     ctx.beginPath();
     ctx.lineWidth = this.unit / 30;
+    ctx.strokeStyle = '#000';
 
     // Vertical lines
     for (let x = 0; x < this.size[0]; ++x) {
