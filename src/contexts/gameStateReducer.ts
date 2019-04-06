@@ -29,7 +29,7 @@ export type GameStateAction =
   | SetPropertyAction;
 
 export interface BoardState {
-  [key: string]: StoneColor;
+  [key: string]: StoneColor | null;
 }
 const setPoints = (state: BoardState, action: SetPointAction) => {
   const nextState = { ...state };

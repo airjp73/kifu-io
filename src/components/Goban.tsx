@@ -1,9 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
-import { createBlackStone, createWhiteStone, calculateStonePadding } from 'canvas/createStoneSprite';
+import {
+  createBlackStone,
+  createWhiteStone,
+  calculateStonePadding,
+} from 'canvas/createStoneSprite';
 
-export type StoneColor = 'b' | 'w' | null;
+export type StoneColor = 'b' | 'w';
 type StarPoints = [number, number][];
 
 const starPoints9: StarPoints = [[2, 2], [6, 2], [2, 6], [6, 6], [4, 4]];
