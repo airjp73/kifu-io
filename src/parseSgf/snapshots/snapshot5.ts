@@ -5,7 +5,9 @@ PW[White]PB[Black]
 ;B[pd]GB[1]
 ;W[dd]GW[1]
 ;B[pp]GB[2]HO[2]
-;W[dp]N[This move has a name]C[This is just to test out names and comments]GW[2]
+;W[dp]N[Black gets the first approach move]C[This is where the game will really start to get exciting.
+And all my comments should be formatted correctly!
+  How about tabs?    Or spaces?]GW[2]
 ;AB[jf][jg][jh][ji][jj]
   AW[kf][kg][kh][ki][kj]
   CR[ih][jh][kh]
