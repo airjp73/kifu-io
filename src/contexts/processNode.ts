@@ -16,6 +16,8 @@ import {
   addComment,
   addName,
   setPlayerToPlay,
+  setPositionStatus,
+  setMoveAsHotspot,
 } from './moveStateActions';
 
 /**
@@ -92,6 +94,26 @@ const processNode = (
 
   if (properties.N) {
     dispatch(addName(properties.N));
+  }
+
+  if (properties.DM) {
+    dispatch(setPositionStatus('even', properties.DM));
+  }
+
+  if (properties.GB) {
+    dispatch(setPositionStatus('b', properties.GB));
+  }
+
+  if (properties.GW) {
+    dispatch(setPositionStatus('w', properties.GW));
+  }
+
+  if (properties.UC) {
+    dispatch(setPositionStatus('unclear', properties.UC));
+  }
+
+  if (properties.HO) {
+    dispatch(setMoveAsHotspot());
   }
 
   // Markup properties

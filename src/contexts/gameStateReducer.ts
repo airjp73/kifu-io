@@ -78,6 +78,10 @@ const nodeReducer = (state: GameNode, action: GameStateAction): GameNode => {
   }
 };
 
+export interface PositionStatus {
+  favoredPlayer: StoneColor | 'even' | 'unclear';
+  magnitude: number;
+}
 export interface MoveState {
   circles: string[];
   squares: string[];
@@ -85,7 +89,9 @@ export interface MoveState {
   lines: [string, string][];
   comment?: string;
   name?: string;
+  hotspot?: boolean;
   playerToPlay?: StoneColor;
+  positionStatus?: PositionStatus;
 }
 const defaultMoveState: MoveState = {
   circles: [],
