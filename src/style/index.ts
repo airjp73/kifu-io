@@ -11,3 +11,5 @@ export const panelActiveButton = 'rgba(180, 180, 180, .25)';
 export const boxShadowLow = '0 1px 2px';
 
 export const headerHeight = '4rem';
+
+export const lightBorder = '1px solid rgba(0, 0, 0, .2)';
