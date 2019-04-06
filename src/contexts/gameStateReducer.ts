@@ -85,6 +85,7 @@ export interface MoveState {
   lines: [string, string][];
   comment?: string;
   name?: string;
+  playerToPlay?: StoneColor;
 }
 const defaultMoveState: MoveState = {
   circles: [],

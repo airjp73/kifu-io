@@ -15,6 +15,7 @@ import {
   addLines,
   addComment,
   addName,
+  setPlayerToPlay,
 } from './moveStateActions';
 
 /**
@@ -71,7 +72,7 @@ const processNode = (
     dispatch(setPoint(properties.AW, 'w'));
   }
   if (properties.PL) {
-    // TODO
+    dispatch(setPlayerToPlay(properties.PL));
   }
 
   if (

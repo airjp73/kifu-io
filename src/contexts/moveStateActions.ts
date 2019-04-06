@@ -1,4 +1,5 @@
 import { MoveState } from './gameStateReducer';
+import { StoneColor } from 'components/Goban';
 
 export const SET_MOVE_STATE = 'SET_MOVE_STATE';
 
@@ -26,3 +27,7 @@ export const addName = (name: string[]) => setMoveState({ name: name[0] });
 export const addSquares = (squares: string[]) => setMoveState({ squares });
 export const addTriangles = (triangles: string[]) =>
   setMoveState({ triangles });
+export const setPlayerToPlay = (playerToPlay: string[]) =>
+  setMoveState({
+    playerToPlay: (playerToPlay[0] === 'B' ? 'b' : 'w') as StoneColor,
+  });
