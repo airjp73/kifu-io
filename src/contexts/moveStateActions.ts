@@ -1,4 +1,4 @@
-import { MoveState, MoveQuality } from './gameStateReducer';
+import { MoveState, MoveQualityType } from './gameStateReducer';
 import { StoneColor } from 'components/Goban';
 
 export const SET_MOVE_STATE = 'SET_MOVE_STATE';
@@ -48,7 +48,10 @@ export const setPositionStatus = (
 
 export const setMoveAsHotspot = () => setMoveState({ hotspot: true });
 
-export const setMoveQuality = (quality: MoveQuality, magnitude?: string[]) =>
+export const setMoveQuality = (
+  quality: MoveQualityType,
+  magnitude?: string[]
+) =>
   setMoveState({
     moveQuality: {
       quality,

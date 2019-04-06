@@ -82,8 +82,10 @@ export interface PositionStatus {
   favoredPlayer: StoneColor | 'even' | 'unclear';
   magnitude: number;
 }
+
+export type MoveQualityType = 'bad' | 'doubtful' | 'interesting' | 'tesuji';
 export interface MoveQuality {
-  quality: 'bad' | 'doubtful' | 'interesting' | 'tesuji';
+  quality: MoveQualityType;
   magnitude?: number;
 }
 export interface MoveState {
