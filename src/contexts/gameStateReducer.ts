@@ -82,6 +82,10 @@ export interface PositionStatus {
   favoredPlayer: StoneColor | 'even' | 'unclear';
   magnitude: number;
 }
+export interface MoveQuality {
+  quality: 'bad' | 'doubtful' | 'interesting' | 'tesuji';
+  magnitude?: number;
+}
 export interface MoveState {
   circles: string[];
   squares: string[];
@@ -92,6 +96,7 @@ export interface MoveState {
   hotspot?: boolean;
   playerToPlay?: StoneColor;
   positionStatus?: PositionStatus;
+  moveQuality?: MoveQuality;
 }
 const defaultMoveState: MoveState = {
   circles: [],

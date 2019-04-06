@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
-import { PositionStatus } from 'contexts/gameStateReducer';
+import { PositionStatus, MoveQuality } from 'contexts/gameStateReducer';
 
 const Comment = styled.p`
   white-space: pre-wrap;
@@ -24,6 +24,8 @@ const GameCommentContainer = styled.div`
   }
   em {
     font-weight: 600;
+    display: block;
+    margin: 1rem 0;
   }
 `;
 
@@ -44,13 +46,29 @@ const getStatusMessage = ({ favoredPlayer, magnitude }: PositionStatus) => {
   }
 };
 
+const getQualityMessage = ({ quality, magnitude }: MoveQuality) => {
+  switch (quality) {
+    case 'bad':
+      return magnitude === 1 ? 'Bad move' : 'Very bad move';
+    case 'doubtful':
+      return 'Doubtful move';
+    case 'interesting':
+      return 'Interesting move';
+    case 'tesuji':
+      return magnitude === 1 ? 'Tesuji' : 'Powerful Tesuji!';
+    default:
+      return null;
+  }
+};
+
 const GameComments = () => {
   const { gameState } = useGoGameContext();
-  const { name, comment, positionStatus } = gameState.moveState;
+  const { name, comment, moveQuality, positionStatus } = gameState.moveState;
   const showEmptyMessage = !(name || comment || positionStatus);
   return (
     <GameCommentContainer>
       {name && <h3>{name}</h3>}
+      {moveQuality && <em>{getQualityMessage(moveQuality)}</em>}
       {positionStatus && <em>{getStatusMessage(positionStatus)}</em>}
       {comment && <Comment>{comment}</Comment>}
       {showEmptyMessage && <EmptyText>No comments on this move</EmptyText>}

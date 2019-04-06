@@ -18,6 +18,7 @@ import {
   setPlayerToPlay,
   setPositionStatus,
   setMoveAsHotspot,
+  setMoveQuality,
 } from './moveStateActions';
 
 /**
@@ -114,6 +115,23 @@ const processNode = (
 
   if (properties.HO) {
     dispatch(setMoveAsHotspot());
+  }
+
+  // Move annotation properties
+  if (properties.BM) {
+    dispatch(setMoveQuality('bad', properties.BM));
+  }
+
+  if (properties.DO) {
+    dispatch(setMoveQuality('doubtful'));
+  }
+
+  if (properties.IT) {
+    dispatch(setMoveQuality('interesting'));
+  }
+
+  if (properties.TE) {
+    dispatch(setMoveQuality('tesuji', properties.TE));
   }
 
   // Markup properties
