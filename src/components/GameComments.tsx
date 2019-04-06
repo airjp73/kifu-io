@@ -61,13 +61,31 @@ const getQualityMessage = ({ quality, magnitude }: MoveQuality) => {
   }
 };
 
+const getScoreMessage = (estimatedScore: number) =>
+  estimatedScore > 0
+    ? `Black is leading by ${estimatedScore} points`
+    : `White is leading by ${estimatedScore * -1} points`;
+
 const GameComments = () => {
   const { gameState } = useGoGameContext();
-  const { name, comment, moveQuality, positionStatus } = gameState.moveState;
-  const showEmptyMessage = !(name || comment || positionStatus);
+  const {
+    name,
+    comment,
+    estimatedScore,
+    moveQuality,
+    positionStatus,
+  } = gameState.moveState;
+  const showEmptyMessage = !(
+    name ||
+    comment ||
+    positionStatus ||
+    estimatedScore ||
+    moveQuality
+  );
   return (
     <GameCommentContainer>
       {name && <h3>{name}</h3>}
+      {estimatedScore && <em>{getScoreMessage(estimatedScore)}</em>}
       {moveQuality && <em>{getQualityMessage(moveQuality)}</em>}
       {positionStatus && <em>{getStatusMessage(positionStatus)}</em>}
       {comment && <Comment>{comment}</Comment>}

@@ -19,6 +19,7 @@ import {
   setPositionStatus,
   setMoveAsHotspot,
   setMoveQuality,
+  setEstimatedScore,
 } from './moveStateActions';
 
 /**
@@ -115,6 +116,10 @@ const processNode = (
 
   if (properties.HO) {
     dispatch(setMoveAsHotspot());
+  }
+
+  if (properties.V) {
+    dispatch(setEstimatedScore(properties.V));
   }
 
   // Move annotation properties

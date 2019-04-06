@@ -99,6 +99,7 @@ export interface MoveState {
   playerToPlay?: StoneColor;
   positionStatus?: PositionStatus;
   moveQuality?: MoveQuality;
+  estimatedScore?: number;
 }
 const defaultMoveState: MoveState = {
   circles: [],

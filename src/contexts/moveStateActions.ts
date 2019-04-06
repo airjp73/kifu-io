@@ -58,3 +58,6 @@ export const setMoveQuality = (
       magnitude: magnitude ? parseInt(magnitude[0]) : null,
     },
   });
+
+export const setEstimatedScore = (score: string[]) =>
+  setMoveState({ estimatedScore: parseFloat(score[0]) });
