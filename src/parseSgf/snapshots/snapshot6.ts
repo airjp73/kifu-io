@@ -37,7 +37,7 @@ Game commentary by Hans Pietsch ( http://gobase.org/information/players/?pp=Hans
 ;W[qq]
 ;B[cq]
 ;W[je]
-(;B[qf]LB[ob:a]C[Better invade deeply form the other side, at "a".]
+(;B[qf]LB[ob:a]C[Better invade deeply form the other side, at "a".]HO[]
 ;W[qd]
 (;B[of]LB[md:a]C[Tool slow: better invade at "a".]
 ;W[nd]

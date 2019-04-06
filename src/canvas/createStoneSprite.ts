@@ -46,7 +46,7 @@ export const createBlackStone = (radius: number, canvas?: HTMLCanvasElement) =>
 export const createWhiteStone = (radius: number, canvas?: HTMLCanvasElement) =>
   createStoneSprite(radius, '#fff', '#bbb', 0.95, canvas);
 
-export const createSelectionHighlight = (radius: number) => {
+export const createSelectionHighlight = (radius: number, color: string) => {
   const padding = 2;
   const canvas = document.createElement('canvas');
   canvas.width = (radius + padding) * 2;
@@ -56,7 +56,7 @@ export const createSelectionHighlight = (radius: number) => {
 
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = stoneSelectionHighlight;
+  ctx.fillStyle = color;
   ctx.beginPath();
   ctx.moveTo(stoneCenter, padding);
   ctx.arc(stoneCenter, stoneCenter, radius, 0, Math.PI * 2);
