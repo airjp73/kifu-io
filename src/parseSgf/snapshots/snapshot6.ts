@@ -1,7 +1,7 @@
 export default `
 (;GM[1]FF[4]CA[UTF-8]AP[CGoban:2]ST[2]
 RU[Japanese]SZ[19]KM[0.00]TM[]
-PW[Sorin Gherman]PB[Anton Zatonskikh]DT[1994-07-03]EV[D class]C[Anton was one of the few non-asian inseis (he's Russian). His Go was very territorial.
+PW[Sorin Gherman]PB[Anton Zatonskikh]DT[1994-07-03]EV[D class]GN[An actual game record by someone else]GC[Anton was one of the few non-asian inseis (he's Russian). His Go was very territorial.
 We played this game in D class: it was my 3rd month as an insei: first was in D, were I easily promoted to C. Second was in C, were I easily fall back to D :-).
 For Anton this was his first month as an insei.
 
