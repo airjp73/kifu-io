@@ -8,7 +8,7 @@ export interface SetPropertyAction {
   properties: SetPropertyActionPayload;
 }
 
-const setProperty = (
+export const setProperty = (
   properties: SetPropertyActionPayload
 ): SetPropertyAction => ({
   type: SET_PROPERTY,

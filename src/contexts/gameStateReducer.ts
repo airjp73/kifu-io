@@ -60,11 +60,25 @@ export interface GameStateProperties {
   application?: { name: string; version: string };
   boardSize?: [number, number];
   copyright?: string;
+  eventName?: string;
+  gameComment?: string;
+  gameName?: string;
+  opening?: string;
+  overtime?: string;
+  placePlayed?: string;
   playedOn?: PlayedOnDates;
+  playerBlack?: string;
+  playerWhite?: string;
   rankBlack?: string;
   rankWhite?: string;
+  result?: string;
+  round?: string; // something?
+  ruleSet?: string;
+  source?: string;
   teamBlack?: string;
   teamWhite?: string;
+  timeLimit?: number;
+  userEnteringGameRecord?: string;
   variationDisplay?: { show: boolean; showFor: 'NEXT_MOVE' | 'CURRENT_MOVE' };
 }
 const propertiesReducer = (
