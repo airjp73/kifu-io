@@ -3,35 +3,51 @@ import { useTabContext } from './Tabs';
 import styled from 'styled-components';
 import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
-import { lightBorder } from 'style';
+import { lightBorder, primaryAction, highlight } from 'style';
 
 const TabBarContainer = styled.div`
   display: flex;
   flex-grow: 0;
   border-bottom: ${lightBorder};
+`;
 
-  ${FlatButton} {
-    padding: 0.5rem;
+// interface TabBarButtonProps {
+//   highlighted: boolean;
+// }
+// Use `any` because typing styled-components is frustrating
+const TabBarButton = styled<any>(FlatButton)`
+  padding: 0.5rem;
+  transition: background-color 0.25s ease, color 0.25s ease;
 
-    ${FontIcon} {
-      font-size: 1rem;
+  ${FontIcon} {
+    font-size: 1rem;
 
-      ~ * {
-        padding-left: 0.5rem;
-      }
+    ~ * {
+      padding-left: 0.5rem;
     }
   }
+
+  ${({ highlighted }) =>
+    highlighted &&
+    `
+      background-color: ${primaryAction};
+      color: ${highlight};
+    `}
 `;
 
 const TabBar: React.FunctionComponent = ({ children }) => {
-  const { currentTab, setCurrentTab, tabs } = useTabContext();
+  const { highlightedTabs, setCurrentTab, tabs } = useTabContext();
   return (
     <TabBarContainer>
       {tabs.map(tab => (
-        <FlatButton key={tab.value} onClick={() => setCurrentTab(tab.value)}>
+        <TabBarButton
+          highlighted={highlightedTabs.includes(tab.value)}
+          key={tab.value}
+          onClick={() => setCurrentTab(tab.value)}
+        >
           {tab.icon && <FontIcon icon={tab.icon} />}
           {tab.label && <span>{tab.label}</span>}
-        </FlatButton>
+        </TabBarButton>
       ))}
     </TabBarContainer>
   );
