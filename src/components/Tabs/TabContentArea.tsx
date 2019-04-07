@@ -14,6 +14,7 @@ const TabContentContainer = animated(styled.div`
   right: 0;
   left: 0;
   bottom: 0;
+  overflow: auto;
 `);
 
 const TabContentArea: React.FunctionComponent = ({ children }) => {

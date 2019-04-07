@@ -1,9 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
-import { createBlackStone, createWhiteStone, calculateStonePadding } from 'canvas/createStoneSprite';
+import {
+  createBlackStone,
+  createWhiteStone,
+  calculateStonePadding,
+} from 'canvas/createStoneSprite';
 
-export type StoneColor = 'b' | 'w' | null;
+export type StoneColor = 'b' | 'w';
 type StarPoints = [number, number][];
 
 const starPoints9: StarPoints = [[2, 2], [6, 2], [2, 6], [6, 6], [4, 4]];
@@ -128,7 +132,7 @@ class GobanCanvas {
   };
 
   public drawCircle = (x: number, y: number, color: string) => {
-    const circleRadius = this.stoneRadius * 0.7;
+    const circleRadius = this.stoneRadius * 0.55;
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
@@ -171,6 +175,7 @@ class GobanCanvas {
 
     ctx.beginPath();
     ctx.lineWidth = this.unit / 30;
+    ctx.strokeStyle = '#000';
 
     // Vertical lines
     for (let x = 0; x < this.size[0]; ++x) {
@@ -264,7 +269,7 @@ const Board = styled.canvas`
 
 const Goban = () => {
   const { gameState } = useGoGameContext();
-  const { boardState, properties } = gameState;
+  const { boardState, properties, node } = gameState;
   const boardRef: React.Ref<HTMLCanvasElement> = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
@@ -287,6 +292,18 @@ const Goban = () => {
       const [x, y] = pointToXY(point);
       goban.current.drawStone(x, y, color);
     });
+
+    const currentMove =
+      node.properties && (node.properties.B || node.properties.W);
+    if (currentMove) {
+      const point = currentMove && currentMove[0];
+      const coord = pointToXY(point);
+      goban.current.drawCircle(
+        coord[0],
+        coord[1],
+        boardState[point] === 'b' ? '#fff' : '#000'
+      );
+    }
 
     gameState.moveState.triangles.forEach(point => {
       const coord = pointToXY(point);

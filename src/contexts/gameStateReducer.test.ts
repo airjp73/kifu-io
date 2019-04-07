@@ -10,6 +10,7 @@ import {
   setBoardSize,
   setApplication,
   SetVariationDisplaySettings,
+  setPlayedOnDate,
 } from './propertiesActions';
 import gameStateReducer, {
   GameStateWithHistory,
@@ -189,6 +190,26 @@ describe('GoGameContext reducer', () => {
       emptyState,
       addName(['This is a move']),
       { moveState: { name: 'This is a move' } },
+    ],
+
+    [
+      'setPlayedOnDate',
+      emptyState,
+      setPlayedOnDate(['2019-01-01,02,03,02-04,05,06-07,2020-01']),
+      {
+        properties: {
+          playedOn: {
+            '2019': {
+              '01': [1, 2, 3],
+              '02': [4, 5],
+              '06': [7],
+            },
+            '2020': {
+              '01': [],
+            },
+          },
+        },
+      },
     ],
   ]).test(
     'should correctly handle %s action',

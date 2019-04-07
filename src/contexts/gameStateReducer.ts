@@ -29,7 +29,7 @@ export type GameStateAction =
   | SetPropertyAction;
 
 export interface BoardState {
-  [key: string]: StoneColor;
+  [key: string]: StoneColor | null;
 }
 const setPoints = (state: BoardState, action: SetPointAction) => {
   const nextState = { ...state };
@@ -50,9 +50,35 @@ const boardStateReducer = (
   }
 };
 
+export interface PlayedOnDates {
+  [key: string]: {
+    [key: string]: number[];
+  };
+}
 export interface GameStateProperties {
-  boardSize?: [number, number];
+  annotatorName?: string;
   application?: { name: string; version: string };
+  boardSize?: [number, number];
+  copyright?: string;
+  eventName?: string;
+  gameComment?: string;
+  gameName?: string;
+  opening?: string;
+  overtime?: string;
+  placePlayed?: string;
+  playedOn?: PlayedOnDates;
+  playerBlack?: string;
+  playerWhite?: string;
+  rankBlack?: string;
+  rankWhite?: string;
+  result?: string;
+  round?: string; // something?
+  ruleSet?: string;
+  source?: string;
+  teamBlack?: string;
+  teamWhite?: string;
+  timeLimit?: number;
+  userEnteringGameRecord?: string;
   variationDisplay?: { show: boolean; showFor: 'NEXT_MOVE' | 'CURRENT_MOVE' };
 }
 const propertiesReducer = (
@@ -78,13 +104,28 @@ const nodeReducer = (state: GameNode, action: GameStateAction): GameNode => {
   }
 };
 
+export interface PositionStatus {
+  favoredPlayer: StoneColor | 'even' | 'unclear';
+  magnitude: number;
+}
+
+export type MoveQualityType = 'bad' | 'doubtful' | 'interesting' | 'tesuji';
+export interface MoveQuality {
+  quality: MoveQualityType;
+  magnitude?: number;
+}
 export interface MoveState {
   circles: string[];
+  comment?: string;
+  estimatedScore?: number;
+  hotspot?: boolean;
+  lines: [string, string][];
+  moveQuality?: MoveQuality;
+  name?: string;
+  playerToPlay?: StoneColor;
+  positionStatus?: PositionStatus;
   squares: string[];
   triangles: string[];
-  lines: [string, string][];
-  comment?: string;
-  name?: string;
 }
 const defaultMoveState: MoveState = {
   circles: [],

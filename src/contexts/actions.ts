@@ -12,7 +12,7 @@ export const PUSH_HISTORY = 'PUSH_HISTORY';
 export interface SetPointAction {
   type: typeof SET_POINT;
   points: string[];
-  value: StoneColor;
+  value: StoneColor | null;
 }
 export const setPoint = (
   points: string[],
@@ -28,7 +28,10 @@ export interface CaptureAction {
   points: string[];
   color: StoneColor;
 }
-export const captureStones = (points: string[], color: StoneColor): CaptureAction => ({
+export const captureStones = (
+  points: string[],
+  color: StoneColor
+): CaptureAction => ({
   type: CAPTURE,
   points,
   color,

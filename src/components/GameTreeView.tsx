@@ -9,6 +9,7 @@ import {
 } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameNode } from 'parseSgf/parseSgf';
+import { hotspotHighlight, stoneSelectionHighlight } from 'style';
 
 const BLACK = 'b';
 const WHITE = 'w';
@@ -33,16 +34,19 @@ class GameTree {
   private whiteStone: HTMLCanvasElement;
   private setupNode: HTMLCanvasElement;
   private selectionHighlight: HTMLCanvasElement;
+  private hotspotHighlight: HTMLCanvasElement;
 
   // Canvas layers
   private stoneLayer: HTMLCanvasElement;
   private lineLayer: HTMLCanvasElement;
-  private selectionLayer: HTMLCanvasElement;
+  private selectionLayer: HTMLCanvasElement; // Separate from highlight layer because it changes so often
+  private highlightLayer: HTMLCanvasElement;
 
   public constructor(
     stoneLayer: HTMLCanvasElement,
     lineLayer: HTMLCanvasElement,
     selectionLayer: HTMLCanvasElement,
+    highlightLayer: HTMLCanvasElement,
     width: number,
     height: number
   ) {
@@ -61,10 +65,19 @@ class GameTree {
     this.selectionLayer.width = canvasWidth;
     this.selectionLayer.height = canvasHeight;
 
+    this.highlightLayer = highlightLayer;
+    this.highlightLayer.width = canvasWidth;
+    this.highlightLayer.height = canvasHeight;
+
     this.blackStone = createBlackStone(GameTree.stoneRadius);
     this.whiteStone = createWhiteStone(GameTree.stoneRadius);
     this.selectionHighlight = createSelectionHighlight(
-      GameTree.highlightRadius
+      GameTree.highlightRadius,
+      stoneSelectionHighlight
+    );
+    this.hotspotHighlight = createSelectionHighlight(
+      GameTree.highlightRadius,
+      hotspotHighlight
     );
     this.setupNode = this.createSetupNode();
   }
@@ -87,9 +100,9 @@ class GameTree {
     return canvas;
   };
 
-  public drawNode = (x: number, y: number, treeCell: TreeCell) => {
+  public drawNode = (x: number, y: number, type: TreeCellType) => {
     let stone;
-    switch (treeCell.type) {
+    switch (type) {
       case BLACK:
         stone = this.blackStone;
         break;
@@ -129,7 +142,7 @@ class GameTree {
     ctx.stroke();
   };
 
-  public drawNodeSelection = (x: never, y: number) => {
+  public drawNodeSelection = (x: number, y: number) => {
     const ctx = this.selectionLayer.getContext('2d');
     const stonePadding = calculateStonePadding(GameTree.stoneRadius);
     const highlightPadding = 2;
@@ -144,6 +157,21 @@ class GameTree {
     // Only show one selection at a time
     ctx.clearRect(0, 0, this.selectionLayer.width, this.selectionLayer.height);
     ctx.drawImage(this.selectionHighlight, xCoord, yCoord);
+  };
+
+  public drawHotspot = (x: number, y: number) => {
+    const ctx = this.highlightLayer.getContext('2d');
+    const stonePadding = calculateStonePadding(GameTree.stoneRadius);
+    const highlightPadding = 2;
+    const radiusDiff =
+      GameTree.highlightRadius -
+      GameTree.stoneRadius -
+      stonePadding +
+      highlightPadding;
+    const xCoord = this.getCoord(x) - radiusDiff;
+    const yCoord = this.getCoord(y) - radiusDiff;
+
+    ctx.drawImage(this.hotspotHighlight, xCoord, yCoord);
   };
 
   public getCoord = (gridLocation: number) =>
@@ -213,6 +241,7 @@ const GameTreeView = () => {
   const nodeLayerRef = useRef(null);
   const lineLayerRef = useRef(null);
   const selectionLayerRef = useRef(null);
+  const highlightLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
   const containerRef = useRef(null);
   const { gameState, gameTree, goToNode } = useGoGameContext();
@@ -234,6 +263,7 @@ const GameTreeView = () => {
         nodeLayerRef.current,
         lineLayerRef.current,
         selectionLayerRef.current,
+        highlightLayerRef.current,
         Math.max(...treeGrid.map(row => row.length)),
         treeGrid.length
       );
@@ -241,7 +271,7 @@ const GameTreeView = () => {
 
     treeGrid.forEach((row, yIndex) => {
       row.forEach((treeNode, xIndex) => {
-        gameTreeRenderer.current.drawNode(xIndex, yIndex, treeNode);
+        gameTreeRenderer.current.drawNode(xIndex, yIndex, treeNode.type);
         if (treeNode.parentLocation) {
           gameTreeRenderer.current.drawNodeConnection(
             treeNode.parentLocation[0],
@@ -249,6 +279,11 @@ const GameTreeView = () => {
             xIndex,
             yIndex
           );
+        }
+
+        // Highlight node if it's a hotspot
+        if (treeNode.node.properties.HO) {
+          gameTreeRenderer.current.drawHotspot(xIndex, yIndex);
         }
       });
     });
@@ -303,8 +338,12 @@ const GameTreeView = () => {
   const handleCanvasClick: React.MouseEventHandler = event => {
     const xCoord = event.nativeEvent.offsetX;
     const yCoord = event.nativeEvent.offsetY;
-    const x = Math.floor(gameTreeRenderer.current.coordToGridLocation(xCoord));
-    const y = Math.floor(gameTreeRenderer.current.coordToGridLocation(yCoord));
+    const x = Math.floor(
+      gameTreeRenderer.current.coordToGridLocation(xCoord) - 0.25
+    );
+    const y = Math.floor(
+      gameTreeRenderer.current.coordToGridLocation(yCoord) - 0.25
+    );
     if (treeGrid[y] && treeGrid[y][x]) {
       goToNode(treeGrid[y][x].node);
     }
@@ -312,6 +351,7 @@ const GameTreeView = () => {
 
   return (
     <GameTreeContainer {...containerScroll} ref={containerRef}>
+      <GameTreeCanvas ref={highlightLayerRef} />
       <GameTreeCanvas ref={selectionLayerRef} />
       <GameTreeCanvas ref={lineLayerRef} />
       <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />

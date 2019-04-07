@@ -1,4 +1,4 @@
-import { GameStateProperties } from './gameStateReducer';
+import { GameStateProperties, PlayedOnDates } from './gameStateReducer';
 
 export const SET_PROPERTY = 'SET_PROPERTY';
 
@@ -8,7 +8,7 @@ export interface SetPropertyAction {
   properties: SetPropertyActionPayload;
 }
 
-const setProperty = (
+export const setProperty = (
   properties: SetPropertyActionPayload
 ): SetPropertyAction => ({
   type: SET_PROPERTY,
@@ -42,4 +42,38 @@ export const setBoardSize = (sizeProperty: string[]) => {
   const x = parseInt(value[0]);
   const y = value[1] ? parseInt(value[1]) : x;
   return setProperty({ boardSize: [x, y] });
+};
+
+export const setAnnotatorName = (annotatorValue: string[]) =>
+  setProperty({ annotatorName: annotatorValue[0] });
+
+export const setPlayedOnDate = (dateValue: string[]) => {
+  // This could probably be smarter, but it's not worthing investing too much time in
+  const dateStrings = dateValue[0].split(',');
+  const results: PlayedOnDates = {};
+  let currentYear: string, currentMonth: string, currentDay: number;
+  dateStrings.forEach(dateString => {
+    const pieces = dateString.split('-');
+    pieces.forEach((piece, index) => {
+      if (piece.length === 4) {
+        currentYear = piece;
+        currentMonth = null;
+        currentDay = null;
+      } else if (
+        (index === 1 && pieces[0].length === 4) ||
+        (index === 0 && pieces.length === 2)
+      ) {
+        currentMonth = piece;
+        currentDay = null;
+      } else currentDay = parseInt(piece);
+    });
+    results[currentYear] = results[currentYear] || {};
+    if (currentMonth) {
+      results[currentYear][currentMonth] =
+        results[currentYear][currentMonth] || [];
+      if (currentDay) results[currentYear][currentMonth].push(currentDay);
+    }
+  });
+
+  return setProperty({ playedOn: results });
 };
