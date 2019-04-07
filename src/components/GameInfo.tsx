@@ -1,5 +1,7 @@
 import React from 'react';
 import { useGoGameContext } from 'contexts/GoGameContext';
+import FontIcon from 'components/FontIcon';
+import FlatButton from 'components/FlatButton';
 import GameTreeView from 'components/GameTreeView';
 import GameProperties from 'components/GameProperties';
 import GameComments from './GameComments';
@@ -40,7 +42,15 @@ const GameInfo = () => {
       ]}
       defaultTab="comments"
     >
-      <TabBar />
+      <TabBar>
+        <FlatButton
+          css={`
+            height: 100%;
+          `}
+        >
+          <FontIcon icon="expand_less" size="SMALL" />
+        </FlatButton>
+      </TabBar>
       <TabContentArea>
         <TabContent tab="comments">
           <GameComments />
