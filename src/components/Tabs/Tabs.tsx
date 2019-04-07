@@ -19,6 +19,7 @@ export const useTabContext = () => useContext(TabContext);
 const TabsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 interface TabsProps {
