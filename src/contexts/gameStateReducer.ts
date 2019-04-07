@@ -126,12 +126,16 @@ export interface MoveState {
   positionStatus?: PositionStatus;
   squares: string[];
   triangles: string[];
+  xMarks: string[];
+  labels: { point: string; label: string }[];
 }
 const defaultMoveState: MoveState = {
   circles: [],
   squares: [],
   triangles: [],
   lines: [],
+  xMarks: [],
+  labels: [],
 };
 const moveStateReducer = (
   state: MoveState = defaultMoveState,

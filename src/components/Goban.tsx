@@ -6,6 +6,7 @@ import {
   createWhiteStone,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
+import { primaryAction, panelBackground, highlight } from 'style';
 
 export type StoneColor = 'b' | 'w';
 type StarPoints = [number, number][];
@@ -162,6 +163,15 @@ class GobanCanvas {
     ctx.stroke();
   };
 
+  public drawLabel = (x: number, y: number, label: string, color: string) => {
+    const ctx = this.canvas.getContext('2d');
+    ctx.font = `${this.unit * 0.8}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = color;
+    ctx.fillText(label, this.getCoord(x), this.getCoord(y) + 0.7);
+  };
+
   public drawBoard = () => {
     const ctx = this.canvas.getContext('2d');
 
@@ -288,6 +298,9 @@ const Goban = () => {
       return [x, y];
     };
 
+    const getMarkupColor = (point: string) =>
+      boardState[point] === 'b' ? '#fff' : '#000';
+
     Object.entries(boardState).forEach(([point, color]) => {
       const [x, y] = pointToXY(point);
       goban.current.drawStone(x, y, color);
@@ -307,19 +320,19 @@ const Goban = () => {
 
     gameState.moveState.triangles.forEach(point => {
       const coord = pointToXY(point);
-      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      const color = getMarkupColor(point);
       goban.current.drawTriangle(coord[0], coord[1], color);
     });
 
     gameState.moveState.squares.forEach(point => {
       const coord = pointToXY(point);
-      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      const color = getMarkupColor(point);
       goban.current.drawSquare(coord[0], coord[1], color);
     });
 
     gameState.moveState.circles.forEach(point => {
       const coord = pointToXY(point);
-      const color = boardState[point] === 'b' ? '#fff' : '#000';
+      const color = getMarkupColor(point);
       goban.current.drawCircle(coord[0], coord[1], color);
     });
 
@@ -327,6 +340,18 @@ const Goban = () => {
       const coord1 = pointToXY(line[0]);
       const coord2 = pointToXY(line[1]);
       goban.current.drawLine(coord1[0], coord1[1], coord2[0], coord2[1]);
+    });
+
+    gameState.moveState.xMarks.forEach(point => {
+      const coord = pointToXY(point);
+      const color = getMarkupColor(point);
+      goban.current.drawLabel(coord[0], coord[1], 'X', color);
+    });
+
+    gameState.moveState.labels.forEach(label => {
+      const coord = pointToXY(label.point);
+      const color = getMarkupColor(label.point);
+      goban.current.drawLabel(coord[0], coord[1], label.label, color);
     });
   };
 

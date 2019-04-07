@@ -23,6 +23,8 @@ import {
   addLines,
   addName,
   addComment,
+  addXMarks,
+  addLabels,
 } from './moveStateActions';
 
 const emptyMoveState: MoveState = {
@@ -30,6 +32,8 @@ const emptyMoveState: MoveState = {
   squares: [],
   triangles: [],
   lines: [],
+  xMarks: [],
+  labels: [],
 };
 const emptyCaptureCounts = {
   b: 0,
@@ -175,6 +179,27 @@ describe('GoGameContext reducer', () => {
       emptyState,
       addSquares(['aa', 'bb']),
       { moveState: { squares: ['aa', 'bb'] } },
+    ],
+
+    [
+      'addXMarks',
+      emptyState,
+      addXMarks(['aa', 'bb']),
+      { moveState: { xMarks: ['aa', 'bb'] } },
+    ],
+
+    [
+      'addLabels',
+      emptyState,
+      addLabels(['aa:Hello hello!', 'bb:A']),
+      {
+        moveState: {
+          labels: [
+            { point: 'aa', label: 'Hello hello!' },
+            { point: 'bb', label: 'A' },
+          ],
+        },
+      },
     ],
 
     [
