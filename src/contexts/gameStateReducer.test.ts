@@ -107,10 +107,9 @@ describe('GoGameContext reducer', () => {
 
   describe('setVariationDisplaySettings action', () => {
     each([
-      [0, false, 'NEXT_MOVE'],
-      [1, false, 'CURRENT_MOVE'],
-      [2, true, 'NEXT_MOVE'],
-      [3, true, 'CURRENT_MOVE'],
+      [0, true, 'NEXT_MOVE'],
+      [1, true, 'CURRENT_MOVE'],
+      [2, false, 'NEXT_MOVE'], // type doesn't actually matter since they're not shown
     ]).test(
       'should handle setVariationDisplaySettings action',
       (value, show, showFor) => {

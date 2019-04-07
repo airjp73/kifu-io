@@ -29,8 +29,8 @@ export const SetVariationDisplaySettings = (property: string[]) => {
   const value = parseInt(property[0]);
   return setProperty({
     variationDisplay: {
-      show: value - 2 >= 0,
-      showFor: value % 2 === 1 ? 'CURRENT_MOVE' : 'NEXT_MOVE',
+      show: value < 2,
+      showFor: value === 1 || value === 3 ? 'CURRENT_MOVE' : 'NEXT_MOVE',
     },
   });
 };
