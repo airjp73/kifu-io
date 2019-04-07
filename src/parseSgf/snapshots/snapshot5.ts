@@ -2,6 +2,7 @@ export default `
 (;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
 RU[Japanese]SZ[19]KM[0.00]
 PW[White]PB[Black]
+DT[2019]
 ;B[pd]GB[1]IT[2]
 ;W[dd]GW[1]TE[2]
 ;B[pp]GB[2]HO[2]

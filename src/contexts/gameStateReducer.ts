@@ -50,9 +50,21 @@ const boardStateReducer = (
   }
 };
 
+export interface PlayedOnDates {
+  [key: string]: {
+    [key: string]: number[];
+  };
+}
 export interface GameStateProperties {
-  boardSize?: [number, number];
+  annotatorName?: string;
   application?: { name: string; version: string };
+  boardSize?: [number, number];
+  copyright?: string;
+  playedOn?: PlayedOnDates;
+  rankBlack?: string;
+  rankWhite?: string;
+  teamBlack?: string;
+  teamWhite?: string;
   variationDisplay?: { show: boolean; showFor: 'NEXT_MOVE' | 'CURRENT_MOVE' };
 }
 const propertiesReducer = (
@@ -90,16 +102,16 @@ export interface MoveQuality {
 }
 export interface MoveState {
   circles: string[];
-  squares: string[];
-  triangles: string[];
-  lines: [string, string][];
   comment?: string;
-  name?: string;
+  estimatedScore?: number;
   hotspot?: boolean;
+  lines: [string, string][];
+  moveQuality?: MoveQuality;
+  name?: string;
   playerToPlay?: StoneColor;
   positionStatus?: PositionStatus;
-  moveQuality?: MoveQuality;
-  estimatedScore?: number;
+  squares: string[];
+  triangles: string[];
 }
 const defaultMoveState: MoveState = {
   circles: [],
