@@ -4,9 +4,16 @@ import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
 
 const NameAndCaptures = styled.div`
+  max-width: 100%;
+  overflow: hidden;
+
   h4 {
     margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
+
   span {
     color: rgba(0, 0, 0, 0.5);
     font-size: 0.8rem;
@@ -14,23 +21,23 @@ const NameAndCaptures = styled.div`
 `;
 
 const CaptureCountContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  padding: 0.5 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0 0.5rem;
   align-items: center;
+  max-width: 100vw;
+  overflow: hidden;
 
   > div {
     display: flex;
     align-items: center;
-    /* padding: .25rem; */
+    overflow: hidden;
+    justify-content: center;
 
     > canvas {
       height: min-content;
+      margin: -0.5rem;
       width: min-content;
-    }
-
-    > h4 {
-      margin: 0;
     }
   }
 `;
@@ -49,8 +56,8 @@ const CaptureCounts = () => {
   } = gameState.properties;
 
   useEffect(() => {
-    createBlackStone(8, blackStoneRef.current);
-    createWhiteStone(8, whiteStoneRef.current);
+    createBlackStone(12, blackStoneRef.current);
+    createWhiteStone(12, whiteStoneRef.current);
   }, []);
 
   return (
