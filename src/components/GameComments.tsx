@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
+import FlatButton from 'components/FlatButton';
+import FontIcon from 'components/FontIcon';
+import { primaryAction } from 'style';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { PositionStatus, MoveQuality } from 'contexts/gameStateReducer';
 
@@ -67,7 +70,8 @@ const getScoreMessage = (estimatedScore: number) =>
     : `White is leading by ${estimatedScore * -1} points`;
 
 const GameComments = () => {
-  const { gameState } = useGoGameContext();
+  const { gameState, goToNode } = useGoGameContext();
+  const { node } = gameState;
   const {
     name,
     comment,
@@ -82,6 +86,17 @@ const GameComments = () => {
     estimatedScore ||
     moveQuality
   );
+
+  const nextCommentMove = useMemo(() => {
+    let currentNode = node.children && node.children[0];
+    while (currentNode) {
+      if (currentNode.properties && currentNode.properties.C)
+        return currentNode;
+      currentNode = currentNode.children && currentNode.children[0];
+    }
+    return null;
+  }, [node]);
+
   return (
     <GameCommentContainer>
       {name && <h3>{name}</h3>}
@@ -90,6 +105,18 @@ const GameComments = () => {
       {positionStatus && <em>{getStatusMessage(positionStatus)}</em>}
       {comment && <Comment>{comment}</Comment>}
       {showEmptyMessage && <EmptyText>No comments on this move</EmptyText>}
+      {nextCommentMove && (
+        <FlatButton
+          css={`
+            color: ${primaryAction};
+            font-weight: bold;
+          `}
+          onClick={() => goToNode(nextCommentMove)}
+        >
+          <span style={{ marginRight: '.5rem' }}>Go to next comment</span>
+          <FontIcon size="SMALL" icon="arrow_forward" />
+        </FlatButton>
+      )}
     </GameCommentContainer>
   );
 };
