@@ -12,7 +12,7 @@ And all my comments should be formatted correctly!
 ;AB[jf][jg][jh][ji][jj]
   AW[kf][kg][kh][ki][kj]
   CR[ih][jh][kh]
-  LB[ii:A][ji:B][ki:C][ij:1][jj:2][kj:3]
+  LB[ii:A][ji:B][ki:C][ij:1][jj:2][kj:3][qc:Loooong Label]
   TR[if][jf][kf]
   SQ[ig][jg][kg]
   LN[ad:fg][ll:bo][ca:cm][ad:md]

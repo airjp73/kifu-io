@@ -23,6 +23,7 @@ import {
   setMoveQuality,
   setEstimatedScore,
   addLabels,
+  addXMarks,
 } from './moveStateActions';
 
 /**
@@ -171,7 +172,7 @@ const processNode = (
   }
 
   if (properties.MA) {
-    dispatch(addLabels(properties.M));
+    dispatch(addXMarks(properties.MA));
   }
 
   if (properties.SL) {
