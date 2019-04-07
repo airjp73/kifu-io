@@ -22,6 +22,7 @@ import {
   setMoveAsHotspot,
   setMoveQuality,
   setEstimatedScore,
+  addLabels,
 } from './moveStateActions';
 
 /**
@@ -162,8 +163,7 @@ const processNode = (
   }
 
   if (properties.LB) {
-    // TODO: Tackle at the same time as coordinates
-    // Text label centered on point
+    dispatch(addLabels(properties.LB));
   }
 
   if (properties.LN) {
@@ -171,8 +171,7 @@ const processNode = (
   }
 
   if (properties.MA) {
-    // TODO: Same as LB
-    // Mark with X
+    dispatch(addLabels(properties.M));
   }
 
   if (properties.SL) {

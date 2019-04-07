@@ -33,6 +33,16 @@ export const addSquares = (squares: string[]) => setMoveState({ squares });
 export const addTriangles = (triangles: string[]) =>
   setMoveState({ triangles });
 
+export const addXMarks = (xMarks: string[]) => setMoveState({ xMarks });
+
+export const addLabels = (labelValues: string[]) =>
+  setMoveState({
+    labels: labelValues.map(labelValue => {
+      const [point, label] = labelValue.split(':');
+      return { point, label };
+    }),
+  });
+
 export const setPlayerToPlay = (playerToPlay: string[]) =>
   setMoveState({
     playerToPlay: (playerToPlay[0] === 'B' ? 'b' : 'w') as StoneColor,
