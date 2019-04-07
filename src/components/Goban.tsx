@@ -132,7 +132,7 @@ class GobanCanvas {
   };
 
   public drawCircle = (x: number, y: number, color: string) => {
-    const circleRadius = this.stoneRadius * 0.7;
+    const circleRadius = this.stoneRadius * 0.55;
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
@@ -269,7 +269,7 @@ const Board = styled.canvas`
 
 const Goban = () => {
   const { gameState } = useGoGameContext();
-  const { boardState, properties } = gameState;
+  const { boardState, properties, node } = gameState;
   const boardRef: React.Ref<HTMLCanvasElement> = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
@@ -292,6 +292,18 @@ const Goban = () => {
       const [x, y] = pointToXY(point);
       goban.current.drawStone(x, y, color);
     });
+
+    const currentMove =
+      node.properties && (node.properties.B || node.properties.W);
+    if (currentMove) {
+      const point = currentMove && currentMove[0];
+      const coord = pointToXY(point);
+      goban.current.drawCircle(
+        coord[0],
+        coord[1],
+        boardState[point] === 'b' ? '#fff' : '#000'
+      );
+    }
 
     gameState.moveState.triangles.forEach(point => {
       const coord = pointToXY(point);
