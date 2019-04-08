@@ -7,5 +7,6 @@ module.exports = withTypescript(
       config.resolve.modules.push('./src');
       return config;
     },
+    target: 'serverless',
   })
 );
