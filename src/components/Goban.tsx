@@ -6,7 +6,6 @@ import {
   createWhiteStone,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
-import { primaryAction, panelBackground, highlight } from 'style';
 
 export type StoneColor = 'b' | 'w';
 type StarPoints = [number, number][];
@@ -27,17 +26,25 @@ const starPoints19: StarPoints = [
 
 class GobanCanvas {
   private size: [number, number];
-  private canvas: HTMLCanvasElement;
+
+  private boardLayer: HTMLCanvasElement;
+  private stoneLayer: HTMLCanvasElement;
 
   private unit: number;
   private stoneRadius: number;
   private blackStone: HTMLCanvasElement;
   private whiteStone: HTMLCanvasElement;
 
-  public constructor(canvas: HTMLCanvasElement, boardSize: [number, number]) {
-    this.canvas = canvas;
+  public constructor(
+    boardLayer: HTMLCanvasElement,
+    stoneLayer: HTMLCanvasElement,
+    boardSize: [number, number]
+  ) {
+    this.boardLayer = boardLayer;
+    this.stoneLayer = stoneLayer;
     this.size = boardSize;
-    canvas.getContext('2d').imageSmoothingEnabled = false;
+    boardLayer.getContext('2d').imageSmoothingEnabled = false;
+    stoneLayer.getContext('2d').imageSmoothingEnabled = false;
     this.init();
   }
 
@@ -56,13 +63,19 @@ class GobanCanvas {
 
   private calculateDimensions = () => {
     const pixelRatio = window.devicePixelRatio || 1;
-    const canvasRect = this.canvas.getBoundingClientRect();
-    this.canvas.width =
+    const canvasRect = this.boardLayer.getBoundingClientRect();
+
+    const width =
       Math.round(canvasRect.right * pixelRatio) -
       Math.round(canvasRect.left * pixelRatio);
-    this.unit = this.canvas.width / (this.size[0] + 1);
-    this.canvas.height = this.unit * (this.size[1] + 1);
+    this.unit = width / (this.size[0] + 1);
     this.stoneRadius = (this.unit - 2) / 2;
+    const height = this.unit * (this.size[1] + 1);
+
+    this.boardLayer.width = width;
+    this.stoneLayer.width = width;
+    this.boardLayer.height = height;
+    this.stoneLayer.height = height;
   };
 
   private initSprites = () => {
@@ -74,7 +87,7 @@ class GobanCanvas {
     const stone = color === 'b' ? this.blackStone : this.whiteStone;
 
     // We want the center of the sprite on the point, so subtract the radius and sprite padding
-    const ctx = this.canvas.getContext('2d');
+    const ctx = this.stoneLayer.getContext('2d');
     const stonePadding = calculateStonePadding(this.stoneRadius);
     const xCoord = this.getCoord(x) - this.stoneRadius - stonePadding;
     const yCoord = this.getCoord(y) - this.stoneRadius - stonePadding;
@@ -101,7 +114,7 @@ class GobanCanvas {
       yCoord + triangleRadius * Math.sin(angle3),
     ];
 
-    const ctx = this.canvas.getContext('2d');
+    const ctx = this.stoneLayer.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
     ctx.beginPath();
@@ -118,7 +131,7 @@ class GobanCanvas {
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
-    const ctx = this.canvas.getContext('2d');
+    const ctx = this.stoneLayer.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
 
@@ -137,7 +150,7 @@ class GobanCanvas {
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
-    const ctx = this.canvas.getContext('2d');
+    const ctx = this.stoneLayer.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
 
@@ -153,7 +166,7 @@ class GobanCanvas {
     const x2Coord = this.getCoord(x2);
     const y2Coord = this.getCoord(y2);
 
-    const ctx = this.canvas.getContext('2d');
+    const ctx = this.stoneLayer.getContext('2d');
     ctx.strokeStyle = '#000'; // Maybe try other colors?
     ctx.lineWidth = this.unit / 10;
 
@@ -164,7 +177,7 @@ class GobanCanvas {
   };
 
   public drawLabel = (x: number, y: number, label: string, color: string) => {
-    const ctx = this.canvas.getContext('2d');
+    const ctx = this.stoneLayer.getContext('2d');
     ctx.font = `${this.unit * 0.8}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -172,12 +185,17 @@ class GobanCanvas {
     ctx.fillText(label, this.getCoord(x), this.getCoord(y) + 0.7);
   };
 
+  public resetBoard = () => {
+    const ctx = this.stoneLayer.getContext('2d');
+    ctx.clearRect(0, 0, this.stoneLayer.width, this.stoneLayer.height);
+  };
+
   public drawBoard = () => {
-    const ctx = this.canvas.getContext('2d');
+    const ctx = this.boardLayer.getContext('2d');
 
     // Background color
     ctx.fillStyle = '#DDAE68';
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.fillRect(0, 0, this.boardLayer.width, this.boardLayer.height);
 
     const start = this.getCoord(0);
     const xEnd = this.getCoord(this.size[0] - 1);
@@ -273,23 +291,38 @@ class GobanCanvas {
   private getCoord = (coord: number) => coord * this.unit + this.unit;
 }
 
-const Board = styled.canvas`
+// Container with 1:1 aspect ratio
+const BoardContainer = styled.div`
+  position: relative;
   width: 100%;
+  padding-top: 100%;
+`;
+
+const Board = styled.canvas`
+  position: absolute;
+  width: 100%;
+  top: 0;
 `;
 
 const Goban = () => {
   const { gameState } = useGoGameContext();
   const { boardState, properties, node } = gameState;
-  const boardRef: React.Ref<HTMLCanvasElement> = useRef(null);
+  const stoneLayerRef = useRef(null);
+  const boardLayerRef = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
   const drawBoardState = () => {
     const boardSize = properties.boardSize || [19, 19];
     if (goban.current) goban.current.setSize(boardSize);
-    else goban.current = new GobanCanvas(boardRef.current, boardSize);
+    else
+      goban.current = new GobanCanvas(
+        boardLayerRef.current,
+        stoneLayerRef.current,
+        boardSize
+      );
 
     goban.current.setSize(properties.boardSize || [19, 19]);
-    goban.current.drawBoard();
+    goban.current.resetBoard();
 
     const pointToXY = (point: string): [number, number] => {
       const A = 'a'.charCodeAt(0);
@@ -367,7 +400,12 @@ const Goban = () => {
     return () => window.removeEventListener('resize', handleResize);
   });
 
-  return <Board ref={boardRef}>Go board not supported on your browser</Board>;
+  return (
+    <BoardContainer>
+      <Board ref={boardLayerRef} />
+      <Board ref={stoneLayerRef} />
+    </BoardContainer>
+  );
 };
 
 export default Goban;
