@@ -334,9 +334,13 @@ const Goban = () => {
         boardSize
       );
 
-    goban.current.setSize(properties.boardSize || [19, 19]);
-    goban.current.resetBoard();
+    // Markup isn't persisted from move to move so we can just clear it all
     goban.current.resetMarkup();
+
+    // TODO: Diff the board state instead of redrawing the whole thing
+    goban.current.resetBoard();
+
+    goban.current.setSize(properties.boardSize || [19, 19]);
 
     const pointToXY = (point: string): [number, number] => {
       const A = 'a'.charCodeAt(0);
