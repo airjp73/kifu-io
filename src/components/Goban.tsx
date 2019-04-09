@@ -29,6 +29,7 @@ class GobanCanvas {
 
   private boardLayer: HTMLCanvasElement;
   private stoneLayer: HTMLCanvasElement;
+  private markupLayer: HTMLCanvasElement;
 
   private unit: number;
   private stoneRadius: number;
@@ -38,13 +39,16 @@ class GobanCanvas {
   public constructor(
     boardLayer: HTMLCanvasElement,
     stoneLayer: HTMLCanvasElement,
+    markupLayer: HTMLCanvasElement,
     boardSize: [number, number]
   ) {
+    this.size = boardSize;
     this.boardLayer = boardLayer;
     this.stoneLayer = stoneLayer;
-    this.size = boardSize;
+    this.markupLayer = markupLayer;
     boardLayer.getContext('2d').imageSmoothingEnabled = false;
     stoneLayer.getContext('2d').imageSmoothingEnabled = false;
+    markupLayer.getContext('2d').imageSmoothingEnabled = false;
     this.init();
   }
 
@@ -74,8 +78,10 @@ class GobanCanvas {
 
     this.boardLayer.width = width;
     this.stoneLayer.width = width;
+    this.markupLayer.width = width;
     this.boardLayer.height = height;
     this.stoneLayer.height = height;
+    this.markupLayer.height = height;
   };
 
   private initSprites = () => {
@@ -114,7 +120,7 @@ class GobanCanvas {
       yCoord + triangleRadius * Math.sin(angle3),
     ];
 
-    const ctx = this.stoneLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
     ctx.beginPath();
@@ -131,7 +137,7 @@ class GobanCanvas {
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
-    const ctx = this.stoneLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
 
@@ -150,7 +156,7 @@ class GobanCanvas {
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
-    const ctx = this.stoneLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
 
@@ -166,7 +172,7 @@ class GobanCanvas {
     const x2Coord = this.getCoord(x2);
     const y2Coord = this.getCoord(y2);
 
-    const ctx = this.stoneLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d');
     ctx.strokeStyle = '#000'; // Maybe try other colors?
     ctx.lineWidth = this.unit / 10;
 
@@ -177,12 +183,17 @@ class GobanCanvas {
   };
 
   public drawLabel = (x: number, y: number, label: string, color: string) => {
-    const ctx = this.stoneLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d');
     ctx.font = `${this.unit * 0.8}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = color;
     ctx.fillText(label, this.getCoord(x), this.getCoord(y) + 0.7);
+  };
+
+  public resetMarkup = () => {
+    const ctx = this.markupLayer.getContext('2d');
+    ctx.clearRect(0, 0, this.markupLayer.width, this.markupLayer.height);
   };
 
   public resetBoard = () => {
@@ -309,6 +320,7 @@ const Goban = () => {
   const { boardState, properties, node } = gameState;
   const stoneLayerRef = useRef(null);
   const boardLayerRef = useRef(null);
+  const markupLayerRef = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
   const drawBoardState = () => {
@@ -318,11 +330,13 @@ const Goban = () => {
       goban.current = new GobanCanvas(
         boardLayerRef.current,
         stoneLayerRef.current,
+        markupLayerRef.current,
         boardSize
       );
 
     goban.current.setSize(properties.boardSize || [19, 19]);
     goban.current.resetBoard();
+    goban.current.resetMarkup();
 
     const pointToXY = (point: string): [number, number] => {
       const A = 'a'.charCodeAt(0);
@@ -404,6 +418,7 @@ const Goban = () => {
     <BoardContainer>
       <Board ref={boardLayerRef} />
       <Board ref={stoneLayerRef} />
+      <Board ref={markupLayerRef} />
     </BoardContainer>
   );
 };
