@@ -106,13 +106,7 @@ const GameComments = () => {
       {comment && <Comment>{comment}</Comment>}
       {showEmptyMessage && <EmptyText>No comments on this move</EmptyText>}
       {nextCommentMove && (
-        <FlatButton
-          css={`
-            color: ${primaryAction};
-            font-weight: bold;
-          `}
-          onClick={() => goToNode(nextCommentMove)}
-        >
+        <FlatButton primary onClick={() => goToNode(nextCommentMove)}>
           <span style={{ marginRight: '.5rem' }}>Go to next comment</span>
           <FontIcon size="SMALL" icon="arrow_forward" />
         </FlatButton>

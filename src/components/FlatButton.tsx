@@ -1,23 +1,61 @@
 import styled from 'styled-components';
-import { panelHighlight, panelActiveButton } from 'style';
+import FontIcon from 'components/FontIcon';
+import {
+  primaryHighlight,
+  panelHighlight,
+  panelActiveButton,
+  primaryAction,
+  primaryActive,
+} from 'style';
 
-const FlatButton = styled.button`
+interface FlatButtonProps extends React.HTMLProps<HTMLButtonElement> {
+  icon?: string;
+  primary?: boolean;
+  rightIcon?: string;
+}
+
+const FlatButtonStyles = styled.button<any>`
   border: none;
   outline: none;
-  padding: 0 0.5rem;
+  padding: 0.5rem;
   background: none;
-  color: inherit;
   display: flex;
   align-items: center;
   cursor: pointer;
 
+  ${props =>
+    props.primary
+      ? `
+        color: ${primaryAction};
+        font-weight: 600;
+      `
+      : `
+        color: inherit;
+      `};
+
   :hover {
-    background-color: ${panelHighlight};
+    background-color: ${props =>
+      props.primary ? primaryHighlight : panelHighlight};
   }
 
   :active {
-    background-color: ${panelActiveButton};
+    background-color: ${props =>
+      props.primary ? primaryActive : panelActiveButton};
   }
 `;
+
+const FlatButton: React.FunctionComponent<FlatButtonProps> = ({
+  children,
+  icon,
+  primary,
+  rightIcon,
+  ...rest
+}) => (
+  <FlatButtonStyles primary={primary} {...rest}>
+    {icon && <FontIcon style={{ marginRight: '.5rem' }} icon={icon} />}
+    {children}
+    {rightIcon && <FontIcon style={{ marginLeft: '.5rem' }} icon={rightIcon} />}
+  </FlatButtonStyles>
+);
 
 export default FlatButton;
