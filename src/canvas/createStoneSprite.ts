@@ -1,5 +1,3 @@
-import { stoneSelectionHighlight } from 'style';
-
 const createStoneSprite = (
   radius: number,
   highlightColor: string,
