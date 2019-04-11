@@ -323,7 +323,6 @@ const Board = styled.canvas`
 const Goban = () => {
   const { gameState } = useGoGameContext();
   const { boardState, properties, node } = gameState;
-  const previousBoardState = usePrevious(boardState);
   const stoneLayerRef = useRef(null);
   const boardLayerRef = useRef(null);
   const markupLayerRef = useRef(null);

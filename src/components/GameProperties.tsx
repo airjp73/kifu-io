@@ -76,8 +76,7 @@ const GameProperties = () => {
     teamWhite,
     rankBlack,
     rankWhite,
-    playedOn,
-    timeLimit,
+    // TODO: playedOn,
   } = gameState.properties;
   return (
     <div
