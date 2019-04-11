@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTabContext } from './Tabs';
 import styled from 'styled-components';
-import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
 import { lightBorder, panelBackground, primaryAction } from 'style';
 import { animated, useSpring } from 'react-spring';
