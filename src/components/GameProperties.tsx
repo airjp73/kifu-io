@@ -76,7 +76,6 @@ const GameProperties = () => {
     teamWhite,
     rankBlack,
     rankWhite,
-    // TODO: playedOn,
   } = gameState.properties;
   return (
     <div
@@ -99,7 +98,16 @@ const GameProperties = () => {
           rank={rankWhite}
           color="White"
         />
-        {/* Played on */}
+        {playedOn && (
+          <ul>
+            {Object.keys(playedOn).map(([year, months]) => (
+              <li>
+                {year}
+                {months && Object.keys(months)}
+              </li>
+            ))}
+          </ul>
+        )}
         {supportedProperties.map(
           ({ name, label }) =>
             !!gameState.properties[name] && (
