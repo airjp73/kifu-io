@@ -8,30 +8,32 @@ import {
   primaryActive,
 } from 'style';
 
-interface FlatButtonProps extends React.HTMLProps<HTMLButtonElement> {
+interface FlatButtonProps {
   icon?: string;
   primary?: boolean;
   rightIcon?: string;
 }
 
-const FlatButtonStyles = styled.button<any>`
+interface FlatButtonStyleProps {
+  primary?: boolean;
+}
+
+const primaryStyles = `
+  color: ${primaryAction};
+  font-weight: 600;
+`;
+
+const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
   border: none;
   outline: none;
+  color: inherit;
   padding: 0.5rem;
   background: none;
   display: flex;
   align-items: center;
   cursor: pointer;
 
-  ${props =>
-    props.primary
-      ? `
-        color: ${primaryAction};
-        font-weight: 600;
-      `
-      : `
-        color: inherit;
-      `};
+  ${props => props.primary && primaryStyles};
 
   :hover {
     background-color: ${props =>
