@@ -23,6 +23,10 @@ const primaryStyles = `
   font-weight: 600;
 `;
 
+const ButtonIcon = styled(FontIcon)`
+  font-size: 1rem;
+`;
+
 const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
   border: none;
   outline: none;
@@ -44,19 +48,17 @@ const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
     background-color: ${props =>
       props.primary ? primaryActive : panelActiveButton};
   }
-
-  ${FontIcon} {
-    font-size: 1rem;
-  }
 `;
 
 const FlatButton: React.FunctionComponent<
   FlatButtonProps & React.ComponentProps<typeof FlatButtonStyles>
 > = ({ children, icon, primary, rightIcon, ...rest }) => (
   <FlatButtonStyles primary={primary} {...rest}>
-    {icon && <FontIcon style={{ marginRight: '.5rem' }} icon={icon} />}
+    {icon && <ButtonIcon style={{ marginRight: '.5rem' }} icon={icon} />}
     {children}
-    {rightIcon && <FontIcon style={{ marginLeft: '.5rem' }} icon={rightIcon} />}
+    {rightIcon && (
+      <ButtonIcon style={{ marginLeft: '.5rem' }} icon={rightIcon} />
+    )}
   </FlatButtonStyles>
 );
 
