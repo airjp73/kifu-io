@@ -9,7 +9,7 @@ import {
 } from 'style';
 
 interface FlatButtonProps {
-  icon?: string;
+  leftIcon?: string;
   primary?: boolean;
   rightIcon?: string;
 }
@@ -52,9 +52,11 @@ const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
 
 const FlatButton: React.FunctionComponent<
   FlatButtonProps & React.ComponentProps<typeof FlatButtonStyles>
-> = ({ children, icon, primary, rightIcon, ...rest }) => (
+> = ({ children, leftIcon, primary, rightIcon, ...rest }) => (
   <FlatButtonStyles primary={primary} {...rest}>
-    {icon && <ButtonIcon style={{ marginRight: '.5rem' }} icon={icon} />}
+    {leftIcon && (
+      <ButtonIcon style={{ marginRight: '.5rem' }} icon={leftIcon} />
+    )}
     {children}
     {rightIcon && (
       <ButtonIcon style={{ marginLeft: '.5rem' }} icon={rightIcon} />

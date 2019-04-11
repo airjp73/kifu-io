@@ -48,7 +48,7 @@ const TabBar: React.FunctionComponent = ({ children }) => {
           key={tab.value}
           onClick={() => setCurrentTab(tab.value)}
           data-tabid={tab.value}
-          icon={tab.icon}
+          leftIcon={tab.icon}
         >
           {tab.label}
         </FlatButton>
