@@ -18,12 +18,19 @@ const TabContentContainer = animated(styled.div`
 `);
 
 const TabContentArea: React.FunctionComponent = ({ children }) => {
-  const { currentTab, tabs } = useTabContext();
+  const { currentTab } = useTabContext();
   const previousTab = usePrevious(currentTab);
 
   const animDirection = useMemo(() => {
-    const prevIndex = tabs.findIndex(tab => tab.value === previousTab);
-    const currentIndex = tabs.findIndex(tab => tab.value === currentTab);
+    const tabs = React.Children.toArray(children);
+    const findTabIndex = (tabName: string) =>
+      tabs.findIndex(
+        tab =>
+          React.isValidElement<{ tab: string }>(tab) &&
+          tab.props.tab === tabName
+      );
+    const prevIndex = findTabIndex(previousTab);
+    const currentIndex = findTabIndex(currentTab);
     return prevIndex < currentIndex ? 'right' : 'left';
   }, [currentTab]);
 
@@ -50,9 +57,9 @@ const TabContentArea: React.FunctionComponent = ({ children }) => {
       {transitions.map(({ item, props, key }) => (
         <TabContentContainer key={key} style={props}>
           {/*
-          Pass in props directly instead of tapping into the context
-          So that the old container that's animating out doesn't update
-        */}
+            Pass in props directly instead of tapping into the context
+            So that the old container that's animating out doesn't update
+          */}
           {React.Children.map(children, (child: React.ReactElement) =>
             React.cloneElement(child, { currentTab: item })
           )}

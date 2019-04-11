@@ -6,6 +6,7 @@ import FlatButton from 'components/FlatButton';
 import GameTreeView from 'components/GameTreeView';
 import GameProperties from 'components/GameProperties';
 import GameComments from './GameComments';
+import ButtonTab from './Tabs/ButtonTab';
 import Tabs from './Tabs/Tabs';
 import TabBar from './Tabs/TabBar';
 import TabContent from './Tabs/TabContent';
@@ -47,28 +48,25 @@ const GameInfo = () => {
   return (
     <GameInfoWrapper>
       <animated.div style={contentAreaStyle}>
-        <Tabs
-          tabs={[
-            {
-              value: 'comments',
-              icon: 'comment',
-              label: 'Comments',
-              highlighted: !!gameState.moveState.comment,
-            },
-            {
-              value: 'game-tree',
-              icon: 'linear_scale',
-              label: 'Game Tree',
-              highlighted: gameTreeIsHighlighted,
-            },
-            { value: 'more-info', icon: 'info', label: 'Game Info' },
-          ]}
-          defaultTab="comments"
-        >
+        <Tabs defaultTab="comments">
           <TabBar>
+            <ButtonTab
+              tabName="comments"
+              leftIcon="comment"
+              label="Comments"
+              primary={!!gameState.moveState.comment}
+            />
+            <ButtonTab
+              tabName="game-tree"
+              leftIcon="linear_scale"
+              label="Game Tree"
+              primary={gameTreeIsHighlighted}
+            />
+            <ButtonTab tabName="more-info" leftIcon="info" label="Game Info" />
             <FlatButton
               css={`
                 padding: 0.5rem;
+                margin-left: auto;
               `}
               onClick={() => setExpanded(prev => !prev)}
             >

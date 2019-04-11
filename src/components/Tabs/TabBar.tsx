@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useTabContext } from './Tabs';
 import styled from 'styled-components';
 import FlatButton from 'components/FlatButton';
-import { lightBorder, panelBackground, primaryAction } from 'style';
+import { lightBorder, panelBackground } from 'style';
 import { animated, useSpring } from 'react-spring';
 
 const TabBarContainer = styled.div`
@@ -23,7 +23,7 @@ const TabUnderline = animated(styled.div`
 `);
 
 const TabBar: React.FunctionComponent = ({ children }) => {
-  const { highlightedTabs, currentTab, setCurrentTab, tabs } = useTabContext();
+  const { currentTab } = useTabContext();
   const containerRef = useRef(null);
   const [underlinePosition, setUnderlinePosition] = useSpring(() => ({
     left: 0,
@@ -42,26 +42,8 @@ const TabBar: React.FunctionComponent = ({ children }) => {
 
   return (
     <TabBarContainer ref={containerRef}>
-      {tabs.map(tab => (
-        <FlatButton
-          primary={highlightedTabs.includes(tab.value)}
-          key={tab.value}
-          onClick={() => setCurrentTab(tab.value)}
-          data-tabid={tab.value}
-          leftIcon={tab.icon}
-        >
-          {tab.label}
-        </FlatButton>
-      ))}
+      {children}
       <TabUnderline style={underlinePosition} />
-      <div
-        css={`
-          margin-left: auto;
-          height: 100%;
-        `}
-      >
-        {children}
-      </div>
     </TabBarContainer>
   );
 };
