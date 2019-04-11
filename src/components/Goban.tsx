@@ -6,7 +6,6 @@ import {
   createWhiteStone,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
-import usePrevious from 'hooks/usePrevious';
 
 export type StoneColor = 'b' | 'w';
 type StarPoints = [number, number][];
