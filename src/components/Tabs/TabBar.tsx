@@ -15,30 +15,6 @@ const TabBarContainer = styled.div`
   position: relative;
 `;
 
-// interface TabBarButtonProps {
-//   highlighted: boolean;
-// }
-// Use `any` because typing styled-components is frustrating
-const TabBarButton = styled<any>(FlatButton)`
-  padding: 0.5rem;
-  /* transition: color 0.25s ease; */
-
-  ${FontIcon} {
-    font-size: 1rem;
-
-    ~ * {
-      padding-left: 0.5rem;
-    }
-  }
-
-  ${({ highlighted }) =>
-    highlighted &&
-    `
-      color: ${primaryAction};
-      font-weight: bold;
-    `}
-`;
-
 const TabUnderline = animated(styled.div`
   border-bottom: 3px solid ${panelBackground};
   position: absolute;
@@ -68,15 +44,15 @@ const TabBar: React.FunctionComponent = ({ children }) => {
   return (
     <TabBarContainer ref={containerRef}>
       {tabs.map(tab => (
-        <TabBarButton
-          highlighted={highlightedTabs.includes(tab.value)}
+        <FlatButton
+          primary={highlightedTabs.includes(tab.value)}
           key={tab.value}
           onClick={() => setCurrentTab(tab.value)}
           data-tabid={tab.value}
+          icon={tab.icon}
         >
-          {tab.icon && <FontIcon icon={tab.icon} />}
-          {tab.label && <span>{tab.label}</span>}
-        </TabBarButton>
+          {tab.label}
+        </FlatButton>
       ))}
       <TabUnderline style={underlinePosition} />
       <div

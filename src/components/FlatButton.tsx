@@ -14,7 +14,7 @@ interface FlatButtonProps {
   rightIcon?: string;
 }
 
-interface FlatButtonStyleProps {
+interface FlatButtonStyleProps extends React.HTMLProps<HTMLButtonElement> {
   primary?: boolean;
 }
 
@@ -44,15 +44,15 @@ const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
     background-color: ${props =>
       props.primary ? primaryActive : panelActiveButton};
   }
+
+  ${FontIcon} {
+    font-size: 1rem;
+  }
 `;
 
-const FlatButton: React.FunctionComponent<FlatButtonProps> = ({
-  children,
-  icon,
-  primary,
-  rightIcon,
-  ...rest
-}) => (
+const FlatButton: React.FunctionComponent<
+  FlatButtonProps & React.ComponentProps<typeof FlatButtonStyles>
+> = ({ children, icon, primary, rightIcon, ...rest }) => (
   <FlatButtonStyles primary={primary} {...rest}>
     {icon && <FontIcon style={{ marginRight: '.5rem' }} icon={icon} />}
     {children}
