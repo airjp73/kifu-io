@@ -74,7 +74,7 @@ class GobanCanvas {
       Math.round(canvasRect.right * pixelRatio) -
       Math.round(canvasRect.left * pixelRatio);
     this.unit = width / (this.size[0] + 1);
-    this.stoneRadius = (this.unit - 2) / 2;
+    this.stoneRadius = (this.unit - 3) / 2;
     const height = this.unit * (this.size[1] + 1);
 
     this.boardLayer.width = width;
@@ -103,14 +103,6 @@ class GobanCanvas {
       this.getCoord(y) - this.stoneRadius - stonePadding + 0.5
     );
     ctx.drawImage(stone, xCoord, yCoord);
-  };
-
-  public eraseStone = (x: number, y: number) => {
-    // TODO: Move shadows to another layer for easier erasing?
-    const ctx = this.stoneLayer.getContext('2d');
-    const xCoord = Math.floor(this.getCoord(x) - this.stoneRadius);
-    const yCoord = Math.floor(this.getCoord(y) - this.stoneRadius);
-    ctx.clearRect(xCoord, yCoord, this.unit, this.unit);
   };
 
   public drawTriangle = (x: number, y: number, color: string) => {
@@ -337,7 +329,7 @@ const Goban = () => {
   const markupLayerRef = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
-  const drawBoardState = (reset: boolean) => {
+  const drawBoardState = () => {
     const boardSize = properties.boardSize || [19, 19];
     if (goban.current) goban.current.setSize(boardSize);
     else
@@ -347,8 +339,6 @@ const Goban = () => {
         markupLayerRef.current,
         boardSize
       );
-
-    console.log(previousBoardState, boardState);
 
     const pointToXY = (point: string): [number, number] => {
       const A = 'a'.charCodeAt(0);
@@ -360,29 +350,14 @@ const Goban = () => {
     const getMarkupColor = (point: string) =>
       boardState[point] === 'b' ? '#fff' : '#000';
 
-    // Markup isn't persisted from move to move so we can just clear it all
+    // Erase layers that need to be redrawn
     goban.current.resetMarkup();
+    goban.current.resetBoard();
 
-    if (reset) {
-      goban.current.resetBoard();
-      goban.current.drawBoard();
-
-      Object.entries(boardState).forEach(([point, color]) => {
-        const [x, y] = pointToXY(point);
-        goban.current.drawStone(x, y, color);
-      });
-    } else {
-      const affectedPoints = new Set([
-        ...Object.keys(boardState),
-        ...Object.keys(previousBoardState || {}),
-      ]);
-      for (let point of affectedPoints) {
-        const [x, y] = pointToXY(point);
-        if (previousBoardState[point] === boardState[point]) continue;
-        if (previousBoardState[point]) goban.current.eraseStone(x, y);
-        if (boardState[point]) goban.current.drawStone(x, y, boardState[point]);
-      }
-    }
+    Object.entries(boardState).forEach(([point, color]) => {
+      const [x, y] = pointToXY(point);
+      goban.current.drawStone(x, y, color);
+    });
 
     const currentMove =
       node.properties && (node.properties.B || node.properties.W);
@@ -433,11 +408,11 @@ const Goban = () => {
     });
   };
 
-  useEffect(() => drawBoardState(false), [boardState, properties.boardSize]);
+  useEffect(() => drawBoardState(), [boardState, properties.boardSize]);
 
   const handleResize = () => {
     goban.current.init();
-    drawBoardState(true);
+    drawBoardState();
   };
 
   useEffect(() => {
