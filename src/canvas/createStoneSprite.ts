@@ -1,5 +1,3 @@
-import { stoneSelectionHighlight } from 'style';
-
 const createStoneSprite = (
   radius: number,
   highlightColor: string,
@@ -29,8 +27,8 @@ const createStoneSprite = (
 
   ctx.fillStyle = gradient;
   ctx.shadowBlur = radius * 0.1;
-  ctx.shadowOffsetX = radius * 0.1;
-  ctx.shadowOffsetY = radius * 0.1;
+  ctx.shadowOffsetX = radius * 0.07;
+  ctx.shadowOffsetY = radius * 0.07;
   ctx.shadowColor = 'rgba(0, 0, 0, .35)';
 
   ctx.beginPath();
