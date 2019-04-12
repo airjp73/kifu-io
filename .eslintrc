@@ -1,5 +1,11 @@
 {
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:jest/recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "react", "jest"],
   "parserOptions": {
@@ -12,9 +18,9 @@
   },
   "rules": {
     "react/prop-types": 0,
-    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/indent": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/no-use-before-define": 0,
+    "@typescript-eslint/no-use-before-define": 0
   },
   "settings": {
     "react": {
