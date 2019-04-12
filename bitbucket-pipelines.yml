@@ -14,6 +14,7 @@ pipelines:
   branches:
     master:
       - step:
+          name: 'Lint/typecheck/test'
           caches:
             - node
           script:
@@ -21,4 +22,8 @@ pipelines:
             - npm run lint
             - npm run typecheck
             - npm test
-            - npx now --token=$NOW_TOKEN
+      - step:
+          name: 'Deploy to now'
+          script:
+            - npm install -g now
+            - now --token=$NOW_TOKEN
