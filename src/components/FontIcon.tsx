@@ -2,15 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface FontIconStyleProps {
-  size?: 'MEDIUM' | 'SMALL';
+  size?: 'MEDIUM' | 'SMALL' | 'XSMALL';
 }
 
 interface FontIconProps {
   icon: string;
 }
 
+const sizeMap = {
+  MEDIUM: '3rem',
+  SMALL: '1.5rem',
+  XSMALL: '1rem',
+};
+
 const FontIconStyle = styled.span<FontIconStyleProps>`
-  ${props => (props.size === 'MEDIUM' ? '3rem' : '1.5rem')}
+  font-size: ${props => sizeMap[props.size]};
 `;
 
 const FontIcon: React.FunctionComponent<
