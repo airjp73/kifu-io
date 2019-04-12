@@ -1,7 +1,8 @@
 import React from 'react';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import styled from 'styled-components';
-import { GameStateProperties } from 'contexts/gameStateReducer';
+import { GameStateProperties, PlayedOnDates } from 'contexts/gameStateReducer';
+import { getMonthString, getDayString } from 'util/dateUtils';
 
 interface SupportedProperty {
   name: keyof GameStateProperties;
@@ -64,6 +65,27 @@ const PropertiesList = styled.ul`
   margin: 0;
 `;
 
+const PlayedOn: React.FunctionComponent<{ playedOn: PlayedOnDates }> = ({
+  playedOn,
+}) => {
+  // This gets a little weird with complicated date scenarios
+  // but those seem a little unlikely
+  const dateString = Object.entries(playedOn)
+    .map(
+      ([year, months]) =>
+        `${Object.entries(months)
+          .map(
+            ([month, days]) =>
+              `${days
+                .map(day => getDayString(day))
+                .join(', ')} of ${getMonthString(month)}`
+          )
+          .join(', ')} ${year}`
+    )
+    .join(', ');
+  return <SimpleProperty label="Played">{dateString}</SimpleProperty>;
+};
+
 const GameProperties = () => {
   const { gameState } = useGoGameContext();
   const {
@@ -76,6 +98,7 @@ const GameProperties = () => {
     teamWhite,
     rankBlack,
     rankWhite,
+    playedOn,
   } = gameState.properties;
   return (
     <div
@@ -98,16 +121,7 @@ const GameProperties = () => {
           rank={rankWhite}
           color="White"
         />
-        {playedOn && (
-          <ul>
-            {Object.keys(playedOn).map(([year, months]) => (
-              <li>
-                {year}
-                {months && Object.keys(months)}
-              </li>
-            ))}
-          </ul>
-        )}
+        {playedOn && <PlayedOn playedOn={playedOn} />}
         {supportedProperties.map(
           ({ name, label }) =>
             !!gameState.properties[name] && (
