@@ -1,5 +1,6 @@
 import each from 'jest-each';
 import parseSgf, { GameNode } from './parseSgf';
+import normalizeGameTree from './normalizeGameTree';
 import snapshots from './snapshots';
 
 const LF = String.fromCharCode(10);
@@ -178,7 +179,7 @@ describe('parseSgf', () => {
     snapshots.map((snapshot, index) => [`Snopshot ${index + 1}`, snapshot])
   ).describe('Real game snapshots', (description, snapshotSgf) => {
     test(description, () => {
-      expect(parseSgf(snapshotSgf)).toMatchSnapshot();
+      expect(normalizeGameTree(parseSgf(snapshotSgf)[0])).toMatchSnapshot();
     });
   });
 });
