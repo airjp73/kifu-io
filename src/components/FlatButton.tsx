@@ -56,11 +56,19 @@ const FlatButton: React.FunctionComponent<
 > = ({ children, leftIcon, primary, rightIcon, ...rest }) => (
   <FlatButtonStyles primary={primary} {...rest}>
     {leftIcon && (
-      <ButtonIcon style={{ marginRight: '.5rem' }} icon={leftIcon} />
+      <FontIcon
+        style={{ marginRight: '.5rem' }}
+        size="XSMALL"
+        icon={leftIcon}
+      />
     )}
     {children}
     {rightIcon && (
-      <ButtonIcon style={{ marginLeft: '.5rem' }} icon={rightIcon} />
+      <FontIcon
+        style={{ marginLeft: '.5rem' }}
+        size="XSMALL"
+        icon={rightIcon}
+      />
     )}
   </FlatButtonStyles>
 );

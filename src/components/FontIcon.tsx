@@ -1,28 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface FontIconProps extends React.HTMLProps<HTMLSpanElement> {
-  className?: string;
-  icon: string;
-  size?: 'MEDIUM' | 'SMALL';
+interface FontIconStyleProps {
+  size?: 'MEDIUM' | 'SMALL' | 'XSMALL';
 }
 
-const FontIcon: React.FunctionComponent<FontIconProps> = ({
-  className,
-  icon,
-  ...rest
-}) => (
-  <span className={`material-icons ${className}`} {...rest}>
-    {icon}
-  </span>
-);
+interface FontIconProps {
+  icon: string;
+}
 
-const StyledFontIcon = styled(FontIcon)`
-  font-size: ${props => (props.size === 'MEDIUM' ? '3rem' : '1.5rem')};
+const sizeMap = {
+  MEDIUM: '3rem',
+  SMALL: '1.5rem',
+  XSMALL: '1rem',
+};
+
+const FontIconStyle = styled.span<FontIconStyleProps>`
+  font-size: ${props => sizeMap[props.size]};
 `;
 
-StyledFontIcon.defaultProps = {
+const FontIcon: React.FunctionComponent<
+  FontIconProps & React.ComponentProps<typeof FontIconStyle>
+> = ({ className, icon, ...rest }) => (
+  <FontIconStyle className={`material-icons ${className}`} {...rest}>
+    {icon}
+  </FontIconStyle>
+);
+
+FontIcon.defaultProps = {
   size: 'MEDIUM',
 };
 
-export default StyledFontIcon;
+export default FontIcon;

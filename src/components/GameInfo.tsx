@@ -59,10 +59,10 @@ const GameInfo = () => {
             <ButtonTab
               tabName="game-tree"
               leftIcon="linear_scale"
-              label="Game Tree"
+              label="Tree"
               primary={gameTreeIsHighlighted}
             />
-            <ButtonTab tabName="more-info" leftIcon="info" label="Game Info" />
+            <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
             <FlatButton
               css={`
                 padding: 0.5rem;
