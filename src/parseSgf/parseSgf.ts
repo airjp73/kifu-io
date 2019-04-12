@@ -74,19 +74,20 @@ class SgfParser {
     /**
      * Checks if we've reached the end of the file.
      */
-    this.done = (ignoreWhitespace) => this.currentChar >= this.sgf.length || !this.peek(ignoreWhitespace);
+    this.done = ignoreWhitespace =>
+      this.currentChar >= this.sgf.length || !this.peek(ignoreWhitespace);
 
     /**
      * Checks if we've reached the end of the file.
      * Throws an error if we have.
      * Returns true if we haven't.
      */
-    this.assertNotDone = (ignoreWhitespace) => {
+    this.assertNotDone = ignoreWhitespace => {
       if (this.done(ignoreWhitespace)) {
         this.throw('Unexpected end of sgf file.');
       }
       return true;
-    }
+    };
 
     /**
      * Used for throwing an error with a nice message and a snippet of the offending part of the sgf.
@@ -95,12 +96,17 @@ class SgfParser {
       const firstChar = Math.max(this.currentChar - 10, 0);
       const lastChar = Math.min(this.currentChar + 10, this.sgf.length - 1);
 
-      throw new Error(message + ". Happened at: '" + this.sgf.substr(firstChar, lastChar) + "'");
+      throw new Error(
+        message +
+          ". Happened at: '" +
+          this.sgf.substr(firstChar, lastChar) +
+          "'"
+      );
     };
 
     /**
      * Processess multiple sub-trees.
-     * 
+     *
      * Example: (;B[aa])(;B[bb])(;B[cc])
      */
     this.processGameTree = parent => {
@@ -126,7 +132,7 @@ class SgfParser {
 
     /**
      * Processes a single game node, and then continues down the tree.
-     * 
+     *
      * Example: ;B[aa]
      */
     this.processGameNode = parent => {
@@ -166,7 +172,7 @@ class SgfParser {
 
     /**
      * Processes the name of the property.
-     * 
+     *
      * Example: B[aa]
      * In this example 'B' is the name of the property.
      */
@@ -181,7 +187,7 @@ class SgfParser {
 
     /**
      * Processes the value of a property.
-     * 
+     *
      * Example: B[aa]
      * The value is everything between the square brackets '[aa]'
      */

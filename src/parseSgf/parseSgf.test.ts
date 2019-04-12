@@ -12,7 +12,7 @@ function compareNodes(actual: GameNode, expected: GameNode) {
 
 function compareChildren(
   actualChildren: GameNode[],
-  expectedChildren: GameNode[],
+  expectedChildren: GameNode[]
 ) {
   if (!actualChildren) {
     expect(expectedChildren).toBeFalsy();

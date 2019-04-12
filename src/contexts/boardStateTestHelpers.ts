@@ -1,8 +1,8 @@
-import { BoardState } from "./gameStateReducer";
+import { BoardState } from './gameStateReducer';
 
 /**
  * A test helper to allow for creating board states for tests in a visual way.
- * 
+ *
  * @param boardStateString A string representation of the board
  * @param size an array of 2 numbers representing the dimensions of the board
  */
@@ -48,4 +48,4 @@ export const createStringFromBoardState = (
   }
 
   return boardString;
-}
+};

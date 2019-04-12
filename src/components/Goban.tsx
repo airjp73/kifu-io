@@ -6,7 +6,6 @@ import {
   createWhiteStone,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
-import usePrevious from 'hooks/usePrevious';
 
 export type StoneColor = 'b' | 'w';
 type StarPoints = [number, number][];
@@ -323,7 +322,6 @@ const Board = styled.canvas`
 const Goban = () => {
   const { gameState } = useGoGameContext();
   const { boardState, properties, node } = gameState;
-  const previousBoardState = usePrevious(boardState);
   const stoneLayerRef = useRef(null);
   const boardLayerRef = useRef(null);
   const markupLayerRef = useRef(null);
