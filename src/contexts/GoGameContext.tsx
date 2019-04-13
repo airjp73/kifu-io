@@ -1,6 +1,9 @@
 import React, { useContext, useMemo, useEffect } from 'react';
-import parseSgf from 'parseSgf';
-import { GameNode } from 'parseSgf/parseSgf';
+import parseSgf from 'parseSgf/parseSgf';
+import normalizeGameTree, {
+  GameTree,
+  GameTreeNode,
+} from 'parseSgf/normalizeGameTree';
 import useThunkReducer from 'hooks/useThunkReducer';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import { pushHistory, setNode, popHistory, init } from './actions';
@@ -8,11 +11,12 @@ import processNode from './processNode';
 
 // Interfaces
 export interface GameContext {
-  forward: (numMoves: number) => void;
   back: (numMoves: number) => void;
-  goToNode: (node: GameNode) => void;
+  forward: (numMoves: number) => void;
   gameState: GameStateWithHistory;
-  gameTree: GameNode[];
+  gameTree: GameTree;
+  getNode: (nodeId: string) => GameTreeNode;
+  goToNode: (node: string) => void;
 }
 
 export interface Action {
@@ -32,26 +36,29 @@ interface GoGameContextProviderProps {
 export const GoGameContextProvider: React.FunctionComponent<
   GoGameContextProviderProps
 > = ({ children, sgf }) => {
-  const gameTree = useMemo(() => parseSgf(sgf), [sgf]);
+  const gameTree = useMemo(() => normalizeGameTree(parseSgf(sgf)[0]), [sgf]);
   const [gameState, dispatch] = useThunkReducer(
     gameStateReducer,
     gameStateReducer(undefined, init()) // TODO: tweak hook to allow an init function
   );
 
-  const nextMove = (node: GameNode) => {
-    const nextNode = node || gameState.node.children[0];
+  const getNode = (nodeId: string) => gameTree.nodes[nodeId];
+  const getNodeChild = (nodeId: string, index: number) =>
+    gameTree.nodes[nodeId].children && gameTree.nodes[nodeId].children[index];
+
+  const nextMove = (nodeId: string) => {
     dispatch(pushHistory());
-    dispatch(setNode(node));
-    processNode(nextNode, dispatch);
+    dispatch(setNode(nodeId));
+    processNode(gameTree.nodes[nodeId], dispatch);
   };
 
   const previousMove = () => dispatch(popHistory());
 
   const forward = (numMoves: number) => {
-    let nextNode = gameState.node.children && gameState.node.children[0];
+    let nextNode = getNodeChild(gameState.node, 0);
     for (let i = 0; (i < numMoves || numMoves === -1) && nextNode; ++i) {
       nextMove(nextNode);
-      nextNode = nextNode.children && nextNode.children[0];
+      nextNode = getNodeChild(nextNode, 0);
     }
   };
 
@@ -63,14 +70,14 @@ export const GoGameContextProvider: React.FunctionComponent<
     }
   };
 
-  const goToNode = (node: GameNode) => {
-    if (node.parent) goToNode(node.parent);
+  const goToNode = (nodeId: string) => {
+    if (getNode(nodeId).parent) goToNode(getNode(nodeId).parent);
     else dispatch(init());
-    nextMove(node);
+    nextMove(nodeId);
   };
 
   // Go to first move on mount
-  useEffect(() => nextMove(gameTree[0]), []);
+  useEffect(() => nextMove(gameTree.rootNode), []);
 
   return (
     <GoGameContext.Provider
@@ -79,6 +86,7 @@ export const GoGameContextProvider: React.FunctionComponent<
         forward,
         gameState,
         gameTree,
+        getNode,
         goToNode,
       }}
     >

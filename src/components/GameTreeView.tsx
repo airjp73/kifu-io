@@ -9,6 +9,7 @@ import {
 } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameNode } from 'parseSgf/parseSgf';
+import { GameTree } from 'parseSgf/normalizeGameTree';
 import { hotspotHighlight, stoneSelectionHighlight } from 'style';
 
 const BLACK = 'b';
@@ -20,11 +21,11 @@ interface TreeCell {
   type: TreeCellType;
   gridLocation: [number, number];
   parentLocation?: [number, number];
-  node: GameNode;
+  node: string;
 }
 type TreeGrid = TreeCell[][];
 
-class GameTree {
+class GameTreeRenderer {
   // Stone radius won't change on resize
   private static stoneRadius = 15;
   private static highlightRadius = 15 * 1.5;
@@ -50,8 +51,8 @@ class GameTree {
     width: number,
     height: number
   ) {
-    const canvasWidth = (width + 1) * GameTree.stoneRadius * 3.5;
-    const canvasHeight = (height + 1) * GameTree.stoneRadius * 3.5;
+    const canvasWidth = (width + 1) * GameTreeRenderer.stoneRadius * 3.5;
+    const canvasHeight = (height + 1) * GameTreeRenderer.stoneRadius * 3.5;
 
     this.stoneLayer = stoneLayer;
     this.stoneLayer.width = canvasWidth;
@@ -69,21 +70,21 @@ class GameTree {
     this.highlightLayer.width = canvasWidth;
     this.highlightLayer.height = canvasHeight;
 
-    this.blackStone = createBlackStone(GameTree.stoneRadius);
-    this.whiteStone = createWhiteStone(GameTree.stoneRadius);
+    this.blackStone = createBlackStone(GameTreeRenderer.stoneRadius);
+    this.whiteStone = createWhiteStone(GameTreeRenderer.stoneRadius);
     this.selectionHighlight = createSelectionHighlight(
-      GameTree.highlightRadius,
+      GameTreeRenderer.highlightRadius,
       stoneSelectionHighlight
     );
     this.hotspotHighlight = createSelectionHighlight(
-      GameTree.highlightRadius,
+      GameTreeRenderer.highlightRadius,
       hotspotHighlight
     );
     this.setupNode = this.createSetupNode();
   }
 
   private createSetupNode = () => {
-    const radius = (3 * GameTree.stoneRadius) / 4;
+    const radius = (3 * GameTreeRenderer.stoneRadius) / 4;
     const padding = calculateStonePadding(radius);
     const black = createBlackStone(radius);
     const white = createWhiteStone(radius);
@@ -127,11 +128,15 @@ class GameTree {
     y2: number
   ) => {
     const ctx = this.lineLayer.getContext('2d');
-    const stonePadding = calculateStonePadding(GameTree.stoneRadius);
-    const x1Coord = this.getCoord(x1) + GameTree.stoneRadius + stonePadding;
-    const y1Coord = this.getCoord(y1) + GameTree.stoneRadius + stonePadding;
-    const x2Coord = this.getCoord(x2) + GameTree.stoneRadius + stonePadding;
-    const y2Coord = this.getCoord(y2) + GameTree.stoneRadius + stonePadding;
+    const stonePadding = calculateStonePadding(GameTreeRenderer.stoneRadius);
+    const x1Coord =
+      this.getCoord(x1) + GameTreeRenderer.stoneRadius + stonePadding;
+    const y1Coord =
+      this.getCoord(y1) + GameTreeRenderer.stoneRadius + stonePadding;
+    const x2Coord =
+      this.getCoord(x2) + GameTreeRenderer.stoneRadius + stonePadding;
+    const y2Coord =
+      this.getCoord(y2) + GameTreeRenderer.stoneRadius + stonePadding;
 
     ctx.strokeStyle = '#000'; // Maybe try other colors?
     ctx.lineWidth = 2;
@@ -144,11 +149,11 @@ class GameTree {
 
   public drawNodeSelection = (x: number, y: number) => {
     const ctx = this.selectionLayer.getContext('2d');
-    const stonePadding = calculateStonePadding(GameTree.stoneRadius);
+    const stonePadding = calculateStonePadding(GameTreeRenderer.stoneRadius);
     const highlightPadding = 2;
     const radiusDiff =
-      GameTree.highlightRadius -
-      GameTree.stoneRadius -
+      GameTreeRenderer.highlightRadius -
+      GameTreeRenderer.stoneRadius -
       stonePadding +
       highlightPadding;
     const xCoord = this.getCoord(x) - radiusDiff;
@@ -161,11 +166,11 @@ class GameTree {
 
   public drawHotspot = (x: number, y: number) => {
     const ctx = this.highlightLayer.getContext('2d');
-    const stonePadding = calculateStonePadding(GameTree.stoneRadius);
+    const stonePadding = calculateStonePadding(GameTreeRenderer.stoneRadius);
     const highlightPadding = 2;
     const radiusDiff =
-      GameTree.highlightRadius -
-      GameTree.stoneRadius -
+      GameTreeRenderer.highlightRadius -
+      GameTreeRenderer.stoneRadius -
       stonePadding +
       highlightPadding;
     const xCoord = this.getCoord(x) - radiusDiff;
@@ -175,19 +180,21 @@ class GameTree {
   };
 
   public getCoord = (gridLocation: number) =>
-    gridLocation * GameTree.stoneRadius * 3.5;
+    gridLocation * GameTreeRenderer.stoneRadius * 3.5;
 
   public coordToGridLocation = (coord: number) =>
-    coord / 3.5 / GameTree.stoneRadius;
+    coord / 3.5 / GameTreeRenderer.stoneRadius;
 }
 
 const createGridFromTree = (
-  node: GameNode,
+  nodeId: string,
+  gameTree: GameTree,
   grid: TreeGrid,
   x: number = 0,
   y: number = 0
 ) => {
   let type: TreeCellType;
+  const node = gameTree.nodes[nodeId];
   if (node.properties) {
     if (node.properties.B) type = BLACK;
     else if (node.properties.W) type = WHITE;
@@ -203,7 +210,13 @@ const createGridFromTree = (
 
   node.children &&
     node.children.forEach(child => {
-      const childCell = createGridFromTree(child, grid, x + 1, adjustedY);
+      const childCell = createGridFromTree(
+        child,
+        gameTree,
+        grid,
+        x + 1,
+        adjustedY
+      );
 
       // Parent location of a cell is set by the parent cell
       childCell.parentLocation = [x, adjustedY];
@@ -212,7 +225,7 @@ const createGridFromTree = (
   const cell: TreeCell = {
     type,
     gridLocation: [x, adjustedY],
-    node,
+    node: nodeId,
   };
 
   // Add the cell to the grid
@@ -244,7 +257,7 @@ const GameTreeView = () => {
   const highlightLayerRef = useRef(null);
   const gameTreeRenderer = useRef(null);
   const containerRef = useRef(null);
-  const { gameState, gameTree, goToNode } = useGoGameContext();
+  const { gameState, gameTree, goToNode, getNode } = useGoGameContext();
 
   // Turn the game tree into a format that's easier to work with
   // when drawing the tree
@@ -252,14 +265,14 @@ const GameTreeView = () => {
 
   const treeGrid: TreeGrid = useMemo(() => {
     const grid: TreeGrid = [];
-    createGridFromTree(gameTree[0], grid);
+    createGridFromTree(gameTree.rootNode, gameTree, grid);
     return grid;
   }, []);
 
   // Draw whole tree
   useEffect(() => {
     if (!gameTreeRenderer.current) {
-      gameTreeRenderer.current = new GameTree(
+      gameTreeRenderer.current = new GameTreeRenderer(
         nodeLayerRef.current,
         lineLayerRef.current,
         selectionLayerRef.current,
@@ -282,7 +295,7 @@ const GameTreeView = () => {
         }
 
         // Highlight node if it's a hotspot
-        if (treeNode.node.properties.HO) {
+        if (getNode(treeNode.node).properties.HO) {
           gameTreeRenderer.current.drawHotspot(xIndex, yIndex);
         }
       });

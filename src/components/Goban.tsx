@@ -320,7 +320,7 @@ const Board = styled.canvas`
 `;
 
 const Goban = () => {
-  const { gameState } = useGoGameContext();
+  const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
   const stoneLayerRef = useRef(null);
   const boardLayerRef = useRef(null);
@@ -357,8 +357,11 @@ const Goban = () => {
       goban.current.drawStone(x, y, color);
     });
 
+    const currentNode = getNode(node);
     const currentMove =
-      node.properties && (node.properties.B || node.properties.W);
+      currentNode &&
+      currentNode.properties &&
+      (currentNode.properties.B || currentNode.properties.W);
     if (currentMove) {
       const point = currentMove && currentMove[0];
       const coord = pointToXY(point);

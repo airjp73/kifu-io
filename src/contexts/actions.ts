@@ -39,9 +39,9 @@ export const captureStones = (
 
 export interface SetNodeAction {
   type: typeof SET_NODE;
-  node: GameNode;
+  node: string;
 }
-export const setNode = (node: GameNode): SetNodeAction => ({
+export const setNode = (node: string): SetNodeAction => ({
   type: SET_NODE,
   node,
 });

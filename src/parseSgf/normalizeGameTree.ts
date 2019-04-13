@@ -1,14 +1,15 @@
 import { GameNode, NodeProperties } from './parseSgf';
 
-interface GameTreeNode {
+export interface GameTreeNode {
   id: string;
   parent?: string;
   children?: string[];
   properties?: NodeProperties;
 }
 
-interface GameTree {
+export interface GameTree {
   generateId: () => string;
+  rootNode: string;
   nodes: {
     [key: string]: GameTreeNode;
   };
@@ -22,6 +23,7 @@ const generateId = () => {
 const normalizeGameTree = (root: GameNode): GameTree => {
   const gameTree: GameTree = {
     generateId,
+    rootNode: '',
     nodes: {},
   };
 
@@ -37,7 +39,7 @@ const normalizeGameTree = (root: GameNode): GameTree => {
     gameTree.nodes[id] = normalizedNode;
     return id;
   };
-  normalizeNode(root);
+  gameTree.rootNode = normalizeNode(root);
 
   return gameTree;
 };

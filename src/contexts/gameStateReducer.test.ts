@@ -42,7 +42,7 @@ const emptyCaptureCounts = {
 const emptyState: GameStateWithHistory = {
   boardState: {},
   properties: {},
-  node: {},
+  node: '',
   moveState: emptyMoveState,
   captureCounts: emptyCaptureCounts,
   history: [],
@@ -50,7 +50,7 @@ const emptyState: GameStateWithHistory = {
 
 describe('GoGameContext reducer', () => {
   test('should handle setNode action', () => {
-    const node = {};
+    const node = 'nodeId123';
     const result = gameStateReducer(emptyState, setNode(node));
     expect(result.node).toBe(node);
   });

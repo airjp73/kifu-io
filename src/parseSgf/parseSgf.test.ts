@@ -174,12 +174,4 @@ describe('parseSgf', () => {
       compareChildren(actual, expected);
     });
   });
-
-  each(
-    snapshots.map((snapshot, index) => [`Snopshot ${index + 1}`, snapshot])
-  ).describe('Real game snapshots', (description, snapshotSgf) => {
-    test(description, () => {
-      expect(normalizeGameTree(parseSgf(snapshotSgf)[0])).toMatchSnapshot();
-    });
-  });
 });

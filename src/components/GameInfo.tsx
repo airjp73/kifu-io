@@ -26,7 +26,7 @@ const GameInfoWrapper = styled.div`
 `;
 
 const GameInfo = () => {
-  const { gameState } = useGoGameContext();
+  const { gameState, getNode } = useGoGameContext();
   const { variationDisplay } = gameState.properties;
   const { node } = gameState;
   const [expanded, setExpanded] = useState(false);
@@ -40,10 +40,12 @@ const GameInfo = () => {
   const showVariationFor = variationDisplay
     ? variationDisplay.showFor
     : 'NEXT_MOVE';
+  const currentNode = getNode(node);
+  const parentNode = getNode(currentNode && currentNode.parent);
   const gameTreeIsHighlighted =
     showVariationFor === 'NEXT_MOVE'
-      ? node.children && node.children.length > 1
-      : node.parent && node.parent.children && node.parent.children.length > 1;
+      ? currentNode && currentNode.children && currentNode.children.length > 1
+      : parentNode && parentNode.children && parentNode.children.length > 1;
 
   return (
     <GameInfoWrapper>

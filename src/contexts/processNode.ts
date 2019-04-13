@@ -1,4 +1,4 @@
-import { GameNode } from 'parseSgf/parseSgf';
+import { GameTreeNode } from 'parseSgf/normalizeGameTree';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import placeStone from './placeStone';
 import { setPoint } from './actions';
@@ -36,11 +36,11 @@ import {
  * TODO    - Just not done yet
  */
 
-type LogMessage = (message: string, node: GameNode) => void;
+type LogMessage = (message: string, node: GameTreeNode) => void;
 const defaultLog = (message: string) => console.log(message); // eslint-disable-line no-console
 
 const processNode = (
-  node: GameNode,
+  node: GameTreeNode,
   dispatch: ThunkDispatch<GameStateWithHistory>,
   logError: LogMessage = defaultLog
 ) => {
