@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import FontIcon from './FontIcon';
 import FlatButton from './FlatButton';
-import { dark, lightBorder } from 'style';
+import { dark } from 'style';
 
 interface GameControlButtonsProps {
   className?: string;

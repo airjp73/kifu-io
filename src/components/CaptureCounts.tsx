@@ -46,7 +46,9 @@ const CaptureCountContainer = styled.div`
   }
 `;
 
-const CaptureCounts: React.FunctionComponent<CaptureCountsProps> = ({ className }) => {
+const CaptureCounts: React.FunctionComponent<CaptureCountsProps> = ({
+  className,
+}) => {
   const blackStoneRef = useRef(null);
   const whiteStoneRef = useRef(null);
   const { gameState } = useGoGameContext();
