@@ -100,7 +100,12 @@ class GameTreeRenderer {
     return canvas;
   };
 
-  public drawNode = (x: number, y: number, type: TreeCellType) => {
+  public drawNode = (
+    x: number,
+    y: number,
+    type: TreeCellType,
+    moveNumber?: number
+  ) => {
     let stone;
     switch (type) {
       case BLACK:
@@ -118,6 +123,18 @@ class GameTreeRenderer {
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
     ctx.drawImage(stone, xCoord, yCoord);
+
+    if (moveNumber) {
+      ctx.font = `${GameTreeRenderer.stoneRadius}px sans-serif`;
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = type === BLACK ? 'white' : 'black';
+      ctx.fillText(
+        `${moveNumber}`,
+        this.getCoord(x + 1) - GameTreeRenderer.stoneRadius,
+        this.getCoord(y) + 2 * GameTreeRenderer.stoneRadius
+      );
+    }
   };
 
   public drawNodeConnection = (
@@ -283,7 +300,12 @@ const GameTreeView = () => {
 
     treeGrid.forEach((row, yIndex) => {
       row.forEach((treeNode, xIndex) => {
-        gameTreeRenderer.current.drawNode(xIndex, yIndex, treeNode.type);
+        gameTreeRenderer.current.drawNode(
+          xIndex,
+          yIndex,
+          treeNode.type,
+          getNode(treeNode.node).moveNumber
+        );
         if (treeNode.parentLocation) {
           gameTreeRenderer.current.drawNodeConnection(
             treeNode.parentLocation[0],
