@@ -4418,6 +4418,7 @@ AaronP [2d?]: I thought for sure I was a goner for a bit there
       },
     },
   },
+  "rootNode": "7",
 }
 `;
 
@@ -8728,6 +8729,7 @@ AaronP [2d?]: you too :)
       },
     },
   },
+  "rootNode": "263",
 }
 `;
 
@@ -9692,6 +9694,7 @@ Object {
       },
     },
   },
+  "rootNode": "512",
 }
 `;
 
@@ -10656,6 +10659,7 @@ Object {
       },
     },
   },
+  "rootNode": "588",
 }
 `;
 
@@ -11620,6 +11624,7 @@ Object {
       },
     },
   },
+  "rootNode": "664",
 }
 `;
 
@@ -12584,5 +12589,6 @@ Object {
       },
     },
   },
+  "rootNode": "740",
 }
 `;

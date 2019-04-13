@@ -77,7 +77,7 @@ describe('GoGameContext reducer', () => {
       {
         boardState: { aa: 'w' },
         properties: { boardSize: [19, 19] },
-        node: {},
+        node: '',
         moveState: emptyMoveState,
         captureCounts: emptyCaptureCounts,
       },
