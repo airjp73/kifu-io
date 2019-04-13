@@ -2,6 +2,7 @@ import React from 'react';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 
 interface ScreenWidthViewProps {
+  children: React.ReactElement;
   size: 'LARGE' | 'SMALL';
 }
 
