@@ -6,6 +6,11 @@ import {
   createWhiteStone,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
+import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
+
+interface GobanProps {
+  className?: string;
+}
 
 export type StoneColor = 'b' | 'w';
 type StarPoints = [number, number][];
@@ -309,7 +314,6 @@ class GobanCanvas {
 // Container with 1:1 aspect ratio
 const BoardContainer = styled.div`
   position: relative;
-  width: 100%;
   padding-top: 100%;
 `;
 
@@ -319,7 +323,7 @@ const Board = styled.canvas`
   top: 0;
 `;
 
-const Goban = () => {
+const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
   const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
   const stoneLayerRef = useRef(null);
@@ -411,18 +415,13 @@ const Goban = () => {
 
   useEffect(() => drawBoardState(), [boardState, properties.boardSize]);
 
-  const handleResize = () => {
+  useWindowResizeCallback(() => {
     goban.current.init();
     drawBoardState();
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   });
 
   return (
-    <BoardContainer>
+    <BoardContainer className={className}>
       <Board ref={boardLayerRef} />
       <Board ref={stoneLayerRef} />
       <Board ref={markupLayerRef} />

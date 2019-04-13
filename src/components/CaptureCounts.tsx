@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
 
+interface CaptureCountsProps {
+  className?: string;
+}
+
 const NameAndCaptures = styled.div`
   max-width: 100%;
   overflow: hidden;
@@ -42,7 +46,9 @@ const CaptureCountContainer = styled.div`
   }
 `;
 
-const CaptureCounts = () => {
+const CaptureCounts: React.FunctionComponent<CaptureCountsProps> = ({
+  className,
+}) => {
   const blackStoneRef = useRef(null);
   const whiteStoneRef = useRef(null);
   const { gameState } = useGoGameContext();
@@ -61,7 +67,7 @@ const CaptureCounts = () => {
   }, []);
 
   return (
-    <CaptureCountContainer>
+    <CaptureCountContainer className={className}>
       <div>
         <canvas ref={blackStoneRef} />
         <NameAndCaptures>

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { animated, useSpring } from 'react-spring';
 import { useGoGameContext } from 'contexts/GoGameContext';
+import { boxShadowLow, smallMedia, largeMedia } from 'style';
+import ScreenWidthView from 'components/ScreenWidthView';
 import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
 import GameTreeView from 'components/GameTreeView';
@@ -11,21 +14,51 @@ import Tabs from './Tabs/Tabs';
 import TabBar from './Tabs/TabBar';
 import TabContent from './Tabs/TabContent';
 import TabContentArea from './Tabs/TabContentArea';
-import { animated, useSpring } from 'react-spring';
+
+interface GameInfoProps {
+  className?: string;
+}
+
+const ExpandButton = styled(FlatButton)`
+  padding: 0.5rem;
+  margin-left: auto;
+
+  ${largeMedia} {
+    display: none; /* No expand button on larger screens */
+  }
+`;
 
 const GameInfoWrapper = styled.div`
   position: relative;
 
   > div {
     background-color: white;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
+    overflow: hidden;
+  }
+
+  ${largeMedia} {
+    padding: 1rem;
+
+    > div {
+      height: 100%;
+      border-radius: 5px;
+      box-shadow: ${boxShadowLow};
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+    }
+  }
+
+  ${smallMedia} {
+    > div {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
   }
 `;
 
-const GameInfo = () => {
+const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
   const { gameState, getNode } = useGoGameContext();
   const { variationDisplay } = gameState.properties;
   const { node } = gameState;
@@ -48,7 +81,7 @@ const GameInfo = () => {
       : parentNode && parentNode.children && parentNode.children.length > 1;
 
   return (
-    <GameInfoWrapper>
+    <GameInfoWrapper className={className}>
       <animated.div style={contentAreaStyle}>
         <Tabs defaultTab="comments">
           <TabBar>
@@ -58,25 +91,21 @@ const GameInfo = () => {
               label="Comments"
               primary={!!gameState.moveState.comment}
             />
-            <ButtonTab
-              tabName="game-tree"
-              leftIcon="linear_scale"
-              label="Tree"
-              primary={gameTreeIsHighlighted}
-            />
+            <ScreenWidthView size="SMALL">
+              <ButtonTab
+                tabName="game-tree"
+                leftIcon="linear_scale"
+                label="Tree"
+                primary={gameTreeIsHighlighted}
+              />
+            </ScreenWidthView>
             <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
-            <FlatButton
-              css={`
-                padding: 0.5rem;
-                margin-left: auto;
-              `}
-              onClick={() => setExpanded(prev => !prev)}
-            >
+            <ExpandButton onClick={() => setExpanded(prev => !prev)}>
               <FontIcon
                 icon={expanded ? 'expand_more' : 'expand_less'}
                 size="SMALL"
               />
-            </FlatButton>
+            </ExpandButton>
           </TabBar>
           <TabContentArea>
             <TabContent tab="comments">
@@ -90,6 +119,9 @@ const GameInfo = () => {
             </TabContent>
           </TabContentArea>
         </Tabs>
+        <ScreenWidthView size="LARGE">
+          <GameTreeView />
+        </ScreenWidthView>
       </animated.div>
     </GameInfoWrapper>
   );

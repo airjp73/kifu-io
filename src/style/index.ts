@@ -5,6 +5,7 @@ export const hotspotHighlight = 'rgba(255,100,100, .75)';
 export const fadedGrey = '#6D6D6D';
 export const error = '#E8291D';
 export const dark = '#1A2C5B';
+export const darkFaded = 'rgba(62,78,136, .5)';
 
 export const primaryAction = '#7971EA';
 export const primaryHighlight = 'rgba(121, 113, 234, .15)';
@@ -17,3 +18,6 @@ export const boxShadowLow = '0 1px 2px';
 export const headerHeight = '4rem';
 
 export const lightBorder = '1px solid rgba(0, 0, 0, .2)';
+
+export const largeMedia = '@media only screen and (min-width: 700px)';
+export const smallMedia = '@media only screen and (max-width: 700px)';
