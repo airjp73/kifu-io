@@ -8,7 +8,6 @@ import {
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
-import { GameNode } from 'parseSgf/parseSgf';
 import { GameTree } from 'parseSgf/normalizeGameTree';
 import { hotspotHighlight, stoneSelectionHighlight } from 'style';
 

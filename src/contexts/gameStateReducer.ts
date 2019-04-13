@@ -14,7 +14,6 @@ import {
   INIT,
 } from './actions';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
-import { GameNode } from 'parseSgf/parseSgf';
 import { StoneColor } from 'components/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
 

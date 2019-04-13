@@ -1,7 +1,5 @@
 import each from 'jest-each';
 import parseSgf, { GameNode } from './parseSgf';
-import normalizeGameTree from './normalizeGameTree';
-import snapshots from './snapshots';
 
 const LF = String.fromCharCode(10);
 const CR = String.fromCharCode(13);

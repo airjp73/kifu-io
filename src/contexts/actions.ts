@@ -1,5 +1,4 @@
 import { StoneColor } from 'components/Goban';
-import { GameNode } from 'parseSgf/parseSgf';
 
 export const CAPTURE = 'CAPTURE';
 export const INIT = 'INIT';
