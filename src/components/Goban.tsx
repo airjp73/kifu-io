@@ -6,6 +6,7 @@ import {
   createWhiteStone,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
+import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 
 interface GobanProps {
   className?: string;
@@ -414,14 +415,9 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
 
   useEffect(() => drawBoardState(), [boardState, properties.boardSize]);
 
-  const handleResize = () => {
+  useWindowResizeCallback(() => {
     goban.current.init();
     drawBoardState();
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   });
 
   return (

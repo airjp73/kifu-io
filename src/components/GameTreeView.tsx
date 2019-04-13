@@ -342,6 +342,8 @@ const GameTreeView = () => {
         }
       }
     }
+    // No current node found, use the first one
+    return [0, 0];
   };
 
   useEffect(() => {
