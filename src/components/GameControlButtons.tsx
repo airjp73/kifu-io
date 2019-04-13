@@ -3,21 +3,25 @@ import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import FontIcon from './FontIcon';
 import FlatButton from './FlatButton';
-import { lightBorder } from 'style';
+import { dark, lightBorder } from 'style';
+
+interface GameControlButtonsProps {
+  className?: string;
+}
 
 const GameControlButtonBar = styled.div`
   display: flex;
   justify-content: space-evenly;
-  color: black;
-  background-color: white;
-  border-top: ${lightBorder};
+  color: ${dark};
 `;
 
-const GameControlButtons = () => {
+const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
+  className,
+}) => {
   const { forward, back } = useGoGameContext();
 
   return (
-    <GameControlButtonBar>
+    <GameControlButtonBar className={className}>
       <FlatButton onClick={() => back(-1)}>
         <FontIcon icon="skip_previous" />
       </FlatButton>

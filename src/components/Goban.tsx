@@ -7,6 +7,10 @@ import {
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
 
+interface GobanProps {
+  className?: string;
+}
+
 export type StoneColor = 'b' | 'w';
 type StarPoints = [number, number][];
 
@@ -309,7 +313,6 @@ class GobanCanvas {
 // Container with 1:1 aspect ratio
 const BoardContainer = styled.div`
   position: relative;
-  width: 100%;
   padding-top: 100%;
 `;
 
@@ -319,7 +322,7 @@ const Board = styled.canvas`
   top: 0;
 `;
 
-const Goban = () => {
+const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
   const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
   const stoneLayerRef = useRef(null);
@@ -422,7 +425,7 @@ const Goban = () => {
   });
 
   return (
-    <BoardContainer>
+    <BoardContainer className={className}>
       <Board ref={boardLayerRef} />
       <Board ref={stoneLayerRef} />
       <Board ref={markupLayerRef} />

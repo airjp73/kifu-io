@@ -3,12 +3,13 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Header from 'components/Header';
 import SlideOutPanel from 'components/SlideOutPanel';
 import NavMenu from 'components/NavMenu';
-import { headerHeight } from 'style';
+import { headerHeight, darkFaded } from 'style';
 
 const GlobalStyles = createGlobalStyle`
   html, body {
     height: 100%;
     overflow: hidden;
+    background-color: ${darkFaded};
 
     #__next {
       height: 100%;
