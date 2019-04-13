@@ -16,9 +16,9 @@
 export interface GameNode {
   parent?: GameNode;
   children?: GameNode[];
-  properties?: GameProperties;
+  properties?: NodeProperties;
 }
-export interface GameProperties {
+export interface NodeProperties {
   [key: string]: string[];
 }
 

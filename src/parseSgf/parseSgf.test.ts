@@ -1,6 +1,5 @@
 import each from 'jest-each';
 import parseSgf, { GameNode } from './parseSgf';
-import snapshots from './snapshots';
 
 const LF = String.fromCharCode(10);
 const CR = String.fromCharCode(13);
@@ -171,14 +170,6 @@ describe('parseSgf', () => {
     test(description, () => {
       const actual = parseSgf(sgf);
       compareChildren(actual, expected);
-    });
-  });
-
-  each(
-    snapshots.map((snapshot, index) => [`Snopshot ${index + 1}`, snapshot])
-  ).describe('Real game snapshots', (description, snapshotSgf) => {
-    test(description, () => {
-      expect(parseSgf(snapshotSgf)).toMatchSnapshot();
     });
   });
 });

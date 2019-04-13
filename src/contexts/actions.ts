@@ -1,5 +1,4 @@
 import { StoneColor } from 'components/Goban';
-import { GameNode } from 'parseSgf/parseSgf';
 
 export const CAPTURE = 'CAPTURE';
 export const INIT = 'INIT';
@@ -39,9 +38,9 @@ export const captureStones = (
 
 export interface SetNodeAction {
   type: typeof SET_NODE;
-  node: GameNode;
+  node: string;
 }
-export const setNode = (node: GameNode): SetNodeAction => ({
+export const setNode = (node: string): SetNodeAction => ({
   type: SET_NODE,
   node,
 });

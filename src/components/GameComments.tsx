@@ -69,7 +69,7 @@ const getScoreMessage = (estimatedScore: number) =>
     : `White is leading by ${estimatedScore * -1} points`;
 
 const GameComments = () => {
-  const { gameState, goToNode } = useGoGameContext();
+  const { gameState, goToNode, getNode } = useGoGameContext();
   const { node } = gameState;
   const {
     name,
@@ -87,11 +87,13 @@ const GameComments = () => {
   );
 
   const nextCommentMove = useMemo(() => {
-    let currentNode = node.children && node.children[0];
+    const currentMove = getNode(node);
+    let currentNode =
+      currentMove && currentMove.children && getNode(currentMove.children[0]);
     while (currentNode) {
       if (currentNode.properties && currentNode.properties.C)
-        return currentNode;
-      currentNode = currentNode.children && currentNode.children[0];
+        return currentNode.id;
+      currentNode = currentNode.children && getNode(currentNode.children[0]);
     }
     return null;
   }, [node]);

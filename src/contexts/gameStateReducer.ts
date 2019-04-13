@@ -14,7 +14,6 @@ import {
   INIT,
 } from './actions';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
-import { GameNode } from 'parseSgf/parseSgf';
 import { StoneColor } from 'components/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
 
@@ -96,7 +95,7 @@ const propertiesReducer = (
   }
 };
 
-const nodeReducer = (state: GameNode, action: GameStateAction): GameNode => {
+const nodeReducer = (state: string, action: GameStateAction): string => {
   if (action.type === SET_NODE) {
     return action.node;
   } else {
@@ -181,7 +180,7 @@ const captureCountReducer = (
 export interface GameState {
   properties: GameStateProperties;
   boardState: BoardState;
-  node: GameNode;
+  node: string;
   moveState: MoveState;
   captureCounts: CaptureCounts;
 }
@@ -191,7 +190,7 @@ export interface GameStateWithHistory extends GameState {
 const defaultState: GameStateWithHistory = {
   boardState: {},
   properties: {},
-  node: {},
+  node: '',
   moveState: defaultMoveState,
   captureCounts: defaultCaptureCounts,
   history: [],

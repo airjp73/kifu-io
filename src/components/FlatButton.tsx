@@ -24,10 +24,6 @@ const primaryStyles = `
   font-weight: 600;
 `;
 
-const ButtonIcon = styled(FontIcon)`
-  font-size: 1rem;
-`;
-
 const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
   border: none;
   outline: none;
