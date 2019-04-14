@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
 import { useGoGameContext } from 'contexts/GoGameContext';
+import { dark, highlightFaded } from 'style';
 
 interface CaptureCountsProps {
   className?: string;
@@ -16,11 +17,12 @@ const NameAndCaptures = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    color: ${highlightFaded};
   }
 
   span {
-    color: rgba(0, 0, 0, 0.5);
     font-size: 0.8rem;
+    color: ${highlightFaded};
   }
 `;
 

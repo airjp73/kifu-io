@@ -15,7 +15,7 @@ const EmptyText = styled.p`
   font-style: italic;
 `;
 const GameCommentContainer = styled.div`
-  padding: 0 1rem;
+  padding: 0 1rem 1rem 1rem;
 
   h3 {
     margin-bottom: 1rem;
@@ -107,7 +107,11 @@ const GameComments = () => {
       {comment && <Comment>{comment}</Comment>}
       {showEmptyMessage && <EmptyText>No comments on this move</EmptyText>}
       {nextCommentMove && (
-        <FlatButton primary onClick={() => goToNode(nextCommentMove)}>
+        <FlatButton
+          style={{ marginLeft: 'auto' }}
+          primary
+          onClick={() => goToNode(nextCommentMove)}
+        >
           <span style={{ marginRight: '.5rem' }}>Go to next comment</span>
           <FontIcon size="SMALL" icon="arrow_forward" />
         </FlatButton>

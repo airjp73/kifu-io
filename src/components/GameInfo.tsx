@@ -22,10 +22,6 @@ interface GameInfoProps {
 const ExpandButton = styled(FlatButton)`
   padding: 0.5rem;
   margin-left: auto;
-
-  ${largeMedia} {
-    display: none; /* No expand button on larger screens */
-  }
 `;
 
 const GameInfoWrapper = styled.div`
@@ -37,12 +33,13 @@ const GameInfoWrapper = styled.div`
   }
 
   ${largeMedia} {
-    padding: 1rem;
+    margin: 1rem;
+    box-shadow: ${boxShadowLow};
+    border-radius: 5px;
 
     > div {
       height: 100%;
       border-radius: 5px;
-      box-shadow: ${boxShadowLow};
       display: grid;
       grid-template-rows: 1fr 1fr;
     }
