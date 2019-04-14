@@ -100,12 +100,14 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
               />
             </ScreenWidthView>
             <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
-            <ExpandButton onClick={() => setExpanded(prev => !prev)}>
-              <FontIcon
-                icon={expanded ? 'expand_more' : 'expand_less'}
-                size="SMALL"
-              />
-            </ExpandButton>
+            <ScreenWidthView size="SMALL">
+              <ExpandButton onClick={() => setExpanded(prev => !prev)}>
+                <FontIcon
+                  icon={expanded ? 'expand_more' : 'expand_less'}
+                  size="SMALL"
+                />
+              </ExpandButton>
+            </ScreenWidthView>
           </TabBar>
           <TabContentArea>
             <TabContent tab="comments">
