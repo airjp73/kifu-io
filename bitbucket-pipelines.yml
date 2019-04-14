@@ -4,6 +4,7 @@ pipelines:
   pull-requests:
     '**':
       - step:
+          name: 'List/typecheck/test'
           caches:
             - node
           script:
@@ -13,15 +14,6 @@ pipelines:
             - npm test
   branches:
     master:
-      - step:
-          name: 'Lint/typecheck/test'
-          caches:
-            - node
-          script:
-            - npm ci
-            - npm run lint
-            - npm run typecheck
-            - npm test
       - step:
           name: 'Deploy to now'
           script:
