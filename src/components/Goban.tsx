@@ -193,7 +193,7 @@ class GobanCanvas {
 
   public drawLabel = (x: number, y: number, label: string, color: string) => {
     const ctx = this.markupLayer.getContext('2d');
-    ctx.font = `${this.unit * 0.8}px sans-serif`;
+    ctx.font = `${this.unit * 0.7}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = color;
@@ -366,32 +366,28 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
       currentNode &&
       currentNode.properties &&
       (currentNode.properties.B || currentNode.properties.W);
-    if (currentMove) {
-      const point = currentMove && currentMove[0];
-      const coord = pointToXY(point);
-      goban.current.drawCircle(
-        coord[0],
-        coord[1],
-        boardState[point] === 'b' ? '#fff' : '#000'
-      );
-    }
+    const currentPoint = currentMove && currentMove[0];
+    let highlightCurrentMove = !!currentMove;
 
     gameState.moveState.triangles.forEach(point => {
       const coord = pointToXY(point);
       const color = getMarkupColor(point);
       goban.current.drawTriangle(coord[0], coord[1], color);
+      if (point === currentPoint) highlightCurrentMove = false;
     });
 
     gameState.moveState.squares.forEach(point => {
       const coord = pointToXY(point);
       const color = getMarkupColor(point);
       goban.current.drawSquare(coord[0], coord[1], color);
+      if (point === currentPoint) highlightCurrentMove = false;
     });
 
     gameState.moveState.circles.forEach(point => {
       const coord = pointToXY(point);
       const color = getMarkupColor(point);
       goban.current.drawCircle(coord[0], coord[1], color);
+      if (point === currentPoint) highlightCurrentMove = false;
     });
 
     gameState.moveState.lines.forEach(line => {
@@ -404,13 +400,24 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
       const coord = pointToXY(point);
       const color = getMarkupColor(point);
       goban.current.drawLabel(coord[0], coord[1], 'X', color);
+      if (point === currentPoint) highlightCurrentMove = false;
     });
 
     gameState.moveState.labels.forEach(label => {
       const coord = pointToXY(label.point);
       const color = getMarkupColor(label.point);
       goban.current.drawLabel(coord[0], coord[1], label.label, color);
+      if (label.point === currentPoint) highlightCurrentMove = false;
     });
+
+    if (highlightCurrentMove) {
+      const coord = pointToXY(currentPoint);
+      goban.current.drawCircle(
+        coord[0],
+        coord[1],
+        boardState[currentPoint] === 'b' ? '#fff' : '#000'
+      );
+    }
   };
 
   useEffect(() => drawBoardState(), [boardState, properties.boardSize]);

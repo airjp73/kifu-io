@@ -7,19 +7,52 @@ import { getMonthString, getDayString } from 'util/dateUtils';
 interface SupportedProperty {
   name: keyof GameStateProperties;
   label: string;
+  transform?: (value: GameStateProperties[keyof GameStateProperties]) => string;
 }
+
+// This gets a little weird with complicated date scenarios
+// but those seem a little unlikely
+const transformPlayedOnd = (playedOn: PlayedOnDates) =>
+  Object.entries(playedOn)
+    .map(
+      ([year, months]) =>
+        `${Object.entries(months)
+          .map(
+            ([month, days]) =>
+              `${days
+                .map(day => getDayString(day))
+                .join(', ')} of ${getMonthString(month)}`
+          )
+          .join(', ')} ${year}`
+    )
+    .join(', ');
+
+const transformTimeLimit = (timeLimit: number) => {
+  let minutes = Math.floor(timeLimit / 60);
+  const seconds = timeLimit % 60;
+  const hours = Math.floor(minutes / 60);
+  minutes = minutes % 60;
+
+  const segments = [];
+  if (hours) segments.push(`${hours} hours`);
+  if (minutes) segments.push(`${minutes} minutes`);
+  if (seconds) segments.push(`${seconds} seconds`);
+  return segments.join(', ');
+};
+
 const supportedProperties: SupportedProperty[] = [
+  { name: 'playedOn', label: 'Played', transform: transformPlayedOnd },
   { name: 'annotatorName', label: 'Annotator' },
   { name: 'copyright', label: 'Copyright' },
   { name: 'eventName', label: 'Event' },
   { name: 'opening', label: 'Opening' },
+  { name: 'timeLimit', label: 'Time Settings', transform: transformTimeLimit },
   { name: 'overtime', label: 'Overtime' },
   { name: 'placePlayed', label: 'Location' },
   { name: 'result', label: 'Result' },
   { name: 'round', label: 'Round' },
   { name: 'ruleSet', label: 'Rules' },
   { name: 'source', label: 'Source' },
-  { name: 'timeLimit', label: 'Time Settings' },
   { name: 'userEnteringGameRecord', label: 'Recorded By' },
 ];
 
@@ -27,6 +60,7 @@ interface SimplePropertyProps {
   label: string;
   value?: string | number;
 }
+
 const SimpleProperty: React.FunctionComponent<SimplePropertyProps> = ({
   label,
   children,
@@ -65,27 +99,6 @@ const PropertiesList = styled.ul`
   margin: 0;
 `;
 
-const PlayedOn: React.FunctionComponent<{ playedOn: PlayedOnDates }> = ({
-  playedOn,
-}) => {
-  // This gets a little weird with complicated date scenarios
-  // but those seem a little unlikely
-  const dateString = Object.entries(playedOn)
-    .map(
-      ([year, months]) =>
-        `${Object.entries(months)
-          .map(
-            ([month, days]) =>
-              `${days
-                .map(day => getDayString(day))
-                .join(', ')} of ${getMonthString(month)}`
-          )
-          .join(', ')} ${year}`
-    )
-    .join(', ');
-  return <SimpleProperty label="Played">{dateString}</SimpleProperty>;
-};
-
 const GameProperties = () => {
   const { gameState } = useGoGameContext();
   const {
@@ -121,14 +134,17 @@ const GameProperties = () => {
           rank={rankWhite}
           color="White"
         />
-        {playedOn && <PlayedOn playedOn={playedOn} />}
         {supportedProperties.map(
-          ({ name, label }) =>
+          ({ name, label, transform }) =>
             !!gameState.properties[name] && (
               <SimpleProperty
                 key={name}
                 label={label}
-                value={gameState.properties[name] as string | number}
+                value={
+                  transform
+                    ? transform(gameState.properties[name])
+                    : (gameState.properties[name] as string | number)
+                }
               />
             )
         )}

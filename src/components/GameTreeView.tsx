@@ -252,7 +252,7 @@ const createGridFromTree = (
 };
 
 const GameTreeContainer = animated(styled.div`
-  overflow: scroll;
+  overflow: auto;
   background-color: #ccc;
   position: relative;
   height: 100%;

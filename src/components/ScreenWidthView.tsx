@@ -13,7 +13,7 @@ const ScreenWidthView: React.FunctionComponent<ScreenWidthViewProps> = ({
   const { width } = useWindowDimensions();
   switch (size) {
     case 'LARGE':
-      return width >= 700 && children;
+      return width > 700 && children;
     case 'SMALL':
       return width <= 700 && children;
     default:
