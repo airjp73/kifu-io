@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import {
@@ -35,6 +35,7 @@ class GobanCanvas {
   private boardLayer: HTMLCanvasElement;
   private stoneLayer: HTMLCanvasElement;
   private markupLayer: HTMLCanvasElement;
+  private container: HTMLDivElement;
 
   private unit: number;
   private stoneRadius: number;
@@ -45,12 +46,14 @@ class GobanCanvas {
     boardLayer: HTMLCanvasElement,
     stoneLayer: HTMLCanvasElement,
     markupLayer: HTMLCanvasElement,
+    container: HTMLDivElement,
     boardSize: [number, number]
   ) {
     this.size = boardSize;
     this.boardLayer = boardLayer;
     this.stoneLayer = stoneLayer;
     this.markupLayer = markupLayer;
+    this.container = container;
     boardLayer.getContext('2d').imageSmoothingEnabled = false;
     stoneLayer.getContext('2d').imageSmoothingEnabled = false;
     markupLayer.getContext('2d').imageSmoothingEnabled = false;
@@ -72,21 +75,26 @@ class GobanCanvas {
 
   private calculateDimensions = () => {
     const pixelRatio = window.devicePixelRatio || 1;
-    const canvasRect = this.boardLayer.getBoundingClientRect();
+    const canvasRect = this.container.getBoundingClientRect();
 
     const width =
       Math.round(canvasRect.right * pixelRatio) -
       Math.round(canvasRect.left * pixelRatio);
-    this.unit = width / (this.size[0] + 1);
+    const height =
+      Math.round(canvasRect.bottom * pixelRatio) -
+      Math.round(canvasRect.top * pixelRatio);
+    const length = Math.min(width, height);
+    console.log(height, width, length);
+    this.unit = length / (this.size[0] + 1);
     this.stoneRadius = (this.unit - 3) / 2;
-    const height = this.unit * (this.size[1] + 1);
+    // const height = this.unit * (this.size[1] + 1);
 
-    this.boardLayer.width = width;
-    this.stoneLayer.width = width;
-    this.markupLayer.width = width;
-    this.boardLayer.height = height;
-    this.stoneLayer.height = height;
-    this.markupLayer.height = height;
+    this.boardLayer.width = length;
+    this.stoneLayer.width = length;
+    this.markupLayer.width = length;
+    this.boardLayer.height = length;
+    this.stoneLayer.height = length;
+    this.markupLayer.height = length;
   };
 
   private initSprites = () => {
@@ -311,21 +319,22 @@ class GobanCanvas {
   private getCoord = (coord: number) => coord * this.unit + this.unit;
 }
 
-// Container with 1:1 aspect ratio
+const BoardOuterWrapper = styled.div``;
+
 const BoardContainer = styled.div`
   position: relative;
-  padding-top: 100%;
+  margin: auto;
 `;
 
 const Board = styled.canvas`
   position: absolute;
-  width: 100%;
   top: 0;
 `;
 
 const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
   const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
+  const wrapperRef = useRef(null);
   const stoneLayerRef = useRef(null);
   const boardLayerRef = useRef(null);
   const markupLayerRef = useRef(null);
@@ -339,6 +348,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
         boardLayerRef.current,
         stoneLayerRef.current,
         markupLayerRef.current,
+        wrapperRef.current,
         boardSize
       );
 
@@ -428,11 +438,13 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
   });
 
   return (
-    <BoardContainer className={className}>
-      <Board ref={boardLayerRef} />
-      <Board ref={stoneLayerRef} />
-      <Board ref={markupLayerRef} />
-    </BoardContainer>
+    <BoardOuterWrapper ref={wrapperRef}>
+      <BoardContainer className={className}>
+        <Board ref={boardLayerRef} />
+        <Board ref={stoneLayerRef} />
+        <Board ref={markupLayerRef} />
+      </BoardContainer>
+    </BoardOuterWrapper>
   );
 };
 

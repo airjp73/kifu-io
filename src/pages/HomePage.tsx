@@ -17,9 +17,9 @@ const GameViewGoban = styled.div``;
 
 const GameView = styled.div`
   display: grid;
+  height: 100%;
 
   ${largeMedia} {
-    height: max-content;
     max-width: 1200px;
     margin: auto;
     grid-column-gap: 30px;
@@ -54,7 +54,6 @@ const GameView = styled.div`
   }
 
   ${smallMedia} {
-    height: 100%;
     grid-template-rows: min-content min-content 1fr min-content;
     grid-template-columns: 1fr;
   }
@@ -65,11 +64,7 @@ const HelloPage: React.FunctionComponent = () => (
     <GameView>
       <GoGameContextProvider sgf={sgf}>
         <GameViewCaptures />
-        <GobanContainer>
-          <GameViewGoban>
-            <Goban />
-          </GameViewGoban>
-        </GobanContainer>
+        <Goban />
         <GameViewInfo />
         <GameViewControlButtons />
       </GoGameContextProvider>
