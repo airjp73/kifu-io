@@ -111,7 +111,6 @@ const GameProperties = () => {
     teamWhite,
     rankBlack,
     rankWhite,
-    playedOn,
   } = gameState.properties;
   return (
     <div

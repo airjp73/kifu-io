@@ -53,6 +53,7 @@ class GameTreeRenderer {
     const canvasWidth = (width + 1) * GameTreeRenderer.stoneRadius * 3.5;
     const canvasHeight = (height + 1) * GameTreeRenderer.stoneRadius * 3.5;
 
+    // TODO: Correctly scale this when implementing infinite scrolling
     this.stoneLayer = stoneLayer;
     this.stoneLayer.width = canvasWidth;
     this.stoneLayer.height = canvasHeight;
