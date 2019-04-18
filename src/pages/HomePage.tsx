@@ -35,6 +35,7 @@ const GameView = styled.div`
   }
 
   ${largeMedia} {
+    width: fit-content;
     max-width: 1400px;
     margin: auto;
     grid-column-gap: 30px;
