@@ -61,7 +61,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
   const { node } = gameState;
   const [expanded, setExpanded] = useState(false);
   const contentAreaStyle = useSpring({
-    top: expanded ? '-25%' : '0vh',
+    top: expanded ? '-30%' : '0vh',
     boxShadow: expanded
       ? '0px -1px 3px rgba(0,0,0,.5)'
       : '0px 0px 0px rgba(0,0,0,.5)',

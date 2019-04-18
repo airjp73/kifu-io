@@ -39,15 +39,13 @@ const GameView = styled.div`
     margin: auto;
     grid-column-gap: 30px;
     grid-template-areas:
-      'capture info'
+      'board capture'
       'board info'
-      'buttons info';
+      'board buttons';
     grid-template-columns: minmax(300px, 700px) minmax(300px, 500px);
-    grid-template-rows: max-content 1fr max-content;
-
-    ${GameViewCaptures} {
-      padding: 1rem 0;
-    }
+    grid-template-rows: min-content 1fr max-content;
+    padding: 1rem;
+    box-sizing: border-box;
   }
 
   ${smallMedia} {
@@ -56,7 +54,7 @@ const GameView = styled.div`
       'board'
       'info'
       'buttons';
-    grid-template-rows: min-content 4fr 3fr min-content;
+    grid-template-rows: min-content 3fr 2fr min-content;
     grid-template-columns: 1fr;
   }
 `;
