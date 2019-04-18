@@ -38,7 +38,6 @@ const GameView = styled.div`
     width: fit-content;
     max-width: 1400px;
     margin: auto;
-    grid-column-gap: 30px;
     grid-template-areas:
       'board capture'
       'board info'

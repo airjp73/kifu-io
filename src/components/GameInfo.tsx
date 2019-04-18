@@ -33,7 +33,7 @@ const GameInfoWrapper = styled.div`
   }
 
   ${largeMedia} {
-    margin: 1rem;
+    margin: 0.5rem;
     box-shadow: ${boxShadowLow};
     border-radius: 5px;
 
