@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { animated, useSpring } from 'react-spring';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { boxShadowLow, smallMedia, largeMedia } from 'style';
-import ScreenWidthView from 'components/ScreenWidthView';
+import MediaQueryView from 'components/MediaQueryView';
 import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
 import GameTreeView from 'components/GameTreeView';
@@ -40,8 +40,8 @@ const GameInfoWrapper = styled.div`
     > div {
       height: 100%;
       border-radius: 5px;
-      display: grid;
-      grid-template-rows: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
     }
   }
 
@@ -88,23 +88,23 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
               label="Comments"
               primary={!!gameState.moveState.comment}
             />
-            <ScreenWidthView size="SMALL">
+            <MediaQueryView negate minHeight={500} minWidth={700}>
               <ButtonTab
                 tabName="game-tree"
                 leftIcon="linear_scale"
                 label="Tree"
                 primary={gameTreeIsHighlighted}
               />
-            </ScreenWidthView>
+            </MediaQueryView>
             <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
-            <ScreenWidthView size="SMALL">
+            <MediaQueryView maxWidth={700}>
               <ExpandButton onClick={() => setExpanded(prev => !prev)}>
                 <FontIcon
                   icon={expanded ? 'expand_more' : 'expand_less'}
                   size="SMALL"
                 />
               </ExpandButton>
-            </ScreenWidthView>
+            </MediaQueryView>
           </TabBar>
           <TabContentArea>
             <TabContent tab="comments">
@@ -118,9 +118,9 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
             </TabContent>
           </TabContentArea>
         </Tabs>
-        <ScreenWidthView size="LARGE">
+        <MediaQueryView minWidth={700} minHeight={500}>
           <GameTreeView />
-        </ScreenWidthView>
+        </MediaQueryView>
       </animated.div>
     </GameInfoWrapper>
   );

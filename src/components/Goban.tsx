@@ -83,11 +83,9 @@ class GobanCanvas {
     const height =
       Math.round(canvasRect.bottom * pixelRatio) -
       Math.round(canvasRect.top * pixelRatio);
-    const length = Math.min(width, height);
-    console.log(height, width, length);
+    const length = Math.max(Math.min(width, height), 100);
     this.unit = length / (this.size[0] + 1);
     this.stoneRadius = (this.unit - 3) / 2;
-    // const height = this.unit * (this.size[1] + 1);
 
     this.boardLayer.width = length;
     this.stoneLayer.width = length;
@@ -324,11 +322,14 @@ const BoardOuterWrapper = styled.div``;
 const BoardContainer = styled.div`
   position: relative;
   margin: auto;
+  height: 100%;
 `;
 
 const Board = styled.canvas`
   position: absolute;
-  top: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 `;
 
 const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
