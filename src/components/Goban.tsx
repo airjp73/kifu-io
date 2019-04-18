@@ -7,6 +7,7 @@ import {
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
+import { setCanvasDimensionsWithCorrectScaling } from 'util/canvasUtils';
 
 interface GobanProps {
   className?: string;
@@ -74,25 +75,18 @@ class GobanCanvas {
   };
 
   private calculateDimensions = () => {
-    const pixelRatio = window.devicePixelRatio || 1;
     const canvasRect = this.container.getBoundingClientRect();
 
-    const width =
-      Math.round(canvasRect.right * pixelRatio) -
-      Math.round(canvasRect.left * pixelRatio);
-    const height =
-      Math.round(canvasRect.bottom * pixelRatio) -
-      Math.round(canvasRect.top * pixelRatio);
+    const width = Math.round(canvasRect.right) - Math.round(canvasRect.left);
+    const height = Math.round(canvasRect.bottom) - Math.round(canvasRect.top);
     const length = Math.max(Math.min(width, height), 100);
+
     this.unit = length / (this.size[0] + 1);
     this.stoneRadius = (this.unit - 3) / 2;
 
-    this.boardLayer.width = length;
-    this.stoneLayer.width = length;
-    this.markupLayer.width = length;
-    this.boardLayer.height = length;
-    this.stoneLayer.height = length;
-    this.markupLayer.height = length;
+    setCanvasDimensionsWithCorrectScaling(this.boardLayer, length, length);
+    setCanvasDimensionsWithCorrectScaling(this.stoneLayer, length, length);
+    setCanvasDimensionsWithCorrectScaling(this.markupLayer, length, length);
   };
 
   private initSprites = () => {
@@ -317,12 +311,8 @@ class GobanCanvas {
   private getCoord = (coord: number) => coord * this.unit + this.unit;
 }
 
-const BoardOuterWrapper = styled.div``;
-
 const BoardContainer = styled.div`
   position: relative;
-  margin: auto;
-  height: 100%;
 `;
 
 const Board = styled.canvas`
@@ -335,7 +325,7 @@ const Board = styled.canvas`
 const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
   const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
-  const wrapperRef = useRef(null);
+  const containerRef = useRef(null);
   const stoneLayerRef = useRef(null);
   const boardLayerRef = useRef(null);
   const markupLayerRef = useRef(null);
@@ -349,7 +339,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
         boardLayerRef.current,
         stoneLayerRef.current,
         markupLayerRef.current,
-        wrapperRef.current,
+        containerRef.current,
         boardSize
       );
 
@@ -439,13 +429,11 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
   });
 
   return (
-    <BoardOuterWrapper ref={wrapperRef}>
-      <BoardContainer className={className}>
-        <Board ref={boardLayerRef} />
-        <Board ref={stoneLayerRef} />
-        <Board ref={markupLayerRef} />
-      </BoardContainer>
-    </BoardOuterWrapper>
+    <BoardContainer ref={containerRef} className={className}>
+      <Board ref={boardLayerRef} />
+      <Board ref={stoneLayerRef} />
+      <Board ref={markupLayerRef} />
+    </BoardContainer>
   );
 };
 
