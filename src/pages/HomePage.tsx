@@ -12,15 +12,30 @@ import { largeMedia, smallMedia } from 'style';
 const GameViewCaptures = styled(CaptureCounts)``;
 const GameViewControlButtons = styled(GameControlButtons)``;
 const GameViewInfo = styled(GameInfo)``;
-const GobanContainer = styled.div``;
-const GameViewGoban = styled.div``;
+const GameViewGoban = styled(Goban)``;
 
 const GameView = styled.div`
   display: grid;
   height: 100%;
 
+  ${GameViewCaptures} {
+    grid-area: capture;
+  }
+
+  ${GameViewControlButtons} {
+    grid-area: buttons;
+  }
+
+  ${GameViewGoban} {
+    grid-area: board;
+  }
+
+  ${GameViewInfo} {
+    grid-area: info;
+  }
+
   ${largeMedia} {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: auto;
     grid-column-gap: 30px;
     grid-template-areas:
@@ -28,33 +43,20 @@ const GameView = styled.div`
       'board info'
       'buttons info';
     grid-template-columns: minmax(300px, 700px) minmax(300px, 500px);
-    grid-template-rows: max-content auto max-content;
+    grid-template-rows: max-content 1fr max-content;
 
     ${GameViewCaptures} {
-      grid-area: capture;
       padding: 1rem 0;
-    }
-
-    ${GobanContainer} {
-      grid-area: board;
-
-      ${GameViewGoban} {
-        margin: auto;
-        max-width: 600px;
-      }
-    }
-
-    ${GameViewInfo} {
-      grid-area: info;
-    }
-
-    ${GameViewControlButtons} {
-      grid-area: buttons;
     }
   }
 
   ${smallMedia} {
-    grid-template-rows: min-content min-content 1fr min-content;
+    grid-template-areas:
+      'capture'
+      'board'
+      'info'
+      'buttons';
+    grid-template-rows: min-content 4fr 3fr min-content;
     grid-template-columns: 1fr;
   }
 `;
@@ -64,7 +66,7 @@ const HelloPage: React.FunctionComponent = () => (
     <GameView>
       <GoGameContextProvider sgf={sgf}>
         <GameViewCaptures />
-        <Goban />
+        <GameViewGoban />
         <GameViewInfo />
         <GameViewControlButtons />
       </GoGameContextProvider>

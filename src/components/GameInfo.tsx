@@ -61,7 +61,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
   const { node } = gameState;
   const [expanded, setExpanded] = useState(false);
   const contentAreaStyle = useSpring({
-    top: expanded ? '-50vh' : '0vh',
+    top: expanded ? '-25%' : '0vh',
     boxShadow: expanded
       ? '0px -1px 3px rgba(0,0,0,.5)'
       : '0px 0px 0px rgba(0,0,0,.5)',
@@ -88,7 +88,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
               label="Comments"
               primary={!!gameState.moveState.comment}
             />
-            <MediaQueryView negate minHeight={500} minWidth={700}>
+            <MediaQueryView negate minHeight={450} minWidth={700}>
               <ButtonTab
                 tabName="game-tree"
                 leftIcon="linear_scale"
@@ -118,7 +118,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
             </TabContent>
           </TabContentArea>
         </Tabs>
-        <MediaQueryView minWidth={700} minHeight={500}>
+        <MediaQueryView minWidth={700} minHeight={450}>
           <GameTreeView />
         </MediaQueryView>
       </animated.div>
