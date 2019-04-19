@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { headerHeight, highlight, panelBackground } from 'style';
+import { headerHeight, highlight, panelBackground, largeMedia } from 'style';
 import FontIcon from './FontIcon';
 import FlatButton from './FlatButton';
 
 interface HeaderProps {
   onMenuClick: () => void;
+  className?: string;
 }
 
 const HeaderContainer = styled.header`
@@ -42,9 +43,10 @@ const ChildContainer = styled.div`
 
 const Header: React.FunctionComponent<HeaderProps> = ({
   children,
+  className,
   onMenuClick,
 }) => (
-  <HeaderContainer>
+  <HeaderContainer className={className}>
     <FlatButton onClick={onMenuClick}>
       <FontIcon icon="menu" />
     </FlatButton>
