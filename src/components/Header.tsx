@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { headerHeight, highlight, panelBackground, largeMedia } from 'style';
+import { headerHeight, highlight, panelBackground } from 'style';
 import FontIcon from './FontIcon';
 import FlatButton from './FlatButton';
 
