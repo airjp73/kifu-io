@@ -44,6 +44,7 @@ const GameView = styled.div`
       'board buttons';
     grid-template-columns: minmax(300px, 700px) minmax(300px, 500px);
     grid-template-rows: min-content 1fr max-content;
+    grid-column-gap: 1rem;
     padding: 1rem;
     box-sizing: border-box;
   }
