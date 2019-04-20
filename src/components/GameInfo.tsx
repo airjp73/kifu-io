@@ -29,6 +29,9 @@ const ExpandButton = styled(FlatButton)`
 
 const GameInfoWrapper = styled.div`
   position: relative;
+  margin: 0.5rem;
+  box-shadow: ${boxShadowLow};
+  border-radius: 5px;
 
   > div {
     background-color: white;
@@ -36,10 +39,6 @@ const GameInfoWrapper = styled.div`
   }
 
   ${landscapeMedia} {
-    margin: 0.5rem;
-    box-shadow: ${boxShadowLow};
-    border-radius: 5px;
-
     > div {
       height: 100%;
       border-radius: 5px;
