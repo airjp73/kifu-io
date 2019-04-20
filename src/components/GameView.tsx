@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Layout from 'components/Layout';
 import Goban from 'components/Goban';
 import { GoGameContextProvider } from 'contexts/GoGameContext';
 import GameControlButtons from 'components/GameControlButtons';
@@ -14,7 +13,7 @@ const GameViewControlButtons = styled(GameControlButtons)``;
 const GameViewInfo = styled(GameInfo)``;
 const GameViewGoban = styled(Goban)``;
 
-const GameView = styled.div`
+const GameViewContainer = styled.div`
   display: grid;
   height: 100%;
 
@@ -59,17 +58,15 @@ const GameView = styled.div`
   }
 `;
 
-const HelloPage: React.FunctionComponent = () => (
-  <Layout>
-    <GameView>
-      <GoGameContextProvider sgf={sgf}>
-        <GameViewCaptures />
-        <GameViewGoban />
-        <GameViewInfo />
-        <GameViewControlButtons />
-      </GoGameContextProvider>
-    </GameView>
-  </Layout>
+const GameView: React.FunctionComponent = () => (
+  <GameViewContainer>
+    <GoGameContextProvider sgf={sgf}>
+      <GameViewCaptures />
+      <GameViewGoban />
+      <GameViewInfo />
+      <GameViewControlButtons />
+    </GoGameContextProvider>
+  </GameViewContainer>
 );
 
-export default HelloPage;
+export default GameView;
