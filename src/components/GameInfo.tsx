@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { animated, useSpring } from 'react-spring';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { boxShadowLow, smallMedia, largeMedia } from 'style';
-import MediaQueryView from 'components/MediaQueryView';
+import MediaQueryView, {
+  LandscapeView,
+  PortraitView,
+} from 'components/MediaQueryView';
 import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
 import GameTreeView from 'components/GameTreeView';
@@ -82,29 +85,44 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
       <animated.div style={contentAreaStyle}>
         <Tabs defaultTab="comments">
           <TabBar>
-            <ButtonTab
-              tabName="comments"
-              leftIcon="comment"
-              label="Comments"
-              primary={!!gameState.moveState.comment}
-            />
-            <MediaQueryView negate minHeight={500} minWidth={700}>
+            <LandscapeView>
+              <ButtonTab
+                tabName="comments"
+                leftIcon="comment"
+                label="Comments"
+                primary={!!gameState.moveState.comment}
+              />
+              <MediaQueryView maxHeight={600}>
+                <ButtonTab
+                  tabName="game-tree"
+                  leftIcon="linear_scale"
+                  label="Tree"
+                  primary={gameTreeIsHighlighted}
+                />
+              </MediaQueryView>
+              <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
+            </LandscapeView>
+            <PortraitView>
+              <ButtonTab
+                tabName="comments"
+                leftIcon="comment"
+                label="Comments"
+                primary={!!gameState.moveState.comment}
+              />
               <ButtonTab
                 tabName="game-tree"
                 leftIcon="linear_scale"
                 label="Tree"
                 primary={gameTreeIsHighlighted}
               />
-            </MediaQueryView>
-            <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
-            <MediaQueryView maxWidth={700}>
+              <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
               <ExpandButton onClick={() => setExpanded(prev => !prev)}>
                 <FontIcon
                   icon={expanded ? 'expand_more' : 'expand_less'}
                   size="SMALL"
                 />
               </ExpandButton>
-            </MediaQueryView>
+            </PortraitView>
           </TabBar>
           <TabContentArea>
             <TabContent tab="comments">
@@ -118,9 +136,11 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
             </TabContent>
           </TabContentArea>
         </Tabs>
-        <MediaQueryView minWidth={700} minHeight={500}>
-          <GameTreeView />
-        </MediaQueryView>
+        <LandscapeView>
+          <MediaQueryView minHeight={600}>
+            <GameTreeView />
+          </MediaQueryView>
+        </LandscapeView>
       </animated.div>
     </GameInfoWrapper>
   );

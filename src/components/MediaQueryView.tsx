@@ -7,7 +7,10 @@ interface MediaQueryViewProps {
   maxWidth?: number;
   minHeight?: number;
   maxHeight?: number;
-  negate?: boolean;
+}
+
+interface OrientationViewProps {
+  children: React.ReactElement;
 }
 
 const MediaQueryView: React.FunctionComponent<MediaQueryViewProps> = ({
@@ -16,18 +19,28 @@ const MediaQueryView: React.FunctionComponent<MediaQueryViewProps> = ({
   maxWidth,
   minHeight,
   maxHeight,
-  negate = false,
 }) => {
   const { height, width } = useWindowDimensions();
-  const meetsHeightRequirements =
+  const meetsDimensionRequirements =
     (!minWidth || width >= minWidth) &&
     (!maxWidth || width <= maxWidth) &&
     (!minHeight || height >= minHeight) &&
     (!maxHeight || height <= maxHeight);
-  const shouldRender = negate
-    ? !meetsHeightRequirements
-    : meetsHeightRequirements;
-  return shouldRender && children;
+  return meetsDimensionRequirements && children;
+};
+
+export const LandscapeView: React.FunctionComponent<OrientationViewProps> = ({
+  children,
+}) => {
+  const { height, width } = useWindowDimensions();
+  return width > height && children;
+};
+
+export const PortraitView: React.FunctionComponent<OrientationViewProps> = ({
+  children,
+}) => {
+  const { height, width } = useWindowDimensions();
+  return width <= height && children;
 };
 
 export default MediaQueryView;

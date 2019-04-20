@@ -20,5 +20,6 @@ export const headerHeight = '4rem';
 
 export const lightBorder = '1px solid rgba(0, 0, 0, .2)';
 
-export const largeMedia = '@media only screen and (min-width: 701px)';
-export const smallMedia = '@media only screen and (max-width: 700px)';
+export const largeMedia =
+  '@media only screen and (min-width: 900px) and (orientation: landscape)';
+export const smallMedia = '@media only screen and (orientation: portrait)';
