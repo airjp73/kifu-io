@@ -14,7 +14,6 @@ const ButtonTab: React.FunctionComponent<
   return (
     <FlatButton
       className={className}
-      key={tabName}
       onClick={() => setCurrentTab(tabName)}
       data-tabid={tabName}
       {...rest}

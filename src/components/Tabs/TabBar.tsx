@@ -28,16 +28,23 @@ const TabBar: React.FunctionComponent = ({ children }) => {
     left: 0,
     width: 0,
   }));
-  useEffect(() => {
+
+  const moveUnderline = () => {
     const tabElement = containerRef.current.querySelector(
-      `[data-tabid="${currentTab}"`
+      `[data-tabid="${currentTab}"]`
     );
-    // It's entirely possibe, if unlikely, that tabElement could be null
-    // There may be a use case for having tabs with no button
     const left = tabElement ? tabElement.offsetLeft : 0;
     const width = tabElement ? tabElement.offsetWidth : 0;
     setUnderlinePosition({ left, width });
-  });
+  };
+
+  useEffect(() => {
+    moveUnderline();
+
+    const observer = new MutationObserver(moveUnderline);
+    observer.observe(containerRef.current, { childList: true });
+    return () => observer.disconnect();
+  }, [currentTab]);
 
   return (
     <TabBarContainer ref={containerRef}>
