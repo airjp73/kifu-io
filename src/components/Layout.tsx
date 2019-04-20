@@ -4,7 +4,7 @@ import Header from 'components/Header';
 import SlideOutPanel from 'components/SlideOutPanel';
 import Sidebar from 'components/Sidebar';
 import NavMenu from 'components/NavMenu';
-import { headerHeight, darkFaded, smallMedia, largeMedia } from 'style';
+import { headerHeight, darkFaded, portraitMedia, landscapeMedia } from 'style';
 
 const GlobalStyles = createGlobalStyle`
   html, body {
@@ -21,11 +21,11 @@ const GlobalStyles = createGlobalStyle`
 const MainContent = styled.main`
   position: relative;
 
-  ${smallMedia} {
+  ${portraitMedia} {
     height: calc(100% - ${headerHeight});
   }
 
-  ${largeMedia} {
+  ${landscapeMedia} {
     height: 100%;
     display: flex;
     margin-left: ${headerHeight};
@@ -33,14 +33,14 @@ const MainContent = styled.main`
 `;
 
 const MobileHeader = styled(Header)`
-  ${largeMedia} {
+  ${landscapeMedia} {
     display: none;
   }
 `;
 
 const DesktopSidebar = styled(Sidebar)`
   position: absolute;
-  ${smallMedia} {
+  ${portraitMedia} {
     display: none;
   }
 `;
