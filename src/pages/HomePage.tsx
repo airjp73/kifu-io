@@ -1,75 +1,21 @@
 import React from 'react';
-import styled from 'styled-components';
+import dynamic from 'next/dynamic';
 import Layout from 'components/Layout';
-import Goban from 'components/Goban';
-import { GoGameContextProvider } from 'contexts/GoGameContext';
-import GameControlButtons from 'components/GameControlButtons';
-import sgf from 'parseSgf/snapshots/snapshot7';
-import GameInfo from 'components/GameInfo';
-import CaptureCounts from 'components/CaptureCounts';
-import { landscapeMedia, portraitMedia } from 'style';
 
-const GameViewCaptures = styled(CaptureCounts)``;
-const GameViewControlButtons = styled(GameControlButtons)``;
-const GameViewInfo = styled(GameInfo)``;
-const GameViewGoban = styled(Goban)``;
+/**
+ * Dynamic import for two reasons
+ *
+ * 1. It's a waste to process the sgf on the server
+ *    since canvases can't be rendered on the server anyway
+ * 2. Some of the game view content responds to the screen size in js (not css)
+ *    which causes flickering since there is no screen on the server.
+ */
+const GameView = dynamic(() => import('components/GameView'), { ssr: false });
 
-const GameView = styled.div`
-  display: grid;
-  height: 100%;
-
-  ${GameViewCaptures} {
-    grid-area: capture;
-  }
-
-  ${GameViewControlButtons} {
-    grid-area: buttons;
-  }
-
-  ${GameViewGoban} {
-    grid-area: board;
-  }
-
-  ${GameViewInfo} {
-    grid-area: info;
-  }
-
-  ${landscapeMedia} {
-    width: fit-content;
-    margin: auto;
-    grid-template-areas:
-      'board capture'
-      'board info'
-      'board buttons';
-    grid-template-columns: minmax(300px, 1000px) minmax(300px, 800px);
-    grid-template-rows: min-content 1fr max-content;
-    grid-column-gap: 1rem;
-    padding: 1rem;
-    box-sizing: border-box;
-  }
-
-  ${portraitMedia} {
-    grid-template-areas:
-      'capture'
-      'board'
-      'info'
-      'buttons';
-    grid-template-rows: min-content 3fr 2fr min-content;
-    grid-template-columns: 1fr;
-  }
-`;
-
-const HelloPage: React.FunctionComponent = () => (
+const GameViewPage: React.FunctionComponent = () => (
   <Layout>
-    <GameView>
-      <GoGameContextProvider sgf={sgf}>
-        <GameViewCaptures />
-        <GameViewGoban />
-        <GameViewInfo />
-        <GameViewControlButtons />
-      </GoGameContextProvider>
-    </GameView>
+    <GameView />
   </Layout>
 );
 
-export default HelloPage;
+export default GameViewPage;
