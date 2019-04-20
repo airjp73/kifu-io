@@ -77,6 +77,12 @@ const NavMenu: React.FunctionComponent<NavMenuProps> = ({ iconOnly }) => (
     <section>
       <ul>
         <NavItem
+          icon="android"
+          label="View Sample Sgf"
+          href="/view"
+          iconOnly={iconOnly}
+        />
+        <NavItem
           icon="search"
           label="Browse Reviews"
           href="/browse"
