@@ -88,7 +88,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
               label="Comments"
               primary={!!gameState.moveState.comment}
             />
-            <MediaQueryView negate minHeight={450} minWidth={700}>
+            <MediaQueryView negate minHeight={500} minWidth={700}>
               <ButtonTab
                 tabName="game-tree"
                 leftIcon="linear_scale"
@@ -118,7 +118,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
             </TabContent>
           </TabContentArea>
         </Tabs>
-        <MediaQueryView minWidth={700} minHeight={450}>
+        <MediaQueryView minWidth={700} minHeight={500}>
           <GameTreeView />
         </MediaQueryView>
       </animated.div>

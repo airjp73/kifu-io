@@ -6,6 +6,7 @@ import FlatButton from './FlatButton';
 
 interface HeaderProps {
   onMenuClick: () => void;
+  className?: string;
 }
 
 const HeaderContainer = styled.header`
@@ -24,7 +25,6 @@ const HeaderContainer = styled.header`
   color: ${highlight};
   font-size: 1.5rem;
   align-items: center;
-  z-index: 1;
 
   strong {
     display: flex;
@@ -42,9 +42,10 @@ const ChildContainer = styled.div`
 
 const Header: React.FunctionComponent<HeaderProps> = ({
   children,
+  className,
   onMenuClick,
 }) => (
-  <HeaderContainer>
+  <HeaderContainer className={className}>
     <FlatButton onClick={onMenuClick}>
       <FontIcon icon="menu" />
     </FlatButton>

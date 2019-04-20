@@ -36,14 +36,14 @@ const GameView = styled.div`
 
   ${largeMedia} {
     width: fit-content;
-    max-width: 1400px;
     margin: auto;
     grid-template-areas:
       'board capture'
       'board info'
       'board buttons';
-    grid-template-columns: minmax(300px, 700px) minmax(300px, 500px);
+    grid-template-columns: minmax(300px, 1000px) minmax(300px, 800px);
     grid-template-rows: min-content 1fr max-content;
+    grid-column-gap: 1rem;
     padding: 1rem;
     box-sizing: border-box;
   }

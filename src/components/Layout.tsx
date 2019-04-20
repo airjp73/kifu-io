@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from 'components/Header';
 import SlideOutPanel from 'components/SlideOutPanel';
+import Sidebar from 'components/Sidebar';
 import NavMenu from 'components/NavMenu';
-import { headerHeight, darkFaded } from 'style';
+import { headerHeight, darkFaded, smallMedia, largeMedia } from 'style';
 
 const GlobalStyles = createGlobalStyle`
   html, body {
@@ -17,10 +18,31 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-// TODO: Add styles for larger screens
 const MainContent = styled.main`
   position: relative;
-  height: calc(100% - ${headerHeight});
+
+  ${smallMedia} {
+    height: calc(100% - ${headerHeight});
+  }
+
+  ${largeMedia} {
+    height: 100%;
+    display: flex;
+    margin-left: ${headerHeight};
+  }
+`;
+
+const MobileHeader = styled(Header)`
+  ${largeMedia} {
+    display: none;
+  }
+`;
+
+const DesktopSidebar = styled(Sidebar)`
+  position: absolute;
+  ${smallMedia} {
+    display: none;
+  }
 `;
 
 const Layout: React.FunctionComponent = ({ children }) => {
@@ -28,9 +50,12 @@ const Layout: React.FunctionComponent = ({ children }) => {
   return (
     <>
       <GlobalStyles />
-      <Header onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)}>
+      <MobileHeader onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)}>
         Home
-      </Header>
+      </MobileHeader>
+      <DesktopSidebar>
+        <NavMenu iconOnly />
+      </DesktopSidebar>
       <SlideOutPanel
         active={sidePanelOpen}
         onClose={() => setSidePanelOpen(false)}
