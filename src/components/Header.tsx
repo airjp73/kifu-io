@@ -25,7 +25,6 @@ const HeaderContainer = styled.header`
   color: ${highlight};
   font-size: 1.5rem;
   align-items: center;
-  z-index: 1;
 
   strong {
     display: flex;
