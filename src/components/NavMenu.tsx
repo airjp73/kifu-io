@@ -71,9 +71,25 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   </NavListItem>
 );
 
+interface HeaderLinkProps {
+  href: string;
+}
+const HeaderLink: React.FunctionComponent<HeaderLinkProps> = ({
+  children,
+  href,
+}) => (
+  <h3>
+    <Link href={href}>
+      <NavLink>{children}</NavLink>
+    </Link>
+  </h3>
+);
+
 const NavMenu: React.FunctionComponent<NavMenuProps> = ({ iconOnly }) => (
   <Nav data-testid="nav-menu">
-    <section>{iconOnly ? <h3>GR</h3> : <h3>Go Reviews</h3>}</section>
+    <section>
+      <HeaderLink href="/home">{iconOnly ? 'GR' : 'Go Reviews'}</HeaderLink>
+    </section>
     <section>
       <ul>
         <NavItem
