@@ -7,7 +7,7 @@ import GameControlButtons from 'components/GameControlButtons';
 import sgf from 'parseSgf/snapshots/snapshot7';
 import GameInfo from 'components/GameInfo';
 import CaptureCounts from 'components/CaptureCounts';
-import { largeMedia, smallMedia } from 'style';
+import { landscapeMedia, portraitMedia } from 'style';
 
 const GameViewCaptures = styled(CaptureCounts)``;
 const GameViewControlButtons = styled(GameControlButtons)``;
@@ -34,7 +34,7 @@ const GameView = styled.div`
     grid-area: info;
   }
 
-  ${largeMedia} {
+  ${landscapeMedia} {
     width: fit-content;
     margin: auto;
     grid-template-areas:
@@ -48,7 +48,7 @@ const GameView = styled.div`
     box-sizing: border-box;
   }
 
-  ${smallMedia} {
+  ${portraitMedia} {
     grid-template-areas:
       'capture'
       'board'

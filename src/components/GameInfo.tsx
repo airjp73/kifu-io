@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { animated, useSpring } from 'react-spring';
 import { useGoGameContext } from 'contexts/GoGameContext';
-import { boxShadowLow, smallMedia, largeMedia } from 'style';
+import { boxShadowLow, portraitMedia, landscapeMedia } from 'style';
 import MediaQueryView, {
   LandscapeView,
   PortraitView,
@@ -35,7 +35,7 @@ const GameInfoWrapper = styled.div`
     overflow: hidden;
   }
 
-  ${largeMedia} {
+  ${landscapeMedia} {
     margin: 0.5rem;
     box-shadow: ${boxShadowLow};
     border-radius: 5px;
@@ -48,7 +48,7 @@ const GameInfoWrapper = styled.div`
     }
   }
 
-  ${smallMedia} {
+  ${portraitMedia} {
     > div {
       position: absolute;
       bottom: 0;
