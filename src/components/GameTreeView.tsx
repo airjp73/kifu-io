@@ -489,16 +489,13 @@ const GameTreeView = () => {
   });
 
   const previousScroll = useRef(0);
-  const handleScroll = throttle(
-    (event: React.SyntheticEvent<HTMLDivElement>) => {
-      // Only redraw if horizontal scrolling
-      if (previousScroll.current !== event.currentTarget.scrollLeft) {
-        drawViewport();
-        previousScroll.current = event.currentTarget.scrollLeft;
-      }
-    },
-    100
-  );
+  const handleScroll = (event: React.SyntheticEvent<HTMLDivElement>) => {
+    // Only redraw if horizontal scrolling
+    if (previousScroll.current !== event.currentTarget.scrollLeft) {
+      drawViewport();
+      previousScroll.current = event.currentTarget.scrollLeft;
+    }
+  };
 
   return (
     <ScrollContainer
