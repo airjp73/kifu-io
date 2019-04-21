@@ -373,8 +373,6 @@ const GameTreeView = () => {
     3.5;
   const height = (treeGrid.length + 1) * GameTreeRenderer.stoneRadius * 3.5;
 
-  const [canvasTop, setCanvasTop] = useState(0);
-  const [canvasLeft, setCanvasLeft] = useState(0);
   const drawViewport = () => {
     gameTreeRenderer.current.clear();
     gameTreeRenderer.current.setBounds(
@@ -383,8 +381,6 @@ const GameTreeView = () => {
       containerRef.current.offsetWidth,
       height
     );
-    setCanvasTop(containerRef.current.scrollTop);
-    setCanvasLeft(containerRef.current.scrollLeft);
 
     treeGrid.forEach((row, yIndex) => {
       row.forEach((treeNode, xIndex) => {
