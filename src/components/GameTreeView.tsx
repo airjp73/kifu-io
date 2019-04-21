@@ -144,11 +144,12 @@ class GameTreeRenderer {
     const { top, left, right, bottom } = this.viewport;
 
     // Give a little leeway so we don't get clipping
+    const leeway = GameTreeRenderer.stoneRadius * 10;
     return (
-      xCoord >= left - GameTreeRenderer.stoneRadius * 3.5 &&
-      xCoord <= right - GameTreeRenderer.stoneRadius * 3.5 &&
-      yCoord >= top &&
-      yCoord <= bottom
+      xCoord >= left - leeway &&
+      xCoord <= right + leeway &&
+      yCoord >= top - leeway &&
+      yCoord <= bottom + leeway
     );
   };
 
@@ -321,6 +322,12 @@ const createGridFromTree = (
   return cell;
 };
 
+const ScrollContainer = animated(styled.div`
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+`);
+
 const GameTreeContainer = styled.div`
   position: relative;
   background-color: #ccc;
@@ -396,6 +403,11 @@ const GameTreeView = () => {
         if (getNode(treeNode.node).properties.HO) {
           gameTreeRenderer.current.drawHotspot(xIndex, yIndex);
         }
+
+        // Highlight node if it's the currently selected node
+        if (treeNode.node === gameState.node) {
+          gameTreeRenderer.current.drawNodeSelection(xIndex, yIndex);
+        }
       });
     });
   };
@@ -448,7 +460,6 @@ const GameTreeView = () => {
     const nodeY =
       gameTreeRenderer.current.getCoord(y) -
       containerRef.current.offsetHeight / 3;
-
     setScroll({
       to: {
         scrollTop: nodeY,
@@ -466,7 +477,6 @@ const GameTreeView = () => {
     const xCoord = event.nativeEvent.offsetX;
     const yCoord = event.nativeEvent.offsetY;
     const [x, y] = gameTreeRenderer.current.coordToGridLocation(xCoord, yCoord);
-    console.log(x, y);
     if (treeGrid[y] && treeGrid[y][x]) {
       goToNode(treeGrid[y][x].node);
     }
@@ -479,13 +489,10 @@ const GameTreeView = () => {
 
   const canvasStyle = { top: canvasTop, left: canvasLeft };
   return (
-    <div
-      css={`
-        overflow: auto;
-      `}
-      {...containerScroll}
-      onScroll={drawViewport}
+    <ScrollContainer
       ref={containerRef}
+      onScroll={drawViewport}
+      {...containerScroll}
     >
       <GameTreeContainer style={{ width, height }}>
         <GameTreeCanvas ref={highlightLayerRef} style={canvasStyle} />
@@ -497,7 +504,7 @@ const GameTreeView = () => {
           style={canvasStyle}
         />
       </GameTreeContainer>
-    </div>
+    </ScrollContainer>
   );
 };
 
