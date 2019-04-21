@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
+import { throttle } from 'lodash';
 import { animated, config, useSpring } from 'react-spring';
-import ResizeObserver from 'resize-observer-polyfill';
 import {
   createBlackStone,
   createWhiteStone,
@@ -52,19 +52,22 @@ class GameTreeRenderer {
     right: 0,
     bottom: 0,
   };
+  private treeHeight: number;
 
   public constructor(
     stoneLayer: HTMLCanvasElement,
     lineLayer: HTMLCanvasElement,
     selectionLayer: HTMLCanvasElement,
     highlightLayer: HTMLCanvasElement,
-    scrollContainer: HTMLDivElement
+    scrollContainer: HTMLDivElement,
+    treeHeight: number
   ) {
     this.stoneLayer = stoneLayer;
     this.lineLayer = lineLayer;
     this.selectionLayer = selectionLayer;
     this.highlightLayer = highlightLayer;
     this.scrollContainer = scrollContainer;
+    this.treeHeight = treeHeight;
 
     this.calculateDimensions();
 
@@ -84,7 +87,7 @@ class GameTreeRenderer {
   public calculateDimensions = () => {
     const rect = this.scrollContainer.getBoundingClientRect();
     const width = Math.round(rect.right) - Math.round(rect.left);
-    const height = Math.round(rect.bottom) - Math.round(rect.top);
+    const height = this.treeHeight;
 
     setCanvasDimensionsWithCorrectScaling(this.stoneLayer, width, height);
     setCanvasDimensionsWithCorrectScaling(this.lineLayer, width, height);
@@ -209,7 +212,7 @@ class GameTreeRenderer {
     const withPadding = (coord: number) =>
       coord + GameTreeRenderer.stoneRadius + stonePadding;
 
-    ctx.strokeStyle = '#000'; // Maybe try other colors?
+    ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
 
     ctx.beginPath();
@@ -330,7 +333,7 @@ const ScrollContainer = animated(styled.div`
   background-color: #ccc;
 `);
 
-const GameTreeContainer = styled.div`
+const GameTreeArea = styled.div`
   position: relative;
   overflow: hidden;
 `;
@@ -378,7 +381,7 @@ const GameTreeView = () => {
       containerRef.current.scrollTop,
       containerRef.current.scrollLeft,
       containerRef.current.offsetWidth,
-      containerRef.current.offsetHeight
+      height
     );
     setCanvasTop(containerRef.current.scrollTop);
     setCanvasLeft(containerRef.current.scrollLeft);
@@ -421,7 +424,8 @@ const GameTreeView = () => {
         lineLayerRef.current,
         selectionLayerRef.current,
         highlightLayerRef.current,
-        containerRef.current
+        containerRef.current,
+        height
       );
     }
     drawViewport();
@@ -488,32 +492,37 @@ const GameTreeView = () => {
     drawViewport();
   });
 
-  useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      gameTreeRenderer.current.calculateDimensions();
-      drawViewport();
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const previousScroll = useRef(0);
+  const handleScroll = throttle(
+    (event: React.SyntheticEvent<HTMLDivElement>) => {
+      // Only redraw if horizontal scrolling
+      if (previousScroll !== event.target.scrollLeft) {
+        drawViewport();
+        previousScroll.current = event.target.scrollLeft;
+      }
+    },
+    100
+  );
 
-  const canvasStyle = { top: canvasTop, left: canvasLeft };
   return (
     <ScrollContainer
       ref={containerRef}
-      onScroll={drawViewport}
+      onScroll={handleScroll}
       {...containerScroll}
     >
-      <GameTreeContainer style={{ width, height }}>
-        <GameTreeCanvas ref={highlightLayerRef} style={canvasStyle} />
-        <GameTreeCanvas ref={selectionLayerRef} style={canvasStyle} />
-        <GameTreeCanvas ref={lineLayerRef} style={canvasStyle} />
-        <GameTreeCanvas
-          ref={nodeLayerRef}
-          onClick={handleCanvasClick}
-          style={canvasStyle}
-        />
-      </GameTreeContainer>
+      <div
+        css={`
+          position: sticky;
+          height: 100%;
+          left: 0;
+        `}
+      >
+        <GameTreeCanvas ref={highlightLayerRef} />
+        <GameTreeCanvas ref={selectionLayerRef} />
+        <GameTreeCanvas ref={lineLayerRef} />
+        <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
+      </div>
+      <GameTreeArea style={{ width, height }} />
     </ScrollContainer>
   );
 };
