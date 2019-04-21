@@ -7,6 +7,8 @@ import {
   createSelectionHighlight,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
+import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
+import { setCanvasDimensionsWithCorrectScaling } from 'util/canvasUtils';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameTree } from 'parseSgf/normalizeGameTree';
 import { hotspotHighlight, stoneSelectionHighlight } from 'style';
@@ -26,7 +28,7 @@ type TreeGrid = TreeCell[][];
 
 class GameTreeRenderer {
   // Stone radius won't change on resize
-  private static stoneRadius = 15;
+  public static stoneRadius = 15;
   private static highlightRadius = 15 * 1.5;
 
   // Sprites
@@ -42,33 +44,28 @@ class GameTreeRenderer {
   private selectionLayer: HTMLCanvasElement; // Separate from highlight layer because it changes so often
   private highlightLayer: HTMLCanvasElement;
 
+  private scrollContainer: HTMLDivElement;
+  private viewport = {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  };
+
   public constructor(
     stoneLayer: HTMLCanvasElement,
     lineLayer: HTMLCanvasElement,
     selectionLayer: HTMLCanvasElement,
     highlightLayer: HTMLCanvasElement,
-    width: number,
-    height: number
+    scrollContainer: HTMLDivElement
   ) {
-    const canvasWidth = (width + 1) * GameTreeRenderer.stoneRadius * 3.5;
-    const canvasHeight = (height + 1) * GameTreeRenderer.stoneRadius * 3.5;
-
-    // TODO: Correctly scale this when implementing infinite scrolling
     this.stoneLayer = stoneLayer;
-    this.stoneLayer.width = canvasWidth;
-    this.stoneLayer.height = canvasHeight;
-
     this.lineLayer = lineLayer;
-    this.lineLayer.width = canvasWidth;
-    this.lineLayer.height = canvasHeight;
-
     this.selectionLayer = selectionLayer;
-    this.selectionLayer.width = canvasWidth;
-    this.selectionLayer.height = canvasHeight;
-
     this.highlightLayer = highlightLayer;
-    this.highlightLayer.width = canvasWidth;
-    this.highlightLayer.height = canvasHeight;
+    this.scrollContainer = scrollContainer;
+
+    this.calculateDimensions();
 
     this.blackStone = createBlackStone(GameTreeRenderer.stoneRadius);
     this.whiteStone = createWhiteStone(GameTreeRenderer.stoneRadius);
@@ -82,6 +79,17 @@ class GameTreeRenderer {
     );
     this.setupNode = this.createSetupNode();
   }
+
+  public calculateDimensions = () => {
+    const rect = this.scrollContainer.getBoundingClientRect();
+    const width = Math.round(rect.right) - Math.round(rect.left);
+    const height = Math.round(rect.bottom) - Math.round(rect.top);
+
+    setCanvasDimensionsWithCorrectScaling(this.stoneLayer, width, height);
+    setCanvasDimensionsWithCorrectScaling(this.lineLayer, width, height);
+    setCanvasDimensionsWithCorrectScaling(this.selectionLayer, width, height);
+    setCanvasDimensionsWithCorrectScaling(this.highlightLayer, width, height);
+  };
 
   private createSetupNode = () => {
     const radius = (3 * GameTreeRenderer.stoneRadius) / 4;
@@ -101,12 +109,58 @@ class GameTreeRenderer {
     return canvas;
   };
 
+  public clear = () => {
+    this.stoneLayer
+      .getContext('2d')
+      .clearRect(0, 0, this.stoneLayer.width, this.stoneLayer.height);
+    this.lineLayer
+      .getContext('2d')
+      .clearRect(0, 0, this.lineLayer.width, this.lineLayer.height);
+    this.selectionLayer
+      .getContext('2d')
+      .clearRect(0, 0, this.selectionLayer.width, this.selectionLayer.height);
+    this.highlightLayer
+      .getContext('2d')
+      .clearRect(0, 0, this.highlightLayer.width, this.highlightLayer.height);
+  };
+
+  public setBounds = (
+    top: number,
+    left: number,
+    width: number,
+    height: number
+  ) => {
+    // Calculate viewport bounds with a little leeway
+    const topBound = this.getCoord(top - 1);
+    const leftBound = this.getCoord(left - 1);
+    const rightBound = this.getCoord(width) - leftBound;
+    const bottomBound = this.getCoord(height) - topBound;
+
+    this.viewport = {
+      top: topBound,
+      left: leftBound,
+      right: rightBound,
+      bottom: bottomBound,
+    };
+  };
+
+  private isInBounds = (x: number, y: number) => {
+    const xCoord = this.getCoord(x);
+    const yCoord = this.getCoord(y);
+    const { top, left, right, bottom } = this.viewport;
+    return (
+      xCoord >= left && xCoord <= right && yCoord >= top && yCoord <= bottom
+    );
+  };
+
   public drawNode = (
     x: number,
     y: number,
     type: TreeCellType,
     moveNumber?: number
   ) => {
+    if (!this.isInBounds(x, y)) return;
+
     let stone;
     switch (type) {
       case BLACK:
@@ -144,6 +198,9 @@ class GameTreeRenderer {
     x2: number,
     y2: number
   ) => {
+    // Still draw if one end is in bounds
+    if (!this.isInBounds(x1, y1) && !this.isInBounds(x2, y2)) return;
+
     const ctx = this.lineLayer.getContext('2d');
     const stonePadding = calculateStonePadding(GameTreeRenderer.stoneRadius);
     const x1Coord =
@@ -252,17 +309,17 @@ const createGridFromTree = (
   return cell;
 };
 
-const GameTreeContainer = animated(styled.div`
-  overflow: auto;
-  background-color: #ccc;
+const GameTreeContainer = styled.div`
   position: relative;
-  height: 100%;
-`);
+  background-color: #ccc;
+`;
 
 const GameTreeCanvas = styled.canvas`
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 `;
@@ -286,18 +343,20 @@ const GameTreeView = () => {
     return grid;
   }, []);
 
-  // Draw whole tree
-  useEffect(() => {
-    if (!gameTreeRenderer.current) {
-      gameTreeRenderer.current = new GameTreeRenderer(
-        nodeLayerRef.current,
-        lineLayerRef.current,
-        selectionLayerRef.current,
-        highlightLayerRef.current,
-        Math.max(...treeGrid.map(row => row.length)),
-        treeGrid.length
-      );
-    }
+  const width =
+    (Math.max(...treeGrid.map(row => row.length)) + 1) *
+    GameTreeRenderer.stoneRadius *
+    3.5;
+  const height = (treeGrid.length + 1) * GameTreeRenderer.stoneRadius * 3.5;
+
+  const drawViewport = () => {
+    gameTreeRenderer.current.clear();
+    gameTreeRenderer.current.setBounds(
+      containerRef.current.scrollTop,
+      containerRef.current.scrollLeft,
+      containerRef.current.offsetWidth,
+      containerRef.current.offsetHeight
+    );
 
     treeGrid.forEach((row, yIndex) => {
       row.forEach((treeNode, xIndex) => {
@@ -322,6 +381,20 @@ const GameTreeView = () => {
         }
       });
     });
+  };
+
+  // Draw whole tree
+  useEffect(() => {
+    if (!gameTreeRenderer.current) {
+      gameTreeRenderer.current = new GameTreeRenderer(
+        nodeLayerRef.current,
+        lineLayerRef.current,
+        selectionLayerRef.current,
+        highlightLayerRef.current,
+        containerRef.current
+      );
+    }
+    drawViewport();
   }, []);
 
   // Track current node
@@ -386,13 +459,26 @@ const GameTreeView = () => {
     }
   };
 
+  useWindowResizeCallback(() => {
+    gameTreeRenderer.current.calculateDimensions();
+    drawViewport();
+  });
+
   return (
-    <GameTreeContainer {...containerScroll} ref={containerRef}>
-      <GameTreeCanvas ref={highlightLayerRef} />
-      <GameTreeCanvas ref={selectionLayerRef} />
-      <GameTreeCanvas ref={lineLayerRef} />
-      <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
-    </GameTreeContainer>
+    <div
+      css={`
+        overflow: auto;
+      `}
+      {...containerScroll}
+      ref={containerRef}
+    >
+      <GameTreeContainer style={{ width, height }}>
+        <GameTreeCanvas ref={highlightLayerRef} />
+        <GameTreeCanvas ref={selectionLayerRef} />
+        <GameTreeCanvas ref={lineLayerRef} />
+        <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
+      </GameTreeContainer>
+    </div>
   );
 };
 
