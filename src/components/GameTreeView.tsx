@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { animated, config, useSpring } from 'react-spring';
+import ResizeObserver from 'resize-observer-polyfill';
 import {
   createBlackStone,
   createWhiteStone,
@@ -326,11 +327,11 @@ const ScrollContainer = animated(styled.div`
   overflow: auto;
   height: 100%;
   width: 100%;
+  background-color: #ccc;
 `);
 
 const GameTreeContainer = styled.div`
   position: relative;
-  background-color: #ccc;
   overflow: hidden;
 `;
 
@@ -486,6 +487,15 @@ const GameTreeView = () => {
     gameTreeRenderer.current.calculateDimensions();
     drawViewport();
   });
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      gameTreeRenderer.current.calculateDimensions();
+      drawViewport();
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const canvasStyle = { top: canvasTop, left: canvasLeft };
   return (
