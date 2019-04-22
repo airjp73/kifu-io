@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { throttle } from 'lodash';
 import { animated, config, useSpring } from 'react-spring';
 import {
   createBlackStone,
