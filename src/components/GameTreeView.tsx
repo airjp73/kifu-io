@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { throttle } from 'lodash';
 import { animated, config, useSpring } from 'react-spring';
 import {
   createBlackStone,
@@ -376,7 +375,7 @@ const GameTreeView = () => {
   const drawViewport = () => {
     gameTreeRenderer.current.clear();
     gameTreeRenderer.current.setBounds(
-      containerRef.current.scrollTop,
+      0,
       containerRef.current.scrollLeft,
       containerRef.current.offsetWidth,
       height
@@ -506,7 +505,7 @@ const GameTreeView = () => {
       <div
         css={`
           position: sticky;
-          height: 100%;
+          height: ${height}px;
           left: 0;
         `}
       >
@@ -515,7 +514,12 @@ const GameTreeView = () => {
         <GameTreeCanvas ref={lineLayerRef} />
         <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
       </div>
-      <GameTreeArea style={{ width, height }} />
+      <GameTreeArea
+        style={{
+          width,
+          height: 1, // 1px is required in order for the width to cause scrolling
+        }}
+      />
     </ScrollContainer>
   );
 };
