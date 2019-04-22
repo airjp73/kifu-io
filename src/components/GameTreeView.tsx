@@ -515,7 +515,12 @@ const GameTreeView = () => {
         <GameTreeCanvas ref={lineLayerRef} />
         <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
       </div>
-      <GameTreeArea style={{ width, height: 1 }} />
+      <GameTreeArea
+        style={{
+          width,
+          height: 1, // 1px is required in order for the width to cause scrolling
+        }}
+      />
     </ScrollContainer>
   );
 };
