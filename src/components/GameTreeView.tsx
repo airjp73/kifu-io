@@ -376,7 +376,7 @@ const GameTreeView = () => {
   const drawViewport = () => {
     gameTreeRenderer.current.clear();
     gameTreeRenderer.current.setBounds(
-      containerRef.current.scrollTop,
+      0,
       containerRef.current.scrollLeft,
       containerRef.current.offsetWidth,
       height
@@ -506,7 +506,7 @@ const GameTreeView = () => {
       <div
         css={`
           position: sticky;
-          height: 100%;
+          height: ${height}px;
           left: 0;
         `}
       >
@@ -515,7 +515,7 @@ const GameTreeView = () => {
         <GameTreeCanvas ref={lineLayerRef} />
         <GameTreeCanvas ref={nodeLayerRef} onClick={handleCanvasClick} />
       </div>
-      <GameTreeArea style={{ width, height }} />
+      <GameTreeArea style={{ width, height: 1 }} />
     </ScrollContainer>
   );
 };
