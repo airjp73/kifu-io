@@ -447,7 +447,7 @@ const GameTreeView = () => {
     const [x, y] = getCurrentNodePos();
     return {
       to: {
-        // Estimate target scroll positions
+        // Estimate target scroll positions to reduce scrolling on mount
         scrollTop: GameTreeRenderer.getCoord(y) - 20,
         scrollLeft: GameTreeRenderer.getCoord(x) - 50,
       },
