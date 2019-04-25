@@ -142,8 +142,8 @@ class GameTreeRenderer {
   };
 
   private isInBounds = (x: number, y: number) => {
-    const xCoord = this.getCoord(x);
-    const yCoord = this.getCoord(y);
+    const xCoord = GameTreeRenderer.getCoord(x);
+    const yCoord = GameTreeRenderer.getCoord(y);
     const { top, left, right, bottom } = this.viewport;
 
     // Give a little leeway so we don't get clipping
@@ -258,7 +258,7 @@ class GameTreeRenderer {
     );
   };
 
-  public getCoord = (gridLocation: number) =>
+  public static getCoord = (gridLocation: number) =>
     gridLocation * GameTreeRenderer.stoneRadius * 3.5;
 
   public coordToGridLocation = (x: number, y: number) => [
@@ -271,8 +271,8 @@ class GameTreeRenderer {
   ];
 
   public getViewportCoords = (x: number, y: number) => [
-    this.getCoord(x) - this.viewport.left,
-    this.getCoord(y) - this.viewport.top,
+    GameTreeRenderer.getCoord(x) - this.viewport.left,
+    GameTreeRenderer.getCoord(y) - this.viewport.top,
   ];
 }
 
@@ -373,6 +373,8 @@ const GameTreeView = () => {
   const height = (treeGrid.length + 1) * GameTreeRenderer.stoneRadius * 3.5;
 
   const drawViewport = () => {
+    if (!gameTreeRenderer.current) return;
+
     gameTreeRenderer.current.clear();
     gameTreeRenderer.current.setBounds(
       0,
@@ -426,17 +428,7 @@ const GameTreeView = () => {
     drawViewport();
   }, []);
 
-  // Track current node
-  const [containerScroll, setScroll] = useSpring(() => ({
-    to: {
-      scrollTop: 0,
-      scrollLeft: 0,
-    },
-    // Reduce the precision to minimize the amount of time the scroll hijacked
-    config: { ...config.default, precision: 20 },
-  }));
-
-  const getCurrentNodePos = () => {
+  const getCurrentNodePos = (): [number, number] => {
     for (let [yIndex, row] of treeGrid.entries()) {
       for (let [xIndex, treeNode] of row.entries()) {
         if (!treeNode) continue;
@@ -449,21 +441,33 @@ const GameTreeView = () => {
     return [0, 0];
   };
 
+  // Track current node
+  const [containerScroll, setScroll] = useSpring(() => {
+    const [x, y] = getCurrentNodePos();
+    return {
+      to: {
+        // Estimate target scroll positions to reduce scrolling on mount
+        scrollTop: GameTreeRenderer.getCoord(y) - 20,
+        scrollLeft: GameTreeRenderer.getCoord(x) - 50,
+      },
+      // Reduce the precision to minimize the amount of time the scroll hijacked
+      config: { ...config.default, precision: 20 },
+    };
+  });
+
   useEffect(() => {
     if (!gameTreeRenderer.current) return;
     const [x, y] = getCurrentNodePos();
     gameTreeRenderer.current.drawNodeSelection(x, y);
 
-    const nodeX =
-      gameTreeRenderer.current.getCoord(x) -
-      containerRef.current.offsetWidth / 3;
-    const nodeY =
-      gameTreeRenderer.current.getCoord(y) -
-      containerRef.current.offsetHeight / 3;
+    const scrollTop =
+      GameTreeRenderer.getCoord(y) - containerRef.current.offsetHeight / 3;
+    const scrollLeft =
+      GameTreeRenderer.getCoord(x) - containerRef.current.offsetWidth / 3;
     setScroll({
       to: {
-        scrollTop: nodeY,
-        scrollLeft: nodeX,
+        scrollTop,
+        scrollLeft,
       },
       from: {
         scrollTop: containerRef.current.scrollTop,
