@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { withRouter, WithRouterProps } from 'next/router';
 import styled from 'styled-components';
 import { highlight, panelHighlight } from 'style';
 import FontIcon from './FontIcon';
@@ -18,17 +19,18 @@ interface NavItemProps {
 const NavLink = styled.a`
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-around;
   cursor: pointer;
 `;
 
-const NavListItem = styled.li`
+const NavListItem = styled.li<{ active: boolean }>`
   padding: 0.5rem 1rem;
+  font-size: 1rem;
   :hover {
     background-color: ${panelHighlight};
   }
-  font-size: 1rem;
+  ${props => props.active && `background-color: ${panelHighlight};`}
 `;
 
 const NavItemLabel = styled.span`
@@ -55,13 +57,14 @@ const Nav = styled.nav`
   }
 `;
 
-const NavItem: React.FunctionComponent<NavItemProps> = ({
+const NavItem: React.FunctionComponent<NavItemProps & WithRouterProps> = ({
   icon,
   label,
   href,
   iconOnly,
+  router,
 }) => (
-  <NavListItem>
+  <NavListItem active={router.pathname === href}>
     <Link href={href}>
       <NavLink>
         <FontIcon size="SMALL" icon={icon} />
@@ -70,6 +73,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
     </Link>
   </NavListItem>
 );
+const NavItemWithRouter = withRouter(NavItem);
 
 interface HeaderLinkProps {
   href: string;
@@ -92,25 +96,25 @@ const NavMenu: React.FunctionComponent<NavMenuProps> = ({ iconOnly }) => (
     </section>
     <section>
       <ul>
-        <NavItem
+        <NavItemWithRouter
           icon="android"
           label="View Sample Sgf"
           href="/view"
           iconOnly={iconOnly}
         />
-        <NavItem
+        <NavItemWithRouter
           icon="search"
           label="Browse Reviews"
           href="/browse"
           iconOnly={iconOnly}
         />
-        <NavItem
+        <NavItemWithRouter
           icon="create"
           label="Review a Game"
           href="/review"
           iconOnly={iconOnly}
         />
-        <NavItem
+        <NavItemWithRouter
           icon="cloud_upload"
           label="Request a Review"
           href="/request"
