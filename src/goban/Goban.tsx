@@ -1,13 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { useGoGameContext } from 'contexts/GoGameContext';
+import { useGoGameContext } from 'goban/GoGameContext';
 import {
   createBlackStone,
   createWhiteStone,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
-import { setCanvasDimensionsWithCorrectScaling } from 'util/canvasUtils';
+import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
 
 interface GobanProps {
   className?: string;

@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import FlatButton from 'components/FlatButton';
 import FontIcon from 'components/FontIcon';
-import { useGoGameContext } from 'contexts/GoGameContext';
-import { PositionStatus, MoveQuality } from 'contexts/gameStateReducer';
+import { useGoGameContext } from 'goban/GoGameContext';
+import { PositionStatus, MoveQuality } from 'goban/gameStateReducer';
 
 const Comment = styled.p`
   white-space: pre-wrap;

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Goban from 'components/Goban';
-import { GoGameContextProvider } from 'contexts/GoGameContext';
-import GameControlButtons from 'components/GameControlButtons';
-import sgf from 'parseSgf/snapshots/snapshot7';
-import GameInfo from 'components/GameInfo';
-import CaptureCounts from 'components/CaptureCounts';
+import Goban from 'goban/Goban';
+import { GoGameContextProvider } from 'goban/GoGameContext';
+import GameControlButtons from 'goban/GameControlButtons';
+import sgf from 'goban/parseSgf/snapshots/snapshot7';
+import GameInfo from 'goban/GameInfo';
+import CaptureCounts from 'goban/CaptureCounts';
 import { landscapeMedia, portraitMedia } from 'style';
 
 const GameViewCaptures = styled(CaptureCounts)``;

@@ -1,4 +1,4 @@
-import { StoneColor } from 'components/Goban';
+import { StoneColor } from 'goban/Goban';
 
 export const CAPTURE = 'CAPTURE';
 export const INIT = 'INIT';

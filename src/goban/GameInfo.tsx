@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { animated, useSpring } from 'react-spring';
-import { useGoGameContext } from 'contexts/GoGameContext';
+import { useGoGameContext } from 'goban/GoGameContext';
 import { boxShadowLow, portraitMedia, landscapeMedia } from 'style';
 import MediaQueryView, {
   LandscapeView,
@@ -9,14 +9,14 @@ import MediaQueryView, {
 } from 'components/MediaQueryView';
 import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
-import GameTreeView from 'components/GameTreeView';
-import GameProperties from 'components/GameProperties';
+import GameTreeView from 'goban/GameTreeView';
+import GameProperties from 'goban/GameProperties';
 import GameComments from './GameComments';
-import ButtonTab from './Tabs/ButtonTab';
-import Tabs from './Tabs/Tabs';
-import TabBar from './Tabs/TabBar';
-import TabContent from './Tabs/TabContent';
-import TabContentArea from './Tabs/TabContentArea';
+import ButtonTab from '../components/Tabs/ButtonTab';
+import Tabs from '../components/Tabs/Tabs';
+import TabBar from '../components/Tabs/TabBar';
+import TabContent from '../components/Tabs/TabContent';
+import TabContentArea from '../components/Tabs/TabContentArea';
 
 interface GameInfoProps {
   className?: string;

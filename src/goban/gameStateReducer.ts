@@ -14,7 +14,7 @@ import {
   INIT,
 } from './actions';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
-import { StoneColor } from 'components/Goban';
+import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
 
 export type GameStateAction =

@@ -6,7 +6,7 @@ export const hotspotHighlight = 'rgba(255,100,100, .75)';
 export const fadedGrey = '#6D6D6D';
 export const error = '#E8291D';
 export const dark = '#1A2C5B';
-export const darkFaded = 'rgba(62,78,136, .5)';
+export const darkFaded = 'rgba(62,78,136, .75)';
 
 export const primaryAction = '#7971EA';
 export const primaryHighlight = 'rgba(121, 113, 234, .15)';

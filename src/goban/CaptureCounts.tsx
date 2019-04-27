@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { createBlackStone, createWhiteStone } from 'canvas/createStoneSprite';
-import { useGoGameContext } from 'contexts/GoGameContext';
+import { useGoGameContext } from 'goban/GoGameContext';
 import { highlight, highlightFaded } from 'style';
 
 interface CaptureCountsProps {

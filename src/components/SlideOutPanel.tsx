@@ -14,14 +14,13 @@ interface PanelProps {
   side: string;
 }
 
-const panelWidth = '20rem';
 const rightPanel = `
   right: 0;
-  transform: translateX(${panelWidth});
+  transform: translateX(100%);
 `;
 const leftPanel = `
   left: 0;
-  transform: translateX(-${panelWidth});
+  transform: translateX(-100%);
 `;
 const Panel = animated(styled.div`
   position: fixed;
@@ -29,7 +28,6 @@ const Panel = animated(styled.div`
   background-color: ${panelBackground};
   overflow: hidden;
   color: ${highlight};
-  width: ${panelWidth};
 
   ${(props: PanelProps) => (props.side === 'right' ? rightPanel : leftPanel)}
 `);
