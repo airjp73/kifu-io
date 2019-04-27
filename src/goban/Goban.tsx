@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { useGoGameContext } from 'contexts/GoGameContext';
+import { useGoGameContext } from 'goban/GoGameContext';
 import {
   createBlackStone,
   createWhiteStone,

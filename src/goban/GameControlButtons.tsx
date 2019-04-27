@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useGoGameContext } from 'contexts/GoGameContext';
-import FontIcon from './FontIcon';
-import FlatButton from './FlatButton';
+import { useGoGameContext } from 'goban/GoGameContext';
+import FontIcon from '../components/FontIcon';
+import FlatButton from '../components/FlatButton';
 import { dark } from 'style';
 
 interface GameControlButtonsProps {

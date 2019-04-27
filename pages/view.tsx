@@ -11,7 +11,7 @@ import Spinner from 'components/Spinner';
  * 2. Some of the game view content responds to the screen size in js (not css)
  *    which causes flickering since there is no screen on the server.
  */
-const GameView = dynamic(() => import('components/GameView'), {
+const GameView = dynamic(() => import('goban/GameView'), {
   ssr: false,
   loading: Spinner,
 });

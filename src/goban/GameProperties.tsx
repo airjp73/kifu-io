@@ -1,7 +1,7 @@
 import React from 'react';
-import { useGoGameContext } from 'contexts/GoGameContext';
+import { useGoGameContext } from 'goban/GoGameContext';
 import styled from 'styled-components';
-import { GameStateProperties, PlayedOnDates } from 'contexts/gameStateReducer';
+import { GameStateProperties, PlayedOnDates } from 'goban/gameStateReducer';
 import { getMonthString, getDayString } from 'util/dateUtils';
 
 interface SupportedProperty {

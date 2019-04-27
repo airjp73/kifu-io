@@ -9,7 +9,7 @@ import {
 } from 'canvas/createStoneSprite';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
-import { useGoGameContext } from 'contexts/GoGameContext';
+import { useGoGameContext } from 'goban/GoGameContext';
 import { GameTree } from 'parseSgf/normalizeGameTree';
 import { hotspotHighlight, stoneSelectionHighlight } from 'style';
 
