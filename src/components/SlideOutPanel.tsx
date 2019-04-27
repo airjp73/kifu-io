@@ -14,7 +14,6 @@ interface PanelProps {
   side: string;
 }
 
-const panelWidth = '20rem';
 const rightPanel = `
   right: 0;
   transform: translateX(100%);
