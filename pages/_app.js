@@ -1,10 +1,22 @@
 import App, { Container } from 'next/app';
 import { createGlobalStyle } from 'styled-components';
+import { darkFaded } from 'style';
 import 'normalize.css';
 
 const GlobalStyles = createGlobalStyle`
   html {
     font-family: "Open Sans", sans-serif;
+    height: 100%;
+  }
+
+  body {
+    height: 100%;
+    overflow: hidden;
+    background-color: ${darkFaded};
+  }
+
+  #__next {
+    height: 100%;
   }
 `;
 
