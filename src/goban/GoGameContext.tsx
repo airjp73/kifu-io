@@ -1,9 +1,9 @@
 import React, { useContext, useMemo, useEffect } from 'react';
-import parseSgf from 'parseSgf/parseSgf';
+import parseSgf from 'goban/parseSgf/parseSgf';
 import normalizeGameTree, {
   GameTree,
   GameTreeNode,
-} from 'parseSgf/normalizeGameTree';
+} from 'goban/parseSgf/normalizeGameTree';
 import useThunkReducer from 'hooks/useThunkReducer';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import { pushHistory, setNode, popHistory, init } from './actions';

@@ -1,5 +1,5 @@
 import { MoveState, MoveQualityType } from './gameStateReducer';
-import { StoneColor } from 'components/Goban';
+import { StoneColor } from 'goban/Goban';
 
 export const SET_MOVE_STATE = 'SET_MOVE_STATE';
 

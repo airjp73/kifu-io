@@ -5,7 +5,7 @@ import {
 } from './gameStateReducer';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import { setPoint, captureStones } from './actions';
-import { StoneColor } from 'components/Goban';
+import { StoneColor } from 'goban/Goban';
 
 //// placeStone action
 const getLiberties = (
