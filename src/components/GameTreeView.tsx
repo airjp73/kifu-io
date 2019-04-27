@@ -8,7 +8,7 @@ import {
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
-import { setCanvasDimensionsWithCorrectScaling } from 'util/canvasUtils';
+import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
 import { useGoGameContext } from 'contexts/GoGameContext';
 import { GameTree } from 'parseSgf/normalizeGameTree';
 import { hotspotHighlight, stoneSelectionHighlight } from 'style';
