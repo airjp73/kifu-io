@@ -3,15 +3,12 @@ import Link from 'next/link';
 import { withRouter, WithRouterProps } from 'next/router';
 import styled from 'styled-components';
 import { highlight, panelHighlight } from 'style';
-import FontIcon from './FontIcon';
 
 interface NavMenuProps {
   iconOnly?: boolean;
 }
 
 interface NavItemProps {
-  icon: string;
-  iconOnly?: boolean;
   label: string;
   href: string;
 }
@@ -20,8 +17,13 @@ const NavLink = styled.a`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
   cursor: pointer;
+`;
+
+const NavList = styled.ul`
+  padding: 0;
+  margin: 0;
+  list-style: none;
 `;
 
 const NavListItem = styled.li<{ active: boolean }>`
@@ -34,94 +36,64 @@ const NavListItem = styled.li<{ active: boolean }>`
 `;
 
 const NavItemLabel = styled.span`
-  margin-left: 1rem;
   margin-right: auto;
+`;
+
+const NavSection = styled.section`
+  margin: 1rem 0;
 `;
 
 const Nav = styled.nav`
   color: ${highlight};
-
-  section {
-    padding: 1rem 0;
-  }
-
-  h3 {
-    padding: 0 1rem;
-    margin: 0;
-  }
-
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
 `;
 
 const NavItem: React.FunctionComponent<NavItemProps & WithRouterProps> = ({
-  icon,
   label,
   href,
-  iconOnly,
   router,
 }) => (
   <NavListItem active={router.pathname === href}>
     <Link href={href}>
       <NavLink>
-        <FontIcon size="SMALL" icon={icon} />
-        {!iconOnly && <NavItemLabel>{label}</NavItemLabel>}
+        <NavItemLabel>{label}</NavItemLabel>
       </NavLink>
     </Link>
   </NavListItem>
 );
 const NavItemWithRouter = withRouter(NavItem);
 
-interface HeaderLinkProps {
+interface NavHeaderProps {
   href: string;
 }
-const HeaderLink: React.FunctionComponent<HeaderLinkProps> = ({
+const NavHeader: React.FunctionComponent<NavHeaderProps> = ({
   children,
   href,
 }) => (
-  <h3>
+  <h3
+    css={`
+      padding: 0 1rem;
+      margin: 0;
+    `}
+  >
     <Link href={href}>
       <NavLink>{children}</NavLink>
     </Link>
   </h3>
 );
 
-const NavMenu: React.FunctionComponent<NavMenuProps> = ({ iconOnly }) => (
+const NavMenu: React.FunctionComponent<NavMenuProps> = () => (
   <Nav data-testid="nav-menu">
-    <section>
-      <HeaderLink href="/home">{iconOnly ? 'GR' : 'Go Reviews'}</HeaderLink>
-    </section>
-    <section>
-      <ul>
-        <NavItemWithRouter
-          icon="android"
-          label="View Sample Sgf"
-          href="/view"
-          iconOnly={iconOnly}
-        />
-        <NavItemWithRouter
-          icon="search"
-          label="Browse Reviews"
-          href="/browse"
-          iconOnly={iconOnly}
-        />
-        <NavItemWithRouter
-          icon="create"
-          label="Review a Game"
-          href="/review"
-          iconOnly={iconOnly}
-        />
-        <NavItemWithRouter
-          icon="cloud_upload"
-          label="Request a Review"
-          href="/request"
-          iconOnly={iconOnly}
-        />
-      </ul>
-    </section>
+    <NavSection>
+      <NavHeader href="/home">Go Reviews</NavHeader>
+    </NavSection>
+    <NavSection>
+      <NavList>
+        <NavItemWithRouter label="View Sample" href="/view" />
+        <NavItemWithRouter label="Browse Reviews" href="/browse" />
+        <NavItemWithRouter label="Review a Game" href="/review" />
+        <NavItemWithRouter label="Request a Review" href="/request" />
+      </NavList>
+    </NavSection>
   </Nav>
 );
 

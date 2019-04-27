@@ -45,7 +45,7 @@ const Layout: React.FunctionComponent = ({ children }) => {
         Home
       </MobileHeader>
       <DesktopSidebar>
-        <NavMenu iconOnly />
+        <NavMenu />
       </DesktopSidebar>
       <SlideOutPanel
         active={sidePanelOpen}
