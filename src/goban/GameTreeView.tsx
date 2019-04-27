@@ -13,6 +13,10 @@ import { useGoGameContext } from 'goban/GoGameContext';
 import { GameTree } from 'goban/parseSgf/normalizeGameTree';
 import { hotspotHighlight, stoneSelectionHighlight } from 'style';
 
+interface GameTreeViewProps {
+  className?: string;
+}
+
 const BLACK = 'b';
 const WHITE = 'w';
 const SETUP = 's';
@@ -347,7 +351,9 @@ const GameTreeCanvas = styled.canvas`
   -webkit-tap-highlight-color: transparent;
 `;
 
-const GameTreeView = () => {
+const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
+  className,
+}) => {
   const nodeLayerRef = useRef(null);
   const lineLayerRef = useRef(null);
   const selectionLayerRef = useRef(null);
@@ -504,6 +510,7 @@ const GameTreeView = () => {
     <ScrollContainer
       ref={containerRef}
       onScroll={handleScroll}
+      className={className}
       {...containerScroll}
     >
       <div

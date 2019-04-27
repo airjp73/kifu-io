@@ -137,7 +137,11 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
         </Tabs>
         <LandscapeView>
           <MediaQueryView minHeight={600}>
-            <GameTreeView />
+            <GameTreeView
+              css={`
+                max-height: 70%;
+              `}
+            />
           </MediaQueryView>
         </LandscapeView>
       </animated.div>
