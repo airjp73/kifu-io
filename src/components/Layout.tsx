@@ -4,7 +4,7 @@ import Header from 'components/Header';
 import SlideOutPanel from 'components/SlideOutPanel';
 import Sidebar from 'components/Sidebar';
 import NavMenu from 'components/NavMenu';
-import { headerHeight, portraitMedia, landscapeMedia } from 'style';
+import { portraitMedia, landscapeMedia } from 'style';
 
 const Container = styled.div`
   height: 100%;
