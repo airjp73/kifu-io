@@ -4,8 +4,8 @@ import { render, fireEvent } from 'react-testing-library';
 import sgf1 from 'goban/parseSgf/snapshots/snapshot1';
 import sgf2 from 'goban/parseSgf/snapshots/snapshot2';
 import sgf3 from 'goban/parseSgf/snapshots/snapshot3';
-import { GoGameContextProvider, useGoGameContext } from './GoGameContext';
-import { createStringFromBoardState } from './boardStateTestHelpers';
+import { GoGameContextProvider, useGoGameContext } from '../GoGameContext';
+import { createStringFromBoardState } from '../boardStateTestHelpers';
 
 const BoardStateTestRenderer = () => {
   const { forward, gameState } = useGoGameContext();
