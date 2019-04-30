@@ -1,8 +1,8 @@
 import each from 'jest-each';
-import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
-import placeStone from './placeStone';
-import { createBoardStateFromString } from './boardStateTestHelpers';
-import { init } from './actions';
+import gameStateReducer, { GameStateWithHistory } from '../gameStateReducer';
+import placeStone from '../placeStone';
+import { createBoardStateFromString } from '../boardStateTestHelpers';
+import { init } from '../actions';
 
 describe('placeStone', () => {
   each([

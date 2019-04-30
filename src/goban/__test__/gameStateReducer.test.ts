@@ -5,17 +5,17 @@ import {
   setNode,
   popHistory,
   pushHistory,
-} from './actions';
+} from '../actions';
 import {
   setBoardSize,
   setApplication,
   SetVariationDisplaySettings,
   setPlayedOnDate,
-} from './propertiesActions';
+} from '../propertiesActions';
 import gameStateReducer, {
   GameStateWithHistory,
   MoveState,
-} from './gameStateReducer';
+} from '../gameStateReducer';
 import {
   addCircles,
   addTriangles,
@@ -25,7 +25,7 @@ import {
   addComment,
   addXMarks,
   addLabels,
-} from './moveStateActions';
+} from '../moveStateActions';
 
 const emptyMoveState: MoveState = {
   circles: [],

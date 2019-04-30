@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from 'react-testing-library';
-import SlideOutPanel from './SlideOutPanel';
+import SlideOutPanel from '../SlideOutPanel';
 
 test('should be on the right if side = "right"', () => {
   const rendered = render(

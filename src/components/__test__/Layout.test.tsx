@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, wait } from 'react-testing-library';
-import Layout from './Layout';
+import Layout from '../Layout';
 
 test('should open slide-out panel on menu click and close on overlay click', async () => {
   const rendered = render(<Layout />);
