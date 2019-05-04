@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from 'components/Layout';
 import SimpleContent from 'components/SimpleContent';
+import Input from 'components/Input';
 
 const Home = () => (
   <Layout>
@@ -10,6 +11,7 @@ const Home = () => (
         This website is currently under construction. You can view a sample sgf
         by choosing "View Sample Sgf" from the menu
       </p>
+      <Input label="Test Input" />
     </SimpleContent>
   </Layout>
 );
