@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 import MaterialInput from './MaterialInput';
 import { LabelText } from './stylePieces';
@@ -8,14 +8,8 @@ interface UploadInputProps extends React.AllHTMLAttributes<HTMLInputElement> {
   error?: string;
   hint?: string;
   icon?: string;
-  inputRef?: InputRef;
   label?: string;
   type?: string;
-  value?: string;
-}
-
-interface InputRef {
-  (ref: HTMLInputElement): void;
 }
 
 const FileInput = styled.input`
@@ -26,67 +20,39 @@ const FileInput = styled.input`
   padding: 0;
 `;
 
-class UploadInput extends React.Component<UploadInputProps, never> {
-  inputElementRef?: HTMLInputElement;
+const UploadInput: React.FunctionComponent<
+  UploadInputProps & React.ComponentProps<typeof FileInput>
+> = (
+  { className, error, hint, label, onChange, type, ...rest },
+  forwardedRef
+) => {
+  const [currentFilename, setCurrentFilename] = useState(null);
 
-  _getSelectedFileName = (value?: string) => {
-    // This is true if this component hasn't been rendered yet
-    // since the ref gets set on render
-    if (!this.inputElementRef) {
-      return;
-    }
-
-    // Allows the file input to be controlled which they normally can't
-    // undefined === not controlled so we have to check for that
-    if (!value && value !== undefined) {
-      this.inputElementRef.value = '';
-      return;
-    }
-
-    return this.inputElementRef.files ? this.inputElementRef.files[0].name : '';
-  };
-
-  // Gets the input ref for internal use
-  // and then forwards on the external ref getter
-  _getInputElementRef = (ref: HTMLInputElement) => {
-    const { inputRef } = this.props;
-    this.inputElementRef = ref;
-    inputRef && inputRef(ref);
-  };
-
-  render() {
-    const {
-      className,
-      error,
-      hint,
-      label,
-      onChange,
-      type,
-      value,
-      ...rest
-    } = this.props;
-
-    // Must be called since there's some logic in there
-    const selectedFileName = this._getSelectedFileName(value);
-
-    return (
-      <MaterialInput
-        className={className}
-        error={error}
-        hint={hint}
-        icon="insert_drive_file"
-        inputHasContent={!!selectedFileName}
-        label={label}
-      >
-        {selectedFileName && <LabelText>{selectedFileName}</LabelText>}
-        <FileInput
-          {...rest}
-          type="file"
-          onChange={onChange}
-          ref={this._getInputElementRef}
-        />
-      </MaterialInput>
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentFilename(
+      event.currentTarget.files[0] && event.currentTarget.files[0].name
     );
-  }
-}
-export default UploadInput;
+    onChange && onChange(event);
+  };
+
+  return (
+    <MaterialInput
+      className={className}
+      error={error}
+      hint={hint}
+      icon="insert_drive_file"
+      isOpen={!!currentFilename}
+      label={label}
+    >
+      {currentFilename && <LabelText>{currentFilename}</LabelText>}
+      <FileInput
+        {...rest}
+        type="file"
+        onChange={handleChange}
+        ref={forwardedRef}
+      />
+    </MaterialInput>
+  );
+};
+
+export default forwardRef(UploadInput);

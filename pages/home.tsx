@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from 'components/Layout';
 import SimpleContent from 'components/SimpleContent';
-import Input from 'components/Input';
+import Input, { UploadInput } from 'components/Input';
 
 const Home = () => (
   <Layout>
@@ -18,6 +18,7 @@ const Home = () => (
         type="password"
         hint="You so sneaky"
       />
+      <UploadInput label="TestFiles" />
     </SimpleContent>
   </Layout>
 );
