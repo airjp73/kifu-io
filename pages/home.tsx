@@ -11,7 +11,13 @@ const Home = () => (
         This website is currently under construction. You can view a sample sgf
         by choosing "View Sample Sgf" from the menu
       </p>
-      <Input label="Test Input" />
+      <Input label="Username" icon="person" />
+      <Input
+        label="Password"
+        icon="lock"
+        type="password"
+        hint="You so sneaky"
+      />
     </SimpleContent>
   </Layout>
 );

@@ -2,13 +2,14 @@ import React from 'react';
 import { InputContainer, InputIcon, HintText, LabelText } from './stylePieces';
 
 export interface MaterialInputProps {
-  children?: any,
-  className?: string,
-  error?: string,
-  hint?: string,
-  icon?: string,
-  inputHasContent?: boolean,
-  label?: string,
+  children?: any;
+  className?: string;
+  error?: string;
+  hint?: string;
+  icon?: string;
+  isOpen?: boolean;
+  label?: string;
+  isFocused?: boolean;
 }
 
 const MaterialInput: React.SFC<MaterialInputProps> = ({
@@ -16,21 +17,21 @@ const MaterialInput: React.SFC<MaterialInputProps> = ({
   error,
   hint,
   icon,
-  inputHasContent,
+  isOpen,
+  isFocused,
   label,
   ...rest
 }) => {
   const hintValue = error || hint;
 
   return (
-    <InputContainer error={error} {...rest}>
-      <LabelText inputHasContent={inputHasContent}>{label}</LabelText>
+    <InputContainer error={error} isFocused={isFocused} {...rest}>
+      <LabelText isOpen={isOpen}>{label}</LabelText>
       {hintValue && <HintText>{hintValue}</HintText>}
       {children}
-      {icon && <InputIcon value={icon} />}
+      {icon && <InputIcon icon={icon} size="SMALL" />}
     </InputContainer>
   );
-}
- 
+};
 
 export default MaterialInput;
