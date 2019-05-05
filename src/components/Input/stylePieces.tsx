@@ -52,7 +52,7 @@ export const InputContainer = styled.label<InputContainerProps>`
   border-radius: 3px;
   padding: 0.75rem;
   min-width: 8rem;
-  margin-bottom: 2rem;
+  margin: 1.5rem 0;
   cursor: pointer;
 
   ${props =>

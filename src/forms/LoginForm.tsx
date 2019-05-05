@@ -19,7 +19,7 @@ function useFormState() {
 }
 
 const Form = styled.form`
-  max-width: 500px;
+  max-width: 800px;
   margin: 0 auto;
 `;
 
@@ -30,10 +30,15 @@ const LoginForm = () => {
 
   return (
     <Form onSubmit={e => e.preventDefault()}>
-      {currentUser && <h1>{currentUser.email}</h1>}
+      <h1>Log In</h1>
+      {currentUser && (
+        <p>
+          <strong>Email:</strong> {currentUser.email}
+        </p>
+      )}
       <Input
-        label="Username"
-        icon="person"
+        label="Email"
+        icon="email"
         value={username}
         onChange={onUsernameChange}
       />
