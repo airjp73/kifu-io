@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import FontIcon from 'components/FontIcon';
-import { fadedGrey, error, primaryAction, dark } from 'style';
+import { fadedGrey, error, primaryAction } from 'style';
 
 interface LabelTextProps {
   isOpen?: boolean;

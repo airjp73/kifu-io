@@ -1,5 +1,5 @@
 const readSgf = (sgf: Blob) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     const fileReader = new FileReader();
     fileReader.addEventListener('loadend', () => resolve(fileReader.result));
     fileReader.readAsText(sgf);

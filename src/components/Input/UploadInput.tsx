@@ -9,7 +9,6 @@ interface UploadInputProps extends React.AllHTMLAttributes<HTMLInputElement> {
   hint?: string;
   icon?: string;
   label?: string;
-  type?: string;
 }
 
 const FileInput = styled.input`
@@ -22,10 +21,7 @@ const FileInput = styled.input`
 
 const UploadInput: React.FunctionComponent<
   UploadInputProps & React.ComponentProps<typeof FileInput>
-> = (
-  { className, error, hint, label, onChange, type, ...rest },
-  forwardedRef
-) => {
+> = ({ className, error, hint, label, onChange, ...rest }, forwardedRef) => {
   const [currentFilename, setCurrentFilename] = useState(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
