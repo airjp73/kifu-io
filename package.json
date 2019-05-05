@@ -23,6 +23,7 @@
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
+    "firebase": "^5.11.1",
     "lodash": "^4.17.11",
     "next": "^8.0.1",
     "normalize.css": "^8.0.1",

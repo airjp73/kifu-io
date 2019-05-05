@@ -18,6 +18,7 @@ const Container = styled.div`
 const MainContent = styled.main`
   position: relative;
   flex: 1;
+  padding: 1rem;
 
   ${landscapeMedia} {
     height: 100%;

@@ -88,10 +88,8 @@ const NavMenu: React.FunctionComponent<NavMenuProps> = () => (
     </NavSection>
     <NavSection>
       <NavList>
+        <NavItemWithRouter label="Log In" href="/login" />
         <NavItemWithRouter label="View Sample" href="/view" />
-        <NavItemWithRouter label="Browse Reviews" href="/browse" />
-        <NavItemWithRouter label="Review a Game" href="/review" />
-        <NavItemWithRouter label="Request a Review" href="/request" />
       </NavList>
     </NavSection>
   </Nav>
