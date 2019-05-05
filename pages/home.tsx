@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from 'components/Layout';
 import SimpleContent from 'components/SimpleContent';
-import Input, { UploadInput } from 'components/Input';
+import LoginForm from 'forms/LoginForm';
 
 const Home = () => (
   <Layout>
@@ -11,15 +11,9 @@ const Home = () => (
         This website is currently under construction. You can view a sample sgf
         by choosing "View Sample Sgf" from the menu
       </p>
-      <Input label="Username" icon="person" />
-      <Input
-        label="Password"
-        icon="lock"
-        type="password"
-        hint="You so sneaky"
-      />
-      <UploadInput label="TestFiles" />
+      <LoginForm />
     </SimpleContent>
   </Layout>
 );
+
 export default Home;
