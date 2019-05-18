@@ -7,7 +7,20 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "include": [
     "src/**/*",
@@ -16,5 +29,5 @@
   "exclude": [
     "node_modules",
     ".next"
-  ],
+  ]
 }
