@@ -14,7 +14,9 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "noEmit": true
+    "noEmit": true,
+    "strict": false,
+    "isolatedModules": true
   },
   "include": ["src/**/*", "pages/**/*"],
   "exclude": ["node_modules", ".next"]
