@@ -20,8 +20,10 @@ const InputElement = styled.input`
   border: none;
   outline: none;
   background: none;
-  padding: 0;
+  padding: 0.75rem 0;
   height: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
   width: 100%;
   cursor: pointer;
 `;
