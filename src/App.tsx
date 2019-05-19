@@ -1,6 +1,10 @@
 import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { darkFaded } from 'style';
+import Home from 'pages/Home';
+import Login from 'pages/Login';
+import View from 'pages/View';
 import 'normalize.css';
 // import Home from 'pages/home';
 
@@ -15,16 +19,16 @@ const GlobalStyles = createGlobalStyle`
     overflow: hidden;
     background-color: ${darkFaded};
   }
-
-  #__next {
-    height: 100%;
-  }
 `;
 
 const App = () => (
   <>
     <GlobalStyles />
-    <p>asdfasdf</p>
+    <BrowserRouter>
+      <Route path="/" component={Home} />
+      <Route path="/login" component={Login} />
+      <Route path="/view" component={View} />
+    </BrowserRouter>
   </>
 );
 
