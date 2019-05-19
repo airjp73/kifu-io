@@ -7,7 +7,7 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -18,6 +18,6 @@
     "strict": false,
     "isolatedModules": true
   },
-  "include": ["src/**/*", "pages/**/*"],
+  "include": ["src"],
   "exclude": ["node_modules", ".next"]
 }
