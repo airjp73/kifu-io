@@ -6,7 +6,6 @@ import Home from 'pages/Home';
 import Login from 'pages/Login';
 import View from 'pages/View';
 import 'normalize.css';
-// import Home from 'pages/home';
 
 const GlobalStyles = createGlobalStyle`
   html {
