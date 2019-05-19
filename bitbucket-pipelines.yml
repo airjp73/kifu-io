@@ -9,9 +9,8 @@ pipelines:
             - node
           script:
             - npm ci
-            - npm run lint
-            - npm run typecheck
             - npm test
+            - npm run build
   branches:
     master:
       - step:
