@@ -371,7 +371,7 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
     const grid: TreeGrid = [];
     createGridFromTree(gameTree.rootNode, gameTree, grid);
     return grid;
-  }, []);
+  }, [gameTree]);
 
   const width =
     (Math.max(...treeGrid.map(row => row.length)) + 1) *
