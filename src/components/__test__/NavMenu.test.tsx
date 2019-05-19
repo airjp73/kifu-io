@@ -1,8 +1,8 @@
 import React from 'react';
-import { render } from 'react-testing-library';
+import renderWithContext from 'util/renderWithContext';
 import NavMenu from '../NavMenu';
 
 test('should render', () => {
-  const rendered = render(<NavMenu />);
+  const rendered = renderWithContext(<NavMenu />);
   expect(rendered).toBeTruthy();
 });
