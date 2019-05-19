@@ -7,23 +7,10 @@
     "removeComments": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "typeRoots": [
-      "node_modules/@types",
-      "src/@types"
-    ],
+    "lib": ["es2017", "dom"],
+    "typeRoots": ["node_modules/@types", "src/@types"],
     "baseUrl": "./src"
   },
-  "include": [
-    "src/**/*",
-    "pages/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "out",
-    ".next"
-  ]
+  "include": ["src/**/*", "pages/**/*"],
+  "exclude": ["node_modules", "out"]
 }
