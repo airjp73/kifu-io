@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import 'styled-components/macro';
 import { animated, config, useTransition } from 'react-spring';
 import { highlight, panelBackground } from 'style';
 import Portal from './Portal';

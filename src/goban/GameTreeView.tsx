@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
+import 'styled-components/macro';
 import { animated, config, useSpring } from 'react-spring';
 import {
   createBlackStone,

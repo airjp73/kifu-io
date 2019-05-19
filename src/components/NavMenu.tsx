@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import 'styled-components/macro';
 import { highlight, panelHighlight } from 'style';
 
 interface NavMenuProps {

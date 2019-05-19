@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import 'styled-components/macro';
 import { animated, useSpring } from 'react-spring';
 import { useGoGameContext } from 'goban/GoGameContext';
 import { boxShadowLow, portraitMedia, landscapeMedia } from 'style';
