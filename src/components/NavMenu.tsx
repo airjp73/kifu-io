@@ -77,7 +77,7 @@ const NavHeader: React.FunctionComponent<NavHeaderProps> = ({
 const NavMenu: React.FunctionComponent<NavMenuProps> = () => (
   <Nav data-testid="nav-menu">
     <NavSection>
-      <NavHeader to="/home">Go Reviews</NavHeader>
+      <NavHeader to="/">Go Reviews</NavHeader>
     </NavSection>
     <NavSection>
       <NavList>

@@ -19,13 +19,17 @@ const GlobalStyles = createGlobalStyle`
     overflow: hidden;
     background-color: ${darkFaded};
   }
+
+  #root {
+    height: 100%;
+  }
 `;
 
 const App = () => (
   <>
     <GlobalStyles />
     <BrowserRouter>
-      <Route path="/" component={Home} />
+      <Route exact path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/view" component={View} />
     </BrowserRouter>
