@@ -98,7 +98,7 @@ class GobanCanvas {
     const stone = color === 'b' ? this.blackStone : this.whiteStone;
 
     // We want the center of the sprite on the point, so subtract the radius and sprite padding
-    const ctx = this.stoneLayer.getContext('2d');
+    const ctx = this.stoneLayer.getContext('2d')!;
     const stonePadding = calculateStonePadding(this.stoneRadius);
     const xCoord = Math.floor(
       this.getCoord(x) - this.stoneRadius - stonePadding + 0.5
@@ -129,7 +129,7 @@ class GobanCanvas {
       yCoord + triangleRadius * Math.sin(angle3),
     ];
 
-    const ctx = this.markupLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d')!;
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
     ctx.beginPath();
@@ -146,7 +146,7 @@ class GobanCanvas {
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
-    const ctx = this.markupLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d')!;
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
 
@@ -165,7 +165,7 @@ class GobanCanvas {
     const xCoord = this.getCoord(x);
     const yCoord = this.getCoord(y);
 
-    const ctx = this.markupLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d')!;
     ctx.strokeStyle = color;
     ctx.lineWidth = this.unit / 18;
 
@@ -181,7 +181,7 @@ class GobanCanvas {
     const x2Coord = this.getCoord(x2);
     const y2Coord = this.getCoord(y2);
 
-    const ctx = this.markupLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d')!;
     ctx.strokeStyle = '#000'; // Maybe try other colors?
     ctx.lineWidth = this.unit / 10;
 
@@ -192,7 +192,7 @@ class GobanCanvas {
   };
 
   public drawLabel = (x: number, y: number, label: string, color: string) => {
-    const ctx = this.markupLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d')!;
     ctx.font = `${this.unit * 0.7}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -201,17 +201,17 @@ class GobanCanvas {
   };
 
   public resetMarkup = () => {
-    const ctx = this.markupLayer.getContext('2d');
+    const ctx = this.markupLayer.getContext('2d')!;
     ctx.clearRect(0, 0, this.markupLayer.width, this.markupLayer.height);
   };
 
   public resetBoard = () => {
-    const ctx = this.stoneLayer.getContext('2d');
+    const ctx = this.stoneLayer.getContext('2d')!;
     ctx.clearRect(0, 0, this.stoneLayer.width, this.stoneLayer.height);
   };
 
   public drawBoard = () => {
-    const ctx = this.boardLayer.getContext('2d');
+    const ctx = this.boardLayer.getContext('2d')!;
 
     // Background color
     ctx.fillStyle = '#DDAE68';

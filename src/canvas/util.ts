@@ -3,7 +3,7 @@ export function setCanvasDimensionsWithCorrectScaling(
   width: number,
   height: number
 ) {
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d')!;
   const devicePixelRatio = window.devicePixelRatio || 1;
   const backingStoreRatio =
     (ctx as any).webkitBackingStorePixelRatio ||
