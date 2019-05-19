@@ -19,7 +19,7 @@
   },
   "author": "Aaron Pettengill",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/airjp73/go-reviews-next#readme",
+  "homepage": "https://go-reviews.aaronp.now.sh",
   "dependencies": {
     "firebase": "^5.11.1",
     "lodash": "^4.17.11",
