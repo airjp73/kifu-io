@@ -20,8 +20,10 @@ const InputElement = styled.input`
   border: none;
   outline: none;
   background: none;
-  padding: 0;
+  padding: 0.75rem 0;
   height: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
   width: 100%;
   cursor: pointer;
 `;
@@ -41,9 +43,7 @@ const InputElement = styled.input`
 const Input: React.FunctionComponent<
   InputProps & React.ComponentProps<typeof InputElement>
 > = ({ className, error, hint, icon, label, value, ...rest }, forwardedRef) => {
-  const [ref, refCallback] = useForwardedRef<
-    HTMLInputElement | HTMLTextAreaElement
-  >(forwardedRef);
+  const [ref, refCallback] = useForwardedRef<HTMLInputElement>(forwardedRef);
 
   const getInputValue = () =>
     typeof value === 'undefined' ? ref.current && ref.current.value : value;

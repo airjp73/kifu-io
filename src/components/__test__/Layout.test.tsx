@@ -1,9 +1,10 @@
 import React from 'react';
-import { fireEvent, render, wait } from 'react-testing-library';
+import { fireEvent, wait } from 'react-testing-library';
+import renderWithContext from 'util/renderWithContext';
 import Layout from '../Layout';
 
 test('should open slide-out panel on menu click and close on overlay click', async () => {
-  const rendered = render(<Layout />);
+  const rendered = renderWithContext(<Layout />);
 
   expect(rendered.queryByTestId('slide-out-panel')).not.toBeInTheDocument();
   expect(

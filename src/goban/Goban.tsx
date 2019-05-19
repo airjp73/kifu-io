@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'goban/GoGameContext';
 import {
@@ -331,7 +331,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
   const markupLayerRef = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
-  const drawBoardState = () => {
+  const drawBoardState = useCallback(() => {
     const boardSize = properties.boardSize || [19, 19];
     if (goban.current) goban.current.setSize(boardSize);
     else
@@ -419,9 +419,13 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
         boardState[currentPoint] === 'b' ? '#fff' : '#000'
       );
     }
-  };
+  }, [gameState, boardState, node, getNode, properties.boardSize]);
 
-  useEffect(() => drawBoardState(), [boardState, properties.boardSize]);
+  useEffect(() => drawBoardState(), [
+    drawBoardState,
+    boardState,
+    properties.boardSize,
+  ]);
 
   useWindowResizeCallback(() => {
     goban.current.init();

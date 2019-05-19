@@ -1,7 +1,7 @@
 import React from 'react';
-import Link from 'next/link';
-import { withRouter, WithRouterProps } from 'next/router';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import 'styled-components/macro';
 import { highlight, panelHighlight } from 'style';
 
 interface NavMenuProps {
@@ -10,14 +10,25 @@ interface NavMenuProps {
 
 interface NavItemProps {
   label: string;
-  href: string;
+  to: string;
 }
 
-const NavLink = styled.a`
+const Link = styled(NavLink)`
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: 0.5rem 1rem;
   cursor: pointer;
+  color: ${highlight};
+  text-decoration: none;
+
+  &.active {
+    background-color: ${panelHighlight};
+  }
+
+  :hover {
+    background-color: ${panelHighlight};
+  }
 `;
 
 const NavList = styled.ul`
@@ -26,13 +37,8 @@ const NavList = styled.ul`
   list-style: none;
 `;
 
-const NavListItem = styled.li<{ active: boolean }>`
-  padding: 0.5rem 1rem;
+const NavListItem = styled.li`
   font-size: 1rem;
-  :hover {
-    background-color: ${panelHighlight};
-  }
-  ${props => props.active && `background-color: ${panelHighlight};`}
 `;
 
 const NavItemLabel = styled.span`
@@ -43,40 +49,30 @@ const NavSection = styled.section`
   margin: 1rem 0;
 `;
 
-const Nav = styled.nav`
-  color: ${highlight};
-`;
+const Nav = styled.nav``;
 
-const NavItem: React.FunctionComponent<NavItemProps & WithRouterProps> = ({
-  label,
-  href,
-  router,
-}) => (
-  <NavListItem active={router.pathname === href}>
-    <Link href={href}>
-      <NavLink>
-        <NavItemLabel>{label}</NavItemLabel>
-      </NavLink>
+const NavItem: React.FunctionComponent<NavItemProps> = ({ label, to }) => (
+  <NavListItem>
+    <Link to={to} activeClassName="active">
+      <NavItemLabel>{label}</NavItemLabel>
     </Link>
   </NavListItem>
 );
-const NavItemWithRouter = withRouter(NavItem);
 
 interface NavHeaderProps {
-  href: string;
+  to: string;
 }
 const NavHeader: React.FunctionComponent<NavHeaderProps> = ({
   children,
-  href,
+  to,
 }) => (
   <h3
     css={`
-      padding: 0 1rem;
       margin: 0;
     `}
   >
-    <Link href={href}>
-      <NavLink>{children}</NavLink>
+    <Link to={to} isActive={() => false}>
+      {children}
     </Link>
   </h3>
 );
@@ -84,12 +80,12 @@ const NavHeader: React.FunctionComponent<NavHeaderProps> = ({
 const NavMenu: React.FunctionComponent<NavMenuProps> = () => (
   <Nav data-testid="nav-menu">
     <NavSection>
-      <NavHeader href="/home">Go Reviews</NavHeader>
+      <NavHeader to="/">Go Reviews</NavHeader>
     </NavSection>
     <NavSection>
       <NavList>
-        <NavItemWithRouter label="Log In" href="/login" />
-        <NavItemWithRouter label="View Sample" href="/view" />
+        <NavItem label="Log In" to="/login" />
+        <NavItem label="View Sample" to="/view" />
       </NavList>
     </NavSection>
   </Nav>

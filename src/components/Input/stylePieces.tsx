@@ -48,9 +48,10 @@ export const InputContainer = styled.label<InputContainerProps>`
   position: relative;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   border: 1px solid ${fadedGrey};
   border-radius: 3px;
-  padding: 0.75rem;
+  padding: 0 0.75rem;
   min-width: 8rem;
   margin: 1.5rem 0;
   cursor: pointer;

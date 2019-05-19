@@ -203,12 +203,12 @@ const processNode = (
 
   if (properties.FF && properties.FF[0] !== '4') {
     // TODO: Support old versions of the spec
-    throw 'Currently only version 4 of the sgf spec is supported';
+    logError('Currently only version 4 of the sgf spec is supported', node);
   }
 
   if (properties.GM && properties.GM[0] !== '1') {
     // IGNORE: This will always be 1
-    throw 'Games other than Go or not supported';
+    logError('Currently only version 4 of the sgf spec is supported', node);
   }
 
   if (properties.ST) {

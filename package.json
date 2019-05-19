@@ -4,12 +4,12 @@
   "description": "A Website for requestion go game reviews",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
-    "build": "next build",
+    "start": "react-scripts start",
+    "test": "react-scripts test",
+    "build": "react-scripts build",
+    "now-build": "react-scripts build",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --project tsconfig.json --noEmit --skipLibCheck",
-    "start": "next start",
-    "test": "jest",
     "test:watch": "npm run test -- --watch",
     "prettier": "prettier --write src/**/*.{ts,tsx}"
   },
@@ -19,16 +19,15 @@
   },
   "author": "Aaron Pettengill",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/airjp73/go-reviews-next#readme",
+  "homepage": "https://go-reviews.aaronp.now.sh",
   "dependencies": {
-    "@zeit/next-css": "^1.0.1",
-    "@zeit/next-typescript": "^1.1.1",
     "firebase": "^5.11.1",
     "lodash": "^4.17.11",
-    "next": "^8.0.1",
     "normalize.css": "^8.0.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "^3.0.1",
     "react-spring": "^8.0.19",
     "styled-components": "^4.1.3"
   },
@@ -36,9 +35,9 @@
     "@types/jest": "^24.0.5",
     "@types/jest-each": "^0.3.4",
     "@types/lodash": "^4.14.121",
-    "@types/next": "^8.0.1",
     "@types/react": "^16.8.3",
     "@types/react-dom": "^16.8.2",
+    "@types/react-router-dom": "^4.3.3",
     "@types/styled-components": "^4.1.10",
     "@typescript-eslint/eslint-plugin": "^1.3.0",
     "babel-eslint": "^10.0.1",
@@ -49,7 +48,6 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "husky": "^1.3.1",
-    "jest": "^24.1.0",
     "jest-dom": "^3.1.2",
     "jest-each": "^24.0.0",
     "lint-staged": "^8.1.5",
@@ -66,6 +64,18 @@
     "*.{ts,tsx}": [
       "pretty-quick --staged",
       "git add"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
   }
 }

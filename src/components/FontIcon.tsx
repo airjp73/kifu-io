@@ -16,7 +16,7 @@ const sizeMap = {
 };
 
 const FontIconStyle = styled.span<FontIconStyleProps>`
-  font-size: ${props => sizeMap[props.size]};
+  font-size: ${({ size = 'MEDIUM' }) => sizeMap[size]};
 `;
 
 const FontIcon: React.FunctionComponent<
@@ -26,9 +26,5 @@ const FontIcon: React.FunctionComponent<
     {icon}
   </FontIconStyle>
 );
-
-FontIcon.defaultProps = {
-  size: 'MEDIUM',
-};
 
 export default FontIcon;

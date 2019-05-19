@@ -32,7 +32,7 @@ const TabContentArea: React.FunctionComponent = ({ children }) => {
     const prevIndex = findTabIndex(previousTab);
     const currentIndex = findTabIndex(currentTab);
     return prevIndex < currentIndex ? 'right' : 'left';
-  }, [currentTab]);
+  }, [currentTab, children, previousTab]);
 
   const transitions = useTransition(currentTab, null, {
     from: {
