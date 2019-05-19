@@ -11,7 +11,7 @@ const createStoneSprite = (
 
   const stoneCenter = radius + padding;
 
-  const ctx = canvas.getContext('2d')!;
+  const ctx = canvas.getContext('2d');
 
   const highlightCenter = stoneCenter - radius / 3;
   const gradient = ctx.createRadialGradient(
@@ -52,7 +52,7 @@ export const createSelectionHighlight = (radius: number, color: string) => {
 
   const stoneCenter = radius + padding;
 
-  const ctx = canvas.getContext('2d')!;
+  const ctx = canvas.getContext('2d');
 
   ctx.fillStyle = color;
   ctx.beginPath();

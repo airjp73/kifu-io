@@ -109,7 +109,7 @@ class GameTreeRenderer {
     canvas.width = radius * 4 + padding;
     canvas.height = radius * 4 + padding;
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d');
 
     ctx.drawImage(black, padding / 4, padding / 4);
     ctx.drawImage(white, radius + padding / 4, radius / 2 + padding / 4);
@@ -182,7 +182,7 @@ class GameTreeRenderer {
         break;
     }
 
-    const ctx = this.stoneLayer.getContext('2d')!;
+    const ctx = this.stoneLayer.getContext('2d');
     const [xCoord, yCoord] = this.getViewportCoords(x, y);
     ctx.drawImage(stone, xCoord, yCoord);
 
@@ -209,7 +209,7 @@ class GameTreeRenderer {
     // Still draw if one end is in bounds
     if (!this.isInBounds(x1, y1) && !this.isInBounds(x2, y2)) return;
 
-    const ctx = this.lineLayer.getContext('2d')!;
+    const ctx = this.lineLayer.getContext('2d');
     const stonePadding = calculateStonePadding(GameTreeRenderer.stoneRadius);
     const [x1Coord, y1Coord] = this.getViewportCoords(x1, y1);
     const [x2Coord, y2Coord] = this.getViewportCoords(x2, y2);
@@ -226,7 +226,7 @@ class GameTreeRenderer {
   };
 
   public drawNodeSelection = (x: number, y: number) => {
-    const ctx = this.selectionLayer.getContext('2d')!;
+    const ctx = this.selectionLayer.getContext('2d');
     const stonePadding = calculateStonePadding(GameTreeRenderer.stoneRadius);
     const highlightPadding = 2;
     const radiusDiff =
@@ -246,7 +246,7 @@ class GameTreeRenderer {
   };
 
   public drawHotspot = (x: number, y: number) => {
-    const ctx = this.highlightLayer.getContext('2d')!;
+    const ctx = this.highlightLayer.getContext('2d');
     const stonePadding = calculateStonePadding(GameTreeRenderer.stoneRadius);
     const highlightPadding = 2;
     const radiusDiff =
