@@ -8,26 +8,14 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "baseUrl": "./src",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "src/**/*",
-    "pages/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    ".next"
-  ]
+  "include": ["src/**/*", "pages/**/*"],
+  "exclude": ["node_modules", ".next"]
 }
