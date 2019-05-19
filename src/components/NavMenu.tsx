@@ -17,9 +17,16 @@ const Link = styled(NavLink)`
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: 0.5rem 1rem;
   cursor: pointer;
+  color: ${highlight};
+  text-decoration: none;
 
   &.active {
+    background-color: ${panelHighlight};
+  }
+
+  :hover {
     background-color: ${panelHighlight};
   }
 `;
@@ -31,11 +38,7 @@ const NavList = styled.ul`
 `;
 
 const NavListItem = styled.li`
-  padding: 0.5rem 1rem;
   font-size: 1rem;
-  :hover {
-    background-color: ${panelHighlight};
-  }
 `;
 
 const NavItemLabel = styled.span`
@@ -46,9 +49,7 @@ const NavSection = styled.section`
   margin: 1rem 0;
 `;
 
-const Nav = styled.nav`
-  color: ${highlight};
-`;
+const Nav = styled.nav``;
 
 const NavItem: React.FunctionComponent<NavItemProps> = ({ label, to }) => (
   <NavListItem>
@@ -67,11 +68,12 @@ const NavHeader: React.FunctionComponent<NavHeaderProps> = ({
 }) => (
   <h3
     css={`
-      padding: 0 1rem;
       margin: 0;
     `}
   >
-    <Link to={to}>{children}</Link>
+    <Link to={to} isActive={() => false}>
+      {children}
+    </Link>
   </h3>
 );
 
