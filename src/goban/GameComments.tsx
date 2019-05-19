@@ -96,7 +96,7 @@ const GameComments = () => {
       currentNode = currentNode.children && getNode(currentNode.children[0]);
     }
     return null;
-  }, [node]);
+  }, [getNode, node]);
 
   return (
     <GameCommentContainer>

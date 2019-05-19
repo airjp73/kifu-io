@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useCallback, useRef, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import 'styled-components/macro';
 import { animated, config, useSpring } from 'react-spring';
@@ -379,7 +379,7 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
     3.5;
   const height = (treeGrid.length + 1) * GameTreeRenderer.stoneRadius * 3.5;
 
-  const drawViewport = () => {
+  const drawViewport = useCallback(() => {
     if (!gameTreeRenderer.current) return;
 
     gameTreeRenderer.current.clear();
@@ -418,7 +418,7 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
         }
       });
     });
-  };
+  }, [gameState.node, getNode, height, treeGrid]);
 
   // Draw whole tree
   useEffect(() => {
@@ -433,9 +433,9 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
       );
     }
     drawViewport();
-  }, []);
+  }, [drawViewport, height]);
 
-  const getCurrentNodePos = (): [number, number] => {
+  const getCurrentNodePos = useCallback((): [number, number] => {
     for (let [yIndex, row] of treeGrid.entries()) {
       for (let [xIndex, treeNode] of row.entries()) {
         if (!treeNode) continue;
@@ -446,7 +446,7 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
     }
     // No current node found, use the first one
     return [0, 0];
-  };
+  }, [treeGrid, gameState.node]);
 
   // Track current node
   const [containerScroll, setScroll] = useSpring(() => {
@@ -482,7 +482,7 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
       },
       reset: true,
     });
-  }, [gameState.node]);
+  }, [gameState.node, getCurrentNodePos, setScroll]);
 
   const handleCanvasClick: React.MouseEventHandler = event => {
     const xCoord = event.nativeEvent.offsetX;

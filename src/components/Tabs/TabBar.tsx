@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useTabContext } from './Tabs';
 import styled from 'styled-components';
 import { lightBorder, panelBackground } from 'style';
@@ -29,14 +29,14 @@ const TabBar: React.FunctionComponent = ({ children }) => {
     width: 0,
   }));
 
-  const moveUnderline = () => {
+  const moveUnderline = useCallback(() => {
     const tabElement = containerRef.current.querySelector(
       `[data-tabid="${currentTab}"]`
     );
     const left = tabElement ? tabElement.offsetLeft : 0;
     const width = tabElement ? tabElement.offsetWidth : 0;
     setUnderlinePosition({ left, width });
-  };
+  }, [setUnderlinePosition, currentTab]);
 
   useEffect(() => {
     moveUnderline();
@@ -44,7 +44,7 @@ const TabBar: React.FunctionComponent = ({ children }) => {
     const observer = new MutationObserver(moveUnderline);
     observer.observe(containerRef.current, { childList: true });
     return () => observer.disconnect();
-  }, [currentTab]);
+  }, [currentTab, moveUnderline]);
 
   return (
     <TabBarContainer ref={containerRef}>

@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect } from 'react';
+import React, { useContext, useMemo, useEffect, useCallback } from 'react';
 import parseSgf from 'goban/parseSgf/parseSgf';
 import normalizeGameTree, {
   GameTree,
@@ -42,41 +42,60 @@ export const GoGameContextProvider: React.FunctionComponent<
     gameStateReducer(undefined, init()) // TODO: tweak hook to allow an init function
   );
 
-  const getNode = (nodeId: string) => gameTree.nodes[nodeId];
-  const getNodeChild = (nodeId: string, index: number) =>
-    gameTree.nodes[nodeId].children && gameTree.nodes[nodeId].children[index];
+  const getNode = useCallback((nodeId: string) => gameTree.nodes[nodeId], [
+    gameTree.nodes,
+  ]);
 
-  const nextMove = (nodeId: string) => {
-    dispatch(pushHistory());
-    dispatch(setNode(nodeId));
-    processNode(gameTree.nodes[nodeId], dispatch);
-  };
+  const getNodeChild = useCallback(
+    (nodeId: string, index: number) =>
+      gameTree.nodes[nodeId].children && gameTree.nodes[nodeId].children[index],
+    [gameTree.nodes]
+  );
 
-  const previousMove = () => dispatch(popHistory());
+  const nextMove = useCallback(
+    (nodeId: string) => {
+      dispatch(pushHistory());
+      dispatch(setNode(nodeId));
+      processNode(gameTree.nodes[nodeId], dispatch);
+    },
+    [dispatch, gameTree.nodes]
+  );
 
-  const forward = (numMoves: number) => {
-    let nextNode = getNodeChild(gameState.node, 0);
-    for (let i = 0; (i < numMoves || numMoves === -1) && nextNode; ++i) {
-      nextMove(nextNode);
-      nextNode = getNodeChild(nextNode, 0);
-    }
-  };
+  const previousMove = useCallback(() => dispatch(popHistory()), [dispatch]);
 
-  const back = (numMoves: number) => {
-    const targetMove =
-      numMoves === -1 ? 1 : Math.max(gameState.history.length - numMoves, 1);
-    for (let i = gameState.history.length; i > targetMove; --i) {
-      previousMove();
-    }
-  };
+  const forward = useCallback(
+    (numMoves: number) => {
+      let nextNode = getNodeChild(gameState.node, 0);
+      for (let i = 0; (i < numMoves || numMoves === -1) && nextNode; ++i) {
+        nextMove(nextNode);
+        nextNode = getNodeChild(nextNode, 0);
+      }
+    },
+    [getNodeChild, gameState.node, nextMove]
+  );
 
-  const goToNode = (nodeId: string) => {
-    if (getNode(nodeId).parent) goToNode(getNode(nodeId).parent);
-    else dispatch(init());
-    nextMove(nodeId);
-  };
+  const back = useCallback(
+    (numMoves: number) => {
+      const targetMove =
+        numMoves === -1 ? 1 : Math.max(gameState.history.length - numMoves, 1);
+      for (let i = gameState.history.length; i > targetMove; --i) {
+        previousMove();
+      }
+    },
+    [previousMove, gameState.history.length]
+  );
+
+  const goToNode = useCallback(
+    (nodeId: string) => {
+      if (getNode(nodeId).parent) goToNode(getNode(nodeId).parent);
+      else dispatch(init());
+      nextMove(nodeId);
+    },
+    [nextMove, dispatch, getNode]
+  );
 
   // Go to first move on mount
+  // eslint-disable-next-line
   useEffect(() => nextMove(gameTree.rootNode), []);
 
   return (
