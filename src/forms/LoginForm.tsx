@@ -30,8 +30,10 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({
         signInFlow: 'popup', // Only does a popup for third-party auth providers
         callbacks: {
           signInSuccessWithAuthResult: () => {
-            onAuthSuccess();
-            return false; // must return false
+            // We want to return before we call the callback
+            // That way firebase updates the auth state before we update ours
+            setTimeout(() => onAuthSuccess(), 0);
+            return false;
           },
         },
         signInOptions: [
