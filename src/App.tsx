@@ -2,7 +2,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { highlightFaded, darkFaded } from 'style';
-import Home from 'pages/Home';
 import Login from 'pages/Login';
 import View from 'pages/View';
 import Profile from 'pages/Profile';
@@ -38,9 +37,9 @@ const App = () => (
     <GlobalStyles />
     <AppContext>
       <Layout>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={View} />
         <Route path="/login" component={Login} />
-        <Route path="/view" component={View} />
+        <Route path="/view/:gameId" component={View} />
         <AuthRoute path="/profile" component={Profile} />
       </Layout>
     </AppContext>
