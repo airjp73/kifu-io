@@ -4,10 +4,6 @@ import styled from 'styled-components';
 import 'styled-components/macro';
 import { highlight, panelHighlight } from 'style';
 
-interface NavMenuProps {
-  iconOnly?: boolean;
-}
-
 interface NavItemProps {
   label: string;
   to: string;
@@ -77,7 +73,7 @@ const NavHeader: React.FunctionComponent<NavHeaderProps> = ({
   </h3>
 );
 
-const NavMenu: React.FunctionComponent<NavMenuProps> = () => (
+const NavMenu: React.FunctionComponent = ({ children }) => (
   <Nav data-testid="nav-menu">
     <NavSection>
       <NavHeader to="/">Go Reviews</NavHeader>
