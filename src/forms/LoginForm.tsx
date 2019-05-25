@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import firebase from 'api/firebase';
-import Input from 'components/Input';
+import useFormState from 'hooks/useFormState';
 import useCurrentUser from 'hooks/useCurrentUser';
+import Input from 'components/Input';
 
 /**
  * This form purposefully does not use a form library.
@@ -10,13 +11,6 @@ import useCurrentUser from 'hooks/useCurrentUser';
  * because the library _could_ theoretically be a point of vulnerability
  */
 const auth = firebase.auth();
-
-function useFormState() {
-  const [state, setState] = useState(null);
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setState(event.target.value);
-  return [state, onChange];
-}
 
 const Form = styled.form`
   max-width: 800px;
