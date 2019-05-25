@@ -3,14 +3,21 @@ import firebase from 'api/firebase';
 
 const auth = firebase.auth();
 
-// User gets set in the effect hook because it won't run on the server side
-// We don't have access to the auth state on the server side
 function useCurrentUser() {
+  const [isLoaded, setIsLoaded] = useState(!!auth.currentUser);
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
 
-  useEffect(() => auth.onAuthStateChanged(setCurrentUser), []);
+  useEffect(
+    () =>
+      auth.onAuthStateChanged(user => {
+        setCurrentUser(user);
+        setIsLoaded(true);
+      }),
+    []
+  );
 
-  return currentUser;
+  const value: [firebase.User, boolean] = [currentUser, isLoaded];
+  return value;
 }
 
 export default useCurrentUser;

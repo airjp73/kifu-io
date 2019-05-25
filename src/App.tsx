@@ -5,6 +5,9 @@ import { highlightFaded, darkFaded } from 'style';
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import View from 'pages/View';
+import Profile from 'pages/Profile';
+import AuthRoute from 'components/AuthRoute';
+import Layout from 'components/Layout';
 import AppContext from './AppContext';
 import 'normalize.css';
 
@@ -34,9 +37,12 @@ const App = () => (
   <>
     <GlobalStyles />
     <AppContext>
-      <Route exact path="/" component={Home} />
-      <Route path="/login" component={Login} />
-      <Route path="/view" component={View} />
+      <Layout>
+        <Route exact path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <Route path="/view" component={View} />
+        <AuthRoute path="/profile" component={Profile} />
+      </Layout>
     </AppContext>
   </>
 );
