@@ -94,7 +94,7 @@ const NavMenu: React.FunctionComponent = ({ children }) => {
       <h3>Go Reviews</h3>
       {currentUser && (
         <NavUser>
-          <Link to={`/profile/${currentUser.uid}`}>
+          <Link to={`/profile`}>
             <User
               photoURL={currentUser.photoURL}
               displayName={currentUser.displayName}
