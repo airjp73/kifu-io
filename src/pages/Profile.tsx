@@ -5,10 +5,10 @@ import LogoutButton from 'components/LogoutButton';
 const Profile = () => {
   const [currentUser] = useCurrentUser();
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', position: 'relative' }}>
       <h1>Welcome {currentUser.displayName}</h1>
       <p>Coming soon: A list of all your uploaded sgfs</p>
-      <LogoutButton />
+      <LogoutButton style={{ position: 'absolute', top: 0, right: 0 }} />
     </div>
   );
 };
