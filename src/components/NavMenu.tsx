@@ -2,22 +2,23 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import 'styled-components/macro';
+import FontIcon from 'components/FontIcon';
+import User from 'components/User';
+import PatreonButton from 'components/PatreonButton';
+import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight } from 'style';
-
-interface NavMenuProps {
-  iconOnly?: boolean;
-}
 
 interface NavItemProps {
   label: string;
   to: string;
+  icon: string;
 }
 
 const Link = styled(NavLink)`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   cursor: pointer;
   color: ${highlight};
   text-decoration: none;
@@ -43,52 +44,75 @@ const NavListItem = styled.li`
 
 const NavItemLabel = styled.span`
   margin-right: auto;
+  padding: 0 0.5rem;
 `;
 
-const NavSection = styled.section`
-  margin: 1rem 0;
+const NavUser = styled.div`
+  margin: 0.5rem 0;
 `;
 
-const Nav = styled.nav``;
+const NavBottomSection = styled.section`
+  margin: auto 0.5rem 1rem 0.5rem;
+`;
 
-const NavItem: React.FunctionComponent<NavItemProps> = ({ label, to }) => (
+const Nav = styled.nav`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  h4,
+  h3 {
+    margin: 0.5rem;
+  }
+`;
+
+const NavItem: React.FunctionComponent<NavItemProps> = ({
+  label,
+  to,
+  icon,
+}) => (
   <NavListItem>
     <Link to={to} activeClassName="active">
+      <FontIcon
+        css={`
+          width: 2rem;
+          text-align: center;
+        `}
+        icon={icon}
+        size="SMALL"
+      />
       <NavItemLabel>{label}</NavItemLabel>
     </Link>
   </NavListItem>
 );
 
-interface NavHeaderProps {
-  to: string;
-}
-const NavHeader: React.FunctionComponent<NavHeaderProps> = ({
-  children,
-  to,
-}) => (
-  <h3
-    css={`
-      margin: 0;
-    `}
-  >
-    <Link to={to} isActive={() => false}>
-      {children}
-    </Link>
-  </h3>
-);
+const NavMenu: React.FunctionComponent = ({ children }) => {
+  const [currentUser, isLoaded] = useCurrentUser();
 
-const NavMenu: React.FunctionComponent<NavMenuProps> = () => (
-  <Nav data-testid="nav-menu">
-    <NavSection>
-      <NavHeader to="/">Go Reviews</NavHeader>
-    </NavSection>
-    <NavSection>
+  return (
+    <Nav data-testid="nav-menu">
+      <h3>Go Reviews</h3>
+      {currentUser && (
+        <NavUser>
+          <Link to={`/profile`}>
+            <User
+              photoURL={currentUser.photoURL}
+              displayName={currentUser.displayName}
+            />
+          </Link>
+        </NavUser>
+      )}
       <NavList>
-        <NavItem label="Log In" to="/login" />
-        <NavItem label="View Sample" to="/view" />
+        {!currentUser && isLoaded && (
+          <NavItem icon="account_circle" label="Log In" to="/login" />
+        )}
+        <NavItem icon="android" label="View Sample" to="/view/sample" />
       </NavList>
-    </NavSection>
-  </Nav>
-);
+      <NavBottomSection>
+        <PatreonButton />
+      </NavBottomSection>
+    </Nav>
+  );
+};
 
 export default NavMenu;

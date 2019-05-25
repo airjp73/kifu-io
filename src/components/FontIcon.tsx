@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface FontIconStyleProps {
-  size?: 'MEDIUM' | 'SMALL' | 'XSMALL';
-}
-
-interface FontIconProps {
-  icon: string;
-}
-
 const sizeMap = {
   MEDIUM: '3rem',
   SMALL: '1.5rem',
   XSMALL: '1rem',
 };
+
+interface FontIconStyleProps {
+  size?: keyof typeof sizeMap;
+}
+
+interface FontIconProps {
+  icon: string;
+}
 
 const FontIconStyle = styled.span<FontIconStyleProps>`
   font-size: ${({ size = 'MEDIUM' }) => sizeMap[size]};

@@ -43,7 +43,6 @@ const GameViewContainer = styled.div`
     grid-template-columns: minmax(300px, 1000px) minmax(300px, 800px);
     grid-template-rows: min-content 1fr max-content;
     grid-column-gap: 1rem;
-    padding: 1rem;
     box-sizing: border-box;
   }
 

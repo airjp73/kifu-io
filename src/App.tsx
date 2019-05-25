@@ -1,10 +1,12 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-import { darkFaded } from 'style';
-import Home from 'pages/Home';
+import { highlightFaded, darkFaded } from 'style';
 import Login from 'pages/Login';
 import View from 'pages/View';
+import Profile from 'pages/Profile';
+import AuthRoute from 'components/AuthRoute';
+import Layout from 'components/Layout';
 import AppContext from './AppContext';
 import 'normalize.css';
 
@@ -23,15 +25,23 @@ const GlobalStyles = createGlobalStyle`
   #root {
     height: 100%;
   }
+
+  h1{ 
+    color: ${highlightFaded};
+    text-align: center;
+  }
 `;
 
 const App = () => (
   <>
     <GlobalStyles />
     <AppContext>
-      <Route exact path="/" component={Home} />
-      <Route path="/login" component={Login} />
-      <Route path="/view" component={View} />
+      <Layout>
+        <Route exact path="/" render={() => <Redirect to="/view/sample" />} />
+        <Route path="/login" component={Login} />
+        <Route path="/view/:gameId" component={View} />
+        <AuthRoute path="/profile" component={Profile} />
+      </Layout>
     </AppContext>
   </>
 );

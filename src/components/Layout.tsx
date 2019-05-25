@@ -5,6 +5,7 @@ import SlideOutPanel from 'components/SlideOutPanel';
 import Sidebar from 'components/Sidebar';
 import NavMenu from 'components/NavMenu';
 import { portraitMedia, landscapeMedia } from 'style';
+import { LandscapeView, PortraitView } from './MediaQueryView';
 
 const Container = styled.div`
   height: 100%;
@@ -18,36 +19,28 @@ const Container = styled.div`
 const MainContent = styled.main`
   position: relative;
   flex: 1;
-  padding: 1rem;
 
   ${landscapeMedia} {
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
     height: 100%;
     display: flex;
   }
 `;
 
-const MobileHeader = styled(Header)`
-  ${landscapeMedia} {
-    display: none;
-  }
-`;
-
-const DesktopSidebar = styled(Sidebar)`
-  ${portraitMedia} {
-    display: none;
-  }
-`;
-
 const Layout: React.FunctionComponent = ({ children }) => {
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
+
   return (
     <Container>
-      <MobileHeader onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)}>
-        Home
-      </MobileHeader>
-      <DesktopSidebar>
-        <NavMenu />
-      </DesktopSidebar>
+      <PortraitView>
+        <Header onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)} />
+      </PortraitView>
+      <LandscapeView>
+        <Sidebar>
+          <NavMenu />
+        </Sidebar>
+      </LandscapeView>
       <SlideOutPanel
         active={sidePanelOpen}
         onClose={() => setSidePanelOpen(false)}
