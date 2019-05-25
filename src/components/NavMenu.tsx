@@ -87,7 +87,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
 );
 
 const NavMenu: React.FunctionComponent = ({ children }) => {
-  const [currentUser] = useCurrentUser();
+  const [currentUser, isLoaded] = useCurrentUser();
 
   return (
     <Nav data-testid="nav-menu">
@@ -103,10 +103,10 @@ const NavMenu: React.FunctionComponent = ({ children }) => {
         </NavUser>
       )}
       <NavList>
-        {!currentUser && (
+        {!currentUser && isLoaded && (
           <NavItem icon="account_circle" label="Log In" to="/login" />
         )}
-        <NavItem icon="android" label="View Sample" to="/view" />
+        <NavItem icon="android" label="View Sample" to="/view/sample" />
       </NavList>
       <NavBottomSection>
         <PatreonButton />
