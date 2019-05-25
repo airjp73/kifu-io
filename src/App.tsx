@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { highlightFaded, darkFaded } from 'style';
 import Login from 'pages/Login';
@@ -37,7 +37,7 @@ const App = () => (
     <GlobalStyles />
     <AppContext>
       <Layout>
-        <Route exact path="/" component={View} />
+        <Route exact path="/" render={() => <Redirect to="/view/sample" />} />
         <Route path="/login" component={Login} />
         <Route path="/view/:gameId" component={View} />
         <AuthRoute path="/profile" component={Profile} />
