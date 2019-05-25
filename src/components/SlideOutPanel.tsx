@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import 'styled-components/macro';
 import Sidebar from 'components/Sidebar';
 import { animated, config, useTransition } from 'react-spring';
-import { highlight } from 'style';
 import Portal from './Portal';
 
 interface SidePanelProps {

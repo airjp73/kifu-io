@@ -86,25 +86,6 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   </NavListItem>
 );
 
-interface NavHeaderProps {
-  to: string;
-}
-const NavHeader: React.FunctionComponent<NavHeaderProps> = ({
-  children,
-  to,
-}) => (
-  <Link to={to} isActive={() => false}>
-    <h3
-      css={`
-        margin: 0;
-        padding: 0.5rem 0;
-      `}
-    >
-      {children}
-    </h3>
-  </Link>
-);
-
 const NavMenu: React.FunctionComponent = ({ children }) => {
   const currentUser = useCurrentUser();
 
