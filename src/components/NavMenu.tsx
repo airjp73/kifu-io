@@ -122,8 +122,8 @@ const NavMenu: React.FunctionComponent = ({ children }) => {
         </NavUser>
       )}
       <NavList>
-        <NavItem icon="person" label="Log In" to="/login" />
-        <NavItem icon="person" label="View Sample" to="/view" />
+        <NavItem icon="android" label="Log In" to="/login" />
+        <NavItem icon="android" label="View Sample" to="/view" />
       </NavList>
       <NavBottomSection>
         <PatreonButton />
