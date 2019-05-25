@@ -5,7 +5,7 @@ import firebaseNamespace from 'firebase/app';
 import firebaseApp from 'api/firebase';
 
 interface LoginFormProps {
-  signInSuccessUrl: string;
+  onAuthSuccess: () => void;
 }
 
 /**
@@ -21,14 +21,19 @@ const Form = styled.div`
 `;
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = ({
-  signInSuccessUrl,
+  onAuthSuccess,
 }) => (
   <Form onSubmit={e => e.preventDefault()}>
     <h1>You must have an account to continue</h1>
     <StyledFirebaseAuth
       uiConfig={{
         signInFlow: 'popup', // Only does a popup for third-party auth providers
-        signInSuccessUrl,
+        callbacks: {
+          signInSuccessWithAuthResult: () => {
+            onAuthSuccess();
+            return false; // must return false
+          },
+        },
         signInOptions: [
           firebaseNamespace.auth.EmailAuthProvider.PROVIDER_ID,
           firebaseNamespace.auth.GoogleAuthProvider.PROVIDER_ID,
