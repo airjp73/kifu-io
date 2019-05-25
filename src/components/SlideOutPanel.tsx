@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import 'styled-components/macro';
+import Sidebar from 'components/Sidebar';
 import { animated, config, useTransition } from 'react-spring';
-import { highlight, panelBackground } from 'style';
+import { highlight } from 'style';
 import Portal from './Portal';
 
 interface SidePanelProps {
@@ -23,12 +24,9 @@ const leftPanel = `
   left: 0;
   transform: translateX(-100%);
 `;
-const Panel = animated(styled.div`
+const Panel = animated(styled(Sidebar)`
   position: fixed;
-  height: 100vh;
-  background-color: ${panelBackground};
   overflow: hidden;
-  color: ${highlight};
 
   ${(props: PanelProps) => (props.side === 'right' ? rightPanel : leftPanel)}
 `);

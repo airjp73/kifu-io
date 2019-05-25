@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import SlideOutPanel from 'components/SlideOutPanel';
-import Sidebar, { SidebarBottomArea } from 'components/Sidebar';
+import Sidebar from 'components/Sidebar';
 import NavMenu from 'components/NavMenu';
-import User from 'components/User';
-import PatreonButton from 'components/PatreonButton';
-import useCurrentUser from 'hooks/useCurrentUser';
 import { portraitMedia, landscapeMedia } from 'style';
 import { LandscapeView, PortraitView } from './MediaQueryView';
 
@@ -22,9 +19,9 @@ const Container = styled.div`
 const MainContent = styled.main`
   position: relative;
   flex: 1;
-  padding: 1rem;
 
   ${landscapeMedia} {
+    padding: 1rem;
     height: 100%;
     display: flex;
   }
@@ -32,7 +29,6 @@ const MainContent = styled.main`
 
 const Layout: React.FunctionComponent = ({ children }) => {
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const currentUser = useCurrentUser();
 
   return (
     <Container>
@@ -44,15 +40,6 @@ const Layout: React.FunctionComponent = ({ children }) => {
       <LandscapeView>
         <Sidebar>
           <NavMenu />
-          {currentUser && (
-            <SidebarBottomArea>
-              <User
-                photoURL={currentUser.photoURL}
-                displayName={currentUser.displayName}
-              />
-              <PatreonButton />
-            </SidebarBottomArea>
-          )}
         </Sidebar>
       </LandscapeView>
       <SlideOutPanel
