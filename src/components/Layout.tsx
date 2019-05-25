@@ -5,6 +5,7 @@ import SlideOutPanel from 'components/SlideOutPanel';
 import Sidebar, { SidebarBottomArea } from 'components/Sidebar';
 import NavMenu from 'components/NavMenu';
 import User from 'components/User';
+import PatreonButton from 'components/PatreonButton';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { portraitMedia, landscapeMedia } from 'style';
 import { LandscapeView, PortraitView } from './MediaQueryView';
@@ -49,6 +50,7 @@ const Layout: React.FunctionComponent = ({ children }) => {
                 photoURL={currentUser.photoURL}
                 displayName={currentUser.displayName}
               />
+              <PatreonButton />
             </SidebarBottomArea>
           )}
         </Sidebar>
