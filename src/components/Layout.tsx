@@ -21,7 +21,8 @@ const MainContent = styled.main`
   flex: 1;
 
   ${landscapeMedia} {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
     height: 100%;
     display: flex;
   }
