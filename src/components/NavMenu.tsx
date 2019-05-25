@@ -103,7 +103,9 @@ const NavMenu: React.FunctionComponent = ({ children }) => {
         </NavUser>
       )}
       <NavList>
-        <NavItem icon="android" label="Log In" to="/login" />
+        {!currentUser && (
+          <NavItem icon="account_circle" label="Log In" to="/login" />
+        )}
         <NavItem icon="android" label="View Sample" to="/view" />
       </NavList>
       <NavBottomSection>
