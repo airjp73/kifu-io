@@ -19,6 +19,7 @@ const UserWrapper = styled.div`
   > span {
     color: ${highlight};
     overflow: hidden;
+    line-height: 2rem;
     text-overflow: ellipsis;
   }
 `;
