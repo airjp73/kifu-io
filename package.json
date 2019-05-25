@@ -26,6 +26,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
+    "react-firebaseui": "^3.1.2",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^3.0.1",
     "react-spring": "^8.0.19",
