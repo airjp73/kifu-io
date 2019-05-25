@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const sizeMap = {
   MEDIUM: '3rem',
-  MSMALL: '1.75rem',
   SMALL: '1.5rem',
   XSMALL: '1rem',
 };

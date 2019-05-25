@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import SlideOutPanel from 'components/SlideOutPanel';
-import Sidebar from 'components/Sidebar';
+import Sidebar, { SidebarBottomArea } from 'components/Sidebar';
 import NavMenu from 'components/NavMenu';
+import User from 'components/User';
+import useCurrentUser from 'hooks/useCurrentUser';
 import { portraitMedia, landscapeMedia } from 'style';
+import { LandscapeView, PortraitView } from './MediaQueryView';
 
 const Container = styled.div`
   height: 100%;
@@ -26,28 +29,30 @@ const MainContent = styled.main`
   }
 `;
 
-const MobileHeader = styled(Header)`
-  ${landscapeMedia} {
-    display: none;
-  }
-`;
-
-const DesktopSidebar = styled(Sidebar)`
-  ${portraitMedia} {
-    display: none;
-  }
-`;
-
 const Layout: React.FunctionComponent = ({ children }) => {
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const currentUser = useCurrentUser();
+
   return (
     <Container>
-      <MobileHeader onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)}>
-        Home
-      </MobileHeader>
-      <DesktopSidebar>
-        <NavMenu />
-      </DesktopSidebar>
+      <PortraitView>
+        <Header onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)}>
+          Home
+        </Header>
+      </PortraitView>
+      <LandscapeView>
+        <Sidebar>
+          <NavMenu />
+          {currentUser && (
+            <SidebarBottomArea>
+              <User
+                photoURL={currentUser.photoURL}
+                displayName={currentUser.displayName}
+              />
+            </SidebarBottomArea>
+          )}
+        </Sidebar>
+      </LandscapeView>
       <SlideOutPanel
         active={sidePanelOpen}
         onClose={() => setSidePanelOpen(false)}
