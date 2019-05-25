@@ -8,7 +8,7 @@ const Login: React.FunctionComponent<Partial<RouteComponentProps>> = ({
 }) => (
   <LoginForm
     onAuthSuccess={() =>
-      history.push(location.state ? location.state.from : '/')
+      history.push(location.state ? location.state.from : '/profile')
     }
   />
 );
