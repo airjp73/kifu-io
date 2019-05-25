@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import 'styled-components/macro';
+import FontIcon from 'components/FontIcon';
 import User from 'components/User';
 import PatreonButton from 'components/PatreonButton';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -10,6 +11,7 @@ import { highlight, panelHighlight } from 'style';
 interface NavItemProps {
   label: string;
   to: string;
+  icon: string;
 }
 
 const Link = styled(NavLink)`
@@ -42,11 +44,11 @@ const NavListItem = styled.li`
 
 const NavItemLabel = styled.span`
   margin-right: auto;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
 `;
 
 const NavUser = styled.div`
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 `;
 
 const NavBottomSection = styled.section`
@@ -57,11 +59,28 @@ const Nav = styled.nav`
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  h4,
+  h3 {
+    margin: 0.5rem;
+  }
 `;
 
-const NavItem: React.FunctionComponent<NavItemProps> = ({ label, to }) => (
+const NavItem: React.FunctionComponent<NavItemProps> = ({
+  label,
+  to,
+  icon,
+}) => (
   <NavListItem>
     <Link to={to} activeClassName="active">
+      <FontIcon
+        css={`
+          width: 2rem;
+          text-align: center;
+        `}
+        icon={icon}
+        size="SMALL"
+      />
       <NavItemLabel>{label}</NavItemLabel>
     </Link>
   </NavListItem>
@@ -91,11 +110,7 @@ const NavMenu: React.FunctionComponent = ({ children }) => {
 
   return (
     <Nav data-testid="nav-menu">
-      <NavHeader to="/">Go Reviews</NavHeader>
-      <NavList>
-        <NavItem label="Log In" to="/login" />
-        <NavItem label="View Sample" to="/view" />
-      </NavList>
+      <h3>Go Reviews</h3>
       {currentUser && (
         <NavUser>
           <Link to={`/profile/${currentUser.uid}`}>
@@ -106,6 +121,10 @@ const NavMenu: React.FunctionComponent = ({ children }) => {
           </Link>
         </NavUser>
       )}
+      <NavList>
+        <NavItem icon="person" label="Log In" to="/login" />
+        <NavItem icon="person" label="View Sample" to="/view" />
+      </NavList>
       <NavBottomSection>
         <PatreonButton />
       </NavBottomSection>
