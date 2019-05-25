@@ -33,9 +33,7 @@ const Layout: React.FunctionComponent = ({ children }) => {
   return (
     <Container>
       <PortraitView>
-        <Header onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)}>
-          Home
-        </Header>
+        <Header onMenuClick={() => setSidePanelOpen(prevOpen => !prevOpen)} />
       </PortraitView>
       <LandscapeView>
         <Sidebar>
