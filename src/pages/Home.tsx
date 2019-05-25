@@ -5,7 +5,7 @@ import SimpleContent from 'components/SimpleContent';
 const Home = () => (
   <Layout>
     <SimpleContent>
-      <h1>Welcome!</h1>
+      <h2>Welcome!</h2>
       <p>
         This website is currently under construction. You can view a sample sgf
         by choosing "View Sample Sgf" from the menu. You can also sign up on the

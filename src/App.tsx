@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-import { darkFaded } from 'style';
+import { highlightFaded, darkFaded } from 'style';
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import View from 'pages/View';
@@ -22,6 +22,11 @@ const GlobalStyles = createGlobalStyle`
 
   #root {
     height: 100%;
+  }
+
+  h1{ 
+    color: ${highlightFaded};
+    text-align: center;
   }
 `;
 
