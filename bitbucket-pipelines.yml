@@ -15,6 +15,7 @@ pipelines:
     master:
       - step:
           name: 'Deploy to now'
+          deployment: 'Kifu.io Production'
           script:
             - npm install -g now
-            - now --token=$NOW_TOKEN
+            - now --token=$NOW_TOKEN --target production
