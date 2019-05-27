@@ -16,17 +16,31 @@ const Construction = styled.p`
   margin: 0.5rem 0;
   overflow: hidden;
 
-  span {
+  > span {
     white-space: nowrap;
     display: block;
     animation: ${ConsAnim} 5s linear infinite;
     width: max-content;
+
+    > span {
+      margin: 0 0.5rem;
+    }
   }
 `;
 
+const ConstructionEmoji = () => (
+  <span role="img" aria-label="Under Construction">
+    🚧
+  </span>
+);
+
 const ConstructionBanner = () => (
   <Construction>
-    <span>🚧 Under Construction 🚧</span>
+    <span>
+      <ConstructionEmoji />
+      Under Construction
+      <ConstructionEmoji />
+    </span>
   </Construction>
 );
 
