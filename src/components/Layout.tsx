@@ -36,7 +36,7 @@ const Layout: React.FunctionComponent<Partial<RouteComponentProps>> = ({
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   // Close slide-out panel when route changes (user clicks a link)
-  useEffect(() => history.listen(() => setSidePanelOpen(false)), []);
+  useEffect(() => history.listen(() => setSidePanelOpen(false)), [history]);
 
   return (
     <Container>
