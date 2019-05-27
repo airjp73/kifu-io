@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import SlideOutPanel from 'components/SlideOutPanel';
@@ -28,8 +29,14 @@ const MainContent = styled.main`
   }
 `;
 
-const Layout: React.FunctionComponent = ({ children }) => {
+const Layout: React.FunctionComponent<Partial<RouteComponentProps>> = ({
+  children,
+  history,
+}) => {
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
+
+  // Close slide-out panel when route changes (user clicks a link)
+  useEffect(() => history.listen(() => setSidePanelOpen(false)), []);
 
   return (
     <Container>
@@ -53,4 +60,4 @@ const Layout: React.FunctionComponent = ({ children }) => {
   );
 };
 
-export default Layout;
+export default withRouter(Layout);
