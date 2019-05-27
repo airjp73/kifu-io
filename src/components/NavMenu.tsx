@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import 'styled-components/macro';
+import ConstructionBanner from 'components/ConstructionBanner';
 import FontIcon from 'components/FontIcon';
 import User from 'components/User';
 import PatreonButton from 'components/PatreonButton';
@@ -86,12 +87,13 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   </NavListItem>
 );
 
-const NavMenu: React.FunctionComponent = ({ children }) => {
+const NavMenu: React.FunctionComponent = () => {
   const [currentUser, isLoaded] = useCurrentUser();
 
   return (
     <Nav data-testid="nav-menu">
-      <h3>Go Reviews</h3>
+      <h3>Kifu.io</h3>
+      <ConstructionBanner />
       {currentUser && (
         <NavUser>
           <Link to={`/profile`}>

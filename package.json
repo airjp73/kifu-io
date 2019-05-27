@@ -1,7 +1,7 @@
 {
-  "name": "go-reviews-next",
+  "name": "kifu-io",
   "version": "0.0.1",
-  "description": "A Website for requestion go game reviews",
+  "description": "An SGF hosting website",
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
@@ -19,7 +19,7 @@
   },
   "author": "Aaron Pettengill",
   "license": "UNLICENSED",
-  "homepage": "https://go-reviews.aaronp.now.sh",
+  "homepage": "https://www.kifu.io",
   "dependencies": {
     "firebase": "^5.11.1",
     "lodash": "^4.17.11",
