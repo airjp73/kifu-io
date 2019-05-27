@@ -49,7 +49,7 @@ const Header: React.FunctionComponent<HeaderProps> = ({
     <FlatButton onClick={onMenuClick}>
       <FontIcon icon="menu" />
     </FlatButton>
-    <SiteTitle>Go Reviews</SiteTitle>
+    <SiteTitle>Kifu.io</SiteTitle>
     <ChildContainer>{children}</ChildContainer>
   </HeaderContainer>
 );

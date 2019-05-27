@@ -91,7 +91,7 @@ const NavMenu: React.FunctionComponent = ({ children }) => {
 
   return (
     <Nav data-testid="nav-menu">
-      <h3>Go Reviews</h3>
+      <h3>Kifu.io</h3>
       {currentUser && (
         <NavUser>
           <Link to={`/profile`}>
