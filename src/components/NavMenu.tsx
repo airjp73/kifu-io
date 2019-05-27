@@ -86,7 +86,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   </NavListItem>
 );
 
-const NavMenu: React.FunctionComponent = ({ children }) => {
+const NavMenu: React.FunctionComponent = () => {
   const [currentUser, isLoaded] = useCurrentUser();
 
   return (
