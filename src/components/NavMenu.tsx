@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import 'styled-components/macro';
+import ConstructionBanner from 'components/ConstructionBanner';
 import FontIcon from 'components/FontIcon';
 import User from 'components/User';
 import PatreonButton from 'components/PatreonButton';
@@ -92,6 +93,7 @@ const NavMenu: React.FunctionComponent = () => {
   return (
     <Nav data-testid="nav-menu">
       <h3>Kifu.io</h3>
+      <ConstructionBanner />
       {currentUser && (
         <NavUser>
           <Link to={`/profile`}>
