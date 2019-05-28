@@ -11,6 +11,7 @@ interface UserProps {
 const UserWrapper = styled.div`
   display: flex;
   align-items: center;
+  overflow: hidden;
 
   > :first-child {
     margin-right: 0.5rem;
@@ -20,6 +21,7 @@ const UserWrapper = styled.div`
     color: ${highlight};
     overflow: hidden;
     line-height: 2rem;
+    white-space: nowrap;
     text-overflow: ellipsis;
   }
 `;
