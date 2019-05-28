@@ -2,10 +2,9 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const ConsAnim = keyframes`
-  0% { transform: translateX(0); }
-  50% { transform: translateX(-100%); }
-  50.001% { transform: translateX(100%); }
-  100% { transform: translateX(0); }
+  0% { transform: translateX(100%); }
+  99.999% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 `;
 
 const Construction = styled.p`
@@ -19,7 +18,7 @@ const Construction = styled.p`
   > span {
     white-space: nowrap;
     display: block;
-    animation: ${ConsAnim} 5s linear infinite;
+    animation: ${ConsAnim} 4s linear infinite;
     width: max-content;
 
     > span {
