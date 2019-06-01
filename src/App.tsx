@@ -5,6 +5,7 @@ import { highlightFaded, darkFaded } from 'style';
 import Login from 'pages/Login';
 import View from 'pages/View';
 import Profile from 'pages/Profile';
+import Upload from 'pages/Upload';
 import AuthRoute from 'components/AuthRoute';
 import Layout from 'components/Layout';
 import AppContext from './AppContext';
@@ -41,6 +42,7 @@ const App = () => (
         <Route path="/login" component={Login} />
         <Route path="/view/:gameId" component={View} />
         <AuthRoute path="/profile" component={Profile} />
+        <AuthRoute path="/upload" component={Upload} />
       </Layout>
     </AppContext>
   </>
