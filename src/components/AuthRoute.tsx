@@ -1,6 +1,7 @@
 import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { Route, RouteProps } from 'react-router-dom';
 import useCurrentUser from 'hooks/useCurrentUser';
+import LoginForm from 'forms/LoginForm';
 
 const AuthRoute: React.FunctionComponent<RouteProps> = ({
   component: Component,
@@ -12,13 +13,7 @@ const AuthRoute: React.FunctionComponent<RouteProps> = ({
       {...rest}
       render={props => {
         if (!isLoaded) return null;
-        return currentUser ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{ pathname: 'login', state: { from: props.location.pathname } }}
-          />
-        );
+        return currentUser ? <Component {...props} /> : <LoginForm />;
       }}
     />
   );

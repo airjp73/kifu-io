@@ -5,12 +5,6 @@ import { RouteComponentProps } from 'react-router-dom';
 const Login: React.FunctionComponent<Partial<RouteComponentProps>> = ({
   location,
   history,
-}) => (
-  <LoginForm
-    onAuthSuccess={() =>
-      history.push(location.state ? location.state.from : '/profile')
-    }
-  />
-);
+}) => <LoginForm onAuthSuccess={() => history.push('/profile')} />;
 
 export default Login;

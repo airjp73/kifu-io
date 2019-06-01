@@ -5,7 +5,7 @@ import firebaseNamespace from 'firebase/app';
 import firebaseApp from 'api/firebase';
 
 interface LoginFormProps {
-  onAuthSuccess: () => void;
+  onAuthSuccess?: () => void;
 }
 
 /**
@@ -34,7 +34,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({
           signInSuccessWithAuthResult: () => {
             // We want to return before we call the callback
             // That way firebase updates the auth state before we update ours
-            setTimeout(() => onAuthSuccess(), 0);
+            onAuthSuccess && setTimeout(() => onAuthSuccess(), 0);
             return false;
           },
         },
