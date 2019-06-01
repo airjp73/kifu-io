@@ -31,7 +31,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({
   onAuthSuccess,
   header = 'You must have an account to continue',
 }) => (
-  <Form onSubmit={e => e.preventDefault()}>
+  <Form>
     {!!header && <h1>{header}</h1>}
     <StyledFirebaseAuth
       uiConfig={{
