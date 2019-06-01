@@ -9,11 +9,6 @@ interface LoginFormProps {
   header?: string;
 }
 
-/**
- * This form purposefully does not use a form library.
- * It's generally not a bad idea to hand-roll login forms
- * because the library _could_ theoretically be a point of vulnerability
- */
 const auth = firebaseApp.auth();
 
 const Form = styled.div`
