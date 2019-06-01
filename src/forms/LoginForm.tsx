@@ -6,6 +6,7 @@ import firebaseApp from 'api/firebase';
 
 interface LoginFormProps {
   onAuthSuccess?: () => void;
+  hideHeader?: boolean;
 }
 
 /**
@@ -24,9 +25,10 @@ const Form = styled.div`
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = ({
   onAuthSuccess,
+  hideHeader,
 }) => (
   <Form onSubmit={e => e.preventDefault()}>
-    <h1>You must have an account to continue</h1>
+    {!hideHeader && <h1>You must have an account to continue</h1>}
     <StyledFirebaseAuth
       uiConfig={{
         signInFlow: 'popup', // Only does a popup for third-party auth providers
