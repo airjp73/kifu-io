@@ -18,6 +18,8 @@ const auth = firebaseApp.auth();
 const Form = styled.div`
   max-width: 800px;
   margin: 0 auto;
+  overflow: auto;
+  height: 100%;
 `;
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = ({
