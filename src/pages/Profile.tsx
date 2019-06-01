@@ -8,7 +8,13 @@ const Profile = () => {
     <div style={{ width: '100%' }}>
       <h1>Welcome {currentUser.displayName}</h1>
       <p>Coming soon: A list of all your uploaded sgfs</p>
-      <LogoutButton style={{ position: 'absolute', bottom: '1rem', right: '1rem' }} />
+      <LogoutButton
+        style={{
+          position: 'absolute',
+          bottom: '1rem',
+          right: '1rem',
+        }}
+      />
     </div>
   );
 };

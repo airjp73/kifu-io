@@ -5,7 +5,7 @@ import Header from 'components/Header';
 import SlideOutPanel from 'components/SlideOutPanel';
 import Sidebar from 'components/Sidebar';
 import NavMenu from 'components/NavMenu';
-import { portraitMedia, landscapeMedia } from 'style';
+import { headerHeight, portraitMedia, landscapeMedia } from 'style';
 import { LandscapeView, PortraitView } from './MediaQueryView';
 
 const Container = styled.div`
@@ -23,9 +23,13 @@ const MainContent = styled.main`
 
   ${landscapeMedia} {
     padding: 0.5rem 1rem;
-    box-sizing: border-box;
     height: 100%;
+    box-sizing: border-box;
     display: flex;
+  }
+
+  ${portraitMedia} {
+    height: calc(100% - ${headerHeight});
   }
 `;
 
