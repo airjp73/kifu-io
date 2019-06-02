@@ -1,13 +1,10 @@
-import React, { useContext, useMemo, useEffect, useCallback } from 'react';
-import parseSgf from 'goban/parseSgf/parseSgf';
-import normalizeGameTree, {
-  GameTree,
-  GameTreeNode,
-} from 'goban/parseSgf/normalizeGameTree';
+import React, { useContext, useEffect, useCallback } from 'react';
+import { GameTree, GameTreeNode } from 'goban/parseSgf/normalizeGameTree';
 import useThunkReducer from 'hooks/useThunkReducer';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import { pushHistory, setNode, popHistory, init } from './actions';
 import processNode from './processNode';
+import useSgf from './useSgf';
 
 // Interfaces
 export interface GameContext {
@@ -36,7 +33,7 @@ interface GoGameContextProviderProps {
 export const GoGameContextProvider: React.FunctionComponent<
   GoGameContextProviderProps
 > = ({ children, sgf }) => {
-  const gameTree = useMemo(() => normalizeGameTree(parseSgf(sgf)[0]), [sgf]);
+  const [gameTree] = useSgf(sgf);
   const [gameState, dispatch] = useThunkReducer(
     gameStateReducer,
     gameStateReducer(undefined, init()) // TODO: tweak hook to allow an init function
