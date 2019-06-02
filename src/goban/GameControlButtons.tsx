@@ -17,6 +17,7 @@ const GameControlButtonBar = styled.div`
 
 const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
   className,
+  children,
 }) => {
   const { forward, back } = useGoGameContext();
 
@@ -31,6 +32,7 @@ const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
       <FlatButton onClick={() => back(1)}>
         <FontIcon icon="navigate_before" />
       </FlatButton>
+      {children}
       <FlatButton onClick={() => forward(1)}>
         <FontIcon icon="navigate_next" />
       </FlatButton>

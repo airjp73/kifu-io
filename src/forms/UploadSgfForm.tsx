@@ -8,6 +8,7 @@ import Goban from 'goban/Goban';
 import GameControlButtons from 'goban/GameControlButtons';
 import Button from 'components/Button';
 import useSgf from 'goban/useSgf';
+import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 
 const useFileContents = (file?: File): null | string => {
   const [contents, setContents] = useState<string>(null);
@@ -88,7 +89,9 @@ const UploadSgfForm = () => {
               `}
             />
           </UploadPreview>
-          <UploadControlButtons />
+          <UploadControlButtons>
+            <AutoAdvanceControl />
+          </UploadControlButtons>
         </GoGameContextProvider>
       )}
       {error && (
