@@ -50,7 +50,7 @@ const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
 const FlatButton: React.FunctionComponent<
   FlatButtonProps & React.ComponentProps<typeof FlatButtonStyles>
 > = ({ children, leftIcon, primary, rightIcon, ...rest }) => (
-  <FlatButtonStyles primary={primary} {...rest}>
+  <FlatButtonStyles primary={primary} type="button" {...rest}>
     {leftIcon && (
       <FontIcon
         style={{ marginRight: '.5rem' }}

@@ -12,10 +12,6 @@ interface InputProps {
   value?: string;
 }
 
-interface InputRef {
-  (ref: HTMLInputElement | HTMLTextAreaElement): void;
-}
-
 const InputElement = styled.input`
   border: none;
   outline: none;

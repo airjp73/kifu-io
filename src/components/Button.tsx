@@ -23,11 +23,16 @@ const ButtonContainer = styled.button`
   ${props => !props.disabled && 'cursor: pointer;'}
 
   :hover {
-    box-shadow: ${props => (props.disabled ? 'none' : boxShadowDepressed)};
-    transform: translateY(1px);
+    ${props =>
+      props.disabled
+        ? 'box-shadow: none;'
+        : `
+      box-shadow: ${boxShadowDepressed};
+      transform: translateY(1px);
+    `}
   }
 
-  :active {
+  :active:not(:disabled) {
     box-shadow: ${boxShadowLow} inset;
   }
 `;
