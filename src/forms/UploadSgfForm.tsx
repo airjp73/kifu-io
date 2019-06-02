@@ -7,6 +7,7 @@ import SimpleContent from 'components/SimpleContent';
 import Goban from 'goban/Goban';
 import GameControlButtons from 'goban/GameControlButtons';
 import Button from 'components/Button';
+import useSgf from 'goban/useSgf';
 
 const useFileContents = (file?: File): null | string => {
   const [contents, setContents] = useState<string>(null);
@@ -52,6 +53,7 @@ const UploadForm = styled.form`
 const UploadSgfForm = () => {
   const [file, setFile] = useState<File>(null);
   const contents = useFileContents(file);
+  const [gameTree, error] = useSgf(contents);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setFile(event.currentTarget.files[0]);
@@ -72,12 +74,13 @@ const UploadSgfForm = () => {
           `}
           type="submit"
           icon="cloud_upload"
+          disabled={!!error || !gameTree}
         >
           Upload
         </Button>
       </UploadFormFields>
-      {contents && (
-        <GoGameContextProvider key={contents} sgf={contents}>
+      {gameTree && (
+        <GoGameContextProvider key={contents} gameTree={gameTree}>
           <UploadPreview>
             <Goban
               css={`
@@ -87,6 +90,14 @@ const UploadSgfForm = () => {
           </UploadPreview>
           <UploadControlButtons />
         </GoGameContextProvider>
+      )}
+      {error && (
+        <UploadPreview>
+          <SimpleContent>
+            <h2>Error Parsing SGF</h2>
+            <pre>{error.message}</pre>
+          </SimpleContent>
+        </UploadPreview>
       )}
     </UploadForm>
   );
