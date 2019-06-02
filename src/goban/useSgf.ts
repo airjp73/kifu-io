@@ -2,10 +2,13 @@ import { useMemo } from 'react';
 import parseSgf from 'goban/parseSgf/parseSgf';
 import normalizeGameTree, { GameTree } from 'goban/parseSgf/normalizeGameTree';
 
-const useSgf = (sgf: string): [GameTree?, string?] => {
+const useSgf = (sgf: string): [GameTree?, Error?] => {
   return useMemo(() => {
+    if (!sgf) return [null, null];
+
     let gameTree: GameTree = null;
-    let error: string = null;
+    let error: Error = null;
+
     try {
       gameTree = normalizeGameTree(parseSgf(sgf)[0]);
     } catch (err) {

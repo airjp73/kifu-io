@@ -28,12 +28,11 @@ export const useGoGameContext = () => useContext(GoGameContext);
 
 // Context Provider component
 interface GoGameContextProviderProps {
-  sgf: string;
+  gameTree: GameTree;
 }
 export const GoGameContextProvider: React.FunctionComponent<
   GoGameContextProviderProps
-> = ({ children, sgf }) => {
-  const [gameTree] = useSgf(sgf);
+> = ({ children, gameTree }) => {
   const [gameState, dispatch] = useThunkReducer(
     gameStateReducer,
     gameStateReducer(undefined, init()) // TODO: tweak hook to allow an init function
