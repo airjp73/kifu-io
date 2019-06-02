@@ -63,7 +63,7 @@ const UploadSgfForm = () => {
     <UploadForm
       onSubmit={e => {
         e.preventDefault();
-        console.log('Submitted!');
+        // TODO: Do actual upload
       }}
     >
       <UploadFormFields>
@@ -77,7 +77,7 @@ const UploadSgfForm = () => {
           icon="cloud_upload"
           disabled={!!error || !gameTree}
         >
-          Upload
+          Upload Not Yet Implemented
         </Button>
       </UploadFormFields>
       {gameTree && (
