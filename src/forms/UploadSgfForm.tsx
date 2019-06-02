@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { UploadInput } from 'components/Input';
+import { GoGameContextProvider } from 'goban/GoGameContext';
+import Goban from 'goban/Goban';
+import GameControlButtons from 'goban/GameControlButtons';
 
 const useFileContents = (file?: File): null | string => {
   const [contents, setContents] = useState<string>(null);
@@ -32,7 +35,14 @@ const UploadSgfForm = () => {
   return (
     <>
       <UploadInput label="SGF File" onChange={handleChange} />
-      <p>{contents}</p>
+      {contents && (
+        <GoGameContextProvider key={contents} sgf={contents}>
+          <div style={{ display: 'grid', height: '500px' }}>
+            <Goban />
+          </div>
+          <GameControlButtons />
+        </GoGameContextProvider>
+      )}
     </>
   );
 };
