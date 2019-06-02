@@ -21,6 +21,7 @@ export const LabelText = styled.span<LabelTextProps>`
   top: 0.75rem;
   left: 0.5rem;
   padding: 0 0.25rem;
+  transform-origin: left;
 
   ${props =>
     props.isOpen &&

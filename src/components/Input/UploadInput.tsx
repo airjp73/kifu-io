@@ -13,10 +13,10 @@ interface UploadInputProps extends React.AllHTMLAttributes<HTMLInputElement> {
 
 const FileInput = styled.input`
   visibility: hidden;
-  height: 0;
+  height: 1rem;
   width: 0;
   margin: 0;
-  padding: 0;
+  padding: 0.75rem;
 `;
 
 const UploadInput: React.FunctionComponent<
