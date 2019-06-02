@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
 import { useGoGameContext } from 'goban/GoGameContext';

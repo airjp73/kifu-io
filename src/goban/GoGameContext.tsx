@@ -4,7 +4,6 @@ import useThunkReducer from 'hooks/useThunkReducer';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import { pushHistory, setNode, popHistory, init } from './actions';
 import processNode from './processNode';
-import useSgf from './useSgf';
 
 // Interfaces
 export interface GameContext {
