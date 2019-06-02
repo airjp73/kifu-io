@@ -2,11 +2,7 @@ import React from 'react';
 import UploadSgfForm from 'forms/UploadSgfForm';
 
 const Upload = () => {
-  return (
-    <div style={{ width: '100%' }}>
-      <UploadSgfForm />
-    </div>
-  );
+  return <UploadSgfForm />;
 };
 
 export default Upload;

@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import 'styled-components/macro';
+import { landscapeMedia, portraitMedia } from 'style';
 import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
 import SimpleContent from 'components/SimpleContent';
 import Goban from 'goban/Goban';
 import GameControlButtons from 'goban/GameControlButtons';
+import CaptureCounts from 'goban/CaptureCounts';
 import Button from 'components/Button';
 import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
@@ -40,15 +42,32 @@ const UploadFormFields = styled(SimpleContent)`
 const UploadControlButtons = styled(GameControlButtons)`
   grid-area: buttons;
 `;
+const UploadCaptureCounts = styled(CaptureCounts)`
+  grid-area: captures;
+`;
 
 const UploadForm = styled.form`
   height: 100%;
   display: grid;
-  grid-template-areas:
-    'fields preview'
-    'fields buttons';
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr auto;
+  width: 100%;
+
+  ${landscapeMedia} {
+    grid-template-areas:
+      'fields captures'
+      'fields preview'
+      'fields buttons';
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  ${portraitMedia} {
+    grid-template-areas:
+      'fields'
+      'captures'
+      'preview'
+      'buttons';
+    grid-template-rows: auto auto 1fr auto;
+  }
 `;
 
 const UploadSgfForm = () => {
@@ -82,6 +101,7 @@ const UploadSgfForm = () => {
       </UploadFormFields>
       {gameTree && (
         <GoGameContextProvider key={contents} gameTree={gameTree}>
+          <UploadCaptureCounts />
           <UploadPreview>
             <Goban
               css={`

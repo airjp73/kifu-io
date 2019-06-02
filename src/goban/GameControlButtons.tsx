@@ -13,6 +13,7 @@ const GameControlButtonBar = styled.div`
   display: flex;
   justify-content: space-evenly;
   color: ${dark};
+  max-width: 100%;
 `;
 
 const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
