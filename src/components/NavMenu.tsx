@@ -5,7 +5,6 @@ import 'styled-components/macro';
 import ConstructionBanner from 'components/ConstructionBanner';
 import FontIcon from 'components/FontIcon';
 import User from 'components/User';
-import PatreonButton from 'components/PatreonButton';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight } from 'style';
 
@@ -111,9 +110,6 @@ const NavMenu: React.FunctionComponent = () => {
         <NavItem icon="cloud_upload" label="Upload SGF" to="/upload" />
         <NavItem icon="android" label="View Sample" to="/view/sample" />
       </NavList>
-      <NavBottomSection>
-        <PatreonButton />
-      </NavBottomSection>
     </Nav>
   );
 };
