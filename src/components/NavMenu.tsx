@@ -51,10 +51,6 @@ const NavUser = styled.div`
   margin: 0.5rem 0;
 `;
 
-const NavBottomSection = styled.section`
-  margin: auto 0.5rem 1rem 0.5rem;
-`;
-
 const Nav = styled.nav`
   height: 100%;
   display: flex;
