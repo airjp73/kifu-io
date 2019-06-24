@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import 'styled-components/macro';
+import firebaseApp from 'api/firebase';
 import { landscapeMedia, portraitMedia } from 'style';
 import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
@@ -11,6 +12,10 @@ import CaptureCounts from 'goban/CaptureCounts';
 import Button from 'components/Button';
 import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
+import useCurrentUser from 'hooks/useCurrentUser';
+import WithRouter from 'components/WithRouter';
+
+const firestore = firebaseApp.firestore();
 
 const useFileContents = (file?: File): null | string => {
   const [contents, setContents] = useState<string>(null);
@@ -74,55 +79,76 @@ const UploadSgfForm = () => {
   const [file, setFile] = useState<File>(null);
   const contents = useFileContents(file);
   const [gameTree, error] = useSgf(contents);
+  const [currentUser] = useCurrentUser();
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setFile(event.currentTarget.files[0]);
 
+  const uploadSgf = () => {
+    const newDocument = firestore.collection('sgfFiles').doc();
+    return newDocument.set({
+      contents,
+      userId: currentUser.uid,
+      userPhotoURL: currentUser.photoURL,
+      userDisplayName: currentUser.displayName,
+    });
+  };
+
   return (
-    <UploadForm
-      onSubmit={e => {
-        e.preventDefault();
-        // TODO: Do actual upload
-      }}
-    >
-      <UploadFormFields>
-        <h2>Choose a file to upload</h2>
-        <UploadInput label="SGF File" onChange={handleChange} />
-        <Button
-          css={`
-            margin-left: auto;
-          `}
-          type="submit"
-          icon="cloud_upload"
-          disabled={!!error || !gameTree}
+    <WithRouter>
+      {({ history }) => (
+        <UploadForm
+          onSubmit={async e => {
+            e.preventDefault();
+            setIsUploading(true);
+            await uploadSgf();
+            history.push({
+              pathname: '/profile',
+              state: { uploadSucceeded: true },
+            });
+          }}
         >
-          Upload Not Yet Implemented
-        </Button>
-      </UploadFormFields>
-      {gameTree && (
-        <GoGameContextProvider key={contents} gameTree={gameTree}>
-          <UploadCaptureCounts />
-          <UploadPreview>
-            <Goban
+          <UploadFormFields>
+            <h2>Choose a file to upload</h2>
+            <UploadInput label="SGF File" onChange={handleChange} />
+            <Button
               css={`
-                height: 100%;
+                margin-left: auto;
               `}
-            />
-          </UploadPreview>
-          <UploadControlButtons>
-            <AutoAdvanceControl />
-          </UploadControlButtons>
-        </GoGameContextProvider>
+              type="submit"
+              icon="cloud_upload"
+              disabled={isUploading || !!error || !gameTree}
+            >
+              {isUploading ? 'Uploading...' : 'Upload'}
+            </Button>
+          </UploadFormFields>
+          {gameTree && (
+            <GoGameContextProvider key={contents} gameTree={gameTree}>
+              <UploadCaptureCounts />
+              <UploadPreview>
+                <Goban
+                  css={`
+                    height: 100%;
+                  `}
+                />
+              </UploadPreview>
+              <UploadControlButtons>
+                <AutoAdvanceControl />
+              </UploadControlButtons>
+            </GoGameContextProvider>
+          )}
+          {error && (
+            <UploadPreview>
+              <SimpleContent>
+                <h2>Error Parsing SGF</h2>
+                <pre>{error.message}</pre>
+              </SimpleContent>
+            </UploadPreview>
+          )}
+        </UploadForm>
       )}
-      {error && (
-        <UploadPreview>
-          <SimpleContent>
-            <h2>Error Parsing SGF</h2>
-            <pre>{error.message}</pre>
-          </SimpleContent>
-        </UploadPreview>
-      )}
-    </UploadForm>
+    </WithRouter>
   );
 };
 

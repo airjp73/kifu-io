@@ -5,7 +5,6 @@ import 'styled-components/macro';
 import ConstructionBanner from 'components/ConstructionBanner';
 import FontIcon from 'components/FontIcon';
 import User from 'components/User';
-import PatreonButton from 'components/PatreonButton';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight } from 'style';
 
@@ -50,10 +49,6 @@ const NavItemLabel = styled.span`
 
 const NavUser = styled.div`
   margin: 0.5rem 0;
-`;
-
-const NavBottomSection = styled.section`
-  margin: auto 0.5rem 1rem 0.5rem;
 `;
 
 const Nav = styled.nav`
@@ -111,9 +106,6 @@ const NavMenu: React.FunctionComponent = () => {
         <NavItem icon="cloud_upload" label="Upload SGF" to="/upload" />
         <NavItem icon="android" label="View Sample" to="/view/sample" />
       </NavList>
-      <NavBottomSection>
-        <PatreonButton />
-      </NavBottomSection>
     </Nav>
   );
 };
