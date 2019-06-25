@@ -2,8 +2,9 @@ import React, { useMemo } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import firebaseApp from 'api/firebase';
 import GameView from 'goban/GameView';
-import useData from 'api/useData';
+import useDoc from 'api/useDoc';
 import Spinner from 'components/Spinner';
+import { SgfFile } from 'api/apiDataTypes';
 
 const firestore = firebaseApp.firestore();
 
@@ -18,7 +19,7 @@ const GameViewPage: React.FunctionComponent<
     () => firestore.collection('sgfFiles').doc(match.params.gameId),
     [match.params.gameId]
   );
-  const [data, loading] = useData(docRef);
+  const [data, loading] = useDoc<SgfFile>(docRef);
 
   return loading ? <Spinner /> : <GameView sgf={data.contents} />;
 };
