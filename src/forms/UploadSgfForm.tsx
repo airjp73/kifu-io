@@ -85,14 +85,15 @@ const UploadSgfForm = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setFile(event.currentTarget.files[0]);
 
-  const uploadSgf = () => {
+  const uploadSgf = async () => {
     const newDocument = firestore.collection('sgfFiles').doc();
-    return newDocument.set({
+    await newDocument.set({
       contents,
       userId: currentUser.uid,
       userPhotoURL: currentUser.photoURL,
       userDisplayName: currentUser.displayName,
     });
+    return newDocument.id;
   };
 
   return (
@@ -102,11 +103,8 @@ const UploadSgfForm = () => {
           onSubmit={async e => {
             e.preventDefault();
             setIsUploading(true);
-            await uploadSgf();
-            history.push({
-              pathname: '/profile',
-              state: { uploadSucceeded: true },
-            });
+            const docId = await uploadSgf();
+            history.push(`/view/${docId}`);
           }}
         >
           <UploadFormFields>
