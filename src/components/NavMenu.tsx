@@ -104,7 +104,6 @@ const NavMenu: React.FunctionComponent = () => {
           <NavItem icon="account_circle" label="Log In" to="/login" />
         )}
         <NavItem icon="cloud_upload" label="Upload SGF" to="/upload" />
-        <NavItem icon="android" label="View Sample" to="/view/sample" />
       </NavList>
     </Nav>
   );
