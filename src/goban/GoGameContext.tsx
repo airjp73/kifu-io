@@ -104,7 +104,7 @@ export const GoGameContextProvider: React.FunctionComponent<
         goToNode,
       }}
     >
-      {children}
+      {gameState.node && children}
     </GoGameContext.Provider>
   );
 };
