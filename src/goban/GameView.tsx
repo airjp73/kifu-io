@@ -3,11 +3,14 @@ import styled from 'styled-components';
 import Goban from 'goban/Goban';
 import { GoGameContextProvider } from 'goban/GoGameContext';
 import GameControlButtons from 'goban/GameControlButtons';
-import sgf from 'goban/parseSgf/snapshots/snapshot7';
 import GameInfo from 'goban/GameInfo';
 import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
 import { landscapeMedia, portraitMedia } from 'style';
+
+interface GameViewProps {
+  sgf: string;
+}
 
 const GameViewCaptures = styled(CaptureCounts)``;
 const GameViewControlButtons = styled(GameControlButtons)``;
@@ -58,7 +61,7 @@ const GameViewContainer = styled.div`
   }
 `;
 
-const GameView: React.FunctionComponent = () => {
+const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
   return (
     <GameViewContainer>
