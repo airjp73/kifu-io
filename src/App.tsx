@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { highlightFaded, darkFaded } from 'style';
 import Login from 'pages/Login';
