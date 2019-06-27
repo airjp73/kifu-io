@@ -20,6 +20,7 @@ const Container = styled.div`
 const MainContent = styled.main`
   position: relative;
   flex: 1;
+  overflow: auto;
 
   ${landscapeMedia} {
     padding: 0.5rem 1rem;

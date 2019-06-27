@@ -14,6 +14,7 @@ import StaticBoardStateControl from 'goban/StaticBoardStateControl';
 import CaptureCounts from 'goban/CaptureCounts';
 import Button from 'components/Button';
 import { Link } from 'react-router-dom';
+import SimpleContent from 'components/SimpleContent';
 
 const firestore = firebaseApp.firestore();
 
@@ -47,6 +48,7 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
         height: 20rem;
         display: flex;
         flex-direction: column;
+        background-color: white;
       `}
     >
       <GoGameContextProvider gameTree={gameTree}>
@@ -95,15 +97,9 @@ const Profile: React.FunctionComponent = () => {
   return (
     <div style={{ width: '100%' }}>
       <h1>Welcome {currentUser.displayName}</h1>
-      <div
-        css={css`
-          flex-flow: row wrap;
-        `}
-      >
-        {data.map(sgfFile => (
-          <ProfileGameItem key={sgfFile.id} sgfFile={sgfFile} />
-        ))}
-      </div>
+      {data.map(sgfFile => (
+        <ProfileGameItem key={sgfFile.id} sgfFile={sgfFile} />
+      ))}
       <LogoutButton
         style={{
           position: 'absolute',
