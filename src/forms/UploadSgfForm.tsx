@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
+import firebase from 'firebase';
 import 'styled-components/macro';
 import firebaseApp from 'api/firebase';
 import { landscapeMedia, portraitMedia } from 'style';
@@ -14,6 +15,7 @@ import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 import useCurrentUser from 'hooks/useCurrentUser';
 import WithRouter from 'components/WithRouter';
+import { SgfFile } from 'api/apiDataTypes';
 
 const firestore = firebaseApp.firestore();
 
@@ -87,12 +89,14 @@ const UploadSgfForm = () => {
 
   const uploadSgf = async () => {
     const newDocument = firestore.collection('sgfFiles').doc();
-    await newDocument.set({
+    const sgfFile: SgfFile = {
       contents,
       userId: currentUser.uid,
       userPhotoURL: currentUser.photoURL,
       userDisplayName: currentUser.displayName,
-    });
+      uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+    };
+    await newDocument.set(sgfFile);
     return newDocument.id;
   };
 

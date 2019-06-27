@@ -82,7 +82,10 @@ const Profile: React.FunctionComponent = () => {
   const [currentUser] = useCurrentUser();
   const query = useMemo(
     () =>
-      firestore.collection('sgfFiles').where('userId', '==', currentUser.uid),
+      firestore
+        .collection('sgfFiles')
+        .where('userId', '==', currentUser.uid)
+        .orderBy('uploadTimestamp', 'desc'),
     [currentUser.uid]
   );
   const [data, loading] = useQuery<SgfFile>(query);

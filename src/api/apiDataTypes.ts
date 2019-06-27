@@ -6,5 +6,6 @@ export interface SgfFile extends FirebaseEntity {
   contents: string;
   userDisplayName: string;
   userId: string;
-  userPhotoUrl: string;
+  userPhotoURL: string;
+  uploadTimestamp: firebase.firestore.Timestamp;
 }
