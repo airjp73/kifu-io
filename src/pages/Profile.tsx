@@ -11,13 +11,19 @@ import { GoGameContextProvider, useGoGameContext } from 'goban/GoGameContext';
 import Goban from 'goban/Goban';
 import StaticBoardStateControl from 'goban/StaticBoardStateControl';
 import { transformPlayedOn } from 'goban/GameProperties';
-import { highlightFaded, panelBackground } from 'style';
+import {
+  highlightFaded,
+  panelBackground,
+  landscapeMedia,
+  portraitMedia,
+} from 'style';
 import Button from 'components/Button';
 import { Link } from 'react-router-dom';
+import { LandscapeView, PortraitView } from 'components/MediaQueryView';
 
 const firestore = firebaseApp.firestore();
 
-const ProfileGameSummary = () => {
+const Players = () => {
   const { gameState } = useGoGameContext();
   const {
     playerBlack,
@@ -26,29 +32,33 @@ const ProfileGameSummary = () => {
     teamWhite,
     rankBlack,
     rankWhite,
-    playedOn,
   } = gameState.properties;
 
   return (
-    <>
-      <h2
-        css={css`
-          margin-top: 0;
-        `}
-      >
-        {playerBlack || teamBlack} {rankBlack} vs {playerWhite || teamWhite}{' '}
-        {rankWhite}
-      </h2>
-      {playedOn && <span>Played on {transformPlayedOn(playedOn)}</span>}
-    </>
+    <h2
+      css={css`
+        margin-top: 0;
+      `}
+    >
+      {playerBlack || teamBlack} {rankBlack} vs {playerWhite || teamWhite}{' '}
+      {rankWhite}
+    </h2>
   );
 };
+
+const PlayedOn = () => {
+  const { gameState } = useGoGameContext();
+  const { playedOn } = gameState.properties;
+  return (
+    (playedOn && <span>Played on {transformPlayedOn(playedOn)}</span>) || null
+  );
+};
+
 const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
   sgfFile,
 }) => {
   const [gameTree, error] = useSgf(sgfFile.contents);
 
-  console.log(sgfFile);
   if (error)
     return <h3 style={{ color: 'red' }}>Error processing game file</h3>;
 
@@ -56,15 +66,26 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
     <div
       css={css`
         padding: 1rem;
-        display: flex;
         color: ${highlightFaded};
         max-width: 700px;
         margin: 1rem auto;
         background-color: ${panelBackground};
+        display: flex;
+
+        ${landscapeMedia} {
+        }
+
+        ${portraitMedia} {
+          flex-direction: column;
+          align-items: center;
+        }
       `}
     >
       <GoGameContextProvider gameTree={gameTree}>
         <StaticBoardStateControl moveNumber={50} />
+        <PortraitView>
+          <Players />
+        </PortraitView>
         <Goban
           css={css`
             height: 15rem;
@@ -83,7 +104,10 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
             }
           `}
         >
-          <ProfileGameSummary />
+          <LandscapeView>
+            <Players />
+          </LandscapeView>
+          <PlayedOn />
           <span>
             Uploaded on {sgfFile.uploadTimestamp.toDate().toLocaleDateString()}
           </span>
