@@ -1,9 +1,8 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import 'styled-components/macro';
 import { css } from 'styled-components';
 import firebaseApp from 'api/firebase';
 import useCurrentUser from 'hooks/useCurrentUser';
-import LogoutButton from 'components/LogoutButton';
 import useQuery from 'api/useQuery';
 import Spinner from 'components/Spinner';
 import { SgfFile } from 'api/apiDataTypes';
@@ -11,10 +10,10 @@ import useSgf from 'goban/useSgf';
 import { GoGameContextProvider, useGoGameContext } from 'goban/GoGameContext';
 import Goban from 'goban/Goban';
 import StaticBoardStateControl from 'goban/StaticBoardStateControl';
-import CaptureCounts from 'goban/CaptureCounts';
+import { transformPlayedOn } from 'goban/GameProperties';
+import { highlightFaded, panelBackground } from 'style';
 import Button from 'components/Button';
 import { Link } from 'react-router-dom';
-import SimpleContent from 'components/SimpleContent';
 
 const firestore = firebaseApp.firestore();
 
@@ -27,9 +26,22 @@ const ProfileGameSummary = () => {
     teamWhite,
     rankBlack,
     rankWhite,
+    playedOn,
   } = gameState.properties;
 
-  return <div>kk</div>;
+  return (
+    <>
+      <h2
+        css={css`
+          margin-top: 0;
+        `}
+      >
+        {playerBlack || teamBlack} {rankBlack} vs {playerWhite || teamWhite}{' '}
+        {rankWhite}
+      </h2>
+      {playedOn && <span>Played on {transformPlayedOn(playedOn)}</span>}
+    </>
+  );
 };
 const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
   sgfFile,
@@ -43,38 +55,50 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
   return (
     <div
       css={css`
-        padding: 0.5rem;
-        width: 20rem;
-        height: 20rem;
+        padding: 1rem;
         display: flex;
-        flex-direction: column;
-        background-color: white;
+        color: ${highlightFaded};
+        max-width: 700px;
+        margin: 1rem auto;
+        background-color: ${panelBackground};
       `}
     >
       <GoGameContextProvider gameTree={gameTree}>
         <StaticBoardStateControl moveNumber={50} />
-        <CaptureCounts
-          css={css`
-            grid-area: captures;
-          `}
-        />
         <Goban
           css={css`
             height: 15rem;
-            grid-area: board;
-            margin: 1rem;
+            width: 15rem;
+            margin-right: 1rem;
           `}
         />
-        {/* <Link
+        <div
           css={css`
-            grid-area: link;
-            text-decoration: none;
-            align-self: flex-end;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+            span {
+              margin: 0.5rem 0;
+            }
           `}
-          to={`/view/${sgfFile.id}`}
         >
-          <Button>View Game</Button>
-        </Link> */}
+          <ProfileGameSummary />
+          <span>
+            Uploaded on {sgfFile.uploadTimestamp.toDate().toLocaleDateString()}
+          </span>
+          <Link
+            css={css`
+              width: max-content;
+              align-self: flex-end;
+              margin-top: auto;
+              text-decoration: none;
+            `}
+            to={`/view/${sgfFile.id}`}
+          >
+            <Button>View Game</Button>
+          </Link>
+        </div>
       </GoGameContextProvider>
     </div>
   );
@@ -96,17 +120,10 @@ const Profile: React.FunctionComponent = () => {
 
   return (
     <div style={{ width: '100%' }}>
-      <h1>Welcome {currentUser.displayName}</h1>
+      <h1>Your Uploaded Games</h1>
       {data.map(sgfFile => (
         <ProfileGameItem key={sgfFile.id} sgfFile={sgfFile} />
       ))}
-      <LogoutButton
-        style={{
-          position: 'absolute',
-          bottom: '1rem',
-          right: '1rem',
-        }}
-      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 export const panelBackground = '#3E4E88';
 export const highlight = '#DBF4FF';
-export const highlightFaded = 'rgba(219,244,255, .75)';
+export const highlightFaded = 'rgba(219,244,255, .85)';
 export const stoneSelectionHighlight = 'rgba(121,113,234, .5)'; // rgb of primaryAction
 export const hotspotHighlight = 'rgba(255,100,100, .75)';
 export const fadedGrey = '#6D6D6D';
