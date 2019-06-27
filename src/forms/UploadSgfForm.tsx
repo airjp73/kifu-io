@@ -15,7 +15,7 @@ import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 import useCurrentUser from 'hooks/useCurrentUser';
 import WithRouter from 'components/WithRouter';
-import { SgfFile } from 'api/apiDataTypes';
+import { SgfFile, NewEntity } from 'api/apiDataTypes';
 
 const firestore = firebaseApp.firestore();
 
@@ -89,7 +89,7 @@ const UploadSgfForm = () => {
 
   const uploadSgf = async () => {
     const newDocument = firestore.collection('sgfFiles').doc();
-    const sgfFile: SgfFile = {
+    const sgfFile: NewEntity<SgfFile> = {
       contents,
       userId: currentUser.uid,
       userPhotoURL: currentUser.photoURL,
