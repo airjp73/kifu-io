@@ -129,7 +129,8 @@ const Profile: React.FunctionComponent = () => {
       firestore
         .collection('sgfFiles')
         .where('userId', '==', currentUser.uid)
-        .orderBy('uploadTimestamp', 'desc'),
+        .orderBy('uploadTimestamp', 'desc')
+        .limit(10),
     [currentUser.uid]
   );
   const [data, loading] = useQuery<SgfFile>(query);
