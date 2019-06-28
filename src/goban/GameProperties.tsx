@@ -13,7 +13,7 @@ interface SupportedProperty {
 
 // This gets a little weird with complicated date scenarios
 // but those seem a little unlikely
-const transformPlayedOnd = (playedOn: PlayedOnDates) =>
+export const transformPlayedOn = (playedOn: PlayedOnDates) =>
   Object.entries(playedOn)
     .map(
       ([year, months]) =>
@@ -42,7 +42,7 @@ const transformTimeLimit = (timeLimit: number) => {
 };
 
 const supportedProperties: SupportedProperty[] = [
-  { name: 'playedOn', label: 'Played', transform: transformPlayedOnd },
+  { name: 'playedOn', label: 'Played', transform: transformPlayedOn },
   { name: 'annotatorName', label: 'Annotator' },
   { name: 'copyright', label: 'Copyright' },
   { name: 'eventName', label: 'Event' },

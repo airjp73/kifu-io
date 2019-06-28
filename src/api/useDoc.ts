@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const useData = (
+const useDoc = <T>(
   docRef: firebase.firestore.DocumentReference
-): [any, boolean, string?] => {
+): [T, boolean, string?] => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>(null);
@@ -24,4 +24,4 @@ const useData = (
   return [data, loading, error];
 };
 
-export default useData;
+export default useDoc;

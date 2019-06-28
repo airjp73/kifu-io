@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import 'styled-components/macro';
 import ConstructionBanner from 'components/ConstructionBanner';
 import FontIcon from 'components/FontIcon';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight } from 'style';
+import LogoutButton from './LogoutButton';
 
 interface NavItemProps {
   label: string;
@@ -105,6 +106,15 @@ const NavMenu: React.FunctionComponent = () => {
         )}
         <NavItem icon="cloud_upload" label="Upload SGF" to="/upload" />
       </NavList>
+
+      {currentUser && (
+        <LogoutButton
+          leftIcon="exit_to_app"
+          css={css`
+            margin-top: auto;
+          `}
+        />
+      )}
     </Nav>
   );
 };
