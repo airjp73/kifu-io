@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useGoGameContext } from 'goban/GoGameContext';
 
 interface StaticBoardStateControlProps {
@@ -10,10 +10,11 @@ const StaticBoardStateControl: React.FunctionComponent<
 > = ({ moveNumber }) => {
   const { back, forward } = useGoGameContext();
 
+  // This breaks if we depend on back and forward
   useEffect(() => {
     forward(moveNumber);
     return () => back(-1);
-  }, [moveNumber]);
+  }, [moveNumber]); // eslint-disable-line
 
   return null;
 };
