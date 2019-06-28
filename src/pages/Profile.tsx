@@ -11,12 +11,7 @@ import { GoGameContextProvider, useGoGameContext } from 'goban/GoGameContext';
 import Goban from 'goban/Goban';
 import StaticBoardStateControl from 'goban/StaticBoardStateControl';
 import { transformPlayedOn } from 'goban/GameProperties';
-import {
-  highlightFaded,
-  panelBackground,
-  landscapeMedia,
-  portraitMedia,
-} from 'style';
+import { highlightFaded, panelBackground, portraitMedia } from 'style';
 import Button from 'components/Button';
 import { Link } from 'react-router-dom';
 import { LandscapeView, PortraitView } from 'components/MediaQueryView';
@@ -68,16 +63,14 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
         padding: 1rem;
         color: ${highlightFaded};
         max-width: 700px;
-        margin: 1rem auto;
+        margin: 0 auto;
         background-color: ${panelBackground};
         display: flex;
-
-        ${landscapeMedia} {
-        }
 
         ${portraitMedia} {
           flex-direction: column;
           align-items: center;
+          text-align: center;
         }
       `}
     >
@@ -98,6 +91,7 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
             flex: 1;
             display: flex;
             flex-direction: column;
+            width: 100%;
 
             span {
               margin: 0.5rem 0;
@@ -108,7 +102,7 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
             <Players />
           </LandscapeView>
           <PlayedOn />
-          <span>
+          <span style={{ marginBottom: '2rem' }}>
             Uploaded on {sgfFile.uploadTimestamp.toDate().toLocaleDateString()}
           </span>
           <Link
@@ -143,7 +137,17 @@ const Profile: React.FunctionComponent = () => {
   if (loading) return <Spinner />;
 
   return (
-    <div style={{ width: '100%' }}>
+    <div
+      css={css`
+        width: 100%;
+        padding: 0 1rem 2rem 1rem;
+        box-sizing: border-box;
+
+        > * + * {
+          margin-top: 1rem;
+        }
+      `}
+    >
       <h1>Your Uploaded Games</h1>
       {data.map(sgfFile => (
         <ProfileGameItem key={sgfFile.id} sgfFile={sgfFile} />

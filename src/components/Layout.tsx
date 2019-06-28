@@ -26,7 +26,6 @@ const MainContent = styled.main`
     padding: 0.5rem 1rem;
     height: 100%;
     box-sizing: border-box;
-    display: flex;
   }
 
   ${portraitMedia} {
