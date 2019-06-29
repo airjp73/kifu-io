@@ -5,12 +5,16 @@ import { useGoGameContext } from 'goban/GoGameContext';
 import {
   createBlackStone,
   createWhiteStone,
+  createSimpleBlackStone,
+  createSimpleWhiteStone,
   calculateStonePadding,
+  StoneSpriteFactory,
 } from 'canvas/createStoneSprite';
 import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
 
 interface GobanProps {
   className?: string;
+  smallBoard?: boolean;
 }
 
 export type StoneColor = 'b' | 'w';
@@ -42,19 +46,27 @@ class GobanCanvas {
   private stoneRadius: number;
   private blackStone: HTMLCanvasElement;
   private whiteStone: HTMLCanvasElement;
+  private blackFactory: StoneSpriteFactory;
+  private whiteFactory: StoneSpriteFactory;
+  private showCoords: boolean;
 
   public constructor(
     boardLayer: HTMLCanvasElement,
     stoneLayer: HTMLCanvasElement,
     markupLayer: HTMLCanvasElement,
     container: HTMLDivElement,
-    boardSize: [number, number]
+    boardSize: [number, number],
+    spriteFactories: { black: StoneSpriteFactory; white: StoneSpriteFactory },
+    showCoords: boolean
   ) {
     this.size = boardSize;
     this.boardLayer = boardLayer;
     this.stoneLayer = stoneLayer;
     this.markupLayer = markupLayer;
     this.container = container;
+    this.blackFactory = spriteFactories.black;
+    this.whiteFactory = spriteFactories.white;
+    this.showCoords = showCoords;
     boardLayer.getContext('2d').imageSmoothingEnabled = false;
     stoneLayer.getContext('2d').imageSmoothingEnabled = false;
     markupLayer.getContext('2d').imageSmoothingEnabled = false;
@@ -90,8 +102,8 @@ class GobanCanvas {
   };
 
   private initSprites = () => {
-    this.blackStone = createBlackStone(this.stoneRadius);
-    this.whiteStone = createWhiteStone(this.stoneRadius);
+    this.blackStone = this.blackFactory(this.stoneRadius);
+    this.whiteStone = this.whiteFactory(this.stoneRadius);
   };
 
   public drawStone = (x: number, y: number, color: StoneColor) => {
@@ -265,7 +277,10 @@ class GobanCanvas {
     ctx.closePath();
     ctx.fill();
 
-    // Coordinates
+    if (this.showCoords) this.drawCoordinates(ctx);
+  };
+
+  private drawCoordinates = (ctx: CanvasRenderingContext2D) => {
     ctx.font = `bold ${this.unit * 0.4}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -322,7 +337,10 @@ const Board = styled.canvas`
   transform: translateX(-50%) translateY(-50%);
 `;
 
-const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
+const Goban: React.FunctionComponent<GobanProps> = ({
+  className,
+  smallBoard = false,
+}) => {
   const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
   const containerRef = useRef(null);
@@ -330,6 +348,9 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
   const boardLayerRef = useRef(null);
   const markupLayerRef = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
+  const stoneFactories = smallBoard
+    ? { black: createSimpleBlackStone, white: createSimpleWhiteStone }
+    : { black: createBlackStone, white: createWhiteStone };
 
   const drawBoardState = useCallback(() => {
     const boardSize = properties.boardSize || [19, 19];
@@ -340,7 +361,9 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
         stoneLayerRef.current,
         markupLayerRef.current,
         containerRef.current,
-        boardSize
+        boardSize,
+        stoneFactories,
+        !smallBoard
       );
 
     const pointToXY = (point: string): [number, number] => {
@@ -429,10 +452,12 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
 
   // re-init and re-draw when board resizes
   const containerRect = useRect(containerRef);
+  const height = (containerRect && containerRect.height) || 100;
+  const width = (containerRect && containerRect.height) || 100;
   useEffect(() => {
     goban.current.init();
     drawBoardState();
-  }, [containerRect, drawBoardState]);
+  }, [height, width, drawBoardState]);
 
   return (
     <BoardContainer ref={containerRef} className={className}>
