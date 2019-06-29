@@ -19,8 +19,9 @@ import { SgfFile, NewEntity } from 'api/apiDataTypes';
 
 const firestore = firebaseApp.firestore();
 
-const useFileContents = (file?: File): null | string => {
+const useFileContents = (file?: File): [null | string, null | string] => {
   const [contents, setContents] = useState<string>(null);
+  const [error, setError] = useState<string>(null);
   const fileReader = useRef<FileReader>(null);
 
   useEffect(() => {
@@ -29,7 +30,13 @@ const useFileContents = (file?: File): null | string => {
     if (!file) {
       fileReader.current = null;
       setContents(null);
+      setError(null);
+    } else if (file.size > 900000) {
+      fileReader.current = null;
+      setContents(null);
+      setError('Cannot upload file larger than 900kb');
     } else {
+      setError(null);
       fileReader.current = new FileReader();
       fileReader.current.onload = () =>
         setContents(fileReader.current.result as string);
@@ -37,7 +44,7 @@ const useFileContents = (file?: File): null | string => {
     }
   }, [file]);
 
-  return contents;
+  return [contents, error];
 };
 
 const UploadPreview = styled.div`
@@ -78,10 +85,10 @@ const UploadForm = styled.form`
 `;
 
 const UploadSgfForm = () => {
-  const [file, setFile] = useState<File>(null);
-  const contents = useFileContents(file);
-  const [gameTree, error] = useSgf(contents);
   const [currentUser] = useCurrentUser();
+  const [file, setFile] = useState<File>(null);
+  const [contents, fileError] = useFileContents(file);
+  const [gameTree, sgfError] = useSgf(contents);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -120,7 +127,7 @@ const UploadSgfForm = () => {
               `}
               type="submit"
               icon="cloud_upload"
-              disabled={isUploading || !!error || !gameTree}
+              disabled={isUploading || !!fileError || !!sgfError || !gameTree}
             >
               {isUploading ? 'Uploading...' : 'Upload'}
             </Button>
@@ -140,11 +147,11 @@ const UploadSgfForm = () => {
               </UploadControlButtons>
             </GoGameContextProvider>
           )}
-          {error && (
+          {(!!fileError || !!sgfError) && (
             <UploadPreview>
               <SimpleContent>
-                <h2>Error Parsing SGF</h2>
-                <pre>{error.message}</pre>
+                <h2>Error {sgfError && 'Parsing SGF'}</h2>
+                <pre>{fileError || (sgfError && sgfError.message)}</pre>
               </SimpleContent>
             </UploadPreview>
           )}
