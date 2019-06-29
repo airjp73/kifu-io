@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import firebase from 'firebase';
 import 'styled-components/macro';
 import firebaseApp from 'api/firebase';
-import { landscapeMedia, portraitMedia } from 'style';
 import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
 import SimpleContent from 'components/SimpleContent';

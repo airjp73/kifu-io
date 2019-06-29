@@ -447,7 +447,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({
         boardState[currentPoint] === 'b' ? '#fff' : '#000'
       );
     }
-  }, [gameState, boardState, node, getNode, properties.boardSize]);
+  }, [gameState, boardState, node, getNode, properties.boardSize, stoneFactories, smallBoard]);
 
   useEffect(() => drawBoardState(), [
     drawBoardState,
