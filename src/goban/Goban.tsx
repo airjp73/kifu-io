@@ -227,7 +227,12 @@ class GobanCanvas {
 
     // Background color
     ctx.fillStyle = '#DDAE68';
-    ctx.fillRect(0, 0, this.boardLayer.width, this.boardLayer.height);
+    ctx.fillRect(
+      0,
+      0,
+      this.getCoord(this.size[0]),
+      this.getCoord(this.size[1])
+    );
 
     const start = this.getCoord(0);
     const xEnd = this.getCoord(this.size[0] - 1);
