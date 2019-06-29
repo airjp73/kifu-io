@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import firebase from 'firebase';
 import 'styled-components/macro';
 import firebaseApp from 'api/firebase';
@@ -48,9 +48,16 @@ const useFileContents = (file?: File): [null | string, null | string] => {
 };
 
 const UploadPreview = styled.div`
+  max-width: 100vw;
   grid-area: preview;
+
+  @media only screen and (orientation: landscape) and (max-width: 1100px) {
+    height: 20rem;
+  }
 `;
 const UploadFormFields = styled(SimpleContent)`
+  max-width: 100vw;
+  box-sizing: border-box;
   grid-area: fields;
 `;
 const UploadControlButtons = styled(GameControlButtons)`
@@ -63,9 +70,8 @@ const UploadCaptureCounts = styled(CaptureCounts)`
 const UploadForm = styled.form`
   height: 100%;
   display: grid;
-  width: 100%;
 
-  ${landscapeMedia} {
+  @media only screen and (orientation: landscape) and (min-width: 1100px) {
     grid-template-areas:
       'fields captures'
       'fields preview'
@@ -74,13 +80,17 @@ const UploadForm = styled.form`
     grid-template-rows: auto 1fr auto;
   }
 
-  ${portraitMedia} {
+  @media only screen and (orientation: portrait), (max-width: 1100px) {
     grid-template-areas:
       'fields'
       'captures'
       'preview'
       'buttons';
     grid-template-rows: auto auto 1fr auto;
+  }
+
+  @media only screen and (orientation: landscape) and (max-width: 1100px) {
+    height: auto;
   }
 `;
 
@@ -148,10 +158,20 @@ const UploadSgfForm = () => {
             </GoGameContextProvider>
           )}
           {(!!fileError || !!sgfError) && (
-            <UploadPreview>
+            <UploadPreview
+              css={css`
+                margin-top: 1rem;
+              `}
+            >
               <SimpleContent>
                 <h2>Error {sgfError && 'Parsing SGF'}</h2>
-                <pre>{fileError || (sgfError && sgfError.message)}</pre>
+                <pre
+                  css={css`
+                    white-space: normal;
+                  `}
+                >
+                  {fileError || (sgfError && sgfError.message)}
+                </pre>
               </SimpleContent>
             </UploadPreview>
           )}
