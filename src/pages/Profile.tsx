@@ -15,7 +15,6 @@ import { transformPlayedOn } from 'goban/GameProperties';
 import { highlightFaded, panelBackground, portraitMedia } from 'style';
 import Button from 'components/Button';
 import { LandscapeView, PortraitView } from 'components/MediaQueryView';
-import FlatButton from 'components/FlatButton';
 
 const firestore = firebaseApp.firestore();
 
@@ -152,7 +151,7 @@ const Profile: React.FunctionComponent = () => {
       {data.map(sgfFile => (
         <ProfileGameItem key={sgfFile.id} sgfFile={sgfFile} />
       ))}
-      {data.length == 0 && loading && <Spinner />}
+      {data.length === 0 && loading && <Spinner />}
       {data.length > 0 && hasMore && (
         <Button
           css={css`
