@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
+import { useRect } from '@reach/rect';
 import { useGoGameContext } from 'goban/GoGameContext';
 import {
   createBlackStone,
   createWhiteStone,
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
-import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
 
 interface GobanProps {
@@ -427,10 +427,12 @@ const Goban: React.FunctionComponent<GobanProps> = ({ className }) => {
     properties.boardSize,
   ]);
 
-  useWindowResizeCallback(() => {
+  // re-init and re-draw when board resizes
+  const containerRect = useRect(containerRef);
+  useEffect(() => {
     goban.current.init();
     drawBoardState();
-  });
+  }, [containerRect, drawBoardState]);
 
   return (
     <BoardContainer ref={containerRef} className={className}>
