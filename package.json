@@ -21,6 +21,8 @@
   "license": "UNLICENSED",
   "homepage": "https://www.kifu.io",
   "dependencies": {
+    "@reach/rect": "^0.2.1",
+    "@types/reach__rect": "^0.2.0",
     "firebase": "^5.11.1",
     "lodash": "^4.17.11",
     "normalize.css": "^8.0.1",

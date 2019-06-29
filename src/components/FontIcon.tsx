@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const sizeMap = {
-  MEDIUM: '2.5rem',
+  MEDIUM: '2rem',
   SMALL: '1.5rem',
   XSMALL: '1rem',
 };

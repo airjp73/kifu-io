@@ -1,3 +1,8 @@
+export type StoneSpriteFactory = (
+  raius: number,
+  canvas?: HTMLCanvasElement
+) => HTMLCanvasElement;
+
 const createStoneSprite = (
   radius: number,
   highlightColor: string,
@@ -38,11 +43,25 @@ const createStoneSprite = (
   return canvas;
 };
 
-export const createBlackStone = (radius: number, canvas?: HTMLCanvasElement) =>
-  createStoneSprite(radius, '#555', '#000', 0.85, canvas);
+export const createBlackStone: StoneSpriteFactory = (
+  radius: number,
+  canvas?: HTMLCanvasElement
+) => createStoneSprite(radius, '#555', '#000', 0.85, canvas);
 
-export const createWhiteStone = (radius: number, canvas?: HTMLCanvasElement) =>
-  createStoneSprite(radius, '#fff', '#bbb', 0.95, canvas);
+export const createWhiteStone: StoneSpriteFactory = (
+  radius: number,
+  canvas?: HTMLCanvasElement
+) => createStoneSprite(radius, '#fff', '#bbb', 0.95, canvas);
+
+export const createSimpleBlackStone: StoneSpriteFactory = (
+  radius: number,
+  canvas?: HTMLCanvasElement
+) => createStoneSprite(radius, '#000', '#000', 1, canvas);
+
+export const createSimpleWhiteStone: StoneSpriteFactory = (
+  radius: number,
+  canvas?: HTMLCanvasElement
+) => createStoneSprite(radius, '#fff', '#fff', 1, canvas);
 
 export const createSelectionHighlight = (radius: number, color: string) => {
   const padding = 2;

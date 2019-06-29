@@ -85,6 +85,7 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
             width: 15rem;
             margin-right: 1rem;
           `}
+          smallBoard
         />
         <div
           css={css`

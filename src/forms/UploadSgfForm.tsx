@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import firebase from 'firebase';
 import 'styled-components/macro';
 import firebaseApp from 'api/firebase';
-import { landscapeMedia, portraitMedia } from 'style';
 import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
 import SimpleContent from 'components/SimpleContent';
@@ -19,8 +18,9 @@ import { SgfFile, NewEntity } from 'api/apiDataTypes';
 
 const firestore = firebaseApp.firestore();
 
-const useFileContents = (file?: File): null | string => {
+const useFileContents = (file?: File): [null | string, null | string] => {
   const [contents, setContents] = useState<string>(null);
+  const [error, setError] = useState<string>(null);
   const fileReader = useRef<FileReader>(null);
 
   useEffect(() => {
@@ -29,7 +29,13 @@ const useFileContents = (file?: File): null | string => {
     if (!file) {
       fileReader.current = null;
       setContents(null);
+      setError(null);
+    } else if (file.size > 900000) {
+      fileReader.current = null;
+      setContents(null);
+      setError('Cannot upload file larger than 900kb');
     } else {
+      setError(null);
       fileReader.current = new FileReader();
       fileReader.current.onload = () =>
         setContents(fileReader.current.result as string);
@@ -37,13 +43,20 @@ const useFileContents = (file?: File): null | string => {
     }
   }, [file]);
 
-  return contents;
+  return [contents, error];
 };
 
 const UploadPreview = styled.div`
+  max-width: 100vw;
   grid-area: preview;
+
+  @media only screen and (orientation: landscape) and (max-width: 1100px) {
+    height: 20rem;
+  }
 `;
 const UploadFormFields = styled(SimpleContent)`
+  max-width: 100vw;
+  box-sizing: border-box;
   grid-area: fields;
 `;
 const UploadControlButtons = styled(GameControlButtons)`
@@ -56,9 +69,8 @@ const UploadCaptureCounts = styled(CaptureCounts)`
 const UploadForm = styled.form`
   height: 100%;
   display: grid;
-  width: 100%;
 
-  ${landscapeMedia} {
+  @media only screen and (orientation: landscape) and (min-width: 1100px) {
     grid-template-areas:
       'fields captures'
       'fields preview'
@@ -67,7 +79,7 @@ const UploadForm = styled.form`
     grid-template-rows: auto 1fr auto;
   }
 
-  ${portraitMedia} {
+  @media only screen and (orientation: portrait), (max-width: 1100px) {
     grid-template-areas:
       'fields'
       'captures'
@@ -75,13 +87,17 @@ const UploadForm = styled.form`
       'buttons';
     grid-template-rows: auto auto 1fr auto;
   }
+
+  @media only screen and (orientation: landscape) and (max-width: 1100px) {
+    height: auto;
+  }
 `;
 
 const UploadSgfForm = () => {
-  const [file, setFile] = useState<File>(null);
-  const contents = useFileContents(file);
-  const [gameTree, error] = useSgf(contents);
   const [currentUser] = useCurrentUser();
+  const [file, setFile] = useState<File>(null);
+  const [contents, fileError] = useFileContents(file);
+  const [gameTree, sgfError] = useSgf(contents);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -120,7 +136,7 @@ const UploadSgfForm = () => {
               `}
               type="submit"
               icon="cloud_upload"
-              disabled={isUploading || !!error || !gameTree}
+              disabled={isUploading || !!fileError || !!sgfError || !gameTree}
             >
               {isUploading ? 'Uploading...' : 'Upload'}
             </Button>
@@ -140,11 +156,21 @@ const UploadSgfForm = () => {
               </UploadControlButtons>
             </GoGameContextProvider>
           )}
-          {error && (
-            <UploadPreview>
+          {(!!fileError || !!sgfError) && (
+            <UploadPreview
+              css={css`
+                margin-top: 1rem;
+              `}
+            >
               <SimpleContent>
-                <h2>Error Parsing SGF</h2>
-                <pre>{error.message}</pre>
+                <h2>Error {sgfError && 'Parsing SGF'}</h2>
+                <pre
+                  css={css`
+                    white-space: normal;
+                  `}
+                >
+                  {fileError || (sgfError && sgfError.message)}
+                </pre>
               </SimpleContent>
             </UploadPreview>
           )}
