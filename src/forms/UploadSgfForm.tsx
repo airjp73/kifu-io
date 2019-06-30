@@ -15,6 +15,7 @@ import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 import useCurrentUser from 'hooks/useCurrentUser';
 import WithRouter from 'components/WithRouter';
 import { SgfFile, NewEntity } from 'api/apiDataTypes';
+import GameAnnouncements from 'goban/GameAnnouncements';
 
 const firestore = firebaseApp.firestore();
 
@@ -149,7 +150,9 @@ const UploadSgfForm = () => {
                   css={`
                     height: 100%;
                   `}
-                />
+                >
+                  <GameAnnouncements />
+                </Goban>
               </UploadPreview>
               <UploadControlButtons>
                 <AutoAdvanceControl playByDefault />
