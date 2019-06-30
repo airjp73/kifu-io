@@ -1,7 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'goban/GoGameContext';
-import FontIcon from '../components/FontIcon';
+import { ReactComponent as BeginningIcon } from 'svg/skip-back.svg';
+import { ReactComponent as RewindIcon } from 'svg/rewind.svg';
+import { ReactComponent as BackIcon } from 'svg/chevron-left.svg';
+import { ReactComponent as ForwardIcon } from 'svg/chevron-right.svg';
+import { ReactComponent as FastForwardIcon } from 'svg/fast-forward.svg';
+import { ReactComponent as EndIcon } from 'svg/skip-forward.svg';
 import FlatButton from '../components/FlatButton';
 import { dark } from 'style';
 
@@ -25,23 +30,23 @@ const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
   return (
     <GameControlButtonBar className={className}>
       <FlatButton onClick={() => back(-1)}>
-        <FontIcon icon="skip_previous" />
+        <BeginningIcon />
       </FlatButton>
       <FlatButton onClick={() => back(10)}>
-        <FontIcon icon="fast_rewind" />
+        <RewindIcon />
       </FlatButton>
       <FlatButton onClick={() => back(1)}>
-        <FontIcon icon="navigate_before" />
+        <BackIcon />
       </FlatButton>
       {children}
       <FlatButton onClick={() => forward(1)}>
-        <FontIcon icon="navigate_next" />
+        <ForwardIcon />
       </FlatButton>
       <FlatButton onClick={() => forward(10)}>
-        <FontIcon icon="fast_forward" />
+        <FastForwardIcon />
       </FlatButton>
       <FlatButton onClick={() => forward(-1)}>
-        <FontIcon icon="skip_next" />
+        <EndIcon />
       </FlatButton>
     </GameControlButtonBar>
   );

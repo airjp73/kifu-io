@@ -8,10 +8,14 @@ import MediaQueryView, {
   LandscapeView,
   PortraitView,
 } from 'components/MediaQueryView';
-import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
 import GameTreeView from 'goban/GameTreeView';
 import GameProperties from 'goban/GameProperties';
+import { ReactComponent as CommentIcon } from 'svg/message-square.svg';
+import { ReactComponent as InfoIcon } from 'svg/info.svg';
+import { ReactComponent as TreeIcon } from 'svg/git-branch.svg';
+import { ReactComponent as ExpandUpIcon } from 'svg/chevron-up.svg';
+import { ReactComponent as CollapseDownIcon } from 'svg/chevron-down.svg';
 import GameComments from './GameComments';
 import ButtonTab from '../components/Tabs/ButtonTab';
 import Tabs from '../components/Tabs/Tabs';
@@ -88,39 +92,44 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
             <LandscapeView>
               <ButtonTab
                 tabName="comments"
-                leftIcon="comment"
+                leftIcon={<CommentIcon />}
                 label="Comments"
                 primary={!!gameState.moveState.comment}
               />
               <MediaQueryView maxHeight={600}>
                 <ButtonTab
                   tabName="game-tree"
-                  leftIcon="linear_scale"
+                  leftIcon={<TreeIcon />}
                   label="Tree"
                   primary={gameTreeIsHighlighted}
                 />
               </MediaQueryView>
-              <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
+              <ButtonTab
+                tabName="more-info"
+                leftIcon={<InfoIcon />}
+                label="Info"
+              />
             </LandscapeView>
             <PortraitView>
               <ButtonTab
                 tabName="comments"
-                leftIcon="comment"
+                leftIcon={<CommentIcon />}
                 label="Comments"
                 primary={!!gameState.moveState.comment}
               />
               <ButtonTab
                 tabName="game-tree"
-                leftIcon="linear_scale"
+                leftIcon={<TreeIcon />}
                 label="Tree"
                 primary={gameTreeIsHighlighted}
               />
-              <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
+              <ButtonTab
+                tabName="more-info"
+                leftIcon={<InfoIcon />}
+                label="Info"
+              />
               <ExpandButton onClick={() => setExpanded(prev => !prev)}>
-                <FontIcon
-                  icon={expanded ? 'expand_more' : 'expand_less'}
-                  size="SMALL"
-                />
+                {expanded ? <CollapseDownIcon /> : <ExpandUpIcon />}
               </ExpandButton>
             </PortraitView>
           </TabBar>

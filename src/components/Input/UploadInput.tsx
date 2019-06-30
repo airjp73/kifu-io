@@ -1,5 +1,6 @@
 import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
+import { ReactComponent as FileIcon } from 'svg/file.svg';
 import MaterialInput from './MaterialInput';
 import { LabelText } from './stylePieces';
 
@@ -36,7 +37,7 @@ const UploadInput: React.FunctionComponent<
       className={className}
       error={error}
       hint={hint}
-      icon="insert_drive_file"
+      icon={<FileIcon />}
       isOpen={!!currentFilename}
       label={label}
     >

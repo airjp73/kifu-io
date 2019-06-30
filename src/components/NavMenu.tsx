@@ -3,7 +3,9 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import 'styled-components/macro';
 import ConstructionBanner from 'components/ConstructionBanner';
-import FontIcon from 'components/FontIcon';
+import { ReactComponent as LoginIcon } from 'svg/log-in.svg';
+import { ReactComponent as LogoutIcon } from 'svg/log-out.svg';
+import { ReactComponent as UploadIcon } from 'svg/upload-cloud.svg';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight } from 'style';
@@ -12,7 +14,7 @@ import LogoutButton from './LogoutButton';
 interface NavItemProps {
   label: string;
   to: string;
-  icon: string;
+  icon: React.ReactElement;
 }
 
 const Link = styled(NavLink)`
@@ -41,6 +43,10 @@ const NavList = styled.ul`
 
 const NavListItem = styled.li`
   font-size: 1rem;
+
+  svg {
+    padding: 0 0.25rem;
+  }
 `;
 
 const NavItemLabel = styled.span`
@@ -70,14 +76,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
 }) => (
   <NavListItem>
     <Link to={to} activeClassName="active">
-      <FontIcon
-        css={`
-          width: 2rem;
-          text-align: center;
-        `}
-        icon={icon}
-        size="SMALL"
-      />
+      {icon}
       <NavItemLabel>{label}</NavItemLabel>
     </Link>
   </NavListItem>
@@ -102,14 +101,14 @@ const NavMenu: React.FunctionComponent = () => {
       )}
       <NavList>
         {!currentUser && isLoaded && (
-          <NavItem icon="account_circle" label="Log In" to="/login" />
+          <NavItem icon={<LoginIcon />} label="Log In" to="/login" />
         )}
-        <NavItem icon="cloud_upload" label="Upload SGF" to="/upload" />
+        <NavItem icon={<UploadIcon />} label="Upload SGF" to="/upload" />
       </NavList>
 
       {currentUser && (
         <LogoutButton
-          leftIcon="exit_to_app"
+          leftIcon={<LogoutIcon />}
           css={css`
             margin-top: auto;
           `}

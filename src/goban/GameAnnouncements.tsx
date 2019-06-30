@@ -32,7 +32,7 @@ const GameAnnouncements: React.FunctionComponent = () => {
     }
 
     return () => setMessage(null);
-  }, [node, properties.boardSize]);
+  }, [node, properties.boardSize, getNode]);
 
   return (
     message && (

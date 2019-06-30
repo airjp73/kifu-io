@@ -10,6 +10,7 @@ import Goban from 'goban/Goban';
 import GameControlButtons from 'goban/GameControlButtons';
 import CaptureCounts from 'goban/CaptureCounts';
 import Button from 'components/Button';
+import { ReactComponent as UploadIcon } from 'svg/upload-cloud.svg';
 import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -136,7 +137,7 @@ const UploadSgfForm = () => {
                 margin-left: auto;
               `}
               type="submit"
-              icon="cloud_upload"
+              icon={<UploadIcon />}
               disabled={isUploading || !!fileError || !!sgfError || !gameTree}
             >
               {isUploading ? 'Uploading...' : 'Upload'}

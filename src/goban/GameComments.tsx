@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import FlatButton from 'components/FlatButton';
-import FontIcon from 'components/FontIcon';
+import { ReactComponent as ArrowRight } from 'svg/arrow-right.svg';
 import { useGoGameContext } from 'goban/GoGameContext';
 import { PositionStatus, MoveQuality } from 'goban/gameStateReducer';
 
@@ -111,9 +111,9 @@ const GameComments = () => {
           style={{ marginLeft: 'auto' }}
           primary
           onClick={() => goToNode(nextCommentMove)}
+          rightIcon={<ArrowRight />}
         >
-          <span style={{ marginRight: '.5rem' }}>Go to next comment</span>
-          <FontIcon size="SMALL" icon="arrow_forward" />
+          Go to next comment
         </FlatButton>
       )}
     </GameCommentContainer>

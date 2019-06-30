@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import FontIcon from 'components/FontIcon';
 import {
   primaryHighlight,
   panelHighlight,
@@ -10,9 +9,9 @@ import {
 } from 'style';
 
 interface FlatButtonProps {
-  leftIcon?: string;
+  leftIcon?: React.ReactElement;
   primary?: boolean;
-  rightIcon?: string;
+  rightIcon?: React.ReactElement;
 }
 
 interface FlatButtonStyleProps extends React.HTMLProps<HTMLButtonElement> {
@@ -45,27 +44,19 @@ const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
     background-color: ${props =>
       props.primary ? primaryActive : panelActiveButton};
   }
+
+  > * + * {
+    margin-left: 0.5rem;
+  }
 `;
 
 const FlatButton: React.FunctionComponent<
   FlatButtonProps & React.ComponentProps<typeof FlatButtonStyles>
 > = ({ children, leftIcon, primary, rightIcon, ...rest }) => (
   <FlatButtonStyles primary={primary} type="button" {...rest}>
-    {leftIcon && (
-      <FontIcon
-        style={{ marginRight: '.5rem' }}
-        size="XSMALL"
-        icon={leftIcon}
-      />
-    )}
-    {children}
-    {rightIcon && (
-      <FontIcon
-        style={{ marginLeft: '.5rem' }}
-        size="XSMALL"
-        icon={rightIcon}
-      />
-    )}
+    {leftIcon}
+    <span>{children}</span>
+    {rightIcon}
   </FlatButtonStyles>
 );
 

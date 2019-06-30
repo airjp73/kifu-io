@@ -94,7 +94,7 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
             flex-direction: column;
             width: 100%;
 
-            span {
+            > span {
               margin: 0.5rem 0;
             }
           `}
