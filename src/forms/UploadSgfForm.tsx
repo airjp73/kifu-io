@@ -152,7 +152,7 @@ const UploadSgfForm = () => {
                 />
               </UploadPreview>
               <UploadControlButtons>
-                <AutoAdvanceControl />
+                <AutoAdvanceControl playByDefault />
               </UploadControlButtons>
             </GoGameContextProvider>
           )}

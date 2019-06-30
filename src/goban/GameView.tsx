@@ -7,6 +7,7 @@ import GameInfo from 'goban/GameInfo';
 import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
 import { landscapeMedia, portraitMedia } from 'style';
+import AutoAdvanceControl from './AutoAdvanceControl';
 
 interface GameViewProps {
   sgf: string;
@@ -69,7 +70,9 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         <GameViewCaptures />
         <GameViewGoban />
         <GameViewInfo />
-        <GameViewControlButtons />
+        <GameViewControlButtons>
+          <AutoAdvanceControl />
+        </GameViewControlButtons>
       </GoGameContextProvider>
     </GameViewContainer>
   );

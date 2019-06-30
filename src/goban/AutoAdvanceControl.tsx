@@ -3,8 +3,14 @@ import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
 import { useGoGameContext } from 'goban/GoGameContext';
 
-const AutoAdvanceControl = () => {
-  const [autoAdvance, setAutoAdvance] = useState(true);
+interface AutoAdvanceControlProps {
+  playByDefault?: boolean;
+}
+
+const AutoAdvanceControl: React.FunctionComponent<AutoAdvanceControlProps> = ({
+  playByDefault = false,
+}) => {
+  const [autoAdvance, setAutoAdvance] = useState(playByDefault);
   const { forward } = useGoGameContext();
 
   useEffect(() => {
