@@ -22,7 +22,7 @@ const AutoAdvanceControl: React.FunctionComponent<AutoAdvanceControlProps> = ({
 
   return (
     <FlatButton onClick={() => setAutoAdvance(prev => !prev)}>
-      {autoAdvance ? <PauseIcon /> : <PlayIcon />}
+      {autoAdvance ? <PauseIcon /> : <PlayIcon fill="currentColor" />}
     </FlatButton>
   );
 };

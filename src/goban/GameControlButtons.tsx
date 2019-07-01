@@ -30,10 +30,10 @@ const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
   return (
     <GameControlButtonBar className={className}>
       <FlatButton onClick={() => back(-1)}>
-        <BeginningIcon />
+        <BeginningIcon fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => back(10)}>
-        <RewindIcon />
+        <RewindIcon fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => back(1)}>
         <BackIcon />
@@ -43,10 +43,10 @@ const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
         <ForwardIcon />
       </FlatButton>
       <FlatButton onClick={() => forward(10)}>
-        <FastForwardIcon />
+        <FastForwardIcon fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => forward(-1)}>
-        <EndIcon />
+        <EndIcon fill="currentColor" />
       </FlatButton>
     </GameControlButtonBar>
   );

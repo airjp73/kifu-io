@@ -92,44 +92,48 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
             <LandscapeView>
               <ButtonTab
                 tabName="comments"
-                leftIcon={<CommentIcon />}
+                leftIcon={<CommentIcon height="1rem" width="1rem" />}
                 label="Comments"
                 primary={!!gameState.moveState.comment}
               />
               <MediaQueryView maxHeight={600}>
                 <ButtonTab
                   tabName="game-tree"
-                  leftIcon={<TreeIcon />}
+                  leftIcon={<TreeIcon height="1rem" width="1rem" />}
                   label="Tree"
                   primary={gameTreeIsHighlighted}
                 />
               </MediaQueryView>
               <ButtonTab
                 tabName="more-info"
-                leftIcon={<InfoIcon />}
+                leftIcon={<InfoIcon height="1rem" width="1rem" />}
                 label="Info"
               />
             </LandscapeView>
             <PortraitView>
               <ButtonTab
                 tabName="comments"
-                leftIcon={<CommentIcon />}
+                leftIcon={<CommentIcon height="1rem" width="1rem" />}
                 label="Comments"
                 primary={!!gameState.moveState.comment}
               />
               <ButtonTab
                 tabName="game-tree"
-                leftIcon={<TreeIcon />}
+                leftIcon={<TreeIcon height="1rem" width="1rem" />}
                 label="Tree"
                 primary={gameTreeIsHighlighted}
               />
               <ButtonTab
                 tabName="more-info"
-                leftIcon={<InfoIcon />}
+                leftIcon={<InfoIcon height="1rem" width="1rem" />}
                 label="Info"
               />
               <ExpandButton onClick={() => setExpanded(prev => !prev)}>
-                {expanded ? <CollapseDownIcon /> : <ExpandUpIcon />}
+                {expanded ? (
+                  <CollapseDownIcon display="flex" height="1rem" width="1rem" />
+                ) : (
+                  <ExpandUpIcon display="flex" height="1rem" width="1rem" />
+                )}
               </ExpandButton>
             </PortraitView>
           </TabBar>
