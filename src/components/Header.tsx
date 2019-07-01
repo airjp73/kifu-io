@@ -46,7 +46,7 @@ const Header: React.FunctionComponent<HeaderProps> = ({
   onMenuClick,
 }) => (
   <HeaderContainer className={className}>
-    <FlatButton onClick={onMenuClick}>
+    <FlatButton data-testid="slide-out-menu-button" onClick={onMenuClick}>
       <MenuIcon style={{ height: '2rem', width: '2rem' }} />
     </FlatButton>
     <SiteTitle>Kifu.io</SiteTitle>

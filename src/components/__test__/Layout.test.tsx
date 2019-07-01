@@ -19,7 +19,7 @@ test('should open slide-out panel on menu click and close on overlay click', asy
     rendered.queryByTestId('slide-out-panel-overlay')
   ).not.toBeInTheDocument();
 
-  fireEvent.click(rendered.getByText('menu'));
+  fireEvent.click(rendered.getByTestId('slide-out-menu-button'));
   expect(rendered.getByTestId('slide-out-panel')).toBeInTheDocument();
 
   fireEvent.click(rendered.getByTestId('slide-out-panel-overlay'));
