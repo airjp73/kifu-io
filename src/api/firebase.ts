@@ -2,6 +2,8 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
+// DEVELOPMENT ONLY
+// TODO: Use env variables to configure separate production environment
 const config = {
   apiKey: 'AIzaSyAFRHkIeSpcffE8sH3EoX-4oEkZP5c7U1o',
   authDomain: 'go-reviews.firebaseapp.com',
