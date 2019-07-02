@@ -1,12 +1,12 @@
 import React from 'react';
-import { InputContainer, InputIcon, HintText, LabelText } from './stylePieces';
+import { InputContainer, HintText, LabelText } from './stylePieces';
 
 export interface MaterialInputProps {
   children?: any;
   className?: string;
   error?: string;
   hint?: string;
-  icon?: string;
+  icon?: React.ReactElement;
   isOpen?: boolean;
   label?: string;
   isFocused?: boolean;
@@ -29,7 +29,7 @@ const MaterialInput: React.SFC<MaterialInputProps> = ({
       <LabelText isOpen={isOpen}>{label}</LabelText>
       {hintValue && <HintText>{hintValue}</HintText>}
       {children}
-      {icon && <InputIcon icon={icon} size="SMALL" />}
+      {icon}
     </InputContainer>
   );
 };

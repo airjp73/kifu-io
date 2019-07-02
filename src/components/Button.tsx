@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { boxShadowDepressed, boxShadowLow, primaryAction } from 'style';
-import FontIcon from './FontIcon';
 
 export interface ButtonProps {
-  icon?: string;
+  icon?: React.ReactElement;
 }
 
 const ButtonContainer = styled.button`
@@ -35,20 +34,18 @@ const ButtonContainer = styled.button`
   :active:not(:disabled) {
     box-shadow: ${boxShadowLow} inset;
   }
-`;
 
-const ButtonIcon = styled(FontIcon)`
-  display: inline-block;
-  margin-right: 0.5rem;
-  font-size: 1.25rem;
+  > * + * {
+    margin-left: 0.5rem;
+  }
 `;
 
 const Button: React.FunctionComponent<
   ButtonProps & React.ComponentProps<typeof ButtonContainer>
 > = ({ children, icon, ...rest }) => (
   <ButtonContainer {...rest}>
-    {icon && <ButtonIcon icon={icon} />}
-    {children}
+    {icon}
+    <span>{children}</span>
   </ButtonContainer>
 );
 

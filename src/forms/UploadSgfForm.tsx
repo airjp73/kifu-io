@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import firebase from 'firebase';
 import 'styled-components/macro';
+import { UploadCloud } from 'react-feather';
 import firebaseApp from 'api/firebase';
 import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
@@ -15,6 +16,7 @@ import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 import useCurrentUser from 'hooks/useCurrentUser';
 import WithRouter from 'components/WithRouter';
 import { SgfFile, NewEntity } from 'api/apiDataTypes';
+import GameAnnouncements from 'goban/GameAnnouncements';
 
 const firestore = firebaseApp.firestore();
 
@@ -135,7 +137,7 @@ const UploadSgfForm = () => {
                 margin-left: auto;
               `}
               type="submit"
-              icon="cloud_upload"
+              icon={<UploadCloud />}
               disabled={isUploading || !!fileError || !!sgfError || !gameTree}
             >
               {isUploading ? 'Uploading...' : 'Upload'}
@@ -149,10 +151,12 @@ const UploadSgfForm = () => {
                   css={`
                     height: 100%;
                   `}
-                />
+                >
+                  <GameAnnouncements />
+                </Goban>
               </UploadPreview>
               <UploadControlButtons>
-                <AutoAdvanceControl />
+                <AutoAdvanceControl playByDefault />
               </UploadControlButtons>
             </GoGameContextProvider>
           )}

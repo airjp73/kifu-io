@@ -1,7 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'goban/GoGameContext';
-import FontIcon from '../components/FontIcon';
+import {
+  SkipBack,
+  Rewind,
+  ChevronLeft,
+  ChevronRight,
+  FastForward,
+  SkipForward,
+} from 'react-feather';
 import FlatButton from '../components/FlatButton';
 import { dark } from 'style';
 
@@ -25,23 +32,23 @@ const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
   return (
     <GameControlButtonBar className={className}>
       <FlatButton onClick={() => back(-1)}>
-        <FontIcon icon="skip_previous" />
+        <SkipBack fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => back(10)}>
-        <FontIcon icon="fast_rewind" />
+        <Rewind fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => back(1)}>
-        <FontIcon icon="navigate_before" />
+        <ChevronLeft />
       </FlatButton>
       {children}
       <FlatButton onClick={() => forward(1)}>
-        <FontIcon icon="navigate_next" />
+        <ChevronRight />
       </FlatButton>
       <FlatButton onClick={() => forward(10)}>
-        <FontIcon icon="fast_forward" />
+        <FastForward fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => forward(-1)}>
-        <FontIcon icon="skip_next" />
+        <SkipForward fill="currentColor" />
       </FlatButton>
     </GameControlButtonBar>
   );

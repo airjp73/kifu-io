@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { headerHeight, highlight, panelBackground } from 'style';
-import FontIcon from './FontIcon';
+import { Menu } from 'react-feather';
 import FlatButton from './FlatButton';
 
 interface HeaderProps {
@@ -46,8 +46,8 @@ const Header: React.FunctionComponent<HeaderProps> = ({
   onMenuClick,
 }) => (
   <HeaderContainer className={className}>
-    <FlatButton onClick={onMenuClick}>
-      <FontIcon icon="menu" />
+    <FlatButton data-testid="slide-out-menu-button" onClick={onMenuClick}>
+      <Menu height="2rem" width="2rem" />
     </FlatButton>
     <SiteTitle>Kifu.io</SiteTitle>
     <ChildContainer>{children}</ChildContainer>

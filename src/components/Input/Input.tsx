@@ -7,7 +7,7 @@ interface InputProps {
   className?: string;
   error?: string;
   hint?: string;
-  icon?: string;
+  icon?: React.ReactElement;
   label?: string;
   value?: string;
 }

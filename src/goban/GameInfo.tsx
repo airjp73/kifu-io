@@ -8,10 +8,16 @@ import MediaQueryView, {
   LandscapeView,
   PortraitView,
 } from 'components/MediaQueryView';
-import FontIcon from 'components/FontIcon';
 import FlatButton from 'components/FlatButton';
 import GameTreeView from 'goban/GameTreeView';
 import GameProperties from 'goban/GameProperties';
+import {
+  MessageSquare,
+  Info,
+  GitBranch,
+  ChevronUp,
+  ChevronDown,
+} from 'react-feather';
 import GameComments from './GameComments';
 import ButtonTab from '../components/Tabs/ButtonTab';
 import Tabs from '../components/Tabs/Tabs';
@@ -88,39 +94,48 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
             <LandscapeView>
               <ButtonTab
                 tabName="comments"
-                leftIcon="comment"
+                leftIcon={<MessageSquare height="1rem" width="1rem" />}
                 label="Comments"
                 primary={!!gameState.moveState.comment}
               />
               <MediaQueryView maxHeight={600}>
                 <ButtonTab
                   tabName="game-tree"
-                  leftIcon="linear_scale"
+                  leftIcon={<GitBranch height="1rem" width="1rem" />}
                   label="Tree"
                   primary={gameTreeIsHighlighted}
                 />
               </MediaQueryView>
-              <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
+              <ButtonTab
+                tabName="more-info"
+                leftIcon={<Info height="1rem" width="1rem" />}
+                label="Info"
+              />
             </LandscapeView>
             <PortraitView>
               <ButtonTab
                 tabName="comments"
-                leftIcon="comment"
+                leftIcon={<MessageSquare height="1rem" width="1rem" />}
                 label="Comments"
                 primary={!!gameState.moveState.comment}
               />
               <ButtonTab
                 tabName="game-tree"
-                leftIcon="linear_scale"
+                leftIcon={<GitBranch height="1rem" width="1rem" />}
                 label="Tree"
                 primary={gameTreeIsHighlighted}
               />
-              <ButtonTab tabName="more-info" leftIcon="info" label="Info" />
+              <ButtonTab
+                tabName="more-info"
+                leftIcon={<Info height="1rem" width="1rem" />}
+                label="Info"
+              />
               <ExpandButton onClick={() => setExpanded(prev => !prev)}>
-                <FontIcon
-                  icon={expanded ? 'expand_more' : 'expand_less'}
-                  size="SMALL"
-                />
+                {expanded ? (
+                  <ChevronDown height="1rem" width="1rem" />
+                ) : (
+                  <ChevronUp height="1rem" width="1rem" />
+                )}
               </ExpandButton>
             </PortraitView>
           </TabBar>

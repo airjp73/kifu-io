@@ -343,6 +343,7 @@ const Board = styled.canvas`
 `;
 
 const Goban: React.FunctionComponent<GobanProps> = ({
+  children,
   className,
   smallBoard = false,
 }) => {
@@ -447,7 +448,15 @@ const Goban: React.FunctionComponent<GobanProps> = ({
         boardState[currentPoint] === 'b' ? '#fff' : '#000'
       );
     }
-  }, [gameState, boardState, node, getNode, properties.boardSize, stoneFactories, smallBoard]);
+  }, [
+    gameState,
+    boardState,
+    node,
+    getNode,
+    properties.boardSize,
+    stoneFactories,
+    smallBoard,
+  ]);
 
   useEffect(() => drawBoardState(), [
     drawBoardState,
@@ -469,6 +478,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({
       <Board ref={boardLayerRef} />
       <Board ref={stoneLayerRef} />
       <Board ref={markupLayerRef} />
+      {children}
     </BoardContainer>
   );
 };

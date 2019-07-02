@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import FontIcon from 'components/FontIcon';
+import { Play, Pause } from 'react-feather';
 import FlatButton from 'components/FlatButton';
 import { useGoGameContext } from 'goban/GoGameContext';
 
-const AutoAdvanceControl = () => {
-  const [autoAdvance, setAutoAdvance] = useState(true);
+interface AutoAdvanceControlProps {
+  playByDefault?: boolean;
+}
+
+const AutoAdvanceControl: React.FunctionComponent<AutoAdvanceControlProps> = ({
+  playByDefault = false,
+}) => {
+  const [autoAdvance, setAutoAdvance] = useState(playByDefault);
   const { forward } = useGoGameContext();
 
   useEffect(() => {
@@ -15,7 +21,11 @@ const AutoAdvanceControl = () => {
 
   return (
     <FlatButton onClick={() => setAutoAdvance(prev => !prev)}>
-      <FontIcon icon={autoAdvance ? 'pause' : 'play_arrow'} />
+      {autoAdvance ? (
+        <Pause fill="currentColor" />
+      ) : (
+        <Play fill="currentColor" />
+      )}
     </FlatButton>
   );
 };

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import FontIcon from 'components/FontIcon';
 import { fadedGrey, error, primaryAction } from 'style';
 
 interface LabelTextProps {
@@ -38,11 +37,6 @@ export const HintText = styled.span`
   bottom: -1.125rem;
   font-size: 0.75rem;
   left: 0.75rem;
-`;
-
-export const InputIcon = styled(FontIcon)`
-  color: ${fadedGrey};
-  line-height: 1rem;
 `;
 
 export const InputContainer = styled.label<InputContainerProps>`
