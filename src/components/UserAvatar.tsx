@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { User } from 'react-feather';
 import { highlightFaded, panelBackground } from 'style';
-import { ReactComponent as PersonIcon } from 'svg/user.svg';
 
 interface UserAvatarProps {
   photoURL: string;
@@ -31,10 +31,10 @@ const UserAvatar: React.FunctionComponent<UserAvatarProps> = ({ photoURL }) => (
   <AvatarCircle>
     {photoURL ? (
       <object type="image/png" data={photoURL}>
-        <PersonIcon />
+        <User />
       </object>
     ) : (
-      <PersonIcon />
+      <User />
     )}
   </AvatarCircle>
 );

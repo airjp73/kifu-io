@@ -1,6 +1,6 @@
 import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as FileIcon } from 'svg/file.svg';
+import { File } from 'react-feather';
 import MaterialInput from './MaterialInput';
 import { LabelText } from './stylePieces';
 
@@ -37,7 +37,7 @@ const UploadInput: React.FunctionComponent<
       className={className}
       error={error}
       hint={hint}
-      icon={<FileIcon />}
+      icon={<File />}
       isOpen={!!currentFilename}
       label={label}
     >

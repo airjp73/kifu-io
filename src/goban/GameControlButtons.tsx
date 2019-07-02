@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useGoGameContext } from 'goban/GoGameContext';
-import { ReactComponent as BeginningIcon } from 'svg/skip-back.svg';
-import { ReactComponent as RewindIcon } from 'svg/rewind.svg';
-import { ReactComponent as BackIcon } from 'svg/chevron-left.svg';
-import { ReactComponent as ForwardIcon } from 'svg/chevron-right.svg';
-import { ReactComponent as FastForwardIcon } from 'svg/fast-forward.svg';
-import { ReactComponent as EndIcon } from 'svg/skip-forward.svg';
+import {
+  SkipBack,
+  Rewind,
+  ChevronLeft,
+  ChevronRight,
+  FastForward,
+  SkipForward,
+} from 'react-feather';
 import FlatButton from '../components/FlatButton';
 import { dark } from 'style';
 
@@ -30,23 +32,23 @@ const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
   return (
     <GameControlButtonBar className={className}>
       <FlatButton onClick={() => back(-1)}>
-        <BeginningIcon fill="currentColor" />
+        <SkipBack fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => back(10)}>
-        <RewindIcon fill="currentColor" />
+        <Rewind fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => back(1)}>
-        <BackIcon />
+        <ChevronLeft />
       </FlatButton>
       {children}
       <FlatButton onClick={() => forward(1)}>
-        <ForwardIcon />
+        <ChevronRight />
       </FlatButton>
       <FlatButton onClick={() => forward(10)}>
-        <FastForwardIcon fill="currentColor" />
+        <FastForward fill="currentColor" />
       </FlatButton>
       <FlatButton onClick={() => forward(-1)}>
-        <EndIcon fill="currentColor" />
+        <SkipForward fill="currentColor" />
       </FlatButton>
     </GameControlButtonBar>
   );

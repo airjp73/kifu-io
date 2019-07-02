@@ -3,9 +3,7 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import 'styled-components/macro';
 import ConstructionBanner from 'components/ConstructionBanner';
-import { ReactComponent as LoginIcon } from 'svg/log-in.svg';
-import { ReactComponent as LogoutIcon } from 'svg/log-out.svg';
-import { ReactComponent as UploadIcon } from 'svg/upload-cloud.svg';
+import { LogIn, LogOut, UploadCloud } from 'react-feather';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight } from 'style';
@@ -101,14 +99,14 @@ const NavMenu: React.FunctionComponent = () => {
       )}
       <NavList>
         {!currentUser && isLoaded && (
-          <NavItem icon={<LoginIcon />} label="Log In" to="/login" />
+          <NavItem icon={<LogIn />} label="Log In" to="/login" />
         )}
-        <NavItem icon={<UploadIcon />} label="Upload SGF" to="/upload" />
+        <NavItem icon={<UploadCloud />} label="Upload SGF" to="/upload" />
       </NavList>
 
       {currentUser && (
         <LogoutButton
-          leftIcon={<LogoutIcon />}
+          leftIcon={<LogOut />}
           css={css`
             margin-top: auto;
           `}

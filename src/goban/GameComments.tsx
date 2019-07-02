@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import FlatButton from 'components/FlatButton';
-import { ReactComponent as ArrowRight } from 'svg/arrow-right.svg';
+import { ArrowRight } from 'react-feather';
 import { useGoGameContext } from 'goban/GoGameContext';
 import { PositionStatus, MoveQuality } from 'goban/gameStateReducer';
 

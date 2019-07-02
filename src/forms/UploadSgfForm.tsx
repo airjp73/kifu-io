@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import firebase from 'firebase';
 import 'styled-components/macro';
+import { UploadCloud } from 'react-feather';
 import firebaseApp from 'api/firebase';
 import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
@@ -10,7 +11,6 @@ import Goban from 'goban/Goban';
 import GameControlButtons from 'goban/GameControlButtons';
 import CaptureCounts from 'goban/CaptureCounts';
 import Button from 'components/Button';
-import { ReactComponent as UploadIcon } from 'svg/upload-cloud.svg';
 import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -137,7 +137,7 @@ const UploadSgfForm = () => {
                 margin-left: auto;
               `}
               type="submit"
-              icon={<UploadIcon />}
+              icon={<UploadCloud />}
               disabled={isUploading || !!fileError || !!sgfError || !gameTree}
             >
               {isUploading ? 'Uploading...' : 'Upload'}

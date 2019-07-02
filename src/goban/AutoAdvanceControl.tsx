@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ReactComponent as PlayIcon } from 'svg/play.svg';
-import { ReactComponent as PauseIcon } from 'svg/pause.svg';
+import { Play, Pause } from 'react-feather';
 import FlatButton from 'components/FlatButton';
 import { useGoGameContext } from 'goban/GoGameContext';
 
@@ -22,7 +21,11 @@ const AutoAdvanceControl: React.FunctionComponent<AutoAdvanceControlProps> = ({
 
   return (
     <FlatButton onClick={() => setAutoAdvance(prev => !prev)}>
-      {autoAdvance ? <PauseIcon /> : <PlayIcon fill="currentColor" />}
+      {autoAdvance ? (
+        <Pause fill="currentColor" />
+      ) : (
+        <Play fill="currentColor" />
+      )}
     </FlatButton>
   );
 };

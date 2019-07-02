@@ -32,6 +32,10 @@ const GlobalStyles = createGlobalStyle`
     color: ${highlightFaded};
     text-align: center;
   }
+
+  svg {
+    display:flex;
+  }
 `;
 
 const App = () => (
