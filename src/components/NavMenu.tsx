@@ -8,6 +8,7 @@ import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight } from 'style';
 import LogoutButton from './LogoutButton';
+import GoIcon from './GoIcon';
 
 interface NavItemProps {
   label: string;
@@ -102,6 +103,11 @@ const NavMenu: React.FunctionComponent = () => {
           <NavItem icon={<LogIn />} label="Log In" to="/login" />
         )}
         <NavItem icon={<UploadCloud />} label="Upload SGF" to="/upload" />
+        <NavItem
+          icon={<GoIcon height="25px" width="25px" />}
+          label="Start Playing"
+          to="/start-playing"
+        />
       </NavList>
 
       {currentUser && (
