@@ -11,6 +11,7 @@ import Layout from 'components/Layout';
 import 'normalize.css';
 import AppContext from './AppContext';
 import Home from 'pages/Home';
+import GoProducts from 'pages/GoProducts';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -46,6 +47,7 @@ const App = () => (
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/view/:gameId" component={View} />
+        <Route path="/start-playing" component={GoProducts} />
         <AuthRoute path="/profile" component={Profile} />
         <AuthRoute path="/upload" component={Upload} />
       </Layout>

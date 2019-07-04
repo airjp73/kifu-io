@@ -2,12 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import 'styled-components/macro';
-import ConstructionBanner from 'components/ConstructionBanner';
 import { LogIn, LogOut, UploadCloud } from 'react-feather';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight } from 'style';
 import LogoutButton from './LogoutButton';
+import GoIcon from './GoIcon';
 
 interface NavItemProps {
   label: string;
@@ -86,7 +86,6 @@ const NavMenu: React.FunctionComponent = () => {
   return (
     <Nav data-testid="nav-menu">
       <h3>Kifu.io</h3>
-      <ConstructionBanner />
       {currentUser && (
         <NavUser>
           <Link to={`/profile`}>
@@ -102,6 +101,11 @@ const NavMenu: React.FunctionComponent = () => {
           <NavItem icon={<LogIn />} label="Log In" to="/login" />
         )}
         <NavItem icon={<UploadCloud />} label="Upload SGF" to="/upload" />
+        <NavItem
+          icon={<GoIcon height="25px" width="25px" />}
+          label="Start Playing"
+          to="/start-playing"
+        />
       </NavList>
 
       {currentUser && (

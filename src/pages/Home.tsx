@@ -23,7 +23,7 @@ const Home = () => (
     >
       Kifu.io
     </h1>
-    <p>SGF Hosting</p>
+    <p>Mobile friendly SGF hosting</p>
     <Link
       to="/upload"
       css={`
