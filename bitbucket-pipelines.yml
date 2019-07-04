@@ -3,32 +3,14 @@ image: node:10.15.1
 pipelines:
   pull-requests:
     '**':
-      # - step:
-      #     name: 'Test and build'
-      #     caches:
-      #       - node
-      #     script:
-      #       - npm ci
-      #       - npm test
-      #       - npm run build
       - step:
-          name: 'Temp Now'
-          deployment: now-prod
+          name: 'Test and build'
           caches:
             - node
           script:
-            # In order to get env variables from bitbucket all the way to react-scripts
-            # we need to create an actual .env file
-            - touch .env.production
-            - echo "REACT_APP_FIREBASE_API_KEY=$FIREBASE_API_KEY" >> .env.production
-            - echo "REACT_APP_FIREBASE_AUTH_DOMAIN=$FIREBASE_AUTH_DOMAIN" >> .env.production
-            - echo "REACT_APP_FIREBASE_DATABASE_URL=$FIREBASE_DATABASE_URL" >> .env.production
-            - echo "REACT_APP_FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID" >> .env.production
-            - echo "REACT_APP_FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET" >> .env.production
-            - echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=$FIREBASE_MESSAGING_SENDER_ID" >> .env.production
-            - echo "REACT_APP_FIREBASE_APP_ID=$FIREBASE_APP_ID" >> .env.production
-            - npm install -g now
-            - now --token=$NOW_TOKEN --target staging
+            - npm ci
+            - npm test
+            - npm run build
   branches:
     master:
       - step:
@@ -45,5 +27,15 @@ pipelines:
           caches:
             - node
           script:
+            # In order to get env variables from bitbucket all the way to react-scripts
+            # we need to create an actual .env file
+            - touch .env.production
+            - echo "REACT_APP_FIREBASE_API_KEY=$FIREBASE_API_KEY" >> .env.production
+            - echo "REACT_APP_FIREBASE_AUTH_DOMAIN=$FIREBASE_AUTH_DOMAIN" >> .env.production
+            - echo "REACT_APP_FIREBASE_DATABASE_URL=$FIREBASE_DATABASE_URL" >> .env.production
+            - echo "REACT_APP_FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID" >> .env.production
+            - echo "REACT_APP_FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET" >> .env.production
+            - echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=$FIREBASE_MESSAGING_SENDER_ID" >> .env.production
+            - echo "REACT_APP_FIREBASE_APP_ID=$FIREBASE_APP_ID" >> .env.production
             - npm install -g now
             - now --token=$NOW_TOKEN --target production
