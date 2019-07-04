@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import 'styled-components/macro';
-import ConstructionBanner from 'components/ConstructionBanner';
 import { LogIn, LogOut, UploadCloud } from 'react-feather';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';

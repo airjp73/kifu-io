@@ -52,6 +52,7 @@ const ItemCard: React.FunctionComponent<ItemCardProps> = ({
           max-width: 15rem;
         `}
         src={imageSource}
+        alt={title}
       />
     </div>
     <div
@@ -88,6 +89,7 @@ const ItemCard: React.FunctionComponent<ItemCardProps> = ({
         `}
         href={linkTo}
         target="_blank"
+        rel="noopener noreferrer"
       >
         <Button>{buttonLabel}</Button>
       </a>
