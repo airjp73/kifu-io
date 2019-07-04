@@ -14,8 +14,18 @@ pipelines:
   branches:
     master:
       - step:
+          name: 'Deploy Firebase Rules'
+          deployment: firebase-prod
+          caches:
+            - node
+          script:
+            - npm install -g firebase-tools
+            - firebase deploy --only firestore --token=$FIREBASE_TOKEN --project=$FIREBASE_PROJECT --non-interactive
+      - step:
           name: 'Deploy to now'
-          deployment: 'Production'
+          deployment: now-prod
+          caches:
+            - node
           script:
             - npm install -g now
             - now --token=$NOW_TOKEN --target production
