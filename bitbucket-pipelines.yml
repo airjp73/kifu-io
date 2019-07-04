@@ -12,7 +12,10 @@ pipelines:
       #       - npm test
       #       - npm run build
       - step:
-          name: 'Create .env file'
+          name: 'Temp Now'
+          deployment: now-prod
+          caches:
+            - node
           script:
             # In order to get env variables from bitbucket all the way to react-scripts
             # we need to create an actual .env file
@@ -24,16 +27,10 @@ pipelines:
             - echo "REACT_APP_FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET" >> .env
             - echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=$FIREBASE_MESSAGING_SENDER_ID" >> .env
             - echo "REACT_APP_FIREBASE_APP_ID=$FIREBASE_APP_ID" >> .env
-          artifacts:
-            - .env
-      - step:
-          name: 'Temp Now'
-          deployment: now-prod
-          caches:
-            - node
-          script:
             - npm install -g now
             - now --token=$NOW_TOKEN --target staging
+          artifacts:
+            - .env
   branches:
     master:
       - step:
