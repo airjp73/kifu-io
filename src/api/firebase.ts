@@ -12,9 +12,6 @@ const config = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-console.log(process.env);
-console.log(config);
-
 // Check that we haven't already initialized
 // so hot-reloading doesn't cause an error
 const firebaseApp = firebase.apps.length
