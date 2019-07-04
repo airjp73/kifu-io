@@ -4,7 +4,7 @@ service cloud.firestore {
       allow read;
       allow create: if request.resource.data.userId == request.auth.uid;
       
-      // Don't allow updating or deleting
+      // Updating or deleting not supported yet
       allow update: if false;
       allow delete: if false;
     }
