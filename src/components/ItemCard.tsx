@@ -4,19 +4,21 @@ import { css } from 'styled-components';
 import Button from 'components/Button';
 import { highlightFaded, panelBackground, portraitMedia } from 'style';
 
-interface ItemCard {
+interface ItemCardProps {
   linkTo: string;
   imageSource: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
+  buttonLabel?: string;
 }
 
-const ItemCard: React.FunctionComponent<ItemCard> = ({
+const ItemCard: React.FunctionComponent<ItemCardProps> = ({
   children,
   imageSource,
   linkTo,
   title,
   subtitle,
+  buttonLabel = 'View on Amazon',
 }) => (
   <div
     css={css`
@@ -34,14 +36,24 @@ const ItemCard: React.FunctionComponent<ItemCard> = ({
       }
     `}
   >
-    <img
+    <div
       css={css`
-        height: 15rem;
+        max-height: 15rem;
         width: 15rem;
         margin-right: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       `}
-      src={imageSource}
-    />
+    >
+      <img
+        css={css`
+          max-height: 15rem;
+          max-width: 15rem;
+        `}
+        src={imageSource}
+      />
+    </div>
     <div
       css={css`
         flex: 1;
@@ -77,7 +89,7 @@ const ItemCard: React.FunctionComponent<ItemCard> = ({
         href={linkTo}
         target="_blank"
       >
-        <Button>View on Amazon</Button>
+        <Button>{buttonLabel}</Button>
       </a>
     </div>
   </div>
