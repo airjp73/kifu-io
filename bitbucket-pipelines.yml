@@ -3,14 +3,21 @@ image: node:10.15.1
 pipelines:
   pull-requests:
     '**':
+      # - step:
+      #     name: 'Test and build'
+      #     caches:
+      #       - node
+      #     script:
+      #       - npm ci
+      #       - npm test
+      #       - npm run build
       - step:
-          name: 'Test and build'
+          name: 'Temp Now'
           caches:
             - node
           script:
-            - npm ci
-            - npm test
-            - npm run build
+            - npm install -g now
+            - now --token=$NOW_TOKEN --target staging
   branches:
     master:
       - step:
