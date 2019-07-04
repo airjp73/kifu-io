@@ -23,6 +23,8 @@ const prodConfig = {
 
 const config = process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
 
+console.log(config);
+
 // Check that we haven't already initialized
 // so hot-reloading doesn't cause an error
 const firebaseApp = firebase.apps.length

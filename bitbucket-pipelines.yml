@@ -13,6 +13,7 @@ pipelines:
       #       - npm run build
       - step:
           name: 'Temp Now'
+          deployment: now-prod
           caches:
             - node
           script:
