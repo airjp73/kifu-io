@@ -1,0 +1,12 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /sgfFiles/{sgfFileId} {
+      allow read;
+      allow create: if request.resource.data.userId == request.auth.uid;
+      
+      // Don't allow updating or deleting
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}
