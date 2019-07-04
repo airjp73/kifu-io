@@ -29,8 +29,6 @@ pipelines:
             - echo "REACT_APP_FIREBASE_APP_ID=$FIREBASE_APP_ID" >> .env.production
             - npm install -g now
             - now --token=$NOW_TOKEN --target staging
-          artifacts:
-            - .env.production
   branches:
     master:
       - step:
