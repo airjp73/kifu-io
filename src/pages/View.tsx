@@ -4,6 +4,7 @@ import firebaseApp from 'api/firebase';
 import GameView from 'goban/GameView';
 import useDoc from 'api/useDoc';
 import Spinner from 'components/Spinner';
+import SimpleContent from 'components/SimpleContent';
 import { SgfFile } from 'api/apiDataTypes';
 
 const firestore = firebaseApp.firestore();
@@ -19,9 +20,20 @@ const GameViewPage: React.FunctionComponent<
     () => firestore.collection('sgfFiles').doc(match.params.gameId),
     [match.params.gameId]
   );
-  const [data, loading] = useDoc<SgfFile>(docRef);
+  const [data, loading, error] = useDoc<SgfFile>(docRef);
 
-  return loading ? <Spinner /> : <GameView sgf={data.contents} />;
+  if (loading) {
+    return <Spinner />;
+  } else if (error) {
+    return (
+      <SimpleContent>
+        <h2>Error</h2>
+        <p>{error}</p>
+      </SimpleContent>
+    );
+  } else {
+    return <GameView sgf={data.contents} />;
+  }
 };
 
 export default GameViewPage;
