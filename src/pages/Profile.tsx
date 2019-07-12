@@ -87,6 +87,7 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
             margin-right: 1rem;
           `}
           smallBoard
+          observeRect={false}
         />
         <div
           css={css`
