@@ -11,10 +11,12 @@ import {
   StoneSpriteFactory,
 } from 'canvas/createStoneSprite';
 import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
+import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 
 interface GobanProps {
   className?: string;
   smallBoard?: boolean;
+  observeRect?: boolean;
 }
 
 export type StoneColor = 'b' | 'w';
@@ -346,6 +348,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({
   children,
   className,
   smallBoard = false,
+  observeRect = true,
 }) => {
   const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
@@ -465,13 +468,21 @@ const Goban: React.FunctionComponent<GobanProps> = ({
   ]);
 
   // re-init and re-draw when board resizes
-  const containerRect = useRect(containerRef);
+  const containerRect = useRect(containerRef, observeRect);
   const height = (containerRect && containerRect.height) || 100;
   const width = (containerRect && containerRect.height) || 100;
   useEffect(() => {
     goban.current.init();
     drawBoardState();
   }, [height, width, drawBoardState]);
+
+  // re-init on window resize if observeRect is false
+  useWindowResizeCallback(() => {
+    if (!observeRect) {
+      goban.current.init();
+      drawBoardState();
+    }
+  });
 
   return (
     <BoardContainer ref={containerRef} className={className}>

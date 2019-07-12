@@ -15,6 +15,7 @@ import { transformPlayedOn } from 'goban/GameProperties';
 import { highlightFaded, panelBackground, portraitMedia } from 'style';
 import Button from 'components/Button';
 import { LandscapeView, PortraitView } from 'components/MediaQueryView';
+import SgfDownloadButton from 'components/SgfDownloadButton';
 
 const firestore = firebaseApp.firestore();
 
@@ -86,6 +87,7 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
             margin-right: 1rem;
           `}
           smallBoard
+          observeRect={false}
         />
         <div
           css={css`
@@ -106,17 +108,28 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
           <span style={{ marginBottom: '2rem' }}>
             Uploaded on {sgfFile.uploadTimestamp.toDate().toLocaleDateString()}
           </span>
-          <Link
+          <div
             css={css`
               width: max-content;
               align-self: flex-end;
               margin-top: auto;
-              text-decoration: none;
+              display: flex;
+
+              > * + * {
+                margin-left: 1rem;
+              }
             `}
-            to={`/view/${sgfFile.id}`}
           >
-            <Button>View Game</Button>
-          </Link>
+            <SgfDownloadButton sgfContents={sgfFile.contents} />
+            <Link
+              css={css`
+                text-decoration: none;
+              `}
+              to={`/view/${sgfFile.id}`}
+            >
+              <Button>View Game</Button>
+            </Link>
+          </div>
         </div>
       </GoGameContextProvider>
     </div>

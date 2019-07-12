@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import 'styled-components/macro';
 import Goban from 'goban/Goban';
 import { GoGameContextProvider } from 'goban/GoGameContext';
 import GameControlButtons from 'goban/GameControlButtons';
@@ -9,6 +10,7 @@ import useSgf from 'goban/useSgf';
 import { landscapeMedia, portraitMedia } from 'style';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
+import SgfDownloadButton from 'components/SgfDownloadButton';
 
 interface GameViewProps {
   sgf: string;
@@ -72,7 +74,17 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         <GameViewGoban>
           <GameAnnouncements />
         </GameViewGoban>
-        <GameViewInfo />
+        <GameViewInfo
+          otherTab={
+            <div
+              css={css`
+                padding: 0.5rem;
+              `}
+            >
+              <SgfDownloadButton sgfContents={sgf} />
+            </div>
+          }
+        />
         <GameViewControlButtons>
           <AutoAdvanceControl />
         </GameViewControlButtons>

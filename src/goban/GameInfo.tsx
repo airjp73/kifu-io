@@ -17,6 +17,7 @@ import {
   GitBranch,
   ChevronUp,
   ChevronDown,
+  MoreVertical,
 } from 'react-feather';
 import GameComments from './GameComments';
 import ButtonTab from '../components/Tabs/ButtonTab';
@@ -27,6 +28,7 @@ import TabContentArea from '../components/Tabs/TabContentArea';
 
 interface GameInfoProps {
   className?: string;
+  otherTab?: React.ReactElement;
 }
 
 const ExpandButton = styled(FlatButton)`
@@ -64,7 +66,10 @@ const GameInfoWrapper = styled.div`
   }
 `;
 
-const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
+const GameInfo: React.FunctionComponent<GameInfoProps> = ({
+  className,
+  otherTab,
+}) => {
   const { gameState, getNode } = useGoGameContext();
   const { variationDisplay } = gameState.properties;
   const { node } = gameState;
@@ -111,6 +116,12 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
                 leftIcon={<Info height="1rem" width="1rem" />}
                 label="Info"
               />
+              {otherTab && (
+                <ButtonTab
+                  tabName="other"
+                  leftIcon={<MoreVertical height="1rem" width="1rem" />}
+                />
+              )}
             </LandscapeView>
             <PortraitView>
               <ButtonTab
@@ -130,6 +141,12 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
                 leftIcon={<Info height="1rem" width="1rem" />}
                 label="Info"
               />
+              {otherTab && (
+                <ButtonTab
+                  tabName="other"
+                  leftIcon={<MoreVertical height="1rem" width="1rem" />}
+                />
+              )}
               <ExpandButton onClick={() => setExpanded(prev => !prev)}>
                 {expanded ? (
                   <ChevronDown height="1rem" width="1rem" />
@@ -149,6 +166,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({ className }) => {
             <TabContent tab="more-info">
               <GameProperties />
             </TabContent>
+            <TabContent tab="other">{otherTab}</TabContent>
           </TabContentArea>
         </Tabs>
         <LandscapeView>

@@ -55,7 +55,7 @@ const FlatButton: React.FunctionComponent<
 > = ({ children, leftIcon, primary, rightIcon, ...rest }) => (
   <FlatButtonStyles primary={primary} type="button" {...rest}>
     {leftIcon}
-    <span>{children}</span>
+    {children && <span>{children}</span>}
     {rightIcon}
   </FlatButtonStyles>
 );
