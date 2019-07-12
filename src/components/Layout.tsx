@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from 'components/Header';
@@ -38,9 +38,18 @@ const Layout: React.FunctionComponent<Partial<RouteComponentProps>> = ({
   history,
 }) => {
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Close slide-out panel when route changes (user clicks a link)
-  useEffect(() => history.listen(() => setSidePanelOpen(false)), [history]);
+  // and make sure main content is scrolled to the top
+  useEffect(
+    () =>
+      history.listen(() => {
+        setSidePanelOpen(false);
+        contentRef.current.scrollTop = 0;
+      }),
+    [history]
+  );
 
   return (
     <Container>
@@ -59,7 +68,7 @@ const Layout: React.FunctionComponent<Partial<RouteComponentProps>> = ({
       >
         <NavMenu />
       </SlideOutPanel>
-      <MainContent>{children}</MainContent>
+      <MainContent ref={contentRef}>{children}</MainContent>
     </Container>
   );
 };
