@@ -5,7 +5,7 @@ import { useTabContext } from './Tabs';
 interface ButtonTabProps {
   className?: string;
   tabName: string;
-  label: string;
+  label?: string;
 }
 const ButtonTab: React.FunctionComponent<
   ButtonTabProps & React.ComponentProps<typeof FlatButton>

@@ -48,7 +48,7 @@ const SgfDownloadButton: React.FC<SgfDownloadButtonProps> = ({
         href={downloadLink}
         download={fileName}
       >
-        Download
+        Download Sgf
       </a>
     </FlatButton>
   );
