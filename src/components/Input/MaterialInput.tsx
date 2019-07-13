@@ -12,7 +12,9 @@ export interface MaterialInputProps {
   isFocused?: boolean;
 }
 
-const MaterialInput: React.SFC<MaterialInputProps> = ({
+type ContainerProps = React.ComponentProps<typeof InputContainer>;
+
+const MaterialInput: React.FC<MaterialInputProps & ContainerProps> = ({
   children,
   error,
   hint,

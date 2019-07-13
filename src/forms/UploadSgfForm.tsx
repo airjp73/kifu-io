@@ -22,6 +22,8 @@ import TabBar from 'components/Tabs/TabBar';
 import ButtonTab from 'components/Tabs/ButtonTab';
 import TabContent from 'components/Tabs/TabContent';
 import TabContentArea from 'components/Tabs/TabContentArea';
+import TextArea from 'components/Input/TextArea';
+import { GameTree } from 'goban/parseSgf/normalizeGameTree';
 
 const firestore = firebaseApp.firestore();
 
@@ -58,7 +60,7 @@ const UploadTabContent = styled.div`
   padding: 0 1rem;
   width: 27rem;
   max-width: 100vw;
-  height: 12rem;
+  height: 13rem;
 `;
 const UploadPreview = styled.div`
   max-width: 100vw;
@@ -112,18 +114,45 @@ const UploadSgfForm = () => {
   const [currentUser] = useCurrentUser();
   const [file, setFile] = useState<File>(null);
   const [contents, fileError] = useFileContents(file);
-  const [gameTree, sgfError] = useSgf(contents);
+  const [rawContent, setRawContent] = useState<string>('');
+  const sgf = rawContent || contents;
+  const [gameTree, sgfError] = useSgf(sgf);
   const [uploadError, setUploadError] = useState<string>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFile(event.currentTarget.files[0]);
+    setRawContent('');
+  };
+
+  const handleRawChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setRawContent(event.target.value);
+    setFile(null);
+  };
+
+  const GamePreview: React.FC<{ gameTree: GameTree }> = ({ gameTree }) => (
+    <GoGameContextProvider gameTree={gameTree}>
+      <UploadCaptureCounts />
+      <UploadPreview>
+        <Goban
+          css={`
+            height: 100%;
+          `}
+        >
+          <GameAnnouncements />
+        </Goban>
+      </UploadPreview>
+      <UploadControlButtons>
+        <AutoAdvanceControl playByDefault />
+      </UploadControlButtons>
+    </GoGameContextProvider>
+  );
 
   const uploadSgf = async () => {
     setUploadError(null);
     const newDocument = firestore.collection('sgfFiles').doc();
     const sgfFile: NewEntity<SgfFile> = {
-      contents,
+      contents: sgf,
       uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),
       userId: currentUser ? currentUser.uid : null,
       userPhotoURL: currentUser ? currentUser.photoURL : null,
@@ -136,6 +165,19 @@ const UploadSgfForm = () => {
       setUploadError(error.message);
     }
   };
+
+  const uploadButton = (
+    <Button
+      css={`
+        margin-left: auto;
+      `}
+      type="submit"
+      icon={<UploadCloud />}
+      disabled={isUploading || !!fileError || !!sgfError || !gameTree}
+    >
+      {isUploading ? 'Uploading...' : 'Upload'}
+    </Button>
+  );
 
   return (
     <WithRouter>
@@ -158,44 +200,26 @@ const UploadSgfForm = () => {
               <UploadTabContent>
                 <TabContentArea>
                   <TabContent tab="fileUpload">
-                    <h2>Choose a file to upload</h2>
-                    <UploadInput label="SGF File" onChange={handleChange} />
-                    <Button
-                      css={`
-                        margin-left: auto;
-                      `}
-                      type="submit"
-                      icon={<UploadCloud />}
-                      disabled={
-                        isUploading || !!fileError || !!sgfError || !gameTree
-                      }
-                    >
-                      {isUploading ? 'Uploading...' : 'Upload'}
-                    </Button>
+                    <UploadInput
+                      label="Choose an SGF to upload"
+                      onChange={handleFileChange}
+                    />
+                    {uploadButton}
                   </TabContent>
-                  <TabContent tab="raw">Stuff?</TabContent>
+                  <TabContent tab="raw">
+                    <TextArea
+                      label="Paste raw SGF data"
+                      value={rawContent}
+                      onChange={handleRawChange}
+                    />
+                    {uploadButton}
+                  </TabContent>
                 </TabContentArea>
               </UploadTabContent>
             </Tabs>
             {!!uploadError && <p>{uploadError}</p>}
           </UploadFormFields>
-          {gameTree && (
-            <GoGameContextProvider key={contents} gameTree={gameTree}>
-              <UploadCaptureCounts />
-              <UploadPreview>
-                <Goban
-                  css={`
-                    height: 100%;
-                  `}
-                >
-                  <GameAnnouncements />
-                </Goban>
-              </UploadPreview>
-              <UploadControlButtons>
-                <AutoAdvanceControl playByDefault />
-              </UploadControlButtons>
-            </GoGameContextProvider>
-          )}
+          {gameTree && <GamePreview key={contents} gameTree={gameTree} />}
           {(!!fileError || !!sgfError) && (
             <UploadPreview
               css={css`
