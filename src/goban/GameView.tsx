@@ -7,7 +7,7 @@ import GameControlButtons from 'goban/GameControlButtons';
 import GameInfo from 'goban/GameInfo';
 import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
-import { landscapeMedia, portraitMedia } from 'style';
+import { landscapeMedia, portraitMedia, smallLandscapeMedia } from 'style';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownloadButton from 'components/SgfDownloadButton';
@@ -49,6 +49,18 @@ const GameViewContainer = styled.div`
       'board info'
       'board buttons';
     grid-template-columns: minmax(300px, 1000px) minmax(300px, 800px);
+    grid-template-rows: min-content 1fr max-content;
+    grid-column-gap: 1rem;
+    box-sizing: border-box;
+  }
+
+  ${smallLandscapeMedia} {
+    width: 100%;
+    grid-template-areas:
+      'board capture'
+      'board info'
+      'board buttons';
+    grid-template-columns: minmax(30%, 60%) minmax(40%, 70%);
     grid-template-rows: min-content 1fr max-content;
     grid-column-gap: 1rem;
     box-sizing: border-box;
