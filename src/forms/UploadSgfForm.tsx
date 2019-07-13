@@ -17,6 +17,11 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import WithRouter from 'components/WithRouter';
 import { SgfFile, NewEntity } from 'api/apiDataTypes';
 import GameAnnouncements from 'goban/GameAnnouncements';
+import Tabs from 'components/Tabs/Tabs';
+import TabBar from 'components/Tabs/TabBar';
+import ButtonTab from 'components/Tabs/ButtonTab';
+import TabContent from 'components/Tabs/TabContent';
+import TabContentArea from 'components/Tabs/TabContentArea';
 
 const firestore = firebaseApp.firestore();
 
@@ -48,6 +53,11 @@ const useFileContents = (file?: File): [null | string, null | string] => {
   return [contents, error];
 };
 
+const UploadTabContent = styled.div`
+  padding: 0 1rem;
+  width: 27rem;
+  height: 12rem;
+`;
 const UploadPreview = styled.div`
   max-width: 100vw;
   grid-area: preview;
@@ -58,8 +68,9 @@ const UploadPreview = styled.div`
 `;
 const UploadFormFields = styled(SimpleContent)`
   max-width: 100vw;
-  box-sizing: border-box;
+  padding: 0;
   grid-area: fields;
+  overflow: hidden;
 `;
 const UploadControlButtons = styled(GameControlButtons)`
   grid-area: buttons;
@@ -137,18 +148,33 @@ const UploadSgfForm = () => {
           }}
         >
           <UploadFormFields>
-            <h2>Choose a file to upload</h2>
-            <UploadInput label="SGF File" onChange={handleChange} />
-            <Button
-              css={`
-                margin-left: auto;
-              `}
-              type="submit"
-              icon={<UploadCloud />}
-              disabled={isUploading || !!fileError || !!sgfError || !gameTree}
-            >
-              {isUploading ? 'Uploading...' : 'Upload'}
-            </Button>
+            <Tabs defaultTab="fileUpload">
+              <TabBar>
+                <ButtonTab tabName="fileUpload" label="Upload" />
+                <ButtonTab tabName="raw" label="Raw SGF" />
+              </TabBar>
+              <UploadTabContent>
+                <TabContentArea>
+                  <TabContent tab="fileUpload">
+                    <h2>Choose a file to upload</h2>
+                    <UploadInput label="SGF File" onChange={handleChange} />
+                    <Button
+                      css={`
+                        margin-left: auto;
+                      `}
+                      type="submit"
+                      icon={<UploadCloud />}
+                      disabled={
+                        isUploading || !!fileError || !!sgfError || !gameTree
+                      }
+                    >
+                      {isUploading ? 'Uploading...' : 'Upload'}
+                    </Button>
+                  </TabContent>
+                  <TabContent tab="raw">Stuff?</TabContent>
+                </TabContentArea>
+              </UploadTabContent>
+            </Tabs>
             {!!uploadError && <p>{uploadError}</p>}
           </UploadFormFields>
           {gameTree && (
