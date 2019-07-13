@@ -103,12 +103,12 @@ const UploadForm = styled.form<{ previewing: boolean }>`
   }
 
   ${smallLandscapeMedia} {
-    height: 100%;
+    min-height: 100%;
     grid-template-areas:
-      'fields preview'
-      'captures preview';
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1fr;
+      'fields'
+      'captures'
+      'preview';
+    grid-template-rows: auto auto 20rem;
   }
 
   @media only screen and (orientation: portrait) {
