@@ -16,19 +16,12 @@ import { highlightFaded, panelBackground, portraitMedia } from 'style';
 import Button from 'components/Button';
 import { LandscapeView, PortraitView } from 'components/MediaQueryView';
 import SgfDownloadButton from 'components/SgfDownloadButton';
+import usePlayerNames from 'goban/usePlayerNames';
 
 const firestore = firebaseApp.firestore();
 
 const Players = () => {
-  const { gameState } = useGoGameContext();
-  const {
-    playerBlack,
-    playerWhite,
-    teamBlack,
-    teamWhite,
-    rankBlack,
-    rankWhite,
-  } = gameState.properties;
+  const playerNames = usePlayerNames();
 
   return (
     <h2
@@ -36,8 +29,7 @@ const Players = () => {
         margin-top: 0;
       `}
     >
-      {playerBlack || teamBlack} {rankBlack} vs {playerWhite || teamWhite}{' '}
-      {rankWhite}
+      {playerNames}
     </h2>
   );
 };
