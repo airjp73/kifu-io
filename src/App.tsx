@@ -49,7 +49,7 @@ const App = () => (
         <Route path="/view/:gameId" component={View} />
         <Route path="/start-playing" component={GoProducts} />
         <AuthRoute path="/profile" component={Profile} />
-        <AuthRoute path="/upload" component={Upload} />
+        <Route path="/upload" component={Upload} />
       </Layout>
     </AppContext>
   </>

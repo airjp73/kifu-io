@@ -100,22 +100,28 @@ const UploadSgfForm = () => {
   const [file, setFile] = useState<File>(null);
   const [contents, fileError] = useFileContents(file);
   const [gameTree, sgfError] = useSgf(contents);
+  const [uploadError, setUploadError] = useState<string>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setFile(event.currentTarget.files[0]);
 
   const uploadSgf = async () => {
+    setUploadError(null);
     const newDocument = firestore.collection('sgfFiles').doc();
     const sgfFile: NewEntity<SgfFile> = {
       contents,
-      userId: currentUser.uid,
-      userPhotoURL: currentUser.photoURL,
-      userDisplayName: currentUser.displayName,
       uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+      userId: currentUser ? currentUser.uid : null,
+      userPhotoURL: currentUser ? currentUser.photoURL : null,
+      userDisplayName: currentUser ? currentUser.displayName : null,
     };
-    await newDocument.set(sgfFile);
-    return newDocument.id;
+    try {
+      await newDocument.set(sgfFile);
+      return newDocument.id;
+    } catch (error) {
+      setUploadError(error.message);
+    }
   };
 
   return (
@@ -126,7 +132,8 @@ const UploadSgfForm = () => {
             e.preventDefault();
             setIsUploading(true);
             const docId = await uploadSgf();
-            history.push(`/view/${docId}`);
+            setIsUploading(false);
+            docId && history.push(`/view/${docId}`);
           }}
         >
           <UploadFormFields>
@@ -142,6 +149,7 @@ const UploadSgfForm = () => {
             >
               {isUploading ? 'Uploading...' : 'Upload'}
             </Button>
+            {!!uploadError && <p>{uploadError}</p>}
           </UploadFormFields>
           {gameTree && (
             <GoGameContextProvider key={contents} gameTree={gameTree}>
