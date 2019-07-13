@@ -1,5 +1,6 @@
 import React, { forwardRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import 'styled-components/macro';
 import MaterialInput from './MaterialInput';
 import useForwardedRef from 'hooks/useForwardedRef';
 
@@ -16,7 +17,7 @@ const TextAreaElement = styled.textarea`
   border: none;
   outline: none;
   background: none;
-  padding: 1rem 0;
+  padding: 1rem 0.75rem;
   resize: none;
   height: 5rem;
   width: 100%;
@@ -41,6 +42,9 @@ const TextArea: React.FunctionComponent<
 
   return (
     <MaterialInput
+      css={`
+        padding: 0;
+      `}
       className={className}
       error={error}
       hint={hint}
