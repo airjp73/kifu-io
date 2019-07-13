@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import 'styled-components/macro';
 import MaterialInput from './MaterialInput';
 import useForwardedRef from 'hooks/useForwardedRef';
