@@ -54,8 +54,10 @@ const useFileContents = (file?: File): [null | string, null | string] => {
 };
 
 const UploadTabContent = styled.div`
+  box-sizing: border-box;
   padding: 0 1rem;
   width: 27rem;
+  max-width: 100vw;
   height: 12rem;
 `;
 const UploadPreview = styled.div`
