@@ -60,7 +60,7 @@ const GameViewContainer = styled.div`
       'board capture'
       'board info'
       'board buttons';
-    grid-template-columns: minmax(30%, 60%) minmax(40%, 70%);
+    grid-template-columns: minmax(35%, 65%) minmax(35%, 65%);
     grid-template-rows: min-content 1fr max-content;
     grid-column-gap: 1rem;
     box-sizing: border-box;
@@ -72,7 +72,7 @@ const GameViewContainer = styled.div`
       'board'
       'info'
       'buttons';
-    grid-template-rows: min-content 3fr 2fr min-content;
+    grid-template-rows: min-content 4fr 2fr min-content;
     grid-template-columns: 1fr;
   }
 `;
