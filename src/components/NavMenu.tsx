@@ -5,9 +5,10 @@ import 'styled-components/macro';
 import { LogIn, LogOut, UploadCloud } from 'react-feather';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
-import { highlight, panelHighlight } from 'style';
+import { highlight, panelHighlight, smallLandscapeMedia } from 'style';
 import LogoutButton from './LogoutButton';
 import GoIcon from './GoIcon';
+import MediaQueryView, { PortraitView, LandscapeView } from './MediaQueryView';
 
 interface NavItemProps {
   label: string;
@@ -23,6 +24,8 @@ const Link = styled(NavLink)`
   cursor: pointer;
   color: ${highlight};
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
 
   &.active {
     background-color: ${panelHighlight};
@@ -30,6 +33,10 @@ const Link = styled(NavLink)`
 
   :hover {
     background-color: ${panelHighlight};
+  }
+
+  > svg {
+    flex-shrink: 0;
   }
 `;
 
@@ -39,17 +46,23 @@ const NavList = styled.ul`
   list-style: none;
 `;
 
+const NavItemLabel = styled.span`
+  margin-right: auto;
+  padding: 0 0.5rem;
+`;
+
 const NavListItem = styled.li`
   font-size: 1rem;
 
   svg {
     padding: 0 0.25rem;
   }
-`;
 
-const NavItemLabel = styled.span`
-  margin-right: auto;
-  padding: 0 0.5rem;
+  ${smallLandscapeMedia} {
+    ${NavItemLabel} {
+      display: none;
+    }
+  }
 `;
 
 const NavUser = styled.div`
@@ -85,7 +98,18 @@ const NavMenu: React.FunctionComponent = () => {
 
   return (
     <Nav data-testid="nav-menu">
-      <h3>Kifu.io</h3>
+      <LandscapeView>
+        <MediaQueryView minWidth={1000}>
+          <h3>Kifu.io</h3>
+        </MediaQueryView>
+        <MediaQueryView maxWidth={1000}>
+          <h4>Kifu</h4>
+        </MediaQueryView>
+      </LandscapeView>
+      <PortraitView>
+        <h3>Kifu.io</h3>
+      </PortraitView>
+
       {currentUser && (
         <NavUser>
           <Link to={`/profile`}>

@@ -12,7 +12,7 @@ const NameAndCaptures = styled.div`
   max-width: 100%;
   overflow: hidden;
 
-  h4 {
+  h5 {
     margin: 0;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -64,8 +64,8 @@ const CaptureCounts: React.FunctionComponent<CaptureCountsProps> = ({
   } = gameState.properties;
 
   useEffect(() => {
-    createBlackStone(12, blackStoneRef.current);
-    createWhiteStone(12, whiteStoneRef.current);
+    createBlackStone(10, blackStoneRef.current);
+    createWhiteStone(10, whiteStoneRef.current);
   }, []);
 
   return (
@@ -73,9 +73,9 @@ const CaptureCounts: React.FunctionComponent<CaptureCountsProps> = ({
       <div>
         <canvas ref={blackStoneRef} />
         <NameAndCaptures>
-          <h4>
+          <h5>
             {playerBlack || teamBlack} {rankBlack}
-          </h4>
+          </h5>
           <span>
             {gameState.captureCounts.b} Capture
             {gameState.captureCounts.b !== 1 && 's'}
@@ -85,9 +85,9 @@ const CaptureCounts: React.FunctionComponent<CaptureCountsProps> = ({
       <div>
         <canvas ref={whiteStoneRef} />
         <NameAndCaptures>
-          <h4>
+          <h5>
             {playerWhite || teamWhite} {rankWhite}
-          </h4>
+          </h5>
           <span>
             {gameState.captureCounts.w} Capture
             {gameState.captureCounts.b !== 1 && 's'}

@@ -8,8 +8,6 @@ import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
 import SimpleContent from 'components/SimpleContent';
 import Goban from 'goban/Goban';
-import GameControlButtons from 'goban/GameControlButtons';
-import CaptureCounts from 'goban/CaptureCounts';
 import Button from 'components/Button';
 import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
@@ -17,6 +15,15 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import WithRouter from 'components/WithRouter';
 import { SgfFile, NewEntity } from 'api/apiDataTypes';
 import GameAnnouncements from 'goban/GameAnnouncements';
+import Tabs from 'components/Tabs/Tabs';
+import TabBar from 'components/Tabs/TabBar';
+import ButtonTab from 'components/Tabs/ButtonTab';
+import TabContent from 'components/Tabs/TabContent';
+import TabContentArea from 'components/Tabs/TabContentArea';
+import TextArea from 'components/Input/TextArea';
+import { GameTree } from 'goban/parseSgf/normalizeGameTree';
+import { smallLandscapeMedia, highlightFaded } from 'style';
+import usePlayerNames from 'goban/usePlayerNames';
 
 const firestore = firebaseApp.firestore();
 
@@ -48,31 +55,45 @@ const useFileContents = (file?: File): [null | string, null | string] => {
   return [contents, error];
 };
 
+const UploadTabContent = styled.div`
+  box-sizing: border-box;
+  padding: 0 1rem;
+  width: 27rem;
+  max-width: 100vw;
+  height: 11rem;
+
+  ${smallLandscapeMedia} {
+    width: 20rem;
+  }
+`;
 const UploadPreview = styled.div`
   max-width: 100vw;
   grid-area: preview;
-
-  @media only screen and (orientation: landscape) and (max-width: 1100px) {
-    height: 20rem;
-  }
 `;
 const UploadFormFields = styled(SimpleContent)`
   max-width: 100vw;
-  box-sizing: border-box;
+  padding: 0;
   grid-area: fields;
+  overflow: hidden;
 `;
-const UploadControlButtons = styled(GameControlButtons)`
-  grid-area: buttons;
-`;
-const UploadCaptureCounts = styled(CaptureCounts)`
-  grid-area: captures;
-`;
-
-const UploadForm = styled.form`
-  height: 100%;
+const UploadPlayers = () => {
+  const names = usePlayerNames();
+  return (
+    <h3
+      css={css`
+        text-align: center;
+        color: ${highlightFaded};
+      `}
+    >
+      {names}
+    </h3>
+  );
+};
+const UploadForm = styled.form<{ previewing: boolean }>`
   display: grid;
 
-  @media only screen and (orientation: landscape) and (min-width: 1100px) {
+  @media only screen and (orientation: landscape) and (min-width: 1000px) {
+    height: 100%;
     grid-template-areas:
       'fields captures'
       'fields preview'
@@ -81,17 +102,21 @@ const UploadForm = styled.form`
     grid-template-rows: auto 1fr auto;
   }
 
-  @media only screen and (orientation: portrait), (max-width: 1100px) {
+  ${smallLandscapeMedia} {
+    min-height: 100%;
     grid-template-areas:
       'fields'
       'captures'
-      'preview'
-      'buttons';
-    grid-template-rows: auto auto 1fr auto;
+      'preview';
+    grid-template-rows: auto auto 20rem;
   }
 
-  @media only screen and (orientation: landscape) and (max-width: 1100px) {
-    height: auto;
+  @media only screen and (orientation: portrait) {
+    grid-template-areas:
+      'fields'
+      'captures'
+      'preview';
+    grid-template-rows: auto auto 1fr auto;
   }
 `;
 
@@ -99,18 +124,53 @@ const UploadSgfForm = () => {
   const [currentUser] = useCurrentUser();
   const [file, setFile] = useState<File>(null);
   const [contents, fileError] = useFileContents(file);
-  const [gameTree, sgfError] = useSgf(contents);
+  const [rawContent, setRawContent] = useState<string>('');
+  const sgf = rawContent || contents;
+  const [gameTree, sgfError] = useSgf(sgf);
   const [uploadError, setUploadError] = useState<string>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFile(event.currentTarget.files[0]);
+    setRawContent('');
+  };
+
+  const handleRawChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setRawContent(event.target.value);
+    setFile(null);
+  };
+
+  const GamePreview: React.FC<{ gameTree: GameTree }> = ({ gameTree }) => (
+    <GoGameContextProvider gameTree={gameTree}>
+      <UploadPlayers />
+      <UploadPreview>
+        <Goban
+          css={css`
+            height: 100%;
+
+            @media only screen and (orientation: portrait) and (max-width: 1100px) {
+              width: 100%;
+              padding-top: 95%;
+            }
+          `}
+        >
+          <GameAnnouncements />
+        </Goban>
+      </UploadPreview>
+      <AutoAdvanceControl
+        css={css`
+          display: none;
+        `}
+        playByDefault
+      />
+    </GoGameContextProvider>
+  );
 
   const uploadSgf = async () => {
     setUploadError(null);
     const newDocument = firestore.collection('sgfFiles').doc();
     const sgfFile: NewEntity<SgfFile> = {
-      contents,
+      contents: sgf,
       uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),
       userId: currentUser ? currentUser.uid : null,
       userPhotoURL: currentUser ? currentUser.photoURL : null,
@@ -124,10 +184,24 @@ const UploadSgfForm = () => {
     }
   };
 
+  const uploadButton = (
+    <Button
+      css={`
+        margin-left: auto;
+      `}
+      type="submit"
+      icon={<UploadCloud />}
+      disabled={isUploading || !!fileError || !!sgfError || !gameTree}
+    >
+      {isUploading ? 'Uploading...' : 'Upload'}
+    </Button>
+  );
+
   return (
     <WithRouter>
       {({ history }) => (
         <UploadForm
+          previewing={!!gameTree}
           onSubmit={async e => {
             e.preventDefault();
             setIsUploading(true);
@@ -137,37 +211,34 @@ const UploadSgfForm = () => {
           }}
         >
           <UploadFormFields>
-            <h2>Choose a file to upload</h2>
-            <UploadInput label="SGF File" onChange={handleChange} />
-            <Button
-              css={`
-                margin-left: auto;
-              `}
-              type="submit"
-              icon={<UploadCloud />}
-              disabled={isUploading || !!fileError || !!sgfError || !gameTree}
-            >
-              {isUploading ? 'Uploading...' : 'Upload'}
-            </Button>
+            <Tabs defaultTab="fileUpload">
+              <TabBar>
+                <ButtonTab tabName="fileUpload" label="Upload" />
+                <ButtonTab tabName="raw" label="Raw SGF" />
+              </TabBar>
+              <UploadTabContent>
+                <TabContentArea>
+                  <TabContent tab="fileUpload">
+                    <UploadInput
+                      label="Choose an SGF to upload"
+                      onChange={handleFileChange}
+                    />
+                    {uploadButton}
+                  </TabContent>
+                  <TabContent tab="raw">
+                    <TextArea
+                      label="Paste raw SGF data"
+                      value={rawContent}
+                      onChange={handleRawChange}
+                    />
+                    {uploadButton}
+                  </TabContent>
+                </TabContentArea>
+              </UploadTabContent>
+            </Tabs>
             {!!uploadError && <p>{uploadError}</p>}
           </UploadFormFields>
-          {gameTree && (
-            <GoGameContextProvider key={contents} gameTree={gameTree}>
-              <UploadCaptureCounts />
-              <UploadPreview>
-                <Goban
-                  css={`
-                    height: 100%;
-                  `}
-                >
-                  <GameAnnouncements />
-                </Goban>
-              </UploadPreview>
-              <UploadControlButtons>
-                <AutoAdvanceControl playByDefault />
-              </UploadControlButtons>
-            </GoGameContextProvider>
-          )}
+          {gameTree && <GamePreview key={contents} gameTree={gameTree} />}
           {(!!fileError || !!sgfError) && (
             <UploadPreview
               css={css`

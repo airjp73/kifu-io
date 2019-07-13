@@ -7,7 +7,7 @@ import GameControlButtons from 'goban/GameControlButtons';
 import GameInfo from 'goban/GameInfo';
 import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
-import { landscapeMedia, portraitMedia } from 'style';
+import { landscapeMedia, portraitMedia, smallLandscapeMedia } from 'style';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownloadButton from 'components/SgfDownloadButton';
@@ -54,13 +54,25 @@ const GameViewContainer = styled.div`
     box-sizing: border-box;
   }
 
+  ${smallLandscapeMedia} {
+    width: 100%;
+    grid-template-areas:
+      'board capture'
+      'board info'
+      'board buttons';
+    grid-template-columns: minmax(35%, 65%) minmax(35%, 65%);
+    grid-template-rows: min-content 1fr max-content;
+    grid-column-gap: 1rem;
+    box-sizing: border-box;
+  }
+
   ${portraitMedia} {
     grid-template-areas:
       'capture'
       'board'
       'info'
       'buttons';
-    grid-template-rows: min-content 3fr 2fr min-content;
+    grid-template-rows: min-content 4fr 2fr min-content;
     grid-template-columns: 1fr;
   }
 `;

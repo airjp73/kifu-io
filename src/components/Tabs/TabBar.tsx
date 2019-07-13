@@ -11,6 +11,7 @@ const TabBarContainer = styled.div`
   border-bottom: ${lightBorder};
   align-items: center;
   position: relative;
+  overflow-x: auto;
 `;
 
 const TabUnderline = animated(styled.div`

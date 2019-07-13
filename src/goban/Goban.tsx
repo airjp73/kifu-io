@@ -479,8 +479,11 @@ const Goban: React.FunctionComponent<GobanProps> = ({
   // re-init on window resize if observeRect is false
   useWindowResizeCallback(() => {
     if (!observeRect) {
-      goban.current.init();
-      drawBoardState();
+      // The timeout helps ensure that the resize as actually finished
+      setTimeout(() => {
+        goban.current.init();
+        drawBoardState();
+      }, 250);
     }
   });
 

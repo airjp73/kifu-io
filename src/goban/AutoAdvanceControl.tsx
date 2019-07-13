@@ -9,6 +9,7 @@ interface AutoAdvanceControlProps {
 
 const AutoAdvanceControl: React.FunctionComponent<AutoAdvanceControlProps> = ({
   playByDefault = false,
+  ...rest
 }) => {
   const [autoAdvance, setAutoAdvance] = useState(playByDefault);
   const { forward } = useGoGameContext();
@@ -20,7 +21,7 @@ const AutoAdvanceControl: React.FunctionComponent<AutoAdvanceControlProps> = ({
   }, [autoAdvance, forward]);
 
   return (
-    <FlatButton onClick={() => setAutoAdvance(prev => !prev)}>
+    <FlatButton onClick={() => setAutoAdvance(prev => !prev)} {...rest}>
       {autoAdvance ? (
         <Pause fill="currentColor" />
       ) : (

@@ -6,6 +6,8 @@ import Layout from '../Layout';
 jest.mock('components/MediaQueryView.tsx', () => {
   const mock: React.FunctionComponent = ({ children }) => <>{children}</>;
   return {
+    __esModule: true,
+    default: mock,
     LandscapeView: mock,
     PortraitView: mock,
   };

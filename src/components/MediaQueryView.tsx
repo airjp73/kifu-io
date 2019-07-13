@@ -2,7 +2,6 @@ import React from 'react';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 
 interface MediaQueryViewProps {
-  children: React.ReactElement;
   minWidth?: number;
   maxWidth?: number;
   minHeight?: number;
@@ -22,7 +21,7 @@ const MediaQueryView: React.FunctionComponent<MediaQueryViewProps> = ({
     (!maxWidth || width <= maxWidth) &&
     (!minHeight || height >= minHeight) &&
     (!maxHeight || height <= maxHeight);
-  return meetsDimensionRequirements && children;
+  return meetsDimensionRequirements && <>{children}</>;
 };
 
 export const LandscapeView: React.FunctionComponent = ({ children }) => {

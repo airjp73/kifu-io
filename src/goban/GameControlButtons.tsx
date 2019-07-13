@@ -11,6 +11,7 @@ import {
 } from 'react-feather';
 import FlatButton from '../components/FlatButton';
 import { dark } from 'style';
+import HideInSmallLandscape from 'components/HideInSmallLandscape';
 
 interface GameControlButtonsProps {
   className?: string;
@@ -31,9 +32,11 @@ const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
 
   return (
     <GameControlButtonBar className={className}>
-      <FlatButton onClick={() => back(-1)}>
-        <SkipBack fill="currentColor" />
-      </FlatButton>
+      <HideInSmallLandscape>
+        <FlatButton onClick={() => back(-1)}>
+          <SkipBack fill="currentColor" />
+        </FlatButton>
+      </HideInSmallLandscape>
       <FlatButton onClick={() => back(10)}>
         <Rewind fill="currentColor" />
       </FlatButton>
@@ -47,9 +50,11 @@ const GameControlButtons: React.FunctionComponent<GameControlButtonsProps> = ({
       <FlatButton onClick={() => forward(10)}>
         <FastForward fill="currentColor" />
       </FlatButton>
-      <FlatButton onClick={() => forward(-1)}>
-        <SkipForward fill="currentColor" />
-      </FlatButton>
+      <HideInSmallLandscape>
+        <FlatButton onClick={() => forward(-1)}>
+          <SkipForward fill="currentColor" />
+        </FlatButton>
+      </HideInSmallLandscape>
     </GameControlButtonBar>
   );
 };

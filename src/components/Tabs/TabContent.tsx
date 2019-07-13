@@ -3,7 +3,6 @@ import React from 'react';
 interface TabContentProps {
   currentTab?: string;
   tab: string;
-  children: React.ReactElement;
 }
 
 const TabContent: React.FunctionComponent<TabContentProps> = ({
@@ -11,7 +10,7 @@ const TabContent: React.FunctionComponent<TabContentProps> = ({
   currentTab,
   tab,
 }) => {
-  return currentTab === tab && children;
+  return currentTab === tab && <>{children}</>;
 };
 
 export default TabContent;
