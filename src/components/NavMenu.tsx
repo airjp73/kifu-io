@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import 'styled-components/macro';
-import { LogIn, LogOut, UploadCloud } from 'react-feather';
+import { GitHub, LogIn, LogOut, UploadCloud } from 'react-feather';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight, smallLandscapeMedia } from 'style';
@@ -14,9 +14,10 @@ interface NavItemProps {
   label: string;
   to: string;
   icon: React.ReactElement;
+  isExternal?: boolean;
 }
 
-const Link = styled(NavLink)`
+const linkStyle = css`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -84,14 +85,28 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   label,
   to,
   icon,
-}) => (
-  <NavListItem>
-    <Link to={to} activeClassName="active">
+  isExternal,
+}) => {
+  const linkContent = (
+    <>
       {icon}
       <NavItemLabel>{label}</NavItemLabel>
-    </Link>
-  </NavListItem>
-);
+    </>
+  );
+  return (
+    <NavListItem>
+      {isExternal ? (
+        <a css={linkStyle} href={to}>
+          {linkContent}
+        </a>
+      ) : (
+        <NavLink css={linkStyle} to={to} activeClassName="active">
+          {linkContent}
+        </NavLink>
+      )}
+    </NavListItem>
+  );
+};
 
 const NavMenu: React.FunctionComponent = () => {
   const [currentUser, isLoaded] = useCurrentUser();
@@ -112,12 +127,12 @@ const NavMenu: React.FunctionComponent = () => {
 
       {currentUser && (
         <NavUser>
-          <Link to={`/profile`}>
+          <NavLink css={linkStyle} to={`/profile`}>
             <User
               photoURL={currentUser.photoURL}
               displayName={currentUser.displayName}
             />
-          </Link>
+          </NavLink>
         </NavUser>
       )}
       <NavList>
@@ -129,6 +144,12 @@ const NavMenu: React.FunctionComponent = () => {
           icon={<GoIcon height="25px" width="25px" />}
           label="Start Playing"
           to="/start-playing"
+        />
+        <NavItem
+          icon={<GitHub height="25px" width="25px" />}
+          label="Github"
+          to="http://www.github.com/airjp73/kifu-io"
+          isExternal
         />
       </NavList>
 
