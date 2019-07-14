@@ -1,11 +1,21 @@
 import React from 'react';
-import useGlobalKeyListener, { KEY_CODES } from 'hooks/useGlobalKeyListener';
+import useGlobalKeyListener, {
+  KEY_CODES,
+  Modifiers,
+} from 'hooks/useGlobalKeyListener';
 import { useGoGameContext } from './GoGameContext';
 
 const GobanKeyNavigation: React.FC = () => {
   const { forward, back } = useGoGameContext();
-  useGlobalKeyListener(KEY_CODES.right, () => forward(1));
-  useGlobalKeyListener(KEY_CODES.left, () => back(1));
+
+  const getAmount = (mods: Modifiers) => {
+    if (mods.ctrl) return -1;
+    else if (mods.shift) return 10;
+    else return 1;
+  };
+
+  useGlobalKeyListener(KEY_CODES.right, mods => forward(getAmount(mods)));
+  useGlobalKeyListener(KEY_CODES.left, mods => back(getAmount(mods)));
 
   return null;
 };

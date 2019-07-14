@@ -8,6 +8,11 @@ export const KEY_CODES = {
   left: 37,
 };
 
+export interface Modifiers {
+  shift: boolean;
+  ctrl: boolean;
+}
+
 /**
  * Adds a global keydown listener.
  *
@@ -15,7 +20,10 @@ export const KEY_CODES = {
  * This is important for performance reasons.
  * React-redux uses it too, so hopefully they don't take it away 🤞.
  */
-const useGlobalKeyListener = (keyCode: number, callback: () => void) => {
+const useGlobalKeyListener = (
+  keyCode: number,
+  callback: (mods: Modifiers) => void
+) => {
   const lastRun = useRef(Date.now());
 
   const handleKeydown = useCallback(
@@ -23,7 +31,13 @@ const useGlobalKeyListener = (keyCode: number, callback: () => void) => {
       const now = Date.now();
       if (event.keyCode === keyCode && now > lastRun.current + 100) {
         lastRun.current = now;
-        batchedUpdates(callback);
+
+        const modifiers = {
+          shift: event.shiftKey,
+          ctrl: event.ctrlKey,
+        };
+
+        batchedUpdates(() => callback(modifiers));
       }
     },
     [keyCode, callback]
