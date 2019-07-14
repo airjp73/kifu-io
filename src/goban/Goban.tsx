@@ -96,7 +96,7 @@ class GobanCanvas {
     const length = Math.max(Math.min(width, height), 100);
 
     this.unit = length / (this.size[0] + 1);
-    this.stoneRadius = (this.unit - 3) / 2;
+    this.stoneRadius = (this.unit - 1) / 2;
 
     setCanvasDimensionsWithCorrectScaling(this.boardLayer, length, length);
     setCanvasDimensionsWithCorrectScaling(this.stoneLayer, length, length);
