@@ -69,9 +69,6 @@ class GobanCanvas {
     this.blackFactory = spriteFactories.black;
     this.whiteFactory = spriteFactories.white;
     this.showCoords = showCoords;
-    boardLayer.getContext('2d').imageSmoothingEnabled = false;
-    stoneLayer.getContext('2d').imageSmoothingEnabled = false;
-    markupLayer.getContext('2d').imageSmoothingEnabled = false;
     this.init();
   }
 
@@ -101,6 +98,10 @@ class GobanCanvas {
     setCanvasDimensionsWithCorrectScaling(this.boardLayer, length, length);
     setCanvasDimensionsWithCorrectScaling(this.stoneLayer, length, length);
     setCanvasDimensionsWithCorrectScaling(this.markupLayer, length, length);
+
+    this.boardLayer.getContext('2d').imageSmoothingEnabled = false;
+    this.markupLayer.getContext('2d').imageSmoothingEnabled = false;
+    this.stoneLayer.getContext('2d').imageSmoothingEnabled = false;
   };
 
   private initSprites = () => {
@@ -120,7 +121,18 @@ class GobanCanvas {
     const yCoord = Math.floor(
       this.getCoord(y) - this.stoneRadius - stonePadding + 0.5
     );
-    ctx.drawImage(stone, xCoord, yCoord);
+    ctx.drawImage(
+      stone,
+      xCoord,
+      yCoord,
+      this.getStoneSize(),
+      this.getStoneSize()
+    );
+  };
+
+  private getStoneSize = () => {
+    const width = this.blackStone.style.width;
+    return parseInt(width.substr(0, width.length - 2));
   };
 
   public drawTriangle = (x: number, y: number, color: string) => {
