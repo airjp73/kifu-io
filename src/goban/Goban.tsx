@@ -236,7 +236,6 @@ class GobanCanvas {
     const ctx = this.boardLayer.getContext('2d');
 
     // Background color
-    const endRadius = this.boardLayer.height;
     const gradient = ctx.createLinearGradient(0.3, 0.3, 0.6, 0.6);
     gradient.addColorStop(0, '#EDBE79');
     gradient.addColorStop(1, '#E3B472');
