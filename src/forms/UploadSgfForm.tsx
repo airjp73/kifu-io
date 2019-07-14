@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'styled-components/macro';
 import { UploadCloud } from 'react-feather';
 import firebaseApp from 'api/firebase';
