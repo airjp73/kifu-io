@@ -11,6 +11,7 @@ import { landscapeMedia, portraitMedia, smallLandscapeMedia } from 'style';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownloadButton from 'components/SgfDownloadButton';
+import GobanKeyNavigation from './GobanKeyNavigation';
 
 interface GameViewProps {
   sgf: string;
@@ -82,6 +83,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   return (
     <GameViewContainer>
       <GoGameContextProvider gameTree={gameTree}>
+        <GobanKeyNavigation />
         <GameViewCaptures />
         <GameViewGoban>
           <GameAnnouncements />

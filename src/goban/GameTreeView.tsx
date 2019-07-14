@@ -13,6 +13,7 @@ import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
 import { useGoGameContext } from 'goban/GoGameContext';
 import { GameTree } from 'goban/parseSgf/normalizeGameTree';
 import { hotspotHighlight, stoneSelectionHighlight } from 'style';
+import useGlobalKeyListener, { KEY_CODES } from 'hooks/useGlobalKeyListener';
 
 interface GameTreeViewProps {
   className?: string;
@@ -524,6 +525,28 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
       previousScroll.current = event.currentTarget.scrollLeft;
     }
   };
+
+  useGlobalKeyListener(KEY_CODES.down, () => {
+    const [x, y] = getCurrentNodePos();
+    let targetNode: TreeCell;
+
+    for (let i = y + 1; !targetNode && i < treeGrid.length; i++) {
+      targetNode = treeGrid[i][x];
+    }
+
+    if (targetNode && targetNode.node) goToNode(targetNode.node);
+  });
+
+  useGlobalKeyListener(KEY_CODES.up, () => {
+    const [x, y] = getCurrentNodePos();
+    let targetNode: TreeCell;
+
+    for (let i = y - 1; !targetNode && i >= 0; i--) {
+      targetNode = treeGrid[i][x];
+    }
+
+    if (targetNode && targetNode.node) goToNode(targetNode.node);
+  });
 
   return (
     <ScrollContainer
