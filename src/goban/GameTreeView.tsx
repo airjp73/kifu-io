@@ -100,19 +100,26 @@ class GameTreeRenderer {
   };
 
   private createSetupNode = () => {
-    const radius = (3 * GameTreeRenderer.stoneRadius) / 4;
-    const padding = calculateStonePadding(radius);
+    const radius = GameTreeRenderer.stoneRadius * 0.75;
+    const padding = calculateStonePadding(radius) / 4;
     const black = createBlackStone(radius);
     const white = createWhiteStone(radius);
 
     const canvas = document.createElement('canvas');
-    canvas.width = radius * 4 + padding;
-    canvas.height = radius * 4 + padding;
+    const length = (radius + padding) * 5;
+    setCanvasDimensionsWithCorrectScaling(canvas, length, length);
 
     const ctx = canvas.getContext('2d');
 
-    ctx.drawImage(black, padding / 4, padding / 4);
-    ctx.drawImage(white, radius + padding / 4, radius / 2 + padding / 4);
+    const stoneSize = this.getStoneSize(black);
+    ctx.drawImage(black, padding, padding, stoneSize, stoneSize);
+    ctx.drawImage(
+      white,
+      radius + padding,
+      radius / 2 + padding,
+      stoneSize,
+      stoneSize
+    );
 
     return canvas;
   };
@@ -184,7 +191,13 @@ class GameTreeRenderer {
 
     const ctx = this.stoneLayer.getContext('2d');
     const [xCoord, yCoord] = this.getViewportCoords(x, y);
-    ctx.drawImage(stone, xCoord, yCoord);
+    ctx.drawImage(
+      stone,
+      xCoord,
+      yCoord,
+      this.getStoneSize(stone),
+      this.getStoneSize(stone)
+    );
 
     if (moveNumber) {
       const [textX, textY] = this.getViewportCoords(x + 1, y);
@@ -198,6 +211,11 @@ class GameTreeRenderer {
         textY + 2 * GameTreeRenderer.stoneRadius
       );
     }
+  };
+
+  private getStoneSize = (stone = this.blackStone) => {
+    const width = stone.style.width;
+    return parseInt(width.substr(0, width.length - 2));
   };
 
   public drawNodeConnection = (
