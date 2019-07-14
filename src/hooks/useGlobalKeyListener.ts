@@ -1,22 +1,29 @@
 import { useEffect, useCallback, useRef } from 'react';
+import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 
 export const KEY_CODES = {
-  upArrow: 38,
+  up: 38,
   down: 40,
   right: 39,
   left: 37,
 };
 
+/**
+ * Adds a global keydown listener.
+ *
+ * Since there are update-heavy callbacks using this, it uses `unstable_batchedUpdates`.
+ * This is important for performance reasons.
+ * React-redux uses it too, so hopefully they don't take it away 🤞.
+ */
 const useGlobalKeyListener = (keyCode: number, callback: () => void) => {
-  // Throttling because this is primarily used to update game state which is slow
   const lastRun = useRef(Date.now());
 
   const handleKeydown = useCallback(
     (event: KeyboardEvent) => {
       const now = Date.now();
-      if (event.keyCode === keyCode && now > lastRun.current + 250) {
+      if (event.keyCode === keyCode && now > lastRun.current + 100) {
         lastRun.current = now;
-        callback();
+        batchedUpdates(callback);
       }
     },
     [keyCode, callback]
