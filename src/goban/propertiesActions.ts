@@ -53,7 +53,9 @@ export const setPlayedOnDate = (dateValue: string[]) => {
   const results: PlayedOnDates = {};
   let currentYear: string, currentMonth: string, currentDay: number;
   dateStrings.forEach(dateString => {
-    const pieces = dateString.split('-');
+    // The SGF spec is strict about using dashes instead of slashes
+    // but I've seen at least one example of an sgf using slashes
+    const pieces = dateString.split(/-|\//);
     pieces.forEach((piece, index) => {
       if (piece.length === 4) {
         currentYear = piece;
