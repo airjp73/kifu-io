@@ -93,15 +93,11 @@ class GobanCanvas {
     const length = Math.max(Math.min(width, height), 100);
 
     this.unit = length / (this.size[0] + 1);
-    this.stoneRadius = (this.unit - 1) / 2;
+    this.stoneRadius = this.unit / 2.075;
 
     setCanvasDimensionsWithCorrectScaling(this.boardLayer, length, length);
     setCanvasDimensionsWithCorrectScaling(this.stoneLayer, length, length);
     setCanvasDimensionsWithCorrectScaling(this.markupLayer, length, length);
-
-    this.boardLayer.getContext('2d').imageSmoothingEnabled = false;
-    this.markupLayer.getContext('2d').imageSmoothingEnabled = false;
-    this.stoneLayer.getContext('2d').imageSmoothingEnabled = false;
   };
 
   private initSprites = () => {
@@ -355,7 +351,7 @@ class GobanCanvas {
     }
   };
 
-  private getCoord = (coord: number) => coord * this.unit + this.unit;
+  private getCoord = (coord: number) => coord * this.unit + this.unit - 0.5;
 }
 
 const BoardContainer = styled.div`
