@@ -69,9 +69,6 @@ class GobanCanvas {
     this.blackFactory = spriteFactories.black;
     this.whiteFactory = spriteFactories.white;
     this.showCoords = showCoords;
-    boardLayer.getContext('2d').imageSmoothingEnabled = false;
-    stoneLayer.getContext('2d').imageSmoothingEnabled = false;
-    markupLayer.getContext('2d').imageSmoothingEnabled = false;
     this.init();
   }
 
@@ -96,7 +93,7 @@ class GobanCanvas {
     const length = Math.max(Math.min(width, height), 100);
 
     this.unit = length / (this.size[0] + 1);
-    this.stoneRadius = (this.unit - 3) / 2;
+    this.stoneRadius = this.unit / 2.08;
 
     setCanvasDimensionsWithCorrectScaling(this.boardLayer, length, length);
     setCanvasDimensionsWithCorrectScaling(this.stoneLayer, length, length);
@@ -120,7 +117,18 @@ class GobanCanvas {
     const yCoord = Math.floor(
       this.getCoord(y) - this.stoneRadius - stonePadding + 0.5
     );
-    ctx.drawImage(stone, xCoord, yCoord);
+    ctx.drawImage(
+      stone,
+      xCoord,
+      yCoord,
+      this.getStoneSize(),
+      this.getStoneSize()
+    );
+  };
+
+  private getStoneSize = () => {
+    const width = this.blackStone.style.width;
+    return parseInt(width.substr(0, width.length - 2));
   };
 
   public drawTriangle = (x: number, y: number, color: string) => {
@@ -228,7 +236,10 @@ class GobanCanvas {
     const ctx = this.boardLayer.getContext('2d');
 
     // Background color
-    ctx.fillStyle = '#DDAE68';
+    const gradient = ctx.createLinearGradient(0.3, 0.3, 0.6, 0.6);
+    gradient.addColorStop(0, '#EDBE79');
+    gradient.addColorStop(1, '#E3B472');
+    ctx.fillStyle = gradient;
     ctx.fillRect(
       0,
       0,
@@ -311,26 +322,26 @@ class GobanCanvas {
         number > 0
           ? String.fromCharCode(charCode) + (number + 1).toString()
           : String.fromCharCode(charCode);
-      ctx.fillText(coordString, this.getCoord(x), this.getCoord(-0.5));
+      ctx.fillText(coordString, this.getCoord(x), this.getCoord(-0.65));
       ctx.fillText(
         coordString,
         this.getCoord(x),
-        this.getCoord(this.size[1] - 0.5)
+        this.getCoord(this.size[1] - 0.35)
       );
     }
 
     for (let y = 0; y < this.size[1]; ++y) {
       const coordString = (this.size[1] - y).toString();
-      ctx.fillText(coordString, this.getCoord(-0.5), this.getCoord(y));
+      ctx.fillText(coordString, this.getCoord(-0.65), this.getCoord(y));
       ctx.fillText(
         coordString,
-        this.getCoord(this.size[0] - 0.5),
+        this.getCoord(this.size[0] - 0.35),
         this.getCoord(y)
       );
     }
   };
 
-  private getCoord = (coord: number) => coord * this.unit + this.unit;
+  private getCoord = (coord: number) => coord * this.unit + this.unit - 0.5;
 }
 
 const BoardContainer = styled.div`

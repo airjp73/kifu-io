@@ -1,3 +1,5 @@
+import { setCanvasDimensionsWithCorrectScaling } from './util';
+
 export type StoneSpriteFactory = (
   raius: number,
   canvas?: HTMLCanvasElement
@@ -11,8 +13,8 @@ const createStoneSprite = (
   canvas: HTMLCanvasElement = document.createElement('canvas')
 ) => {
   const padding = calculateStonePadding(radius);
-  canvas.width = (radius + padding) * 2;
-  canvas.height = (radius + padding) * 2;
+  const length = (radius + padding) * 2;
+  setCanvasDimensionsWithCorrectScaling(canvas, length, length);
 
   const stoneCenter = radius + padding;
 
@@ -32,8 +34,8 @@ const createStoneSprite = (
 
   ctx.fillStyle = gradient;
   ctx.shadowBlur = radius * 0.1;
-  ctx.shadowOffsetX = radius * 0.07;
-  ctx.shadowOffsetY = radius * 0.07;
+  ctx.shadowOffsetX = radius * 0.11;
+  ctx.shadowOffsetY = radius * 0.11;
   ctx.shadowColor = 'rgba(0, 0, 0, .35)';
 
   ctx.beginPath();
