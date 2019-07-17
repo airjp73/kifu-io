@@ -57,12 +57,12 @@ const CloseFab = styled(FabTab)`
 
 const GameInfoAppearingArea = styled(AppearingTabContentArea)`
   ${portraitMedia} {
-    top: -300px;
+    top: -150px;
   }
 
   ${smallLandscapeMedia} {
     top: -25px;
-    left: -300px;
+    left: -250px;
   }
 `;
 
