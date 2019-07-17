@@ -17,6 +17,7 @@ import TabContent from '../components/Tabs/TabContent';
 import FabTab from 'components/Tabs/FabTab';
 import Fab from 'components/Fab';
 import AppearingTabContentArea from 'components/Tabs/AppearingTabContentArea';
+import { portraitMedia, smallLandscapeMedia } from 'style';
 
 interface FabGameInfoProps {
   className?: string;
@@ -26,8 +27,19 @@ const FabTabs = styled.div`
   display: flex;
   justify-content: center;
 
-  > * + * {
-    margin-left: 1rem;
+  ${portraitMedia} {
+    > * + * {
+      margin-left: 1rem;
+    }
+  }
+
+  ${smallLandscapeMedia} {
+    height: 100%;
+    flex-direction: column;
+
+    > * + * {
+      margin-top: 1rem;
+    }
   }
 `;
 
@@ -41,6 +53,17 @@ const CloseFab = styled(FabTab)`
   right: -0.5rem;
   top: -1rem;
   z-index: 1;
+`;
+
+const GameInfoAppearingArea = styled(AppearingTabContentArea)`
+  ${portraitMedia} {
+    top: -300px;
+  }
+
+  ${smallLandscapeMedia} {
+    top: -25px;
+    left: -300px;
+  }
 `;
 
 const TabContentContainer = styled.div`
@@ -82,11 +105,7 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
           <MoreVertical height="1rem" width="1rem" />
         </Fab>
       </FabTabs>
-      <AppearingTabContentArea
-        css={css`
-          top: -300px;
-        `}
-      >
+      <GameInfoAppearingArea originX={50} originY={100}>
         <CloseFab tabName={null}>
           <Minus />
         </CloseFab>
@@ -105,7 +124,7 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
             <GameProperties />
           </TabContentContainer>
         </TabContent>
-      </AppearingTabContentArea>
+      </GameInfoAppearingArea>
     </GameInfoTabs>
   );
 };

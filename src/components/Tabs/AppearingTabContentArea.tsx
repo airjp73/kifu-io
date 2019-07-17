@@ -6,6 +6,8 @@ import { useTabContext } from './Tabs';
 
 interface AppearingTabContentAreaProps {
   className?: string;
+  originX: number;
+  originY: number;
 }
 
 const TabContentContainer = animated(styled.div`
@@ -22,18 +24,20 @@ const TabContentContainer = animated(styled.div`
 const AppearingTabContentArea: React.FC<AppearingTabContentAreaProps> = ({
   children,
   className,
+  originX,
+  originY,
 }) => {
   const { currentTab } = useTabContext();
 
   const transitions = useTransition(currentTab, null, {
     from: {
-      clipPath: 'circle(0% at 50% 100%)',
+      clipPath: `circle(0% at ${originX}% ${originY}%)`,
     },
     enter: {
-      clipPath: 'circle(150% at 50% 100%)',
+      clipPath: `circle(150% at ${originX}% ${originY}%)`,
     },
     leave: {
-      clipPath: 'circle(0% at 50% 100%)',
+      clipPath: `circle(0% at ${originX}% ${originY}%)`,
     },
     config: {
       friction: 20,
