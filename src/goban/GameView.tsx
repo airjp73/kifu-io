@@ -13,8 +13,6 @@ import GameAnnouncements from './GameAnnouncements';
 import SgfDownloadButton from 'components/SgfDownloadButton';
 import GobanKeyNavigation from './GobanKeyNavigation';
 import MediaQueryView from 'components/MediaQueryView';
-import Fab from 'components/Fab';
-import { MessageSquare } from 'react-feather';
 import FabGameInfo from './FabGameInfo';
 
 interface GameViewProps {
@@ -36,6 +34,7 @@ const GameViewContainer = styled.div`
 
   ${GameViewControlButtons} {
     grid-area: buttons;
+    margin: 1rem 0;
   }
 
   ${GameViewGoban} {
@@ -77,7 +76,7 @@ const GameViewContainer = styled.div`
       'board'
       'info'
       'buttons';
-    grid-template-rows: min-content 4fr 2fr min-content;
+    grid-template-rows: min-content 1fr min-content min-content;
     grid-template-columns: 1fr;
   }
 `;
@@ -93,7 +92,11 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
           <GameAnnouncements />
         </GameViewGoban>
         <MediaQueryView maxWidth={1000}>
-          <FabGameInfo />
+          <FabGameInfo
+            css={css`
+              grid-area: info;
+            `}
+          />
         </MediaQueryView>
         <MediaQueryView minWidth={1000}>
           <GameViewInfo

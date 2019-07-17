@@ -3,7 +3,7 @@ import { useTabContext } from './Tabs';
 import Fab from 'components/Fab';
 
 interface FabTabProps {
-  tabName: string;
+  tabName?: string;
 }
 
 const FabTab: React.FunctionComponent<

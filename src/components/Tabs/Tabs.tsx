@@ -15,9 +15,14 @@ const TabsContainer = styled.div`
 `;
 
 interface TabsProps {
+  className?: string;
   defaultTab?: string;
 }
-const Tabs: React.FunctionComponent<TabsProps> = ({ children, defaultTab }) => {
+const Tabs: React.FunctionComponent<TabsProps> = ({
+  children,
+  className,
+  defaultTab,
+}) => {
   const [currentTab, setCurrentTab] = useState(defaultTab);
 
   return (
@@ -27,7 +32,7 @@ const Tabs: React.FunctionComponent<TabsProps> = ({ children, defaultTab }) => {
         setCurrentTab,
       }}
     >
-      <TabsContainer>{children}</TabsContainer>
+      <TabsContainer className={className}>{children}</TabsContainer>
     </TabContext.Provider>
   );
 };
