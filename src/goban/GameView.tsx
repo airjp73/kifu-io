@@ -39,6 +39,7 @@ const GameViewContainer = styled.div`
 
   ${GameViewControlButtons} {
     grid-area: buttons;
+    margin: 1rem 0;
   }
 
   ${GameViewGoban} {
