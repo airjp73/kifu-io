@@ -25,5 +25,5 @@ export const lightBorder = '1px solid rgba(0, 0, 0, .2)';
 export const landscapeMedia = '@media only screen and (orientation: landscape)';
 export const portraitMedia = '@media only screen and (orientation: portrait)';
 export const smallLandscapeMedia = `@media only screen and (orientation: landscape) and (max-width: 1000px)`;
-export const largLandscapeMedia =
+export const largeLandscapeMedia =
   '@media only screen and (orientation: landscape) and (min-width: 1000px)';

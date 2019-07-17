@@ -7,7 +7,7 @@ import GameControlButtons from 'goban/GameControlButtons';
 import GameInfo from 'goban/GameInfo';
 import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
-import { portraitMedia, smallLandscapeMedia, largLandscapeMedia } from 'style';
+import { portraitMedia, smallLandscapeMedia, largeLandscapeMedia } from 'style';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownloadButton from 'components/SgfDownloadButton';
@@ -17,6 +17,8 @@ import FabGameInfo from './FabGameInfo';
 import BackButton from './BackButton';
 import ForwardButton from './ForwardButton';
 import HideInSmallLandscape from 'components/HideInSmallLandscape';
+import WhiteCaptures from './WhiteCaptures';
+import BlackCaptures from './BlackCaptures';
 
 interface GameViewProps {
   sgf: string;
@@ -53,7 +55,7 @@ const GameViewContainer = styled.div`
     grid-area: info;
   }
 
-  ${largLandscapeMedia} {
+  ${largeLandscapeMedia} {
     width: fit-content;
     margin: auto;
     grid-template-areas:
@@ -69,7 +71,7 @@ const GameViewContainer = styled.div`
   ${smallLandscapeMedia} {
     width: 100%;
     grid-template-areas:
-      'capture capture capture ..'
+      'black board white .'
       'backButton board forwardButton info';
     grid-template-columns: min-content 1fr min-content min-content;
     grid-template-rows: min-content 1fr min-content;
@@ -94,12 +96,19 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
     <GameViewContainer>
       <GoGameContextProvider gameTree={gameTree}>
         <GobanKeyNavigation />
-        <GameViewCaptures />
+        <HideInSmallLandscape>
+          <GameViewCaptures />
+        </HideInSmallLandscape>
         <GameViewGoban>
           <GameAnnouncements />
         </GameViewGoban>
         <LandscapeView>
           <MediaQueryView maxWidth={1000}>
+            <BlackCaptures
+              css={css`
+                grid-area: black;
+              `}
+            />
             <div
               css={css`
                 grid-area: backButton;
@@ -119,6 +128,11 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         </MediaQueryView>
         <LandscapeView>
           <MediaQueryView maxWidth={1000}>
+            <WhiteCaptures
+              css={css`
+                grid-area: white;
+              `}
+            />
             <div
               css={css`
                 grid-area: forwardButton;
