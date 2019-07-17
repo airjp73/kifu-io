@@ -27,13 +27,13 @@ const AppearingTabContentArea: React.FC<AppearingTabContentAreaProps> = ({
 
   const transitions = useTransition(currentTab, null, {
     from: {
-      clipPath: 'circle(0%)',
+      clipPath: 'circle(0% at 50% 100%)',
     },
     enter: {
-      clipPath: 'circle(100%)',
+      clipPath: 'circle(150% at 50% 100%)',
     },
     leave: {
-      clipPath: 'circle(0%)',
+      clipPath: 'circle(0% at 50% 100%)',
     },
     config: {
       friction: 20,
