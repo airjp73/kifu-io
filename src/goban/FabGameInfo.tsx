@@ -1,5 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import useWindowDimensions from 'hooks/useWindowDimensions';
 import 'styled-components/macro';
 import { useGoGameContext } from 'goban/GoGameContext';
 import GameTreeView from 'goban/GameTreeView';
@@ -88,6 +89,9 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
       ? currentNode && currentNode.children && currentNode.children.length > 1
       : parentNode && parentNode.children && parentNode.children.length > 1;
 
+  const { height, width } = useWindowDimensions();
+  const isLandscape = height < width;
+
   return (
     <GameInfoTabs className={className}>
       <FabTabs>
@@ -105,7 +109,10 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
           <MoreVertical height="1rem" width="1rem" />
         </Fab>
       </FabTabs>
-      <GameInfoAppearingArea originX={50} originY={100}>
+      <GameInfoAppearingArea
+        originX={isLandscape ? 100 : 50}
+        originY={isLandscape ? 50 : 100}
+      >
         <CloseFab tabName={null}>
           <Minus />
         </CloseFab>

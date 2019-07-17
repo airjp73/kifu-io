@@ -118,11 +118,13 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
             <BlackCaptures
               css={css`
                 grid-area: black;
+                justify-content: flex-start;
               `}
             />
             <WhiteCaptures
               css={css`
                 grid-area: white;
+                justify-content: flex-start;
               `}
             />
             <ForwardButton
