@@ -15,6 +15,7 @@ export const primaryActive = 'rgba(121, 113, 234, .35)';
 export const panelActiveButton = 'rgba(80, 80, 80, .25)';
 export const panelHighlight = 'rgba(180, 180, 180, .25)';
 export const boxShadowLow = '1px 1px 3px rgba(0,0,0,.5)';
+export const boxShadowMed = '2px 2px 4px rgba(0,0,0,.5)';
 export const boxShadowDepressed = '1px 1px 2px rgba(0,0,0,.5)';
 
 export const headerHeight = '4rem';
@@ -24,3 +25,6 @@ export const lightBorder = '1px solid rgba(0, 0, 0, .2)';
 export const landscapeMedia = '@media only screen and (orientation: landscape)';
 export const portraitMedia = '@media only screen and (orientation: portrait)';
 export const smallLandscapeMedia = `@media only screen and (orientation: landscape) and (max-width: 1000px)`;
+export const mediumLandscapeMedia = `@media only screen and (orientation: landscape) and (max-width: 1200px)`;
+export const largeLandscapeMedia =
+  '@media only screen and (orientation: landscape) and (min-width: 1000px)';

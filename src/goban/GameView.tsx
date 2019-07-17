@@ -7,11 +7,18 @@ import GameControlButtons from 'goban/GameControlButtons';
 import GameInfo from 'goban/GameInfo';
 import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
-import { landscapeMedia, portraitMedia, smallLandscapeMedia } from 'style';
+import { portraitMedia, smallLandscapeMedia, largeLandscapeMedia } from 'style';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownloadButton from 'components/SgfDownloadButton';
 import GobanKeyNavigation from './GobanKeyNavigation';
+import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
+import FabGameInfo from './FabGameInfo';
+import BackButton from './BackButton';
+import ForwardButton from './ForwardButton';
+import HideInSmallLandscape from 'components/HideInSmallLandscape';
+import WhiteCaptures from './WhiteCaptures';
+import BlackCaptures from './BlackCaptures';
 
 interface GameViewProps {
   sgf: string;
@@ -32,6 +39,7 @@ const GameViewContainer = styled.div`
 
   ${GameViewControlButtons} {
     grid-area: buttons;
+    margin: 1rem 0;
   }
 
   ${GameViewGoban} {
@@ -42,7 +50,7 @@ const GameViewContainer = styled.div`
     grid-area: info;
   }
 
-  ${landscapeMedia} {
+  ${largeLandscapeMedia} {
     width: fit-content;
     margin: auto;
     grid-template-areas:
@@ -58,12 +66,11 @@ const GameViewContainer = styled.div`
   ${smallLandscapeMedia} {
     width: 100%;
     grid-template-areas:
-      'board capture'
-      'board info'
-      'board buttons';
-    grid-template-columns: minmax(35%, 65%) minmax(35%, 65%);
-    grid-template-rows: min-content 1fr max-content;
-    grid-column-gap: 1rem;
+      '. board black black'
+      '. board white white'
+      'backButton board forwardButton info';
+    grid-template-columns: min-content 1fr min-content min-content;
+    grid-template-rows: min-content min-content 1fr;
     box-sizing: border-box;
   }
 
@@ -73,35 +80,81 @@ const GameViewContainer = styled.div`
       'board'
       'info'
       'buttons';
-    grid-template-rows: min-content 4fr 2fr min-content;
+    grid-template-rows: min-content 1fr min-content min-content;
     grid-template-columns: 1fr;
   }
 `;
 
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
+  const otherTab = (
+    <div
+      css={css`
+        padding: 0.5rem;
+      `}
+    >
+      <SgfDownloadButton sgfContents={sgf} />
+    </div>
+  );
+
   return (
     <GameViewContainer>
       <GoGameContextProvider gameTree={gameTree}>
         <GobanKeyNavigation />
-        <GameViewCaptures />
+        <HideInSmallLandscape>
+          <GameViewCaptures />
+        </HideInSmallLandscape>
         <GameViewGoban>
           <GameAnnouncements />
         </GameViewGoban>
-        <GameViewInfo
-          otherTab={
-            <div
+        <LandscapeView>
+          <MediaQueryView maxWidth={1000}>
+            <BackButton
               css={css`
-                padding: 0.5rem;
+                grid-area: backButton;
+                width: min-content;
               `}
-            >
-              <SgfDownloadButton sgfContents={sgf} />
-            </div>
-          }
-        />
-        <GameViewControlButtons>
-          <AutoAdvanceControl />
-        </GameViewControlButtons>
+            />
+          </MediaQueryView>
+        </LandscapeView>
+        <MediaQueryView maxWidth={1000}>
+          <FabGameInfo
+            css={css`
+              grid-area: info;
+            `}
+            otherTab={otherTab}
+          />
+        </MediaQueryView>
+        <LandscapeView>
+          <MediaQueryView maxWidth={1000}>
+            <BlackCaptures
+              css={css`
+                grid-area: black;
+                justify-content: flex-start;
+              `}
+            />
+            <WhiteCaptures
+              css={css`
+                grid-area: white;
+                justify-content: flex-start;
+              `}
+            />
+            <ForwardButton
+              css={css`
+                grid-area: forwardButton;
+                width: min-content;
+              `}
+            />
+          </MediaQueryView>
+        </LandscapeView>
+        <MediaQueryView minWidth={1000}>
+          <GameViewInfo otherTab={otherTab} />
+        </MediaQueryView>
+        <HideInSmallLandscape>
+          <GameViewControlButtons>
+            <AutoAdvanceControl />
+          </GameViewControlButtons>
+        </HideInSmallLandscape>
       </GoGameContextProvider>
     </GameViewContainer>
   );
