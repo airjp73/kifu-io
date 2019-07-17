@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { highlight, panelBackground, smallLandscapeMedia } from 'style';
+import { highlight, panelBackground, mediumLandscapeMedia } from 'style';
 
 const Sidebar = styled.header`
   background-color: ${panelBackground};
@@ -8,7 +8,7 @@ const Sidebar = styled.header`
   color: ${highlight};
   transition: 0.25s width ease;
 
-  ${smallLandscapeMedia} {
+  ${mediumLandscapeMedia} {
     width: 3rem;
   }
 `;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 import 'styled-components/macro';
 import { useGoGameContext } from 'goban/GoGameContext';
@@ -58,12 +58,12 @@ const CloseFab = styled(FabTab)`
 
 const GameInfoAppearingArea = styled(AppearingTabContentArea)`
   ${portraitMedia} {
-    top: -150px;
+    top: -250px;
   }
 
   ${smallLandscapeMedia} {
     top: -25px;
-    left: -250px;
+    left: -400px;
   }
 `;
 

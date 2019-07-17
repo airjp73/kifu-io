@@ -5,7 +5,7 @@ import 'styled-components/macro';
 import { GitHub, LogIn, LogOut, UploadCloud } from 'react-feather';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
-import { highlight, panelHighlight, smallLandscapeMedia } from 'style';
+import { highlight, panelHighlight, mediumLandscapeMedia } from 'style';
 import LogoutButton from './LogoutButton';
 import GoIcon from './GoIcon';
 import MediaQueryView, { PortraitView, LandscapeView } from './MediaQueryView';
@@ -59,7 +59,7 @@ const NavListItem = styled.li`
     padding: 0 0.25rem;
   }
 
-  ${smallLandscapeMedia} {
+  ${mediumLandscapeMedia} {
     ${NavItemLabel} {
       display: none;
     }
@@ -114,10 +114,10 @@ const NavMenu: React.FunctionComponent = () => {
   return (
     <Nav data-testid="nav-menu">
       <LandscapeView>
-        <MediaQueryView minWidth={1000}>
+        <MediaQueryView minWidth={1200}>
           <h3>Kifu.io</h3>
         </MediaQueryView>
-        <MediaQueryView maxWidth={1000}>
+        <MediaQueryView maxWidth={1200}>
           <h4>Kifu</h4>
         </MediaQueryView>
       </LandscapeView>

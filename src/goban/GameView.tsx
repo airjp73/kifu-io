@@ -70,7 +70,7 @@ const GameViewContainer = styled.div`
       '. board white white'
       'backButton board forwardButton info';
     grid-template-columns: min-content 1fr min-content min-content;
-    grid-template-rows: min-content 1fr min-content min-content;
+    grid-template-rows: min-content min-content 1fr;
     box-sizing: border-box;
   }
 
