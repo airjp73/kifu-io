@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 interface TabContextValue {
-  currentTab: string;
+  currentTab?: string;
   setCurrentTab: (tab: string) => void;
 }
 const TabContext = React.createContext<TabContextValue>(null);
@@ -15,7 +15,7 @@ const TabsContainer = styled.div`
 `;
 
 interface TabsProps {
-  defaultTab: string;
+  defaultTab?: string;
 }
 const Tabs: React.FunctionComponent<TabsProps> = ({ children, defaultTab }) => {
   const [currentTab, setCurrentTab] = useState(defaultTab);

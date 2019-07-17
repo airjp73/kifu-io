@@ -12,6 +12,10 @@ import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownloadButton from 'components/SgfDownloadButton';
 import GobanKeyNavigation from './GobanKeyNavigation';
+import MediaQueryView from 'components/MediaQueryView';
+import Fab from 'components/Fab';
+import { MessageSquare } from 'react-feather';
+import FabGameInfo from './FabGameInfo';
 
 interface GameViewProps {
   sgf: string;
@@ -88,17 +92,22 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         <GameViewGoban>
           <GameAnnouncements />
         </GameViewGoban>
-        <GameViewInfo
-          otherTab={
-            <div
-              css={css`
-                padding: 0.5rem;
-              `}
-            >
-              <SgfDownloadButton sgfContents={sgf} />
-            </div>
-          }
-        />
+        <MediaQueryView maxWidth={1000}>
+          <FabGameInfo />
+        </MediaQueryView>
+        <MediaQueryView minWidth={1000}>
+          <GameViewInfo
+            otherTab={
+              <div
+                css={css`
+                  padding: 0.5rem;
+                `}
+              >
+                <SgfDownloadButton sgfContents={sgf} />
+              </div>
+            }
+          />
+        </MediaQueryView>
         <GameViewControlButtons>
           <AutoAdvanceControl />
         </GameViewControlButtons>
