@@ -28,11 +28,6 @@ const GameViewCaptures = styled(CaptureCounts)``;
 const GameViewControlButtons = styled(GameControlButtons)``;
 const GameViewInfo = styled(GameInfo)``;
 const GameViewGoban = styled(Goban)``;
-const landscapeButtonContainer = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
 
 const GameViewContainer = styled.div`
   display: grid;
@@ -44,7 +39,6 @@ const GameViewContainer = styled.div`
 
   ${GameViewControlButtons} {
     grid-area: buttons;
-    margin: 1rem 0;
   }
 
   ${GameViewGoban} {
@@ -71,11 +65,11 @@ const GameViewContainer = styled.div`
   ${smallLandscapeMedia} {
     width: 100%;
     grid-template-areas:
-      'black board white .'
+      '. board black black'
+      '. board white white'
       'backButton board forwardButton info';
     grid-template-columns: min-content 1fr min-content min-content;
-    grid-template-rows: min-content 1fr min-content;
-    grid-column-gap: 1rem;
+    grid-template-rows: min-content 1fr min-content min-content;
     box-sizing: border-box;
   }
 
@@ -104,19 +98,12 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         </GameViewGoban>
         <LandscapeView>
           <MediaQueryView maxWidth={1000}>
-            <BlackCaptures
-              css={css`
-                grid-area: black;
-              `}
-            />
-            <div
+            <BackButton
               css={css`
                 grid-area: backButton;
-                ${landscapeButtonContainer}
+                width: min-content;
               `}
-            >
-              <BackButton />
-            </div>
+            />
           </MediaQueryView>
         </LandscapeView>
         <MediaQueryView maxWidth={1000}>
@@ -128,19 +115,22 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         </MediaQueryView>
         <LandscapeView>
           <MediaQueryView maxWidth={1000}>
+            <BlackCaptures
+              css={css`
+                grid-area: black;
+              `}
+            />
             <WhiteCaptures
               css={css`
                 grid-area: white;
               `}
             />
-            <div
+            <ForwardButton
               css={css`
                 grid-area: forwardButton;
-                ${landscapeButtonContainer}
+                width: min-content;
               `}
-            >
-              <ForwardButton />
-            </div>
+            />
           </MediaQueryView>
         </LandscapeView>
         <MediaQueryView minWidth={1000}>

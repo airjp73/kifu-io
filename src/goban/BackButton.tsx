@@ -11,7 +11,7 @@ const BackButton: React.FunctionComponent<
 
   return (
     <FlatButton onClick={() => back(1)} {...props}>
-      <ChevronLeft height="5rem" width="5rem" color={dark} />
+      <ChevronLeft height="3rem" width="3rem" color={dark} />
     </FlatButton>
   );
 };

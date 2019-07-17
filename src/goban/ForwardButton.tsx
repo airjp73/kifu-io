@@ -11,7 +11,7 @@ const ForwardButton: React.FunctionComponent<
 
   return (
     <FlatButton onClick={() => forward(1)} {...props}>
-      <ChevronRight height="5rem" width="5rem" color={dark} />
+      <ChevronRight height="3rem" width="3rem" color={dark} />
     </FlatButton>
   );
 };
