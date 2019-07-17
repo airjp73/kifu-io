@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 import 'styled-components/macro';
 import { useGoGameContext } from 'goban/GoGameContext';
@@ -16,12 +16,12 @@ import GameComments from './GameComments';
 import Tabs from '../components/Tabs/Tabs';
 import TabContent from '../components/Tabs/TabContent';
 import FabTab from 'components/Tabs/FabTab';
-import Fab from 'components/Fab';
 import AppearingTabContentArea from 'components/Tabs/AppearingTabContentArea';
 import { portraitMedia, smallLandscapeMedia } from 'style';
 
 interface FabGameInfoProps {
   className?: string;
+  otherTab: React.ReactElement;
 }
 
 const FabTabs = styled.div`
@@ -74,6 +74,7 @@ const TabContentContainer = styled.div`
 
 const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
   className,
+  otherTab,
 }) => {
   const { gameState, getNode } = useGoGameContext();
   const { variationDisplay } = gameState.properties;
@@ -104,10 +105,9 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
         <FabTab tabName="more-info">
           <Info height="1rem" width="1rem" />
         </FabTab>
-        <Fab>
-          {/* TODO: Make speed-dail */}
+        <FabTab tabName="other">
           <MoreVertical height="1rem" width="1rem" />
-        </Fab>
+        </FabTab>
       </FabTabs>
       <GameInfoAppearingArea
         originX={isLandscape ? 100 : 50}
@@ -130,6 +130,9 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
           <TabContentContainer>
             <GameProperties />
           </TabContentContainer>
+        </TabContent>
+        <TabContent tab="other">
+          <TabContentContainer>{otherTab}</TabContentContainer>
         </TabContent>
       </GameInfoAppearingArea>
     </GameInfoTabs>

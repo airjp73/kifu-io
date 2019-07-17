@@ -86,6 +86,16 @@ const GameViewContainer = styled.div`
 
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
+  const otherTab = (
+    <div
+      css={css`
+        padding: 0.5rem;
+      `}
+    >
+      <SgfDownloadButton sgfContents={sgf} />
+    </div>
+  );
+
   return (
     <GameViewContainer>
       <GoGameContextProvider gameTree={gameTree}>
@@ -111,6 +121,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
             css={css`
               grid-area: info;
             `}
+            otherTab={otherTab}
           />
         </MediaQueryView>
         <LandscapeView>
@@ -136,17 +147,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
           </MediaQueryView>
         </LandscapeView>
         <MediaQueryView minWidth={1000}>
-          <GameViewInfo
-            otherTab={
-              <div
-                css={css`
-                  padding: 0.5rem;
-                `}
-              >
-                <SgfDownloadButton sgfContents={sgf} />
-              </div>
-            }
-          />
+          <GameViewInfo otherTab={otherTab} />
         </MediaQueryView>
         <HideInSmallLandscape>
           <GameViewControlButtons>
