@@ -29,7 +29,7 @@ const LogoutButton: React.FunctionComponent<
         }}
       >
         <LandscapeView>
-          <MediaQueryView minWidth={1000}>Log Out</MediaQueryView>
+          <MediaQueryView minWidth={1200}>Log Out</MediaQueryView>
         </LandscapeView>
         <PortraitView>Log Out</PortraitView>
       </FlatButton>
