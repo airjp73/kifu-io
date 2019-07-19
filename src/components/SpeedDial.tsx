@@ -11,10 +11,15 @@ const SpeedDial: React.FC = ({ children }) => {
   const isFirstRender = useIsFirstRender();
   const childrenArray = React.Children.toArray(children);
 
+  const fullyClosed = { transform: 'scale(0)', opacity: 0 };
+  const fullyOpen = { transform: 'scale(1)', opacity: 1 };
+  const openConfig = [fullyClosed, { transform: 'scale(1)' }, { opacity: 1 }];
+  const closeConfig = [fullyClosed];
   const [open, setOpen] = useState(false);
   const trail = useTrail(childrenArray.length, {
-    scale: open ? 1 : 0,
-    config: { velocity: isFirstRender ? 0 : 20, friction: 10, clamp: true },
+    from: (open || isFirstRender ? fullyClosed : fullyOpen) as any,
+    to: open ? openConfig : closeConfig,
+    config: { tension: 700, clamp: true },
   });
 
   const containerRef = useRef(null);
@@ -48,11 +53,8 @@ const SpeedDial: React.FC = ({ children }) => {
       >
         {trail.map((style, index) =>
           React.cloneElement(childrenArray[index] as React.ReactElement, {
-            style: {
-              transform: (style.scale as OpaqueInterpolation<
-                number
-              >).interpolate(s => `scale(${s})`),
-            },
+            key: index,
+            style,
           })
         )}
       </div>
