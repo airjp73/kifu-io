@@ -4,6 +4,7 @@ import { panelBackground, highlight, boxShadowLow, boxShadowMed } from 'style';
 
 interface FabProps {
   highlighted?: boolean;
+  size?: 'MEDIUM' | 'SMALL';
 }
 
 const inactiveSvg = css`
@@ -28,11 +29,16 @@ const breathingSvg = css`
   }
 `;
 
+const sizeDimensions = {
+  MEDIUM: '3rem',
+  SMALL: '2rem',
+};
+
 const Fab = styled.button<FabProps>`
   border-radius: 50%;
   background-color: ${panelBackground};
-  height: 3rem;
-  width: 3rem;
+  height: ${({ size }) => sizeDimensions[size]};
+  width: ${({ size }) => sizeDimensions[size]};
   border: none;
   outline: none;
   color: ${highlight};
@@ -54,5 +60,9 @@ const Fab = styled.button<FabProps>`
     }
   }
 `;
+
+Fab.defaultProps = {
+  size: 'MEDIUM',
+};
 
 export default Fab;
