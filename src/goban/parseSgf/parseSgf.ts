@@ -158,13 +158,16 @@ class SgfParser {
           gameNode.children = this.processGameTree(gameNode);
           return gameNode;
         } else {
+          gameNode.properties = gameNode.properties || {};
           const property = this.processPropertyName();
-          const values = [];
+
+          // If a property value already exists, add new values
+          const values = gameNode.properties[property] || [];
+
           while (this.peek() === '[') {
             values.push(this.processPropertyValue());
           }
 
-          gameNode.properties = gameNode.properties || {};
           gameNode.properties[property] = values;
         }
       }
