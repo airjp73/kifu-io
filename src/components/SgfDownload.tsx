@@ -7,7 +7,11 @@ interface SgfDownloadProps extends React.HTMLProps<HTMLAnchorElement> {
   sgfContents: string;
 }
 
-const SgfDownload: React.FC<SgfDownloadProps> = ({ sgfContents, ...rest }) => {
+const SgfDownload: React.FC<SgfDownloadProps> = ({
+  children,
+  sgfContents,
+  ...rest
+}) => {
   const { gameState } = useGoGameContext();
   const {
     playerBlack,
@@ -44,7 +48,9 @@ const SgfDownload: React.FC<SgfDownloadProps> = ({ sgfContents, ...rest }) => {
       href={downloadLink}
       download={fileName}
       {...rest}
-    />
+    >
+      {children}
+    </a>
   );
 };
 
