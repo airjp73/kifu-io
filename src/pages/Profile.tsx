@@ -17,6 +17,7 @@ import Button from 'components/Button';
 import { LandscapeView, PortraitView } from 'components/MediaQueryView';
 import SgfDownload from 'components/SgfDownload';
 import usePlayerNames from 'goban/usePlayerNames';
+import FlatButton from 'components/FlatButton';
 
 const firestore = firebaseApp.firestore();
 
@@ -112,7 +113,9 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
               }
             `}
           >
-            <SgfDownload sgfContents={sgfFile.contents} />
+            <FlatButton>
+              <SgfDownload sgfContents={sgfFile.contents}>Download</SgfDownload>
+            </FlatButton>
             <Link
               css={css`
                 text-decoration: none;

@@ -21,6 +21,8 @@ import HideInSmallLandscape from 'components/HideInSmallLandscape';
 import WhiteCaptures from './WhiteCaptures';
 import BlackCaptures from './BlackCaptures';
 import SpeedDial from 'components/SpeedDial';
+import SpeedDialOption from 'components/SpeedDialOption';
+import { Download } from 'react-feather';
 
 interface GameViewProps {
   sgf: string;
@@ -119,7 +121,11 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
             `}
           >
             <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}>
-              <SgfDownload sgfContents={sgf} />
+              <SpeedDialOption label="Download">
+                <SgfDownload sgfContents={sgf}>
+                  <Download height="1rem" width="1rem" />
+                </SgfDownload>
+              </SpeedDialOption>
             </SpeedDial>
           </FabGameInfo>
         </MediaQueryView>
@@ -148,7 +154,11 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         <MediaQueryView minWidth={1000}>
           <GameViewInfo>
             <SpeedDial direction="DOWN">
-              <SgfDownload sgfContents={sgf} />
+              <SpeedDialOption label="Download">
+                <SgfDownload sgfContents={sgf}>
+                  <Download height="1rem" width="1rem" />
+                </SgfDownload>
+              </SpeedDialOption>
             </SpeedDial>
           </GameViewInfo>
         </MediaQueryView>

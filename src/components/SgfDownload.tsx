@@ -1,19 +1,13 @@
-import React, { useMemo, ComponentProps } from 'react';
+import React, { useMemo } from 'react';
 import 'styled-components/macro';
 import { css } from 'styled-components';
 import { useGoGameContext } from 'goban/GoGameContext';
-import SpeedDialOption from './SpeedDialOption';
-import { Download } from 'react-feather';
 
-interface SgfDownloadProps
-  extends Partial<ComponentProps<typeof SpeedDialOption>> {
+interface SgfDownloadProps extends React.HTMLProps<HTMLAnchorElement> {
   sgfContents: string;
 }
 
-const SgfDownload: React.FC<SgfDownloadProps> = ({
-  sgfContents,
-  ...rest
-}) => {
+const SgfDownload: React.FC<SgfDownloadProps> = ({ sgfContents, ...rest }) => {
   const { gameState } = useGoGameContext();
   const {
     playerBlack,
@@ -41,19 +35,16 @@ const SgfDownload: React.FC<SgfDownloadProps> = ({
   )} vs ${formatPlayerName(playerWhite, teamWhite, rankWhite)}.sgf`;
 
   return (
-    <SpeedDialOption label="Download" {...rest}>
-      <a
-        css={css`
-          text-decoration: none;
-          color: inherit;
-          font-weight: bold;
-        `}
-        href={downloadLink}
-        download={fileName}
-      >
-        <Download height="1rem" width="1rem" />
-      </a>
-    </SpeedDialOption>
+    <a
+      css={css`
+        text-decoration: none;
+        color: inherit;
+        font-weight: bold;
+      `}
+      href={downloadLink}
+      download={fileName}
+      {...rest}
+    />
   );
 };
 
