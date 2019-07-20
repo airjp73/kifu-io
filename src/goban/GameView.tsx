@@ -19,6 +19,7 @@ import ForwardButton from './ForwardButton';
 import HideInSmallLandscape from 'components/HideInSmallLandscape';
 import WhiteCaptures from './WhiteCaptures';
 import BlackCaptures from './BlackCaptures';
+import SpeedDial from 'components/SpeedDial';
 
 interface GameViewProps {
   sgf: string;
@@ -87,15 +88,6 @@ const GameViewContainer = styled.div`
 
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
-  const otherTab = (
-    <div
-      css={css`
-        padding: 0.5rem;
-      `}
-    >
-      <SgfDownloadButton sgfContents={sgf} />
-    </div>
-  );
 
   return (
     <GameViewContainer>
@@ -122,8 +114,11 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
             css={css`
               grid-area: info;
             `}
-            otherTab={otherTab}
-          />
+          >
+            <SpeedDial>
+              <SgfDownloadButton sgfContents={sgf} />
+            </SpeedDial>
+          </FabGameInfo>
         </MediaQueryView>
         <LandscapeView>
           <MediaQueryView maxWidth={1000}>
@@ -148,7 +143,11 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
           </MediaQueryView>
         </LandscapeView>
         <MediaQueryView minWidth={1000}>
-          <GameViewInfo otherTab={otherTab} />
+          <GameViewInfo>
+            <SpeedDial direction="DOWN">
+              <SgfDownloadButton sgfContents={sgf} />
+            </SpeedDial>
+          </GameViewInfo>
         </MediaQueryView>
         <HideInSmallLandscape>
           <GameViewControlButtons>

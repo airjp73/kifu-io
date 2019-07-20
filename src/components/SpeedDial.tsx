@@ -7,7 +7,11 @@ import useClickOutside from 'hooks/useClickOutside';
 import useIsFirstRender from 'hooks/useIsFirstRender';
 import Fab from './Fab';
 
-const SpeedDial: React.FC = ({ children }) => {
+interface SpeedDialProps {
+  direction?: 'UP' | 'DOWN';
+}
+
+const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
   const isFirstRender = useIsFirstRender();
   const childrenArray = React.Children.toArray(children);
 
@@ -33,22 +37,34 @@ const SpeedDial: React.FC = ({ children }) => {
       ref={containerRef}
     >
       <Fab onClick={() => setOpen(prevOpen => !prevOpen)}>
-        <MoreVertical height="1rem" width="1rem" />
+        <MoreVertical height="1.5rem" width="1.5rem" />
       </Fab>
 
       <div
         css={css`
           position: absolute;
-          bottom: 100%;
           display: flex;
-          flex-direction: column-reverse;
           align-items: center;
           width: 100%;
           ${!open && 'pointer-events: none;'}
 
-          > * {
-            margin-bottom: 0.5rem;
-          }
+          ${direction === 'UP'
+            ? css`
+                bottom: 100%;
+                flex-direction: column-reverse;
+
+                > * {
+                  margin-bottom: 0.5rem;
+                }
+              `
+            : css`
+                top: 100%;
+                flex-direction: column;
+
+                > * {
+                  margin-top: 0.5rem;
+                }
+              `}
         `}
       >
         {trail.map((style, index) =>
@@ -60,6 +76,10 @@ const SpeedDial: React.FC = ({ children }) => {
       </div>
     </div>
   );
+};
+
+SpeedDial.defaultProps = {
+  direction: 'UP',
 };
 
 export default SpeedDial;

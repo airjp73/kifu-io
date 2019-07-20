@@ -18,10 +18,11 @@ const Label = animated(styled.span`
   background-color: ${darkFaded};
   color: ${highlight};
   right: calc(100% + 0.5em);
-  top: 0;
+  top: 0.1rem;
   padding: 0.5rem;
   border-radius: 5px;
   white-space: nowrap;
+  cursor: default;
 `);
 
 const SpeedDialOption: React.FC<SpeedDialOptionProps> = ({
