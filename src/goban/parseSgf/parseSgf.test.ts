@@ -157,11 +157,11 @@ describe('parseSgf', () => {
     ],
     [
       'Soft linebreaks',
-      `(;C[a\\${LF}b\\${CR}c\\${LF}${CR}d\\${CR}${LF}e])`,
+      `(;C[ab\\${LF}cd\\${CR}ef\\${LF}${CR}gh\\${CR}${LF}ij${CR}kl])`,
       [
         {
           properties: {
-            C: 'abcde',
+            C: [`abcdefghij${CR}kl`],
           },
         },
       ],

@@ -217,7 +217,7 @@ class SgfParser {
             (charCode === CR_CODE && lookAheadCharCode === LF_CODE)
           ) {
             // Combining a CR and an LF counts as one newline so we need to consume the extra
-            this.next();
+            this.next(false);
             continue;
           }
           if (charCode === LF_CODE || charCode === CR_CODE) {
