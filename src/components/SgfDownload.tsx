@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
 import 'styled-components/macro';
 import { css } from 'styled-components';
-import FlatButton from 'components/FlatButton';
 import { useGoGameContext } from 'goban/GoGameContext';
 
-interface SgfDownloadButtonProps {
+interface SgfDownloadProps extends React.HTMLProps<HTMLAnchorElement> {
   sgfContents: string;
 }
 
-const SgfDownloadButton: React.FC<SgfDownloadButtonProps> = ({
+const SgfDownload: React.FC<SgfDownloadProps> = ({
+  children,
   sgfContents,
+  ...rest
 }) => {
   const { gameState } = useGoGameContext();
   const {
@@ -38,20 +39,19 @@ const SgfDownloadButton: React.FC<SgfDownloadButtonProps> = ({
   )} vs ${formatPlayerName(playerWhite, teamWhite, rankWhite)}.sgf`;
 
   return (
-    <FlatButton>
-      <a
-        css={css`
-          text-decoration: none;
-          color: inherit;
-          font-weight: bold;
-        `}
-        href={downloadLink}
-        download={fileName}
-      >
-        Download Sgf
-      </a>
-    </FlatButton>
+    <a
+      css={css`
+        text-decoration: none;
+        color: inherit;
+        font-weight: bold;
+      `}
+      href={downloadLink}
+      download={fileName}
+      {...rest}
+    >
+      {children}
+    </a>
   );
 };
 
-export default SgfDownloadButton;
+export default SgfDownload;

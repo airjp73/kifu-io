@@ -5,13 +5,7 @@ import 'styled-components/macro';
 import { useGoGameContext } from 'goban/GoGameContext';
 import GameTreeView from 'goban/GameTreeView';
 import GameProperties from 'goban/GameProperties';
-import {
-  MessageSquare,
-  Info,
-  GitBranch,
-  MoreVertical,
-  Minus,
-} from 'react-feather';
+import { MessageSquare, Info, GitBranch, Minus } from 'react-feather';
 import GameComments from './GameComments';
 import Tabs from '../components/Tabs/Tabs';
 import TabContent from '../components/Tabs/TabContent';
@@ -21,7 +15,6 @@ import { portraitMedia, smallLandscapeMedia } from 'style';
 
 interface FabGameInfoProps {
   className?: string;
-  otherTab: React.ReactElement;
 }
 
 const FabTabs = styled.div`
@@ -73,8 +66,8 @@ const TabContentContainer = styled.div`
 `;
 
 const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
+  children,
   className,
-  otherTab,
 }) => {
   const { gameState, getNode } = useGoGameContext();
   const { variationDisplay } = gameState.properties;
@@ -100,14 +93,12 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
           <MessageSquare />
         </FabTab>
         <FabTab tabName="game-tree" highlighted={gameTreeIsHighlighted}>
-          <GitBranch height="1rem" width="1rem" />
+          <GitBranch height="1.5rem" width="1.5rem" />
         </FabTab>
         <FabTab tabName="more-info">
-          <Info height="1rem" width="1rem" />
+          <Info height="1.5rem" width="1.5rem" />
         </FabTab>
-        <FabTab tabName="other">
-          <MoreVertical height="1rem" width="1rem" />
-        </FabTab>
+        {children}
       </FabTabs>
       <GameInfoAppearingArea
         originX={isLandscape ? 100 : 50}
@@ -130,9 +121,6 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
           <TabContentContainer>
             <GameProperties />
           </TabContentContainer>
-        </TabContent>
-        <TabContent tab="other">
-          <TabContentContainer>{otherTab}</TabContentContainer>
         </TabContent>
       </GameInfoAppearingArea>
     </GameInfoTabs>

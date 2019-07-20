@@ -1,24 +1,12 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+import styled, { css } from 'styled-components';
 import 'styled-components/macro';
-import { animated, useSpring } from 'react-spring';
 import { useGoGameContext } from 'goban/GoGameContext';
 import { boxShadowLow, portraitMedia, landscapeMedia } from 'style';
-import MediaQueryView, {
-  LandscapeView,
-  PortraitView,
-} from 'components/MediaQueryView';
-import FlatButton from 'components/FlatButton';
+import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
 import GameTreeView from 'goban/GameTreeView';
 import GameProperties from 'goban/GameProperties';
-import {
-  MessageSquare,
-  Info,
-  GitBranch,
-  ChevronUp,
-  ChevronDown,
-  MoreVertical,
-} from 'react-feather';
+import { MessageSquare, Info, GitBranch } from 'react-feather';
 import GameComments from './GameComments';
 import ButtonTab from '../components/Tabs/ButtonTab';
 import Tabs from '../components/Tabs/Tabs';
@@ -30,11 +18,6 @@ interface GameInfoProps {
   className?: string;
   otherTab?: React.ReactElement;
 }
-
-const ExpandButton = styled(FlatButton)`
-  padding: 0.5rem;
-  margin-left: auto;
-`;
 
 const GameInfoWrapper = styled.div`
   position: relative;
@@ -67,19 +50,13 @@ const GameInfoWrapper = styled.div`
 `;
 
 const GameInfo: React.FunctionComponent<GameInfoProps> = ({
+  children,
   className,
   otherTab,
 }) => {
   const { gameState, getNode } = useGoGameContext();
   const { variationDisplay } = gameState.properties;
   const { node } = gameState;
-  const [expanded, setExpanded] = useState(false);
-  const contentAreaStyle = useSpring({
-    top: expanded ? '-30%' : '0vh',
-    boxShadow: expanded
-      ? '0px -1px 3px rgba(0,0,0,.5)'
-      : '0px 0px 0px rgba(0,0,0,.5)',
-  });
 
   const showVariationFor = variationDisplay
     ? variationDisplay.showFor
@@ -93,69 +70,39 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({
 
   return (
     <GameInfoWrapper className={className}>
-      <animated.div style={contentAreaStyle}>
+      <div>
         <Tabs defaultTab="comments">
           <TabBar>
-            <LandscapeView>
-              <ButtonTab
-                tabName="comments"
-                leftIcon={<MessageSquare height="1rem" width="1rem" />}
-                label="Comments"
-                primary={!!gameState.moveState.comment}
-              />
-              <MediaQueryView maxHeight={600}>
-                <ButtonTab
-                  tabName="game-tree"
-                  leftIcon={<GitBranch height="1rem" width="1rem" />}
-                  label="Tree"
-                  primary={gameTreeIsHighlighted}
-                />
-              </MediaQueryView>
-              <ButtonTab
-                tabName="more-info"
-                leftIcon={<Info height="1rem" width="1rem" />}
-                label="Info"
-              />
-              {otherTab && (
-                <ButtonTab
-                  tabName="other"
-                  leftIcon={<MoreVertical height="1rem" width="1rem" />}
-                />
-              )}
-            </LandscapeView>
-            <PortraitView>
-              <ButtonTab
-                tabName="comments"
-                leftIcon={<MessageSquare height="1rem" width="1rem" />}
-                label="Comments"
-                primary={!!gameState.moveState.comment}
-              />
+            <ButtonTab
+              tabName="comments"
+              leftIcon={<MessageSquare height="1rem" width="1rem" />}
+              label="Comments"
+              primary={!!gameState.moveState.comment}
+            />
+            <MediaQueryView maxHeight={600}>
               <ButtonTab
                 tabName="game-tree"
                 leftIcon={<GitBranch height="1rem" width="1rem" />}
                 label="Tree"
                 primary={gameTreeIsHighlighted}
               />
-              <ButtonTab
-                tabName="more-info"
-                leftIcon={<Info height="1rem" width="1rem" />}
-                label="Info"
-              />
-              {otherTab && (
-                <ButtonTab
-                  tabName="other"
-                  leftIcon={<MoreVertical height="1rem" width="1rem" />}
-                />
-              )}
-              <ExpandButton onClick={() => setExpanded(prev => !prev)}>
-                {expanded ? (
-                  <ChevronDown height="1rem" width="1rem" />
-                ) : (
-                  <ChevronUp height="1rem" width="1rem" />
-                )}
-              </ExpandButton>
-            </PortraitView>
+            </MediaQueryView>
+            <ButtonTab
+              tabName="more-info"
+              leftIcon={<Info height="1rem" width="1rem" />}
+              label="Info"
+            />
           </TabBar>
+          <div
+            css={css`
+              position: absolute;
+              right: 1rem;
+              top: 0.5rem;
+              z-index: 1;
+            `}
+          >
+            {children}
+          </div>
           <TabContentArea>
             <TabContent tab="comments">
               <GameComments />
@@ -178,7 +125,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({
             />
           </MediaQueryView>
         </LandscapeView>
-      </animated.div>
+      </div>
     </GameInfoWrapper>
   );
 };

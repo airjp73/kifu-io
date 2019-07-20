@@ -8,9 +8,10 @@ import GameInfo from 'goban/GameInfo';
 import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
 import { portraitMedia, smallLandscapeMedia, largeLandscapeMedia } from 'style';
+import useWindowDimensions from 'hooks/useWindowDimensions';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
-import SgfDownloadButton from 'components/SgfDownloadButton';
+import SgfDownload from 'components/SgfDownload';
 import GobanKeyNavigation from './GobanKeyNavigation';
 import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
 import FabGameInfo from './FabGameInfo';
@@ -19,6 +20,9 @@ import ForwardButton from './ForwardButton';
 import HideInSmallLandscape from 'components/HideInSmallLandscape';
 import WhiteCaptures from './WhiteCaptures';
 import BlackCaptures from './BlackCaptures';
+import SpeedDial from 'components/SpeedDial';
+import SpeedDialOption from 'components/SpeedDialOption';
+import { Download } from 'react-feather';
 
 interface GameViewProps {
   sgf: string;
@@ -87,15 +91,8 @@ const GameViewContainer = styled.div`
 
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
-  const otherTab = (
-    <div
-      css={css`
-        padding: 0.5rem;
-      `}
-    >
-      <SgfDownloadButton sgfContents={sgf} />
-    </div>
-  );
+  const { height, width } = useWindowDimensions();
+  const isLandscape = height < width;
 
   return (
     <GameViewContainer>
@@ -122,8 +119,15 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
             css={css`
               grid-area: info;
             `}
-            otherTab={otherTab}
-          />
+          >
+            <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}>
+              <SpeedDialOption label="Download">
+                <SgfDownload sgfContents={sgf}>
+                  <Download height="1rem" width="1rem" />
+                </SgfDownload>
+              </SpeedDialOption>
+            </SpeedDial>
+          </FabGameInfo>
         </MediaQueryView>
         <LandscapeView>
           <MediaQueryView maxWidth={1000}>
@@ -148,7 +152,15 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
           </MediaQueryView>
         </LandscapeView>
         <MediaQueryView minWidth={1000}>
-          <GameViewInfo otherTab={otherTab} />
+          <GameViewInfo>
+            <SpeedDial direction="DOWN">
+              <SpeedDialOption label="Download">
+                <SgfDownload sgfContents={sgf}>
+                  <Download height="1rem" width="1rem" />
+                </SgfDownload>
+              </SpeedDialOption>
+            </SpeedDial>
+          </GameViewInfo>
         </MediaQueryView>
         <HideInSmallLandscape>
           <GameViewControlButtons>
