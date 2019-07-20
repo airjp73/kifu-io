@@ -41,7 +41,7 @@ const SgfDownloadButton: React.FC<SgfDownloadButtonProps> = ({
   )} vs ${formatPlayerName(playerWhite, teamWhite, rankWhite)}.sgf`;
 
   return (
-    <SpeedDialOption label="Download SGF" {...rest}>
+    <SpeedDialOption label="Download" {...rest}>
       <a
         css={css`
           text-decoration: none;

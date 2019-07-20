@@ -10,25 +10,37 @@ const AnimatedFab = animated(Fab);
 interface SpeedDialOptionProps
   extends React.ComponentProps<typeof AnimatedFab> {
   label: string;
+  labelAbove?: boolean;
 }
 
-const Label = animated(styled.span`
+const Label = animated(styled.span<{ labelAbove?: boolean }>`
   position: absolute;
   font-size: 0.7rem;
   background-color: ${darkFaded};
   color: ${highlight};
   right: calc(100% + 0.5em);
-  top: 0.4rem;
   padding: 0.5rem;
   border-radius: 5px;
   white-space: nowrap;
   cursor: default;
+  top: 0.4rem;
+
+  ${({ labelAbove }) =>
+    labelAbove &&
+    css`
+      bottom: calc(100% + 0.5rem);
+      top: unset;
+      left: -30%;
+      right: -30%;
+      text-align: center;
+    `}
 `);
 
 const SpeedDialOption: React.FC<SpeedDialOptionProps> = ({
   children,
   label,
-  style,
+  labelAbove,
+  style = {},
   ...rest
 }) => (
   <span
@@ -39,7 +51,9 @@ const SpeedDialOption: React.FC<SpeedDialOptionProps> = ({
     <AnimatedFab size="SMALL" style={{ transform: style.transform }} {...rest}>
       {children}
     </AnimatedFab>
-    <Label style={{ opacity: style.opacity }}>{label}</Label>
+    <Label style={{ opacity: style.opacity }} labelAbove={labelAbove}>
+      {label}
+    </Label>
   </span>
 );
 

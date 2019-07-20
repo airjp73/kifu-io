@@ -8,6 +8,7 @@ import GameInfo from 'goban/GameInfo';
 import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
 import { portraitMedia, smallLandscapeMedia, largeLandscapeMedia } from 'style';
+import useWindowDimensions from 'hooks/useWindowDimensions';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownloadButton from 'components/SgfDownloadButton';
@@ -88,6 +89,8 @@ const GameViewContainer = styled.div`
 
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
+  const { height, width } = useWindowDimensions();
+  const isLandscape = height < width;
 
   return (
     <GameViewContainer>
@@ -115,7 +118,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
               grid-area: info;
             `}
           >
-            <SpeedDial>
+            <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}>
               <SgfDownloadButton sgfContents={sgf} />
             </SpeedDial>
           </FabGameInfo>

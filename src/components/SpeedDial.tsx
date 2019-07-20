@@ -8,8 +8,36 @@ import useIsFirstRender from 'hooks/useIsFirstRender';
 import Fab from './Fab';
 
 interface SpeedDialProps {
-  direction?: 'UP' | 'DOWN';
+  direction?: 'UP' | 'DOWN' | 'LEFT';
 }
+
+const directionStyles = {
+  UP: css`
+    bottom: 100%;
+    flex-direction: column-reverse;
+
+    > * {
+      margin-bottom: 0.5rem;
+    }
+  `,
+  DOWN: css`
+    top: 100%;
+    flex-direction: column;
+
+    > * {
+      margin-top: 0.5rem;
+    }
+  `,
+  LEFT: css`
+    right: 100%;
+    flex-direction: row-reverse;
+    top: 0.3rem;
+
+    > * {
+      margin-right: 2rem;
+    }
+  `,
+};
 
 const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
   const isFirstRender = useIsFirstRender();
@@ -47,29 +75,13 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
           align-items: center;
           width: 100%;
           ${!open && 'pointer-events: none;'}
-
-          ${direction === 'UP'
-            ? css`
-                bottom: 100%;
-                flex-direction: column-reverse;
-
-                > * {
-                  margin-bottom: 0.5rem;
-                }
-              `
-            : css`
-                top: 100%;
-                flex-direction: column;
-
-                > * {
-                  margin-top: 0.5rem;
-                }
-              `}
+          ${directionStyles[direction]}
         `}
       >
         {trail.map((style, index) =>
           React.cloneElement(childrenArray[index] as React.ReactElement, {
             key: index,
+            labelAbove: direction === 'LEFT',
             style,
           })
         )}
