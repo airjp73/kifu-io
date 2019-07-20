@@ -55,7 +55,7 @@ const BlackCaptures: React.FunctionComponent<BlackCapturesProps> = ({
       <canvas ref={blackStoneRef} />
       <NameAndCaptures>
         <h5>
-          {playerBlack || teamBlack} {rankBlack}
+          {playerBlack || teamBlack || 'Black'} {rankBlack}
         </h5>
         <span>
           {gameState.captureCounts.b} Capture
