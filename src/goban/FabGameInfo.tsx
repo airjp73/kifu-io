@@ -5,14 +5,13 @@ import 'styled-components/macro';
 import { useGoGameContext } from 'goban/GoGameContext';
 import GameTreeView from 'goban/GameTreeView';
 import GameProperties from 'goban/GameProperties';
-import { MessageSquare, Info, GitBranch, Minus, Download } from 'react-feather';
+import { MessageSquare, Info, GitBranch, Minus } from 'react-feather';
 import GameComments from './GameComments';
 import Tabs from '../components/Tabs/Tabs';
 import TabContent from '../components/Tabs/TabContent';
 import FabTab from 'components/Tabs/FabTab';
 import AppearingTabContentArea from 'components/Tabs/AppearingTabContentArea';
 import { portraitMedia, smallLandscapeMedia } from 'style';
-import SpeedDial from 'components/SpeedDial';
 
 interface FabGameInfoProps {
   className?: string;

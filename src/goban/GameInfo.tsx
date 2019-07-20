@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import 'styled-components/macro';
-import { animated, useSpring } from 'react-spring';
 import { useGoGameContext } from 'goban/GoGameContext';
 import { boxShadowLow, portraitMedia, landscapeMedia } from 'style';
 import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
@@ -58,13 +57,6 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({
   const { gameState, getNode } = useGoGameContext();
   const { variationDisplay } = gameState.properties;
   const { node } = gameState;
-  const [expanded, setExpanded] = useState(false);
-  const contentAreaStyle = useSpring({
-    top: expanded ? '-30%' : '0vh',
-    boxShadow: expanded
-      ? '0px -1px 3px rgba(0,0,0,.5)'
-      : '0px 0px 0px rgba(0,0,0,.5)',
-  });
 
   const showVariationFor = variationDisplay
     ? variationDisplay.showFor
@@ -78,7 +70,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({
 
   return (
     <GameInfoWrapper className={className}>
-      <animated.div style={contentAreaStyle}>
+      <div>
         <Tabs defaultTab="comments">
           <TabBar>
             <ButtonTab
@@ -133,7 +125,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({
             />
           </MediaQueryView>
         </LandscapeView>
-      </animated.div>
+      </div>
     </GameInfoWrapper>
   );
 };
