@@ -31,7 +31,7 @@ const breathingSvg = css`
 
 const sizeDimensions = {
   MEDIUM: '3rem',
-  SMALL: '2rem',
+  SMALL: '2.5rem',
 };
 
 const Fab = styled.button<FabProps>`
