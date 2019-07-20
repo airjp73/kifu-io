@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useTrail, OpaqueInterpolation } from 'react-spring';
+import React, { useState, useRef } from 'react';
+import { useTrail } from 'react-spring';
 import { css } from 'styled-components';
 import 'styled-components/macro';
-import { MoreVertical } from 'react-feather';
+import { MoreHorizontal } from 'react-feather';
 import useClickOutside from 'hooks/useClickOutside';
 import useIsFirstRender from 'hooks/useIsFirstRender';
 import Fab from './Fab';
@@ -37,7 +37,7 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
       ref={containerRef}
     >
       <Fab onClick={() => setOpen(prevOpen => !prevOpen)}>
-        <MoreVertical height="1.5rem" width="1.5rem" />
+        <MoreHorizontal height="1.5rem" width="1.5rem" />
       </Fab>
 
       <div
