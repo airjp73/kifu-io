@@ -55,7 +55,7 @@ const WhiteCaptures: React.FunctionComponent<WhiteCapturesProps> = ({
       <canvas ref={whiteStoneRef} />
       <NameAndCaptures>
         <h5>
-          {playerWhite || teamWhite} {rankWhite}
+          {playerWhite || teamWhite || 'White'} {rankWhite}
         </h5>
         <span>
           {gameState.captureCounts.w} Capture

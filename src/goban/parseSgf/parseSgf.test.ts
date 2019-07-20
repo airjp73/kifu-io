@@ -154,16 +154,28 @@ describe('parseSgf', () => {
           },
         },
       ],
+    ],
+    [
+      'Soft linebreaks',
+      `(;C[ab\\${LF}cd\\${CR}ef\\${LF}${CR}gh\\${CR}${LF}ij${CR}kl])`,
       [
-        'Soft linebreaks',
-        `(;C[a\\${LF}b\\${CR}c\\${LF}${CR}d\\${CR}${LF}e])`,
-        [
-          {
-            properties: {
-              C: 'abcde',
-            },
+        {
+          properties: {
+            C: [`abcdefghij${CR}kl`],
           },
-        ],
+        },
+      ],
+    ],
+    [
+      'Duplicate properties',
+      '(;AB[aa]AW[bb]AB[cc][dd])',
+      [
+        {
+          properties: {
+            AB: ['aa', 'cc', 'dd'],
+            AW: ['bb'],
+          },
+        },
       ],
     ],
   ]).describe('should successfully parse sgf', (description, sgf, expected) => {

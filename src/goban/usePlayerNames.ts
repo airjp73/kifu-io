@@ -12,9 +12,10 @@ const usePlayerNames = () => {
   } = gameState.properties;
 
   const blackRank = rankBlack ? `${rankBlack} ` : '';
+  const blackPlayer = playerBlack || teamBlack || 'Black';
+  const whitePlayer = playerWhite || teamWhite || 'White';
 
-  return `${playerBlack || teamBlack} ${blackRank} vs ${playerWhite ||
-    teamWhite} ${rankWhite || ''}`;
+  return `${blackPlayer} ${blackRank} vs ${whitePlayer} ${rankWhite || ''}`;
 };
 
 export default usePlayerNames;

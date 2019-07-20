@@ -158,13 +158,16 @@ class SgfParser {
           gameNode.children = this.processGameTree(gameNode);
           return gameNode;
         } else {
+          gameNode.properties = gameNode.properties || {};
           const property = this.processPropertyName();
-          const values = [];
+
+          // If a property value already exists, add new values
+          const values = gameNode.properties[property] || [];
+
           while (this.peek() === '[') {
             values.push(this.processPropertyValue());
           }
 
-          gameNode.properties = gameNode.properties || {};
           gameNode.properties[property] = values;
         }
       }
@@ -214,7 +217,7 @@ class SgfParser {
             (charCode === CR_CODE && lookAheadCharCode === LF_CODE)
           ) {
             // Combining a CR and an LF counts as one newline so we need to consume the extra
-            this.next();
+            this.next(false);
             continue;
           }
           if (charCode === LF_CODE || charCode === CR_CODE) {
