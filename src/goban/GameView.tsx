@@ -11,7 +11,7 @@ import { portraitMedia, smallLandscapeMedia, largeLandscapeMedia } from 'style';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
-import SgfDownloadButton from 'components/SgfDownloadButton';
+import SgfDownload from 'components/SgfDownload';
 import GobanKeyNavigation from './GobanKeyNavigation';
 import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
 import FabGameInfo from './FabGameInfo';
@@ -119,7 +119,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
             `}
           >
             <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}>
-              <SgfDownloadButton sgfContents={sgf} />
+              <SgfDownload sgfContents={sgf} />
             </SpeedDial>
           </FabGameInfo>
         </MediaQueryView>
@@ -148,7 +148,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         <MediaQueryView minWidth={1000}>
           <GameViewInfo>
             <SpeedDial direction="DOWN">
-              <SgfDownloadButton sgfContents={sgf} />
+              <SgfDownload sgfContents={sgf} />
             </SpeedDial>
           </GameViewInfo>
         </MediaQueryView>

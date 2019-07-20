@@ -5,12 +5,12 @@ import { useGoGameContext } from 'goban/GoGameContext';
 import SpeedDialOption from './SpeedDialOption';
 import { Download } from 'react-feather';
 
-interface SgfDownloadButtonProps
+interface SgfDownloadProps
   extends Partial<ComponentProps<typeof SpeedDialOption>> {
   sgfContents: string;
 }
 
-const SgfDownloadButton: React.FC<SgfDownloadButtonProps> = ({
+const SgfDownload: React.FC<SgfDownloadProps> = ({
   sgfContents,
   ...rest
 }) => {
@@ -57,4 +57,4 @@ const SgfDownloadButton: React.FC<SgfDownloadButtonProps> = ({
   );
 };
 
-export default SgfDownloadButton;
+export default SgfDownload;

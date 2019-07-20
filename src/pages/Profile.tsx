@@ -15,7 +15,7 @@ import { transformPlayedOn } from 'goban/GameProperties';
 import { highlightFaded, panelBackground, portraitMedia } from 'style';
 import Button from 'components/Button';
 import { LandscapeView, PortraitView } from 'components/MediaQueryView';
-import SgfDownloadButton from 'components/SgfDownloadButton';
+import SgfDownload from 'components/SgfDownload';
 import usePlayerNames from 'goban/usePlayerNames';
 
 const firestore = firebaseApp.firestore();
@@ -112,7 +112,7 @@ const ProfileGameItem: React.FunctionComponent<{ sgfFile: SgfFile }> = ({
               }
             `}
           >
-            <SgfDownloadButton sgfContents={sgfFile.contents} />
+            <SgfDownload sgfContents={sgfFile.contents} />
             <Link
               css={css`
                 text-decoration: none;
