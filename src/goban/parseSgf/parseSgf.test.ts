@@ -155,17 +155,17 @@ describe('parseSgf', () => {
         },
       ],
     ],
-    // [
-    //   'Soft linebreaks',
-    //   `(;C[a\\${LF}b\\${CR}c\\${LF}${CR}d\\${CR}${LF}e])`,
-    //   [
-    //     {
-    //       properties: {
-    //         C: 'abcde',
-    //       },
-    //     },
-    //   ],
-    // ],
+    [
+      'Soft linebreaks',
+      `(;C[a\\${LF}b\\${CR}c\\${LF}${CR}d\\${CR}${LF}e])`,
+      [
+        {
+          properties: {
+            C: 'abcde',
+          },
+        },
+      ],
+    ],
     [
       'Duplicate properties',
       '(;AB[aa]AW[bb]AB[cc][dd])',
