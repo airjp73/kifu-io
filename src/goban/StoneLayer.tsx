@@ -18,12 +18,7 @@ const pointToXY = (point: string): [number, number] => {
 
 const StoneLayer: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // TODO: Remove this check once CanvasContainer waits to render children
-  const gobanLayer = useGobanLayer();
-  if (!gobanLayer) return null;
-  const { height, width, stoneRadius, getCoord } = gobanLayer;
-
+  const { height, width, stoneRadius, getCoord } = useGobanLayer();
   const { gameState } = useGoGameContext();
   const { boardState } = gameState;
 
