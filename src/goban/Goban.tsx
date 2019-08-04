@@ -2,18 +2,11 @@ import React, { useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useRect } from '@reach/rect';
 import { useGoGameContext } from 'goban/GoGameContext';
-import {
-  createBlackStone,
-  createWhiteStone,
-  createSimpleBlackStone,
-  createSimpleWhiteStone,
-  calculateStonePadding,
-  StoneSpriteFactory,
-} from 'canvas/createStoneSprite';
 import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 import ObservedCanvasContainer from './canvas/ObservedCanvasContainer';
 import WindowResizableCanvasContainer from './canvas/WindowResizableCanvasContainer';
+import StoneLayer from './StoneLayer';
 
 interface GobanProps {
   className?: string;
@@ -42,34 +35,24 @@ class GobanCanvas {
   private size: [number, number];
 
   private boardLayer: HTMLCanvasElement;
-  private stoneLayer: HTMLCanvasElement;
   private markupLayer: HTMLCanvasElement;
   private container: HTMLDivElement;
 
   private unit: number;
   private stoneRadius: number;
-  private blackStone: HTMLCanvasElement;
-  private whiteStone: HTMLCanvasElement;
-  private blackFactory: StoneSpriteFactory;
-  private whiteFactory: StoneSpriteFactory;
   private showCoords: boolean;
 
   public constructor(
     boardLayer: HTMLCanvasElement,
-    stoneLayer: HTMLCanvasElement,
     markupLayer: HTMLCanvasElement,
     container: HTMLDivElement,
     boardSize: [number, number],
-    spriteFactories: { black: StoneSpriteFactory; white: StoneSpriteFactory },
     showCoords: boolean
   ) {
     this.size = boardSize;
     this.boardLayer = boardLayer;
-    this.stoneLayer = stoneLayer;
     this.markupLayer = markupLayer;
     this.container = container;
-    this.blackFactory = spriteFactories.black;
-    this.whiteFactory = spriteFactories.white;
     this.showCoords = showCoords;
     this.init();
   }
@@ -83,7 +66,6 @@ class GobanCanvas {
 
   public init = () => {
     this.calculateDimensions();
-    this.initSprites();
     this.drawBoard();
   };
 
@@ -98,39 +80,7 @@ class GobanCanvas {
     this.stoneRadius = this.unit / 2.08;
 
     setCanvasDimensionsWithCorrectScaling(this.boardLayer, length, length);
-    setCanvasDimensionsWithCorrectScaling(this.stoneLayer, length, length);
     setCanvasDimensionsWithCorrectScaling(this.markupLayer, length, length);
-  };
-
-  private initSprites = () => {
-    this.blackStone = this.blackFactory(this.stoneRadius);
-    this.whiteStone = this.whiteFactory(this.stoneRadius);
-  };
-
-  public drawStone = (x: number, y: number, color: StoneColor) => {
-    const stone = color === 'b' ? this.blackStone : this.whiteStone;
-
-    // We want the center of the sprite on the point, so subtract the radius and sprite padding
-    const ctx = this.stoneLayer.getContext('2d');
-    const stonePadding = calculateStonePadding(this.stoneRadius);
-    const xCoord = Math.floor(
-      this.getCoord(x) - this.stoneRadius - stonePadding + 0.5
-    );
-    const yCoord = Math.floor(
-      this.getCoord(y) - this.stoneRadius - stonePadding + 0.5
-    );
-    ctx.drawImage(
-      stone,
-      xCoord,
-      yCoord,
-      this.getStoneSize(),
-      this.getStoneSize()
-    );
-  };
-
-  private getStoneSize = () => {
-    const width = this.blackStone.style.width;
-    return parseInt(width.substr(0, width.length - 2));
   };
 
   public drawTriangle = (x: number, y: number, color: string) => {
@@ -227,11 +177,6 @@ class GobanCanvas {
   public resetMarkup = () => {
     const ctx = this.markupLayer.getContext('2d');
     ctx.clearRect(0, 0, this.markupLayer.width, this.markupLayer.height);
-  };
-
-  public resetBoard = () => {
-    const ctx = this.stoneLayer.getContext('2d');
-    ctx.clearRect(0, 0, this.stoneLayer.width, this.stoneLayer.height);
   };
 
   public drawBoard = () => {
@@ -366,13 +311,9 @@ const Goban: React.FunctionComponent<GobanProps> = ({
   const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
   const containerRef = useRef(null);
-  const stoneLayerRef = useRef(null);
   const boardLayerRef = useRef(null);
   const markupLayerRef = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
-  const stoneFactories = smallBoard
-    ? { black: createSimpleBlackStone, white: createSimpleWhiteStone }
-    : { black: createBlackStone, white: createWhiteStone };
 
   const drawBoardState = useCallback(() => {
     const boardSize = properties.boardSize || [19, 19];
@@ -380,11 +321,9 @@ const Goban: React.FunctionComponent<GobanProps> = ({
     else
       goban.current = new GobanCanvas(
         boardLayerRef.current,
-        stoneLayerRef.current,
         markupLayerRef.current,
         containerRef.current,
         boardSize,
-        stoneFactories,
         !smallBoard
       );
 
@@ -400,12 +339,6 @@ const Goban: React.FunctionComponent<GobanProps> = ({
 
     // Erase layers that need to be redrawn
     goban.current.resetMarkup();
-    goban.current.resetBoard();
-
-    Object.entries(boardState).forEach(([point, color]) => {
-      const [x, y] = pointToXY(point);
-      goban.current.drawStone(x, y, color);
-    });
 
     const currentNode = getNode(node);
     const currentMove =
@@ -464,15 +397,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({
         boardState[currentPoint] === 'b' ? '#fff' : '#000'
       );
     }
-  }, [
-    gameState,
-    boardState,
-    node,
-    getNode,
-    properties.boardSize,
-    stoneFactories,
-    smallBoard,
-  ]);
+  }, [gameState, boardState, node, getNode, properties.boardSize, smallBoard]);
 
   useEffect(() => drawBoardState(), [
     drawBoardState,
@@ -507,7 +432,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({
   return (
     <CanvasContainer ref={containerRef} className={className}>
       <Board ref={boardLayerRef} />
-      <Board ref={stoneLayerRef} />
+      <StoneLayer />
       <Board ref={markupLayerRef} />
       {children}
     </CanvasContainer>
