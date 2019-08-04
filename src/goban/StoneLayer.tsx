@@ -53,6 +53,9 @@ const StoneLayer: React.FC = () => {
   );
 
   useEffect(() => {
+    const ctx = canvasRef.current.getContext('2d');
+    ctx.clearRect(0, 0, width, height);
+
     Object.entries(boardState).forEach(([point, color]) => {
       const [x, y] = pointToXY(point);
       drawStone(x, y, color);
