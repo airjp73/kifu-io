@@ -21,7 +21,9 @@ const WindowResizableCanvasContainer: React.FC<
 
   useLayoutEffect(() => {
     const rect = containerRef.current.getBoundingClientRect();
-    setDimensions({ height: rect.height, width: rect.width });
+    const width = rect && Math.round(rect.right) - Math.round(rect.left);
+    const height = rect && Math.round(rect.bottom) - Math.round(rect.top);
+    setDimensions({ height, width });
   }, [containerRef]);
 
   useWindowResizeCallback(() => {
