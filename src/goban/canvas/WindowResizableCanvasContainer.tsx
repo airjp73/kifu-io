@@ -1,4 +1,9 @@
-import React, { createContext, useState, useLayoutEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useLayoutEffect,
+  forwardRef,
+} from 'react';
 import 'styled-components/macro';
 import { css } from 'styled-components';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
@@ -17,7 +22,7 @@ const WindowResizableCanvasContainer: React.FC<
   useLayoutEffect(() => {
     const rect = containerRef.current.getBoundingClientRect();
     setDimensions({ height: rect.height, width: rect.width });
-  }, []);
+  }, [containerRef]);
 
   useWindowResizeCallback(() => {
     // The timeout helps ensure that the resize has actually finished
@@ -36,10 +41,12 @@ const WindowResizableCanvasContainer: React.FC<
         ref={refCallback}
         {...rest}
       >
-        {!!dimensions && children}
+        {/* TODO: Wait to render children after Goban is fully converted */}
+        {/* {!!dimensions && children} */}
+        {children}
       </div>
     </CanvasContext.Provider>
   );
 };
 
-export default WindowResizableCanvasContainer;
+export default forwardRef(WindowResizableCanvasContainer);

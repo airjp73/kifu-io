@@ -12,6 +12,8 @@ import {
 } from 'canvas/createStoneSprite';
 import { setCanvasDimensionsWithCorrectScaling } from 'canvas/util';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
+import ObservedCanvasContainer from './canvas/ObservedCanvasContainer';
+import WindowResizableCanvasContainer from './canvas/WindowResizableCanvasContainer';
 
 interface GobanProps {
   className?: string;
@@ -498,13 +500,17 @@ const Goban: React.FunctionComponent<GobanProps> = ({
     }
   });
 
+  const CanvasContainer = observeRect
+    ? ObservedCanvasContainer
+    : WindowResizableCanvasContainer;
+
   return (
-    <BoardContainer ref={containerRef} className={className}>
+    <CanvasContainer ref={containerRef} className={className}>
       <Board ref={boardLayerRef} />
       <Board ref={stoneLayerRef} />
       <Board ref={markupLayerRef} />
       {children}
-    </BoardContainer>
+    </CanvasContainer>
   );
 };
 

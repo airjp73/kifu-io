@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useRect } from '@reach/rect';
 import 'styled-components/macro';
 import { css } from 'styled-components';
@@ -23,10 +23,12 @@ const ObservedCanvasContainer: React.FC<React.HTMLProps<HTMLDivElement>> = (
         ref={refCallback}
         {...rest}
       >
-        {!!containerRect && children}
+        {/* TODO: Wait to render children after Goban is fully converted */}
+        {/* {!!dimensions && children} */}
+        {children}
       </div>
     </CanvasContext.Provider>
   );
 };
 
-export default ObservedCanvasContainer;
+export default forwardRef(ObservedCanvasContainer);
