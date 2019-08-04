@@ -24,11 +24,11 @@ const useGobanLayer = (): GobanLayerData => {
     const stoneRadius = unit / 2.08;
 
     return {
-      height: unit * boardSize[1] + 1,
+      height: unit * boardSize[0] + 1,
       width: unit * boardSize[0] + 1,
       unit,
       stoneRadius,
-      getCoord: coord => coord * unit + unit - 0.5,
+      getCoord: coord => coord * unit + unit * 0.5,
     };
   }, [height, width, boardSize[0], boardSize[1]]);
 };
