@@ -8,13 +8,7 @@ import {
   calculateStonePadding,
 } from 'canvas/createStoneSprite';
 import { StoneColor } from './Goban';
-
-const pointToXY = (point: string): [number, number] => {
-  const A = 'a'.charCodeAt(0);
-  const x = point.charCodeAt(0) - A;
-  const y = point.charCodeAt(1) - A;
-  return [x, y];
-};
+import pointToXY from './pointToXY';
 
 const StoneLayer: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
