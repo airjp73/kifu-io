@@ -7,6 +7,7 @@ import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 import ObservedCanvasContainer from './canvas/ObservedCanvasContainer';
 import WindowResizableCanvasContainer from './canvas/WindowResizableCanvasContainer';
 import StoneLayer from './StoneLayer';
+import BoardLayer from './BoardLayer';
 
 interface GobanProps {
   className?: string;
@@ -15,45 +16,24 @@ interface GobanProps {
 }
 
 export type StoneColor = 'b' | 'w';
-type StarPoints = [number, number][];
-
-const starPoints9: StarPoints = [[2, 2], [6, 2], [2, 6], [6, 6], [4, 4]];
-const starPoints13: StarPoints = [[3, 3], [9, 3], [3, 9], [9, 9], [6, 6]];
-const starPoints19: StarPoints = [
-  [3, 3],
-  [9, 3],
-  [15, 3],
-  [3, 9],
-  [9, 9],
-  [15, 9],
-  [3, 15],
-  [9, 15],
-  [15, 15],
-];
 
 class GobanCanvas {
   private size: [number, number];
 
-  private boardLayer: HTMLCanvasElement;
   private markupLayer: HTMLCanvasElement;
   private container: HTMLDivElement;
 
   private unit: number;
   private stoneRadius: number;
-  private showCoords: boolean;
 
   public constructor(
-    boardLayer: HTMLCanvasElement,
     markupLayer: HTMLCanvasElement,
     container: HTMLDivElement,
-    boardSize: [number, number],
-    showCoords: boolean
+    boardSize: [number, number]
   ) {
     this.size = boardSize;
-    this.boardLayer = boardLayer;
     this.markupLayer = markupLayer;
     this.container = container;
-    this.showCoords = showCoords;
     this.init();
   }
 
@@ -66,7 +46,6 @@ class GobanCanvas {
 
   public init = () => {
     this.calculateDimensions();
-    this.drawBoard();
   };
 
   private calculateDimensions = () => {
@@ -79,7 +58,6 @@ class GobanCanvas {
     this.unit = length / (this.size[0] + 1);
     this.stoneRadius = this.unit / 2.08;
 
-    setCanvasDimensionsWithCorrectScaling(this.boardLayer, length, length);
     setCanvasDimensionsWithCorrectScaling(this.markupLayer, length, length);
   };
 
@@ -179,115 +157,6 @@ class GobanCanvas {
     ctx.clearRect(0, 0, this.markupLayer.width, this.markupLayer.height);
   };
 
-  public drawBoard = () => {
-    const ctx = this.boardLayer.getContext('2d');
-
-    // Background color
-    const gradient = ctx.createLinearGradient(0.3, 0.3, 0.6, 0.6);
-    gradient.addColorStop(0, '#EDBE79');
-    gradient.addColorStop(1, '#E3B472');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(
-      0,
-      0,
-      this.getCoord(this.size[0]),
-      this.getCoord(this.size[1])
-    );
-
-    const start = this.getCoord(0);
-    const xEnd = this.getCoord(this.size[0] - 1);
-    const yEnd = this.getCoord(this.size[1] - 1);
-
-    ctx.beginPath();
-    ctx.lineWidth = this.unit / 30;
-    ctx.strokeStyle = '#000';
-
-    // Vertical lines
-    for (let x = 0; x < this.size[0]; ++x) {
-      const xCoord = this.getCoord(x);
-      ctx.moveTo(xCoord, start);
-      ctx.lineTo(xCoord, yEnd);
-    }
-
-    // Horizontal lines
-    for (let y = 0; y < this.size[0]; ++y) {
-      const yCoord = this.getCoord(y);
-      ctx.moveTo(start, yCoord);
-      ctx.lineTo(xEnd, yCoord);
-    }
-
-    // Draw lines
-    ctx.stroke();
-    ctx.closePath();
-
-    // Star points
-    const starPointRadius = this.stoneRadius / 4;
-    ctx.fillStyle = '#000';
-    ctx.beginPath();
-
-    let starPoints: StarPoints;
-    if (this.size[0] !== this.size[1]) starPoints = [];
-    else if (this.size[0] === 19) starPoints = starPoints19;
-    else if (this.size[0] === 13) starPoints = starPoints13;
-    else if (this.size[0] === 9) starPoints = starPoints9;
-    else starPoints = [];
-
-    starPoints.forEach(([x, y]) => {
-      const xCoord = this.getCoord(x);
-      const yCoord = this.getCoord(y);
-      ctx.moveTo(xCoord - starPointRadius, yCoord - starPointRadius);
-      ctx.arc(xCoord, yCoord, starPointRadius, 0, Math.PI * 2);
-    });
-
-    ctx.closePath();
-    ctx.fill();
-
-    if (this.showCoords) this.drawCoordinates(ctx);
-  };
-
-  private drawCoordinates = (ctx: CanvasRenderingContext2D) => {
-    ctx.font = `bold ${this.unit * 0.4}px sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    const A = 'A'.charCodeAt(0);
-    const I = 'I'.charCodeAt(0);
-    const Z = 'Z'.charCodeAt(0);
-    for (let x = 0; x < this.size[0]; ++x) {
-      // The spec technically allows boards up to 52x52
-      // Other sgf views don't seem to support this at all
-      // so just appending a number like A1, A2 seems good enough
-      let charCode = A + x;
-      let number = 0;
-      if (charCode >= I) charCode++;
-      while (charCode > Z) {
-        charCode -= Z - A + 1;
-        ++number;
-        if (charCode >= I) charCode++;
-      }
-      const coordString =
-        number > 0
-          ? String.fromCharCode(charCode) + (number + 1).toString()
-          : String.fromCharCode(charCode);
-      ctx.fillText(coordString, this.getCoord(x), this.getCoord(-0.65));
-      ctx.fillText(
-        coordString,
-        this.getCoord(x),
-        this.getCoord(this.size[1] - 0.35)
-      );
-    }
-
-    for (let y = 0; y < this.size[1]; ++y) {
-      const coordString = (this.size[1] - y).toString();
-      ctx.fillText(coordString, this.getCoord(-0.65), this.getCoord(y));
-      ctx.fillText(
-        coordString,
-        this.getCoord(this.size[0] - 0.35),
-        this.getCoord(y)
-      );
-    }
-  };
-
   private getCoord = (coord: number) => coord * this.unit + this.unit - 0.5;
 }
 
@@ -307,7 +176,6 @@ const Goban: React.FunctionComponent<GobanProps> = ({
   const { gameState, getNode } = useGoGameContext();
   const { boardState, properties, node } = gameState;
   const containerRef = useRef(null);
-  const boardLayerRef = useRef(null);
   const markupLayerRef = useRef(null);
   const goban: React.MutableRefObject<GobanCanvas> = useRef(null);
 
@@ -316,11 +184,9 @@ const Goban: React.FunctionComponent<GobanProps> = ({
     if (goban.current) goban.current.setSize(boardSize);
     else
       goban.current = new GobanCanvas(
-        boardLayerRef.current,
         markupLayerRef.current,
         containerRef.current,
-        boardSize,
-        !smallBoard
+        boardSize
       );
 
     const pointToXY = (point: string): [number, number] => {
@@ -427,7 +293,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({
 
   return (
     <CanvasContainer ref={containerRef} className={className}>
-      <Board ref={boardLayerRef} />
+      <BoardLayer showCoords={!smallBoard} />
       <StoneLayer />
       <Board ref={markupLayerRef} />
       {children}
