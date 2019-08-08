@@ -18,19 +18,22 @@ const useGobanLayer = (): GobanLayerData => {
   const { height, width } = useContext(CanvasContext);
   const goGameContext = useGoGameContext();
   const boardSize = goGameContext.gameState.properties.boardSize || [19, 19];
+  const boardWidth = boardSize[0];
+  const boardHeight = boardSize[1];
 
   return useMemo(() => {
-    const unit = calculateUnit(height, width, boardSize);
+    const unit = calculateUnit(height, width, boardWidth, boardHeight);
     const stoneRadius = unit / 2.08;
 
+    // TODO: support irregular board sizes
     return {
-      height: unit * boardSize[0] + 1,
-      width: unit * boardSize[0] + 1,
+      height: unit * boardWidth + 1,
+      width: unit * boardWidth + 1,
       unit,
       stoneRadius,
       getCoord: coord => coord * unit + unit * 0.5,
     };
-  }, [height, width, boardSize[0], boardSize[1]]);
+  }, [height, width, boardWidth, boardHeight]);
 };
 
 /**
@@ -44,10 +47,11 @@ const useGobanLayer = (): GobanLayerData => {
 function calculateUnit(
   height: number,
   width: number,
-  boardSize: [number, number]
+  boardWidth: number,
+  boardHeight: number
 ) {
-  const widthUnit = width / (boardSize[0] + 1);
-  const heightUnit = height / (boardSize[1] + 1);
+  const widthUnit = width / (boardWidth + 1);
+  const heightUnit = height / (boardHeight + 1);
   return Math.min(widthUnit, heightUnit);
 }
 

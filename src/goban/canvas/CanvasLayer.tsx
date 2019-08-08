@@ -20,7 +20,7 @@ const CanvasLayer: React.FC<CanvasLayerProps> = ({ height, width }, ref) => {
 
   useEffect(() => {
     setCanvasDimensionsWithCorrectScaling(layerRef.current, height, width);
-  }, [height, width]);
+  }, [height, width, layerRef]);
 
   return <Layer ref={refCallback} />;
 };

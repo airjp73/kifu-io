@@ -291,10 +291,6 @@ class GobanCanvas {
   private getCoord = (coord: number) => coord * this.unit + this.unit - 0.5;
 }
 
-const BoardContainer = styled.div`
-  position: relative;
-`;
-
 const Board = styled.canvas`
   position: absolute;
   top: 50%;

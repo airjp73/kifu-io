@@ -44,7 +44,7 @@ const StoneLayer: React.FC = () => {
       const yCoord = Math.floor(getCoord(y) - stoneRadius - stonePadding + 0.5);
       ctx.drawImage(stone, xCoord, yCoord, stoneSize, stoneSize);
     },
-    [blackStone, whiteStone, getCoord, stoneSize]
+    [blackStone, whiteStone, getCoord, stoneSize, stoneRadius]
   );
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const StoneLayer: React.FC = () => {
       const [x, y] = pointToXY(point);
       drawStone(x, y, color);
     });
-  }, [boardState, drawStone]);
+  }, [boardState, drawStone, height, width]);
 
   return <CanvasLayer ref={canvasRef} height={height} width={width} />;
 };
