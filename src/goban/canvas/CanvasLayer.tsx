@@ -19,7 +19,7 @@ const CanvasLayer: React.FC<CanvasLayerProps> = ({ height, width }, ref) => {
   const [layerRef, refCallback] = useForwardedRef<HTMLCanvasElement>(ref);
 
   useEffect(() => {
-    setCanvasDimensionsWithCorrectScaling(layerRef.current, height, width);
+    setCanvasDimensionsWithCorrectScaling(layerRef.current, width, height);
   }, [height, width, layerRef]);
 
   return <Layer ref={refCallback} />;
