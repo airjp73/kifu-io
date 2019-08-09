@@ -14,9 +14,10 @@ const ObservedCanvasContainer: React.FC<React.HTMLProps<HTMLDivElement>> = (
 
   const width = containerRect && containerRect.width;
   const height = containerRect && containerRect.height;
+  const dimensions = height && { height, width };
 
   return (
-    <CanvasContext.Provider value={{ height, width }}>
+    <CanvasContext.Provider value={dimensions}>
       <div
         css={css`
           position: relative;
@@ -24,9 +25,7 @@ const ObservedCanvasContainer: React.FC<React.HTMLProps<HTMLDivElement>> = (
         ref={refCallback}
         {...rest}
       >
-        {/* TODO: Wait to render children after Goban is fully converted */}
-        {/* {!!dimensions && children} */}
-        {children}
+        {!!dimensions && children}
       </div>
     </CanvasContext.Provider>
   );

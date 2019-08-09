@@ -21,8 +21,8 @@ const WindowResizableCanvasContainer: React.FC<
 
   useLayoutEffect(() => {
     const rect = containerRef.current.getBoundingClientRect();
-    const width = rect && Math.round(rect.right) - Math.round(rect.left);
-    const height = rect && Math.round(rect.bottom) - Math.round(rect.top);
+    const width = rect && rect.width;
+    const height = rect && rect.height;
     setDimensions({ height, width });
   }, [containerRef]);
 
@@ -43,9 +43,7 @@ const WindowResizableCanvasContainer: React.FC<
         ref={refCallback}
         {...rest}
       >
-        {/* TODO: Wait to render children after Goban is fully converted */}
-        {/* {!!dimensions && children} */}
-        {children}
+        {!!dimensions && children}
       </div>
     </CanvasContext.Provider>
   );
