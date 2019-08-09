@@ -50,8 +50,8 @@ function calculateUnit(
   boardWidth: number,
   boardHeight: number
 ) {
-  const widthUnit = width / (boardWidth + 1.5);
-  const heightUnit = height / (boardHeight + 1.5);
+  const widthUnit = width / (boardWidth + 1);
+  const heightUnit = height / (boardHeight + 1);
   return Math.min(widthUnit, heightUnit);
 }
 
@@ -60,11 +60,11 @@ function calculateUnit(
  * For some reason, the canvas is blurry if the height and width are odd,
  * so this function ensures that it is always even.
  *
- * @param boardLength height or width of goban in number of points
  * @param unit the pre-calculated distance between points on the canvas
+ * @param boardLength height or width of goban in number of points
  */
-function calcNonBlurryLength(boardLength: number, unit: number) {
-  const length = Math.round(unit * (boardLength + 1.5));
+function calcNonBlurryLength(unit: number, boardLength: number) {
+  const length = Math.round(unit * (boardLength + 1));
   const adjuster = length % 2 === 1 ? 1 : 0;
   return length + adjuster;
 }
