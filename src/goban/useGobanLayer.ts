@@ -31,7 +31,7 @@ const useGobanLayer = (): GobanLayerData => {
       width: calcNonBlurryLength(unit, boardWidth),
       unit,
       stoneRadius,
-      getCoord: coord => coord * unit + unit,
+      getCoord: coord => coord * unit + unit * 1.1,
     };
   }, [height, width, boardWidth, boardHeight]);
 };
@@ -52,7 +52,7 @@ function calculateUnit(
 ) {
   const widthUnit = width / (boardWidth + 2);
   const heightUnit = height / (boardHeight + 2);
-  return Math.min(widthUnit, heightUnit);
+  return Math.round(Math.min(widthUnit, heightUnit));
 }
 
 /**
