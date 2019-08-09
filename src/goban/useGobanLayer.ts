@@ -22,7 +22,7 @@ const useGobanLayer = (): GobanLayerData => {
   const boardHeight = boardSize[1];
 
   return useMemo(() => {
-    const unit = calculateUnit(height, width, boardWidth, boardHeight);
+    const unit = calculateUnit(height, width, boardHeight, boardWidth);
     const stoneRadius = unit / 2.08;
 
     // TODO: support irregular board sizes
@@ -47,8 +47,8 @@ const useGobanLayer = (): GobanLayerData => {
 function calculateUnit(
   height: number,
   width: number,
-  boardWidth: number,
-  boardHeight: number
+  boardHeight: number,
+  boardWidth: number
 ) {
   const widthUnit = width / (boardWidth + 1);
   const heightUnit = height / (boardHeight + 1);
