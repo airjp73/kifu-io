@@ -1,16 +1,6 @@
-import { useState } from 'react';
-import useWindowResizeCallback from './useWindowResizeCallback';
+import { useContext } from 'react';
+import { WindowContext } from 'WindowContext';
 
-const useWindowWidth = () => {
-  const [dimensions, setDimensions] = useState(
-    typeof window === 'undefined'
-      ? { width: 0, height: 0 }
-      : { width: window.innerWidth, height: window.innerHeight }
-  );
-  useWindowResizeCallback(() =>
-    setDimensions({ width: window.innerWidth, height: window.innerHeight })
-  );
-  return dimensions;
-};
+const useWindowDimensions = () => useContext(WindowContext);
 
-export default useWindowWidth;
+export default useWindowDimensions;
