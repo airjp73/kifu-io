@@ -27,11 +27,11 @@ const useGobanLayer = (): GobanLayerData => {
 
     // TODO: support irregular board sizes
     return {
-      height: unit * boardWidth + 1,
-      width: unit * boardWidth + 1,
+      height: calcNonBlurryLength(unit, boardHeight),
+      width: calcNonBlurryLength(unit, boardWidth),
       unit,
       stoneRadius,
-      getCoord: coord => coord * unit + unit * 0.5,
+      getCoord: coord => coord * unit + unit,
     };
   }, [height, width, boardWidth, boardHeight]);
 };
@@ -50,9 +50,23 @@ function calculateUnit(
   boardWidth: number,
   boardHeight: number
 ) {
-  const widthUnit = width / (boardWidth + 1);
-  const heightUnit = height / (boardHeight + 1);
+  const widthUnit = width / (boardWidth + 2);
+  const heightUnit = height / (boardHeight + 2);
   return Math.min(widthUnit, heightUnit);
+}
+
+/**
+ * Calculates the height or width of the goban canvas based on the unit and the board size.
+ * For some reason, the canvas is blurry if the height and width are odd,
+ * so this function ensures that it is always even.
+ *
+ * @param boardLength height or width of goban in number of points
+ * @param unit the pre-calculated distance between points on the canvas
+ */
+function calcNonBlurryLength(boardLength: number, unit: number) {
+  const length = unit * (boardLength + 2);
+  const adjuster = length % 2 === 1 ? 1 : 0;
+  return length + adjuster;
 }
 
 export default useGobanLayer;
