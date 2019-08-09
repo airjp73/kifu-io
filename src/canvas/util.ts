@@ -16,8 +16,8 @@ export function setCanvasDimensionsWithCorrectScaling(
 
   canvas.width = width * ratio;
   canvas.height = height * ratio;
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
+  canvas.style.width = `${Math.round(width)}px`;
+  canvas.style.height = `${Math.round(height)}px`;
 
   ctx.scale(ratio, ratio);
 }

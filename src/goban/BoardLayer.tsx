@@ -42,7 +42,7 @@ const BoardLayer: React.FC<BoardLayerProps> = ({ showCoords }) => {
       gradient.addColorStop(0, '#EDBE79');
       gradient.addColorStop(1, '#E3B472');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, getCoord(boardWidth), getCoord(boardHeight));
+      ctx.fillRect(0, 0, width, height);
 
       const start = getCoord(0);
       const xEnd = getCoord(boardWidth - 1);
@@ -94,7 +94,7 @@ const BoardLayer: React.FC<BoardLayerProps> = ({ showCoords }) => {
     }
 
     function drawCoordinates() {
-      ctx.font = `bold ${unit * 0.4}px sans-serif`;
+      ctx.font = `bold ${Math.round(unit * 0.4)}px sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
@@ -117,14 +117,14 @@ const BoardLayer: React.FC<BoardLayerProps> = ({ showCoords }) => {
           number > 0
             ? String.fromCharCode(charCode) + (number + 1).toString()
             : String.fromCharCode(charCode);
-        ctx.fillText(coordString, getCoord(x), getCoord(-0.65));
-        ctx.fillText(coordString, getCoord(x), getCoord(boardHeight - 0.35));
+        ctx.fillText(coordString, getCoord(x), getCoord(-0.5));
+        ctx.fillText(coordString, getCoord(x), getCoord(boardHeight - 0.5));
       }
 
       for (let y = 0; y < boardHeight; ++y) {
         const coordString = (boardHeight - y).toString();
-        ctx.fillText(coordString, getCoord(-0.65), getCoord(y));
-        ctx.fillText(coordString, getCoord(boardWidth - 0.35), getCoord(y));
+        ctx.fillText(coordString, getCoord(-0.5), getCoord(y));
+        ctx.fillText(coordString, getCoord(boardWidth - 0.5), getCoord(y));
       }
     }
   });

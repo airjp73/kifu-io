@@ -31,7 +31,7 @@ const useGobanLayer = (): GobanLayerData => {
       width: calcNonBlurryLength(unit, boardWidth),
       unit,
       stoneRadius,
-      getCoord: coord => coord * unit + unit * 1.1,
+      getCoord: coord => Math.round(coord * unit + unit),
     };
   }, [height, width, boardWidth, boardHeight]);
 };
@@ -50,9 +50,9 @@ function calculateUnit(
   boardWidth: number,
   boardHeight: number
 ) {
-  const widthUnit = width / (boardWidth + 2);
-  const heightUnit = height / (boardHeight + 2);
-  return Math.round(Math.min(widthUnit, heightUnit));
+  const widthUnit = width / (boardWidth + 1.5);
+  const heightUnit = height / (boardHeight + 1.5);
+  return Math.min(widthUnit, heightUnit);
 }
 
 /**
@@ -64,7 +64,7 @@ function calculateUnit(
  * @param unit the pre-calculated distance between points on the canvas
  */
 function calcNonBlurryLength(boardLength: number, unit: number) {
-  const length = unit * (boardLength + 2);
+  const length = Math.round(unit * (boardLength + 1.5));
   const adjuster = length % 2 === 1 ? 1 : 0;
   return length + adjuster;
 }

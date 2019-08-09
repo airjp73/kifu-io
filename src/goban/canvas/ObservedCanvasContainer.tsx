@@ -12,12 +12,8 @@ const ObservedCanvasContainer: React.FC<React.HTMLProps<HTMLDivElement>> = (
   const [containerRef, refCallback] = useForwardedRef(ref);
   const containerRect = useRect(containerRef);
 
-  const width =
-    containerRect &&
-    Math.round(containerRect.right) - Math.round(containerRect.left);
-  const height =
-    containerRect &&
-    Math.round(containerRect.bottom) - Math.round(containerRect.top);
+  const width = containerRect && containerRect.width;
+  const height = containerRect && containerRect.height;
 
   return (
     <CanvasContext.Provider value={{ height, width }}>
