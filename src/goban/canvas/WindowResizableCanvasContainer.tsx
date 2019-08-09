@@ -1,17 +1,9 @@
-import React, {
-  createContext,
-  useState,
-  useLayoutEffect,
-  forwardRef,
-} from 'react';
+import React, { useState, useLayoutEffect, forwardRef } from 'react';
 import 'styled-components/macro';
 import { css } from 'styled-components';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 import useForwardedRef from 'hooks/useForwardedRef';
-
-interface CanvasContext {}
-
-const CanvasContext = createContext<CanvasContext>(null);
+import CanvasContext from './CanvasContext';
 
 const WindowResizableCanvasContainer: React.FC<
   React.HTMLProps<HTMLDivElement>
