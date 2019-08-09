@@ -2,25 +2,31 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import CanvasLayer from './canvas/CanvasLayer';
 import useGobanLayer from './useGobanLayer';
 import { useGoGameContext } from './GoGameContext';
-import {
-  createBlackStone,
-  createWhiteStone,
-  calculateStonePadding,
-} from 'canvas/createStoneSprite';
+import { calculateStonePadding } from 'canvas/createStoneSprite';
 import { StoneColor } from './Goban';
 import pointToXY from './pointToXY';
 
-const StoneLayer: React.FC = () => {
+interface StoneLayerProps {
+  blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
+  whiteStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
+}
+
+const StoneLayer: React.FC<StoneLayerProps> = ({
+  blackStoneFactory,
+  whiteStoneFactory,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { height, width, stoneRadius, getCoord } = useGobanLayer();
   const { gameState } = useGoGameContext();
   const { boardState } = gameState;
 
-  const blackStone = useMemo(() => createBlackStone(stoneRadius), [
+  const blackStone = useMemo(() => blackStoneFactory(stoneRadius), [
     stoneRadius,
+    blackStoneFactory,
   ]);
-  const whiteStone = useMemo(() => createWhiteStone(stoneRadius), [
+  const whiteStone = useMemo(() => whiteStoneFactory(stoneRadius), [
     stoneRadius,
+    whiteStoneFactory,
   ]);
   const stoneSize = useMemo(() => {
     const width = blackStone.style.width;

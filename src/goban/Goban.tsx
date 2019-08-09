@@ -1,6 +1,12 @@
 import React, { useRef } from 'react';
 import ObservedCanvasContainer from './canvas/ObservedCanvasContainer';
 import WindowResizableCanvasContainer from './canvas/WindowResizableCanvasContainer';
+import {
+  createBlackStone,
+  createWhiteStone,
+  createSimpleBlackStone,
+  createSimpleWhiteStone,
+} from 'canvas/createStoneSprite';
 import StoneLayer from './StoneLayer';
 import BoardLayer from './BoardLayer';
 import MarkupLayer from './MarkupLayer';
@@ -28,7 +34,14 @@ const Goban: React.FunctionComponent<GobanProps> = ({
   return (
     <CanvasContainer ref={containerRef} className={className}>
       <BoardLayer showCoords={!smallBoard} />
-      <StoneLayer />
+      <StoneLayer
+        blackStoneFactory={
+          smallBoard ? createSimpleBlackStone : createBlackStone
+        }
+        whiteStoneFactory={
+          smallBoard ? createSimpleWhiteStone : createWhiteStone
+        }
+      />
       <MarkupLayer />
       {children}
     </CanvasContainer>
