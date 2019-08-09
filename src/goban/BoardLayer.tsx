@@ -60,7 +60,7 @@ const BoardLayer: React.FC<BoardLayerProps> = ({ showCoords }) => {
       }
 
       // Horizontal lines
-      for (let y = 0; y < boardWidth; ++y) {
+      for (let y = 0; y < boardHeight; ++y) {
         const yCoord = getCoord(y);
         ctx.moveTo(start, yCoord);
         ctx.lineTo(xEnd, yCoord);
