@@ -36,7 +36,8 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     stoneRadius,
   } = useGobanLayer();
   const { gameState } = useGoGameContext();
-  const { moveState } = gameState;
+  const { moveState, properties } = gameState;
+  const { boardSize } = properties;
   const [mouseCoords, setMouseCoords] = useState<MouseCoords | null>(null);
 
   const blackStone = useMemo(() => blackStoneFactory(stoneRadius), [
@@ -66,14 +67,23 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
   const handleMouseLeave = () => setMouseCoords(null);
 
   useEffect(() => {
-    if (mouseCoords) {
+    const shouldDraw =
+      mouseCoords &&
+      mouseCoords.x >= 0 &&
+      mouseCoords.x < boardSize[0] &&
+      mouseCoords.y >= 0 &&
+      mouseCoords.y < boardSize[1];
+
+    if (shouldDraw) {
       const { x, y } = mouseCoords;
-      const ctx = canvasRef.current.getContext('2d');
       const stoneCoord = calculateStoneCoord(
         stoneRadius,
         getCoord(x),
         getCoord(y)
       );
+
+      const ctx = canvasRef.current.getContext('2d');
+      ctx.globalAlpha = 0.6;
       ctx.drawImage(
         currentStone,
         stoneCoord.x,
