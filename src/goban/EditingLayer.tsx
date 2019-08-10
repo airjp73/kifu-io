@@ -1,7 +1,17 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, {
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import CanvasLayer from './canvas/CanvasLayer';
 import useGobanLayer from './useGobanLayer';
 import { useGoGameContext } from './GoGameContext';
+import { StoneColor } from './Goban';
+import { calculateStonePadding } from 'canvas/createStoneSprite';
+import useStoneSize from './useStoneSize';
+import calculateStoneCoord from './calculateStoneCoord';
 
 interface EditingLayerProps {
   blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
@@ -18,8 +28,15 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
   whiteStoneFactory,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { height, width, coordToPointIndex, stoneRadius } = useGobanLayer();
-  const context = useGoGameContext();
+  const {
+    height,
+    width,
+    coordToPointIndex,
+    getCoord,
+    stoneRadius,
+  } = useGobanLayer();
+  const { gameState } = useGoGameContext();
+  const { moveState } = gameState;
   const [mouseCoords, setMouseCoords] = useState<MouseCoords | null>(null);
 
   const blackStone = useMemo(() => blackStoneFactory(stoneRadius), [
@@ -30,6 +47,11 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     stoneRadius,
     whiteStoneFactory,
   ]);
+  const currentStone =
+    moveState.playerToPlay && moveState.playerToPlay === 'w'
+      ? whiteStone
+      : blackStone;
+  const stoneSize = useStoneSize(blackStone);
 
   const handleMouseMove = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
@@ -43,7 +65,25 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
 
   const handleMouseLeave = () => setMouseCoords(null);
 
-  console.log(mouseCoords);
+  useEffect(() => {
+    if (mouseCoords) {
+      const { x, y } = mouseCoords;
+      const ctx = canvasRef.current.getContext('2d');
+      const stoneCoord = calculateStoneCoord(
+        stoneRadius,
+        getCoord(x),
+        getCoord(y)
+      );
+      ctx.drawImage(
+        currentStone,
+        stoneCoord.x,
+        stoneCoord.y,
+        stoneSize,
+        stoneSize
+      );
+      return () => ctx.clearRect(0, 0, width, height);
+    }
+  }, [mouseCoords, currentStone, getCoord, stoneRadius]);
 
   return (
     <CanvasLayer
