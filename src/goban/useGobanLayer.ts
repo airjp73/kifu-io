@@ -8,6 +8,7 @@ interface GobanLayerData {
   unit: number;
   stoneRadius: number;
   getCoord: (coord: number) => number;
+  coordToPointIndex: (coord: number) => number;
 }
 
 /**
@@ -32,6 +33,7 @@ const useGobanLayer = (): GobanLayerData => {
       unit,
       stoneRadius,
       getCoord: coord => Math.round(coord * unit + unit),
+      coordToPointIndex: coord => Math.round((coord - unit) / unit),
     };
   }, [height, width, boardWidth, boardHeight]);
 };
