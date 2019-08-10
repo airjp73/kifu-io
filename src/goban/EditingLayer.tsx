@@ -12,6 +12,8 @@ import { StoneColor } from './Goban';
 import { calculateStonePadding } from 'canvas/createStoneSprite';
 import useStoneSize from './useStoneSize';
 import calculateStoneCoord from './calculateStoneCoord';
+import pointToXY from './pointToXY';
+import xyToPoint from './xyToPoint';
 
 interface EditingLayerProps {
   blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
@@ -36,7 +38,7 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     stoneRadius,
   } = useGobanLayer();
   const { gameState } = useGoGameContext();
-  const { moveState, properties } = gameState;
+  const { boardState, moveState, properties } = gameState;
   const { boardSize } = properties;
   const [mouseCoords, setMouseCoords] = useState<MouseCoords | null>(null);
 
@@ -72,7 +74,8 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
       mouseCoords.x >= 0 &&
       mouseCoords.x < boardSize[0] &&
       mouseCoords.y >= 0 &&
-      mouseCoords.y < boardSize[1];
+      mouseCoords.y < boardSize[1] &&
+      !boardState[xyToPoint([mouseCoords.x, mouseCoords.y])];
 
     if (shouldDraw) {
       const { x, y } = mouseCoords;
@@ -93,7 +96,7 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
       );
       return () => ctx.clearRect(0, 0, width, height);
     }
-  }, [mouseCoords, currentStone, getCoord, stoneRadius]);
+  }, [mouseCoords, currentStone, getCoord, stoneRadius, boardState]);
 
   return (
     <CanvasLayer
