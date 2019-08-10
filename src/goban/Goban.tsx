@@ -16,7 +16,6 @@ interface GobanProps {
   className?: string;
   smallBoard?: boolean;
   observeRect?: boolean;
-  editable?: boolean;
 }
 
 export type StoneColor = 'b' | 'w';
@@ -26,7 +25,6 @@ const Goban: React.FunctionComponent<GobanProps> = ({
   className,
   smallBoard = false,
   observeRect = true,
-  editable = true,
 }) => {
   const containerRef = useRef(null);
 
@@ -44,12 +42,6 @@ const Goban: React.FunctionComponent<GobanProps> = ({
 
   return (
     <CanvasContainer ref={containerRef} className={className}>
-      {editable && (
-        <EditingLayer
-          blackStoneFactory={blackStoneFactory}
-          whiteStoneFactory={whiteStoneFactory}
-        />
-      )}
       <BoardLayer showCoords={!smallBoard} />
       <StoneLayer
         blackStoneFactory={blackStoneFactory}
@@ -57,6 +49,12 @@ const Goban: React.FunctionComponent<GobanProps> = ({
       />
       <MarkupLayer />
       {children}
+      {!smallBoard && (
+        <EditingLayer
+          blackStoneFactory={blackStoneFactory}
+          whiteStoneFactory={whiteStoneFactory}
+        />
+      )}
     </CanvasContainer>
   );
 };
