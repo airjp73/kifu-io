@@ -127,7 +127,16 @@ const BoardLayer: React.FC<BoardLayerProps> = ({ showCoords }) => {
         ctx.fillText(coordString, getCoord(boardWidth - 0.5), getCoord(y));
       }
     }
-  });
+  }, [
+    boardHeight,
+    boardWidth,
+    height,
+    showCoords,
+    stoneRadius,
+    unit,
+    width,
+    getCoord,
+  ]);
 
   return <CanvasLayer ref={canvasRef} height={height} width={width} />;
 };
