@@ -1,18 +1,9 @@
-import React, {
-  useState,
-  useMemo,
-  useRef,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import CanvasLayer from './canvas/CanvasLayer';
 import useGobanLayer from './useGobanLayer';
 import { useGoGameContext } from './GoGameContext';
-import { StoneColor } from './Goban';
-import { calculateStonePadding } from 'canvas/createStoneSprite';
 import useStoneSize from './useStoneSize';
 import calculateStoneCoord from './calculateStoneCoord';
-import pointToXY from './pointToXY';
 import xyToPoint from './xyToPoint';
 
 interface EditingLayerProps {
