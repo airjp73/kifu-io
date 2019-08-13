@@ -52,6 +52,7 @@ const processNode = (
   //// Move Properties
   if (properties.B) {
     placeStone(properties.B[0], 'b', dispatch);
+    if (!properties.PL) dispatch(setPlayerToPlay(['w']));
   }
   if (properties.KO) {
     if (!properties.B && !properties.W)
@@ -67,6 +68,7 @@ const processNode = (
   }
   if (properties.W) {
     placeStone(properties.W[0], 'w', dispatch);
+    if (!properties.PL) dispatch(setPlayerToPlay(['b']));
   }
 
   //// Setup Properties
