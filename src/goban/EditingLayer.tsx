@@ -59,15 +59,15 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
 
   const handleMouseLeave = () => setMouseCoords(null);
 
-  useEffect(() => {
-    const shouldDraw =
-      mouseCoords &&
-      mouseCoords.x >= 0 &&
-      mouseCoords.x < boardSize[0] &&
-      mouseCoords.y >= 0 &&
-      mouseCoords.y < boardSize[1] &&
-      !boardState[xyToPoint([mouseCoords.x, mouseCoords.y])];
+  const shouldDraw =
+    mouseCoords &&
+    mouseCoords.x >= 0 &&
+    mouseCoords.x < boardSize[0] &&
+    mouseCoords.y >= 0 &&
+    mouseCoords.y < boardSize[1] &&
+    !boardState[xyToPoint([mouseCoords.x, mouseCoords.y])];
 
+  useEffect(() => {
     if (shouldDraw) {
       const { x, y } = mouseCoords;
       const stoneCoord = calculateStoneCoord(
@@ -87,7 +87,16 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
       );
       return () => ctx.clearRect(0, 0, width, height);
     }
-  }, [mouseCoords, currentStone, getCoord, stoneRadius, boardState]);
+  }, [
+    mouseCoords,
+    currentStone,
+    getCoord,
+    stoneRadius,
+    shouldDraw,
+    stoneSize,
+    height,
+    width,
+  ]);
 
   return (
     <CanvasLayer
