@@ -90,12 +90,12 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
   }, [
     mouseCoords,
     currentStone,
-    getCoord,
     stoneRadius,
     shouldDraw,
     stoneSize,
     height,
     width,
+    getCoord,
   ]);
 
   return (
