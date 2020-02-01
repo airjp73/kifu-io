@@ -5,6 +5,7 @@ import 'styled-components/macro';
 import WithRouter from 'components/WithRouter';
 import FlatButton from './FlatButton';
 import MediaQueryView, { LandscapeView, PortraitView } from './MediaQueryView';
+import { purple } from 'style';
 
 const auth = firebase.auth();
 
@@ -20,6 +21,14 @@ const LogoutButton: React.FunctionComponent<
 
           > svg {
             flex-shrink: 0;
+          }
+
+          &.active {
+            background-color: ${purple[80]};
+          }
+
+          :hover {
+            background-color: ${purple[60]};
           }
         `}
         {...props}

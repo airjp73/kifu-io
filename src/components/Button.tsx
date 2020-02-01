@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { boxShadowDepressed, boxShadowLow, primaryAction } from 'style';
+import { boxShadowDepressed, boxShadowLow, primaryAction, teal } from 'style';
 
 export interface ButtonProps {
   icon?: React.ReactElement;
@@ -9,7 +9,7 @@ export interface ButtonProps {
 const ButtonContainer = styled.button`
   border: none;
   border-radius: 0.2rem;
-  color: white;
+  color: ${teal[0]};
   text-transform: uppercase;
   padding: 0 1rem;
   min-width: 4rem;
@@ -17,7 +17,7 @@ const ButtonContainer = styled.button`
   align-items: center;
   line-height: 2.5rem;
 
-  background-color: ${props => (props.disabled ? 'grey' : primaryAction)};
+  background-color: ${props => (props.disabled ? teal[70] : primaryAction)};
   box-shadow: ${props => (props.disabled ? 'none' : boxShadowLow)};
   ${props => !props.disabled && 'cursor: pointer;'}
 

@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  primaryHighlight,
-  panelHighlight,
-  panelActiveButton,
-  primaryAction,
-  primaryActive,
-} from 'style';
+import { primaryAction, purple, teal } from 'style';
+
+const primaryHighlight = `${teal[10]}77`;
+const primaryActive = `${teal[30]}77`;
+const panelActiveButton = `${purple[50]}77`;
+const panelHighlight = `${purple[30]}77`;
 
 interface FlatButtonProps {
   leftIcon?: React.ReactElement;
@@ -35,7 +34,8 @@ const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
 
   ${props => props.primary && primaryStyles};
 
-  :hover {
+  :hover,
+  :focus {
     background-color: ${props =>
       props.primary ? primaryHighlight : panelHighlight};
   }

@@ -45,7 +45,7 @@ export const addLabels = (labelValues: string[]) =>
 
 export const setPlayerToPlay = (playerToPlay: string[]) =>
   setMoveState({
-    playerToPlay: (playerToPlay[0] === 'B' ? 'b' : 'w') as StoneColor,
+    playerToPlay: playerToPlay[0].toLowerCase() as StoneColor,
   });
 
 export const setPositionStatus = (

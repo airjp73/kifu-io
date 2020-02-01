@@ -38,9 +38,9 @@ const BoardLayer: React.FC<BoardLayerProps> = ({ showCoords }) => {
 
     function drawBoard() {
       // Background color
-      const gradient = ctx.createLinearGradient(0.3, 0.3, 0.6, 0.6);
-      gradient.addColorStop(0, '#EDBE79');
-      gradient.addColorStop(1, '#E3B472');
+      const gradient = ctx.createLinearGradient(0.2, 0.2, 0.8, 0.8);
+      gradient.addColorStop(0, '#bb945d');
+      gradient.addColorStop(1, '#e3b472');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
@@ -127,7 +127,16 @@ const BoardLayer: React.FC<BoardLayerProps> = ({ showCoords }) => {
         ctx.fillText(coordString, getCoord(boardWidth - 0.5), getCoord(y));
       }
     }
-  });
+  }, [
+    boardHeight,
+    boardWidth,
+    height,
+    showCoords,
+    stoneRadius,
+    unit,
+    width,
+    getCoord,
+  ]);
 
   return <CanvasLayer ref={canvasRef} height={height} width={width} />;
 };

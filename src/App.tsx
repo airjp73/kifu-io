@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-import { darkFaded, highlightFaded } from 'style';
+import { teal, purple } from 'style';
 import Login from 'pages/Login';
 import View from 'pages/View';
 import Profile from 'pages/Profile';
@@ -11,7 +11,6 @@ import Layout from 'components/Layout';
 import 'normalize.css';
 import AppContext from './AppContext';
 import Home from 'pages/Home';
-import GoProducts from 'pages/GoProducts';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -22,15 +21,15 @@ const GlobalStyles = createGlobalStyle`
   body {
     height: 100%;
     overflow: hidden;
-    background-color: ${darkFaded};
+    background-color: ${purple[50]};
   }
 
   #root {
     height: 100%;
   }
 
-  h1{ 
-    color: ${highlightFaded};
+  h1 { 
+    color: ${teal[0]};
     text-align: center;
   }
 
@@ -47,7 +46,6 @@ const App = () => (
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/view/:gameId" component={View} />
-        <Route path="/start-playing" component={GoProducts} />
         <AuthRoute path="/profile" component={Profile} />
         <Route path="/upload" component={Upload} />
       </Layout>

@@ -10,6 +10,7 @@ import {
 import StoneLayer from './StoneLayer';
 import BoardLayer from './BoardLayer';
 import MarkupLayer from './MarkupLayer';
+import EditingLayer from './EditingLayer';
 
 interface GobanProps {
   className?: string;
@@ -31,19 +32,29 @@ const Goban: React.FunctionComponent<GobanProps> = ({
     ? ObservedCanvasContainer
     : WindowResizableCanvasContainer;
 
+  const blackStoneFactory = smallBoard
+    ? createSimpleBlackStone
+    : createBlackStone;
+
+  const whiteStoneFactory = smallBoard
+    ? createSimpleWhiteStone
+    : createWhiteStone;
+
   return (
     <CanvasContainer ref={containerRef} className={className}>
       <BoardLayer showCoords={!smallBoard} />
       <StoneLayer
-        blackStoneFactory={
-          smallBoard ? createSimpleBlackStone : createBlackStone
-        }
-        whiteStoneFactory={
-          smallBoard ? createSimpleWhiteStone : createWhiteStone
-        }
+        blackStoneFactory={blackStoneFactory}
+        whiteStoneFactory={whiteStoneFactory}
       />
       <MarkupLayer />
       {children}
+      {false && !smallBoard && (
+        <EditingLayer
+          blackStoneFactory={blackStoneFactory}
+          whiteStoneFactory={whiteStoneFactory}
+        />
+      )}
     </CanvasContainer>
   );
 };
