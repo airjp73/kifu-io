@@ -16,6 +16,7 @@ import {
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
+import { GameTree } from './parseSgf/normalizeGameTree';
 
 export type GameStateAction =
   | CaptureAction
@@ -186,6 +187,7 @@ export interface GameState {
 }
 export interface GameStateWithHistory extends GameState {
   history: GameState[];
+  gameTree: GameTree;
 }
 const defaultState: GameStateWithHistory = {
   boardState: {},
@@ -194,6 +196,10 @@ const defaultState: GameStateWithHistory = {
   moveState: defaultMoveState,
   captureCounts: defaultCaptureCounts,
   history: [],
+  gameTree: {
+    rootNode: '',
+    nodes: {},
+  },
 };
 const gameStateReducer = (
   state: GameStateWithHistory = defaultState,
@@ -215,6 +221,7 @@ const gameStateReducer = (
       return {
         ...history[history.length - 1],
         history: history.slice(0, history.length - 1),
+        gameTree: state.gameTree,
       };
     case PUSH_HISTORY:
       return {
@@ -232,6 +239,7 @@ const gameStateReducer = (
         node: nodeReducer(node, action),
         moveState: moveStateReducer(moveState, action),
         captureCounts: captureCountReducer(captureCounts, action),
+        gameTree: state.gameTree, // add reducer
         history: history,
       };
   }
