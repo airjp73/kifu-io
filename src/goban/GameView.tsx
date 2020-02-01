@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled, { css } from 'styled-components';
 import 'styled-components/macro';
 import Goban from 'goban/Goban';
@@ -9,6 +9,7 @@ import CaptureCounts from 'goban/CaptureCounts';
 import useSgf from 'goban/useSgf';
 import { portraitMedia, smallLandscapeMedia, largeLandscapeMedia } from 'style';
 import useWindowDimensions from 'hooks/useWindowDimensions';
+import useFullScreen from 'hooks/useFullScreen';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownload from 'components/SgfDownload';
@@ -22,7 +23,8 @@ import WhiteCaptures from './WhiteCaptures';
 import BlackCaptures from './BlackCaptures';
 import SpeedDial from 'components/SpeedDial';
 import SpeedDialOption from 'components/SpeedDialOption';
-import { Download } from 'react-feather';
+import { Download, Maximize2, Minimize2 } from 'react-feather';
+import { purple } from 'style';
 
 interface GameViewProps {
   sgf: string;
@@ -36,6 +38,7 @@ const GameViewGoban = styled(Goban)``;
 const GameViewContainer = styled.div`
   display: grid;
   height: 100%;
+  background-color: ${purple[50]};
 
   ${GameViewCaptures} {
     grid-area: capture;
@@ -61,7 +64,7 @@ const GameViewContainer = styled.div`
       'board capture'
       'board info'
       'board buttons';
-    grid-template-columns: minmax(300px, 1000px) minmax(300px, 800px);
+    grid-template-columns: minmax(300px, 60%) minmax(300px, 45%);
     grid-template-rows: min-content 1fr max-content;
     grid-column-gap: 1rem;
     box-sizing: border-box;
@@ -87,15 +90,37 @@ const GameViewContainer = styled.div`
     grid-template-rows: min-content 1fr min-content min-content;
     grid-template-columns: 1fr;
   }
+
+  &:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    padding: 0.5rem;
+  }
 `;
 
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
   const { height, width } = useWindowDimensions();
   const isLandscape = height < width;
+  const gameViewRef: React.RefObject<HTMLDivElement> = useRef();
+  const [isFullScreen, goFullScreen, exitFullScreen] = useFullScreen(
+    gameViewRef
+  );
+
+  const fullScreenOption = (
+    <SpeedDialOption
+      label={isFullScreen ? 'Exit Full Screen' : 'Full Screen Mode'}
+      onClick={() => {
+        if (isFullScreen) exitFullScreen();
+        else goFullScreen();
+      }}
+    >
+      {isFullScreen ? <Minimize2 /> : <Maximize2 />}
+    </SpeedDialOption>
+  );
 
   return (
-    <GameViewContainer>
+    <GameViewContainer ref={gameViewRef}>
       <GoGameContextProvider gameTree={gameTree}>
         <GobanKeyNavigation />
         <HideInSmallLandscape>
@@ -125,6 +150,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
                 <SgfDownload sgfContents={sgf}>
                   <Download height="1rem" width="1rem" />
                 </SgfDownload>
+                {fullScreenOption}
               </SpeedDialOption>
             </SpeedDial>
           </FabGameInfo>
@@ -159,6 +185,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
                   <Download height="1rem" width="1rem" />
                 </SgfDownload>
               </SpeedDialOption>
+              {fullScreenOption}
             </SpeedDial>
           </GameViewInfo>
         </MediaQueryView>

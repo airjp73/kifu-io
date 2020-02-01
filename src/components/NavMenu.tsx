@@ -8,6 +8,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, mediumLandscapeMedia, purple } from 'style';
 import LogoutButton from './LogoutButton';
 import MediaQueryView, { PortraitView, LandscapeView } from './MediaQueryView';
+import FlatButton from './FlatButton';
 
 interface NavItemProps {
   label: string;
