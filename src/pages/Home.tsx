@@ -1,7 +1,7 @@
 import React from 'react';
 import 'styled-components/macro';
 import { css } from 'styled-components';
-import { highlightFaded } from 'style';
+import { purple } from 'style';
 import Button from 'components/Button';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,6 @@ const Home = () => (
     css={css`
       flex: 1;
       text-align: center;
-      color: ${highlightFaded};
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -23,7 +22,13 @@ const Home = () => (
     >
       Kifu.io
     </h1>
-    <p>Mobile friendly SGF hosting</p>
+    <p
+      css={css`
+        color: ${purple[90]};
+      `}
+    >
+      Mobile friendly SGF hosting
+    </p>
     <Link
       to="/upload"
       css={`

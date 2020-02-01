@@ -5,7 +5,7 @@ import 'styled-components/macro';
 import { GitHub, LogIn, LogOut, UploadCloud } from 'react-feather';
 import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
-import { highlight, panelHighlight, mediumLandscapeMedia } from 'style';
+import { highlight, mediumLandscapeMedia, purple } from 'style';
 import LogoutButton from './LogoutButton';
 import MediaQueryView, { PortraitView, LandscapeView } from './MediaQueryView';
 
@@ -28,11 +28,11 @@ const linkStyle = css`
   overflow: hidden;
 
   &.active {
-    background-color: ${panelHighlight};
+    background-color: ${purple[80]};
   }
 
   :hover {
-    background-color: ${panelHighlight};
+    background-color: ${purple[60]};
   }
 
   > svg {
