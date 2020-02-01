@@ -109,7 +109,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
 
   const fullScreenOption = (
     <SpeedDialOption
-      label={isFullScreen ? 'Exit Full Screen' : 'Full Screen Mode'}
+      label={isFullScreen ? 'Exit Full Screen' : 'Full Screen'}
       onClick={() => {
         if (isFullScreen) exitFullScreen();
         else goFullScreen();
@@ -150,8 +150,8 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
                 <SgfDownload sgfContents={sgf}>
                   <Download height="1rem" width="1rem" />
                 </SgfDownload>
-                {fullScreenOption}
               </SpeedDialOption>
+              {fullScreenOption}
             </SpeedDial>
           </FabGameInfo>
         </MediaQueryView>
