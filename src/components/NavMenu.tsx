@@ -7,7 +7,6 @@ import User from 'components/User';
 import useCurrentUser from 'hooks/useCurrentUser';
 import { highlight, panelHighlight, mediumLandscapeMedia } from 'style';
 import LogoutButton from './LogoutButton';
-import GoIcon from './GoIcon';
 import MediaQueryView, { PortraitView, LandscapeView } from './MediaQueryView';
 
 interface NavItemProps {
@@ -140,11 +139,6 @@ const NavMenu: React.FunctionComponent = () => {
           <NavItem icon={<LogIn />} label="Log In" to="/login" />
         )}
         <NavItem icon={<UploadCloud />} label="Upload SGF" to="/upload" />
-        <NavItem
-          icon={<GoIcon height="25px" width="25px" />}
-          label="Start Playing"
-          to="/start-playing"
-        />
         <NavItem
           icon={<GitHub height="25px" width="25px" />}
           label="Github"
