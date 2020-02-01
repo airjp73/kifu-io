@@ -1,7 +1,7 @@
 import React from 'react';
 import 'styled-components/macro';
 import { css } from 'styled-components';
-import { purple } from 'style';
+import { highlight } from 'style';
 import Button from 'components/Button';
 import { Link } from 'react-router-dom';
 
@@ -24,7 +24,7 @@ const Home = () => (
     </h1>
     <p
       css={css`
-        color: ${purple[90]};
+        color: ${highlight};
       `}
     >
       Mobile friendly SGF hosting
