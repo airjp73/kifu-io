@@ -57,6 +57,14 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     }
   };
 
+  const handleClick = (
+    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
+  ) => {
+    const x = coordToPointIndex(event.nativeEvent.offsetX);
+    const y = coordToPointIndex(event.nativeEvent.offsetY);
+    // dispatch something
+  };
+
   const handleMouseLeave = () => setMouseCoords(null);
 
   const shouldDraw =
@@ -102,6 +110,7 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     <CanvasLayer
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       ref={canvasRef}
       height={height}
       width={width}
