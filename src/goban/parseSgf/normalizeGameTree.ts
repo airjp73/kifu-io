@@ -1,4 +1,5 @@
 import { GameNode, NodeProperties } from './parseSgf';
+import uuid from 'uuid/v4';
 
 export interface GameTreeNode {
   id: string;
@@ -9,21 +10,14 @@ export interface GameTreeNode {
 }
 
 export interface GameTree {
-  generateId: () => string;
   rootNode: string;
   nodes: {
     [key: string]: GameTreeNode;
   };
 }
 
-let id = 0;
-const generateId = () => {
-  return `${id++}`;
-};
-
 const normalizeGameTree = (root: GameNode): GameTree => {
   const gameTree: GameTree = {
-    generateId,
     rootNode: '',
     nodes: {},
   };
@@ -33,7 +27,7 @@ const normalizeGameTree = (root: GameNode): GameTree => {
     parent?: string,
     currentMoveNumber: number = 1
   ): string => {
-    const id = gameTree.generateId();
+    const id = uuid();
     const hasMoveNumber =
       node.properties && (node.properties.B || node.properties.W);
     const normalizedNode: GameTreeNode = {
