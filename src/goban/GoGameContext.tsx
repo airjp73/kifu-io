@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useCallback } from 'react';
 import { GameTree, GameTreeNode } from 'goban/parseSgf/normalizeGameTree';
-import useThunkReducer from 'hooks/useThunkReducer';
+import useThunkReducer, { ThunkDispatch } from 'hooks/useThunkReducer';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import { pushHistory, setNode, popHistory, init } from './actions';
 import processNode from './processNode';
@@ -13,6 +13,7 @@ export interface GameContext {
   gameTree: GameTree;
   getNode: (nodeId: string) => GameTreeNode;
   goToNode: (node: string) => void;
+  dispatch: ThunkDispatch<GameStateWithHistory>;
 }
 
 export interface Action {
@@ -102,6 +103,7 @@ export const GoGameContextProvider: React.FunctionComponent<
         gameTree,
         getNode,
         goToNode,
+        dispatch,
       }}
     >
       {gameState.node && children}
