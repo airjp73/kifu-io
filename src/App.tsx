@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-import { darkFaded, highlightFaded, teal, purple } from 'style';
+import { teal, purple } from 'style';
 import Login from 'pages/Login';
 import View from 'pages/View';
 import Profile from 'pages/Profile';

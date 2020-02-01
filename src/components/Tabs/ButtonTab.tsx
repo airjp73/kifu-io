@@ -1,7 +1,6 @@
 import React from 'react';
 import FlatButton from 'components/FlatButton';
 import { useTabContext } from './Tabs';
-import { css } from 'styled-components';
 
 interface ButtonTabProps {
   className?: string;

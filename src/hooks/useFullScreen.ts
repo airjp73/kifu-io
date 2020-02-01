@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 function useFullScreen(
-  el: React.RefObject<HTMLElement>
+  ref: React.RefObject<HTMLElement>
 ): [boolean, () => void, () => void] {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -9,13 +9,13 @@ function useFullScreen(
     const callback = (event: Event) =>
       setIsFullScreen(event.target === document.fullscreenElement);
 
-    el!.current.addEventListener('fullscreenchange', callback);
-    return () => el!.current.removeEventListener('fullscreenchange', callback);
-  }, []);
+    ref!.current.addEventListener('fullscreenchange', callback);
+    return () => ref!.current.removeEventListener('fullscreenchange', callback);
+  }, [ref]);
 
   return [
     isFullScreen,
-    () => el!.current.requestFullscreen(),
+    () => ref!.current.requestFullscreen(),
     () => document.exitFullscreen(),
   ];
 }
