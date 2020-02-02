@@ -32,7 +32,7 @@ const EditModeFab: React.FC = () => {
       <Prompt
         when={editMode}
         message={(location: Location<LocationState>) =>
-          location.state.afterSave ||
+          location.state?.afterSave ||
           'You have unsaved changes, are you sure you want to leave?'
         }
       />
