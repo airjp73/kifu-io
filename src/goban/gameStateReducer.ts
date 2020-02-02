@@ -19,6 +19,7 @@ import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
 import { GameTree } from './parseSgf/normalizeGameTree';
+import { NodeProperties } from './parseSgf/parseSgf'
 import { ADD_NODE, GameTreeAction } from './gameTreeActions';
 
 export type GameStateAction =
@@ -174,18 +175,21 @@ const captureCountReducer = (
   }
 };
 
-const addNode = produce((draft: GameStateWithHistory) => {
-  const parentNodeId = draft.node;
-  const newNodeId = uuid();
+const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
+  return produce(state, (draft: GameStateWithHistory) => {
+    const parentNodeId = draft.node;
+    const newNodeId = uuid();
 
-  draft.node = newNodeId;
-  draft.gameTree.nodes[parentNodeId].children = draft.gameTree.nodes[parentNodeId].children ?? [];
-  draft.gameTree.nodes[parentNodeId].children.push(newNodeId);
-  draft.gameTree.nodes[newNodeId] = {
-    id: newNodeId,
-    parent: parentNodeId,
-  };
-});
+    draft.node = newNodeId;
+    draft.gameTree.nodes[parentNodeId].children = draft.gameTree.nodes[parentNodeId].children ?? [];
+    draft.gameTree.nodes[parentNodeId].children.push(newNodeId);
+    draft.gameTree.nodes[newNodeId] = {
+      id: newNodeId,
+      parent: parentNodeId,
+      properties 
+    };
+  });
+}
 
 export interface GameState {
   properties: GameStateProperties;
@@ -248,7 +252,7 @@ const gameStateReducer = (
     case SET_NODE:
       return { ...state, node: action.node };
     case ADD_NODE:
-      return addNode(state);
+      return addNode(state, action.payload);
     default:
       return {
         boardState: boardStateReducer(boardState, action),

@@ -1,7 +1,8 @@
 import { GameStateWithHistory } from './gameStateReducer';
 import { ThunkAction } from 'hooks/useThunkReducer';
 import { NodeProperties } from './parseSgf/parseSgf';
-import placeStone from './placeStone'
+import { GameTreeNode } from './parseSgf/normalizeGameTree'
+import processNodeProperties from './processNode'
 import { pushHistory } from './actions';
 
 export const ADD_NODE = 'game-tree/addNode';
@@ -16,14 +17,17 @@ export const addMove = (point: string): ThunkAction<GameStateWithHistory> => (
   state
 ) => {
   const playerToPlay = state.moveState.playerToPlay ?? 'b';
+  const properties: NodeProperties = {
+    [playerToPlay.toUpperCase()]: [point]
+  };
+
   dispatch(pushHistory())
   dispatch({
     type: ADD_NODE,
-    payload: {
-      [playerToPlay.toUpperCase()]: [point]
-    }
+    payload: properties
   } as AddNodeAction);
-  placeStone(point, playerToPlay, dispatch);
+
+  processNodeProperties(properties, dispatch);
 };
 
 export type GameTreeAction = AddNodeAction;

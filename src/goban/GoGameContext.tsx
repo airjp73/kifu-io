@@ -3,7 +3,7 @@ import { GameTree, GameTreeNode } from 'goban/parseSgf/normalizeGameTree';
 import useThunkReducer, { ThunkDispatch } from 'hooks/useThunkReducer';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import { pushHistory, setNode, popHistory, init } from './actions';
-import processNode from './processNode';
+import processNodeProperties from './processNode';
 
 // Interfaces
 export interface GameContext {
@@ -60,7 +60,7 @@ export const GoGameContextProvider: React.FunctionComponent<
     (nodeId: string) => {
       dispatch(pushHistory());
       dispatch(setNode(nodeId));
-      processNode(gameTree.nodes[nodeId], dispatch);
+      processNodeProperties(gameTree.nodes[nodeId].properties, dispatch);
     },
     [dispatch, gameTree.nodes]
   );
@@ -95,7 +95,7 @@ export const GoGameContextProvider: React.FunctionComponent<
       else dispatch(init(gameTree));
       nextMove(nodeId);
     },
-    [nextMove, dispatch, getNode]
+    [nextMove, dispatch, getNode, gameTree]
   );
 
   // Go to first move on mount
