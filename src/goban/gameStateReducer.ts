@@ -191,6 +191,7 @@ const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
       // We have a few dummy nodes at the start
       moveNumber: draft.history.length - 1,
     };
+    draft.editMode = true;
   });
 };
 
@@ -204,6 +205,7 @@ export interface GameState {
 export interface GameStateWithHistory extends GameState {
   history: GameState[];
   gameTree: GameTree;
+  editMode: boolean;
 }
 const defaultState: GameStateWithHistory = {
   boardState: {},
@@ -216,6 +218,7 @@ const defaultState: GameStateWithHistory = {
     rootNode: '',
     nodes: {},
   },
+  editMode: false,
 };
 const gameStateReducer = (
   state: GameStateWithHistory = defaultState,
@@ -228,7 +231,6 @@ const gameStateReducer = (
     moveState,
     captureCounts,
     history,
-    gameTree,
   } = state;
 
   switch (action.type) {
@@ -239,9 +241,9 @@ const gameStateReducer = (
       };
     case POP_HISTORY:
       return {
+        ...state,
         ...history[history.length - 1],
         history: history.slice(0, history.length - 1),
-        gameTree,
       };
     case PUSH_HISTORY:
       return {
@@ -258,13 +260,11 @@ const gameStateReducer = (
       return addNode(state, action.payload);
     default:
       return {
+        ...state,
         boardState: boardStateReducer(boardState, action),
         properties: propertiesReducer(properties, action),
-        node,
         moveState: moveStateReducer(moveState, action),
         captureCounts: captureCountReducer(captureCounts, action),
-        gameTree,
-        history,
       };
   }
 };
