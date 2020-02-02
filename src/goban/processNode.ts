@@ -1,4 +1,3 @@
-import { GameTreeNode } from 'goban/parseSgf/normalizeGameTree';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import placeStone from './placeStone';
 import { setPoint } from './actions';
