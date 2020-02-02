@@ -10,7 +10,7 @@ const FabTab: React.FunctionComponent<FabTabProps &
   React.ComponentProps<typeof Fab>> = ({ tabName, ...rest }) => {
   const { setCurrentTab } = useTabContext();
 
-  return <Fab onClick={() => tabName && setCurrentTab(tabName)} {...rest} />;
+  return <Fab onClick={() => setCurrentTab(tabName)} {...rest} />;
 };
 
 export default FabTab;
