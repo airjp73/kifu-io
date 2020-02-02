@@ -58,8 +58,6 @@ const GameViewContainer = styled.div`
   }
 
   ${largeLandscapeMedia} {
-    width: fit-content;
-    margin: auto;
     grid-template-areas:
       'board capture'
       'board info'
