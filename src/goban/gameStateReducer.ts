@@ -1,4 +1,6 @@
+import uuid from 'uuid/v4';
 import omit from 'lodash/omit';
+import { produce } from 'immer';
 import {
   SetPointAction,
   SET_POINT,
@@ -17,6 +19,7 @@ import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
 import { GameTree } from './parseSgf/normalizeGameTree';
+import { ADD_NODE, GameTreeAction } from './gameTreeActions';
 
 export type GameStateAction =
   | CaptureAction
@@ -26,7 +29,8 @@ export type GameStateAction =
   | SetMoveStateAction
   | SetNodeAction
   | SetPointAction
-  | SetPropertyAction;
+  | SetPropertyAction
+  | GameTreeAction;
 
 export interface BoardState {
   [key: string]: StoneColor | null;
@@ -93,14 +97,6 @@ const propertiesReducer = (
       };
     default:
       return state;
-  }
-};
-
-const nodeReducer = (state: string, action: GameStateAction): string => {
-  if (action.type === SET_NODE) {
-    return action.node;
-  } else {
-    return state;
   }
 };
 
@@ -178,6 +174,19 @@ const captureCountReducer = (
   }
 };
 
+const addNode = produce((draft: GameStateWithHistory) => {
+  const parentNodeId = draft.node;
+  const newNodeId = uuid();
+
+  draft.node = newNodeId;
+  draft.gameTree.nodes[parentNodeId].children = draft.gameTree.nodes[parentNodeId].children ?? [];
+  draft.gameTree.nodes[parentNodeId].children.push(newNodeId);
+  draft.gameTree.nodes[newNodeId] = {
+    id: newNodeId,
+    parent: parentNodeId,
+  };
+});
+
 export interface GameState {
   properties: GameStateProperties;
   boardState: BoardState;
@@ -212,16 +221,20 @@ const gameStateReducer = (
     moveState,
     captureCounts,
     history,
+    gameTree,
   } = state;
 
   switch (action.type) {
     case INIT:
-      return defaultState;
+      return {
+        ...defaultState,
+        gameTree: action.payload,
+      };
     case POP_HISTORY:
       return {
         ...history[history.length - 1],
         history: history.slice(0, history.length - 1),
-        gameTree: state.gameTree,
+        gameTree,
       };
     case PUSH_HISTORY:
       return {
@@ -232,15 +245,19 @@ const gameStateReducer = (
           { boardState, properties, node, moveState, captureCounts },
         ],
       };
+    case SET_NODE:
+      return { ...state, node: action.node };
+    case ADD_NODE:
+      return addNode(state);
     default:
       return {
         boardState: boardStateReducer(boardState, action),
         properties: propertiesReducer(properties, action),
-        node: nodeReducer(node, action),
+        node,
         moveState: moveStateReducer(moveState, action),
         captureCounts: captureCountReducer(captureCounts, action),
-        gameTree: state.gameTree, // add reducer
-        history: history,
+        gameTree,
+        history,
       };
   }
 };

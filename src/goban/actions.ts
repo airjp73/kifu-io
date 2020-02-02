@@ -1,4 +1,5 @@
 import { StoneColor } from 'goban/Goban';
+import { GameTree } from './parseSgf/normalizeGameTree';
 
 export const CAPTURE = 'CAPTURE';
 export const INIT = 'INIT';
@@ -57,5 +58,9 @@ export const popHistory = (): PopHistoryAction => ({ type: POP_HISTORY });
 
 export interface InitAction {
   type: typeof INIT;
+  payload: GameTree;
 }
-export const init = (): InitAction => ({ type: INIT });
+export const init = (gameTree: GameTree): InitAction => ({
+  type: INIT,
+  payload: gameTree,
+});
