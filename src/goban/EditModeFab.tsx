@@ -1,5 +1,6 @@
 import React from 'react';
 import { Edit, Save } from 'react-feather';
+import { toast } from 'react-toastify';
 import Fab from 'components/Fab';
 import { useGoGameContext } from './GoGameContext';
 import { startEditing, stopEditing } from './actions';
@@ -25,8 +26,11 @@ const EditModeFab: React.FC = () => {
     const sgf = createSgfFromGameTree(gameTree);
     const docId = await uploadSgf(sgf, currentUser);
     if (docId) {
+      toast.success('Sgf Copied and saved!');
       history.push(`/view/${docId}`, { afterSave: true });
       dispatch(stopEditing());
+    } else {
+      toast.error('Error saving SGF');
     }
   };
 
