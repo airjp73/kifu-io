@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+import { ToastContainer } from 'react-toastify';
 import { teal, purple } from 'style';
 import Login from 'pages/Login';
 import View from 'pages/View';
@@ -11,6 +12,7 @@ import Layout from 'components/Layout';
 import 'normalize.css';
 import AppContext from './AppContext';
 import Home from 'pages/Home';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -41,6 +43,7 @@ const GlobalStyles = createGlobalStyle`
 const App = () => (
   <>
     <GlobalStyles />
+    <ToastContainer />
     <AppContext>
       <Layout>
         <Route exact path="/" component={Home} />
