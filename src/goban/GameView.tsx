@@ -26,6 +26,7 @@ import SpeedDialOption from 'components/SpeedDialOption';
 import { Download, Maximize2, Minimize2 } from 'react-feather';
 import { purple } from 'style';
 import EditModeFab from './EditModeFab';
+import { ToastContainer, toast } from 'react-toastify';
 
 interface GameViewProps {
   sgf: string;
@@ -120,6 +121,11 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
 
   return (
     <GameViewContainer ref={gameViewRef}>
+      <ToastContainer
+        enableMultiContainer
+        toastClassName="customToast"
+        containerId="game-view"
+      />
       <GoGameContextProvider gameTree={gameTree}>
         <GobanKeyNavigation />
         <HideInSmallLandscape>

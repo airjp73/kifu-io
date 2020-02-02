@@ -67,7 +67,11 @@ const GlobalStyles = createGlobalStyle`
 const App = () => (
   <>
     <GlobalStyles />
-    <ToastContainer toastClassName="customToast" />
+    <ToastContainer
+      enableMultiContainer
+      toastClassName="customToast"
+      containerId="global"
+    />
     <AppContext>
       <Layout>
         <Route exact path="/" component={Home} />

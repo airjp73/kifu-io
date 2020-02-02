@@ -26,11 +26,11 @@ const EditModeFab: React.FC = () => {
     const sgf = createSgfFromGameTree(gameTree);
     const docId = await uploadSgf(sgf, currentUser);
     if (docId) {
-      toast.success('Sgf Copied and saved!');
+      toast.success('Sgf Copied and saved!', { containerId: 'game-view' });
       history.push(`/view/${docId}`, { afterSave: true });
       dispatch(stopEditing());
     } else {
-      toast.error('Error saving SGF');
+      toast.error('Error saving SGF', { containerId: 'game-view' });
     }
   };
 
