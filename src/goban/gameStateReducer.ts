@@ -14,6 +14,8 @@ import {
   PopHistoryAction,
   InitAction,
   INIT,
+  StartEditingAction,
+  START_EDITING,
 } from './actions';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
@@ -31,7 +33,8 @@ export type GameStateAction =
   | SetNodeAction
   | SetPointAction
   | SetPropertyAction
-  | GameTreeAction;
+  | GameTreeAction
+  | StartEditingAction;
 
 export interface BoardState {
   [key: string]: StoneColor | null;
@@ -237,6 +240,7 @@ const gameStateReducer = (
     case INIT:
       return {
         ...defaultState,
+        editMode: state.editMode,
         gameTree: action.payload,
       };
     case POP_HISTORY:
@@ -258,6 +262,11 @@ const gameStateReducer = (
       return { ...state, node: action.node };
     case ADD_NODE:
       return addNode(state, action.payload);
+    case START_EDITING:
+      return {
+        ...state,
+        editMode: true,
+      };
     default:
       return {
         ...state,

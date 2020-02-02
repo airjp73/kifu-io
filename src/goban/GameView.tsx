@@ -25,6 +25,7 @@ import SpeedDial from 'components/SpeedDial';
 import SpeedDialOption from 'components/SpeedDialOption';
 import { Download, Maximize2, Minimize2 } from 'react-feather';
 import { purple } from 'style';
+import EditModeFab from './EditModeFab';
 
 interface GameViewProps {
   sgf: string;
@@ -143,6 +144,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
               grid-area: info;
             `}
           >
+            <EditModeFab />
             <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}>
               <SpeedDialOption label="Download">
                 <SgfDownload sgfContents={sgf}>
@@ -177,6 +179,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         </LandscapeView>
         <MediaQueryView minWidth={1000}>
           <GameViewInfo>
+            <EditModeFab />
             <SpeedDial direction="DOWN">
               <SpeedDialOption label="Download">
                 <SgfDownload sgfContents={sgf}>

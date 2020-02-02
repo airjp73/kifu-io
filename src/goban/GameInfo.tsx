@@ -99,6 +99,12 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({
               right: 1rem;
               top: 0.5rem;
               z-index: 1;
+              display: flex;
+              flex-direction: row;
+
+              > * + * {
+                margin-left: 1rem;
+              }
             `}
           >
             {children}

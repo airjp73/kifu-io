@@ -7,6 +7,7 @@ export const SET_NODE = 'SET_NODE';
 export const SET_POINT = 'SET_POINT';
 export const POP_HISTORY = 'POP_HISTORY';
 export const PUSH_HISTORY = 'PUSH_HISTORY';
+export const START_EDITING = 'START_EDITING';
 
 // Board state
 export interface SetPointAction {
@@ -64,3 +65,8 @@ export const init = (gameTree: GameTree): InitAction => ({
   type: INIT,
   payload: gameTree,
 });
+
+export interface StartEditingAction {
+  type: typeof START_EDITING;
+}
+export const startEditing = () => ({ type: START_EDITING });
