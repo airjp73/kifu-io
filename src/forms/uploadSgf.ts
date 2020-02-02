@@ -4,7 +4,7 @@ import { NewEntity, SgfFile } from 'api/apiDataTypes';
 
 const firestore = firebaseApp.firestore();
 
-async function uploadSgf(sgf: string, currentUser: User): Promise<string> {
+async function uploadSgf(sgf: string, currentUser?: User): Promise<string> {
   const newDocument = firestore.collection('sgfFiles').doc();
   if (!sgf) throw new Error('Cannot upload an empty sgf');
 
