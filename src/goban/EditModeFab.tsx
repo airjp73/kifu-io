@@ -3,6 +3,7 @@ import { Edit, Save } from 'react-feather';
 import Fab from 'components/Fab';
 import { useGoGameContext } from './GoGameContext';
 import { startEditing } from './actions';
+import { Prompt } from 'react-router-dom';
 
 const EditModeFab: React.FC = () => {
   const {
@@ -11,9 +12,15 @@ const EditModeFab: React.FC = () => {
   } = useGoGameContext();
 
   return (
-    <Fab highlighted={editMode} onClick={() => dispatch(startEditing())}>
-      {editMode ? <Save /> : <Edit />}
-    </Fab>
+    <>
+      <Prompt
+        when={editMode}
+        message="You have unsaved changes, are you sure you want to leave?"
+      />
+      <Fab highlighted={editMode} onClick={() => dispatch(startEditing())}>
+        {editMode ? <Save /> : <Edit />}
+      </Fab>
+    </>
   );
 };
 
