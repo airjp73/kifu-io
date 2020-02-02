@@ -37,6 +37,5 @@ pipelines:
             - echo "REACT_APP_FIREBASE_STORAGE_BUCKET=$FIREBASE_STORAGE_BUCKET" >> .env.production
             - echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=$FIREBASE_MESSAGING_SENDER_ID" >> .env.production
             - echo "REACT_APP_FIREBASE_APP_ID=$FIREBASE_APP_ID" >> .env.production
-            - head .env.production
-            - npm install -g now
+            - npm install -g now@16.3.1
             - now --token=$NOW_TOKEN --target production
