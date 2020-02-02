@@ -2,7 +2,7 @@ import React from 'react';
 import { Edit, Save } from 'react-feather';
 import Fab from 'components/Fab';
 import { useGoGameContext } from './GoGameContext';
-import { startEditing } from './actions';
+import { startEditing, stopEditing } from './actions';
 import { Prompt, useHistory } from 'react-router-dom';
 import { Location } from 'history';
 import createSgfFromGameTree from './parseSgf/createSgfFromGameTree';
@@ -24,7 +24,10 @@ const EditModeFab: React.FC = () => {
   const handleSave = async () => {
     const sgf = createSgfFromGameTree(gameTree);
     const docId = await uploadSgf(sgf, currentUser);
-    if (docId) history.push(`/view/${docId}`, { afterSave: true });
+    if (docId) {
+      history.push(`/view/${docId}`, { afterSave: true });
+      dispatch(stopEditing());
+    }
   };
 
   return (

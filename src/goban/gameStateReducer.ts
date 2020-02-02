@@ -16,6 +16,8 @@ import {
   INIT,
   StartEditingAction,
   START_EDITING,
+  StopEditingAction,
+  STOP_EDITING,
 } from './actions';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
@@ -34,7 +36,8 @@ export type GameStateAction =
   | SetPointAction
   | SetPropertyAction
   | GameTreeAction
-  | StartEditingAction;
+  | StartEditingAction
+  | StopEditingAction;
 
 export interface BoardState {
   [key: string]: StoneColor | null;
@@ -266,6 +269,11 @@ const gameStateReducer = (
       return {
         ...state,
         editMode: true,
+      };
+    case STOP_EDITING:
+      return {
+        ...state,
+        editMode: false,
       };
     default:
       return {
