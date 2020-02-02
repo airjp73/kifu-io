@@ -5,12 +5,12 @@ interface TabContentProps {
   tab: string;
 }
 
-const TabContent: React.FunctionComponent<TabContentProps> = ({
+const TabContent: React.FC<TabContentProps> = ({
   children,
   currentTab,
   tab,
 }) => {
-  return currentTab === tab && <>{children}</>;
+  return <>{currentTab === tab && children}</>;
 };
 
 export default TabContent;

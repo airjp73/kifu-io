@@ -54,7 +54,7 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
     config: { tension: 700, clamp: true },
   });
 
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   useClickOutside(containerRef, () => setOpen(false));
 
   return (
@@ -75,7 +75,7 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
           align-items: center;
           width: 100%;
           ${!open && 'pointer-events: none;'}
-          ${directionStyles[direction]}
+          ${direction && directionStyles[direction]}
         `}
       >
         {trail.map((style, index) =>

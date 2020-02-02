@@ -27,10 +27,10 @@ import usePlayerNames from 'goban/usePlayerNames';
 
 const firestore = firebaseApp.firestore();
 
-const useFileContents = (file?: File): [null | string, null | string] => {
-  const [contents, setContents] = useState<string>(null);
-  const [error, setError] = useState<string>(null);
-  const fileReader = useRef<FileReader>(null);
+const useFileContents = (file: File | null): [null | string, null | string] => {
+  const [contents, setContents] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const fileReader = useRef<FileReader | null>(null);
 
   useEffect(() => {
     if (fileReader.current) fileReader.current.abort();
@@ -46,8 +46,15 @@ const useFileContents = (file?: File): [null | string, null | string] => {
     } else {
       setError(null);
       fileReader.current = new FileReader();
-      fileReader.current.onload = () =>
-        setContents(fileReader.current.result as string);
+      fileReader.current.onload = () => {
+        if (!fileReader.current) return;
+        if (typeof fileReader.current.result === 'string')
+          setContents(fileReader.current.result);
+        else {
+          setContents(null);
+          setError('Unknown file type');
+        }
+      };
       fileReader.current.readAsText(file);
     }
   }, [file]);
@@ -122,16 +129,16 @@ const UploadForm = styled.form<{ previewing: boolean }>`
 
 const UploadSgfForm = () => {
   const [currentUser] = useCurrentUser();
-  const [file, setFile] = useState<File>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [contents, fileError] = useFileContents(file);
   const [rawContent, setRawContent] = useState<string>('');
   const sgf = rawContent || contents;
   const [gameTree, sgfError] = useSgf(sgf);
-  const [uploadError, setUploadError] = useState<string>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(event.currentTarget.files[0]);
+    setFile(event.currentTarget?.files?.[0] ?? null);
     setRawContent('');
   };
 
@@ -169,12 +176,13 @@ const UploadSgfForm = () => {
   const uploadSgf = async () => {
     setUploadError(null);
     const newDocument = firestore.collection('sgfFiles').doc();
+    if (!sgf) return setUploadError('Cannot upload an empty sgf')
     const sgfFile: NewEntity<SgfFile> = {
       contents: sgf,
       uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),
-      userId: currentUser ? currentUser.uid : null,
-      userPhotoURL: currentUser ? currentUser.photoURL : null,
-      userDisplayName: currentUser ? currentUser.displayName : null,
+      userId: currentUser?.uid,
+      userPhotoURL: currentUser?.photoURL ?? undefined,
+      userDisplayName: currentUser?.displayName ?? undefined,
     };
     try {
       await newDocument.set(sgfFile);

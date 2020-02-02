@@ -4,6 +4,8 @@ export function setCanvasDimensionsWithCorrectScaling(
   height: number
 ) {
   const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Unable to get canvas context');
+
   const devicePixelRatio = window.devicePixelRatio || 1;
   const backingStoreRatio =
     (ctx as any).webkitBackingStorePixelRatio ||

@@ -33,7 +33,7 @@ const MainContent = styled.main`
   }
 `;
 
-const Layout: React.FunctionComponent<Partial<RouteComponentProps>> = ({
+const Layout: React.FunctionComponent<RouteComponentProps> = ({
   children,
   history,
 }) => {
@@ -46,7 +46,7 @@ const Layout: React.FunctionComponent<Partial<RouteComponentProps>> = ({
     () =>
       history.listen(() => {
         setSidePanelOpen(false);
-        contentRef.current.scrollTop = 0;
+        contentRef.current!.scrollTop = 0;
       }),
     [history]
   );

@@ -1,7 +1,14 @@
 import React, { createContext, useState } from 'react';
 import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 
-export const WindowContext = createContext(null);
+interface WindowContextValue {
+  height: number;
+  width: number;
+}
+export const WindowContext = createContext<WindowContextValue>({
+  height: 0,
+  width: 0,
+});
 
 const WindowContextProvider: React.FC = ({ children }) => {
   const [dimensions, setDimensions] = useState({

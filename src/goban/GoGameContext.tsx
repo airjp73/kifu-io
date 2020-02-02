@@ -21,10 +21,17 @@ export interface Action {
 }
 
 // Context
-const GoGameContext = React.createContext<GameContext>(null);
+const GoGameContext = React.createContext<GameContext | null>(null);
 
 // Context Consumer hook
-export const useGoGameContext = () => useContext(GoGameContext);
+export const useGoGameContext = (): GameContext => {
+  const contextValue = useContext(GoGameContext);
+  if (!contextValue)
+    throw new Error(
+      'Attempted to access go game context but it was not found.'
+    );
+  return contextValue;
+};
 
 // Context Provider component
 interface GoGameContextProviderProps {
@@ -32,11 +39,12 @@ interface GoGameContextProviderProps {
 }
 export const GoGameContextProvider: React.FunctionComponent<
   GoGameContextProviderProps
-> = ({ children, gameTree }) => {
+> = ({ children, gameTree: passedGameTree }) => {
   const [gameState, dispatch] = useThunkReducer(
     gameStateReducer,
-    gameStateReducer(undefined, init()) // TODO: tweak hook to allow an init function
+    gameStateReducer(undefined, init(passedGameTree)) // TODO: tweak hook to allow an init function
   );
+  const gameTree = gameState.gameTree;
 
   const getNode = useCallback((nodeId: string) => gameTree.nodes[nodeId], [
     gameTree.nodes,
@@ -84,7 +92,7 @@ export const GoGameContextProvider: React.FunctionComponent<
   const goToNode = useCallback(
     (nodeId: string) => {
       if (getNode(nodeId).parent) goToNode(getNode(nodeId).parent);
-      else dispatch(init());
+      else dispatch(init(gameTree));
       nextMove(nodeId);
     },
     [nextMove, dispatch, getNode]
@@ -100,7 +108,7 @@ export const GoGameContextProvider: React.FunctionComponent<
         back,
         forward,
         gameState,
-        gameTree,
+        gameTree: gameState.gameTree,
         getNode,
         goToNode,
         dispatch,

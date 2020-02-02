@@ -128,8 +128,8 @@ const NavMenu: React.FunctionComponent = () => {
         <NavUser>
           <NavLink css={linkStyle} to={`/profile`}>
             <User
-              photoURL={currentUser.photoURL}
-              displayName={currentUser.displayName}
+              photoURL={currentUser.photoURL || undefined}
+              displayName={currentUser.displayName || undefined}
             />
           </NavLink>
         </NavUser>

@@ -5,8 +5,13 @@ interface TabContextValue {
   currentTab?: string;
   setCurrentTab: (tab: string) => void;
 }
-const TabContext = React.createContext<TabContextValue>(null);
-export const useTabContext = () => useContext(TabContext);
+const TabContext = React.createContext<TabContextValue | null>(null);
+export const useTabContext = (): TabContextValue => {
+  const contextValue = useContext(TabContext);
+  if (!contextValue)
+    throw new Error('Attempted to access Tab context but was not found');
+  return contextValue;
+};
 
 const TabsContainer = styled.div`
   display: flex;
