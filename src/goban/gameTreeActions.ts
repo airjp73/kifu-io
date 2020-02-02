@@ -13,15 +13,17 @@ export interface AddNodeAction {
 
 export const addMove = (point: string): ThunkAction<GameStateWithHistory> => (
   dispatch,
-  state
+  getState
 ) => {
-  const playerToPlay = state.moveState.playerToPlay ?? 'b';
+  const playerToPlay = getState().moveState.playerToPlay ?? 'b';
   const propName = playerToPlay.toUpperCase();
 
   dispatch(pushHistory());
 
-  const existingBranch = state.gameTree.nodes[state.node].children
-    ?.map(child => state.gameTree.nodes[child])
+  const existingBranch = getState()
+    .gameTree.nodes[getState().node].children?.map(
+      child => getState().gameTree.nodes[child]
+    )
     .find(child => child?.properties[propName]?.[0] === point);
   if (existingBranch) {
     dispatch(setNode(existingBranch.id));

@@ -94,17 +94,17 @@ const placeStone = (
   value: StoneColor,
   dispatch: ThunkDispatch<GameStateWithHistory>
 ) => {
-  dispatch(setPoint([point], value));
-  dispatch((dispatch, gameState) => {
+  dispatch((dispatch, getState) => {
+    dispatch(setPoint([point], value));
     const capturedStones = checkForCaptures(
       point,
-      gameState.boardState,
-      gameState.properties
+      getState().boardState,
+      getState().properties
     );
     if (capturedStones) {
       // Only one side can be captured in a single move
       // so we know they're all the same color
-      const capturedColor = gameState.boardState[capturedStones[0]];
+      const capturedColor = getState().boardState[capturedStones[0]];
       dispatch(captureStones(capturedStones, capturedColor));
     }
   });
