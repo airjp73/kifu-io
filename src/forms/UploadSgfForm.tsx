@@ -24,6 +24,7 @@ import TextArea from 'components/Input/TextArea';
 import { GameTree } from 'goban/parseSgf/normalizeGameTree';
 import { smallLandscapeMedia, highlightFaded } from 'style';
 import usePlayerNames from 'goban/usePlayerNames';
+import uploadSgf from './uploadSgf';
 
 const firestore = firebaseApp.firestore();
 
@@ -173,23 +174,12 @@ const UploadSgfForm = () => {
     </GoGameContextProvider>
   );
 
-  const uploadSgf = async () => {
+  const performUpload = async (): Promise<string | null> => {
     setUploadError(null);
-    const newDocument = firestore.collection('sgfFiles').doc();
-    if (!sgf) return setUploadError('Cannot upload an empty sgf');
-    const sgfFile: NewEntity<SgfFile> = {
-      contents: sgf,
-      uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),
-      userId: currentUser?.uid,
-      userPhotoURL: currentUser?.photoURL ?? undefined,
-      userDisplayName: currentUser?.displayName ?? undefined,
-    };
-    try {
-      await newDocument.set(sgfFile);
-      return newDocument.id;
-    } catch (error) {
+    return await uploadSgf(sgf, currentUser).catch(error => {
       setUploadError(error.message);
-    }
+      return null;
+    });
   };
 
   const uploadButton = (
@@ -213,7 +203,7 @@ const UploadSgfForm = () => {
           onSubmit={async e => {
             e.preventDefault();
             setIsUploading(true);
-            const docId = await uploadSgf();
+            const docId = await performUpload();
             setIsUploading(false);
             docId && history.push(`/view/${docId}`);
           }}
