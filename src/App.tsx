@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-import { teal, purple } from 'style';
+import { ToastContainer } from 'react-toastify';
+import { teal, purple, red } from 'style';
 import Login from 'pages/Login';
 import View from 'pages/View';
 import Profile from 'pages/Profile';
@@ -11,6 +12,7 @@ import Layout from 'components/Layout';
 import 'normalize.css';
 import AppContext from './AppContext';
 import Home from 'pages/Home';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -36,11 +38,40 @@ const GlobalStyles = createGlobalStyle`
   svg {
     display:flex;
   }
+
+  .customToast {
+    &.Toastify__toast--error {
+      background-color: ${red[50]};
+
+      .Toastify__progress-bar {
+        background-color: ${red[0]};
+      }
+    }
+    &.Toastify__toast--success {
+      background-color: ${teal[40]};
+
+      .Toastify__progress-bar {
+        background-color: ${teal[0]};
+      }
+    }
+
+    /* Other classes that could be useful
+    .Toastify__toast-container {}
+    .Toastify__toast {}
+    &.Toastify__toast--warning {}
+    .Toastify__toast-body {}
+    */
+  }
 `;
 
 const App = () => (
   <>
     <GlobalStyles />
+    <ToastContainer
+      enableMultiContainer
+      toastClassName="customToast"
+      containerId="global"
+    />
     <AppContext>
       <Layout>
         <Route exact path="/" component={Home} />

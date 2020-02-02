@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import firebase from 'firebase/app';
 import 'styled-components/macro';
 import { UploadCloud } from 'react-feather';
-import firebaseApp from 'api/firebase';
 import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
 import SimpleContent from 'components/SimpleContent';
@@ -13,7 +11,6 @@ import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 import useCurrentUser from 'hooks/useCurrentUser';
 import WithRouter from 'components/WithRouter';
-import { SgfFile, NewEntity } from 'api/apiDataTypes';
 import GameAnnouncements from 'goban/GameAnnouncements';
 import Tabs from 'components/Tabs/Tabs';
 import TabBar from 'components/Tabs/TabBar';
@@ -24,13 +21,12 @@ import TextArea from 'components/Input/TextArea';
 import { GameTree } from 'goban/parseSgf/normalizeGameTree';
 import { smallLandscapeMedia, highlightFaded } from 'style';
 import usePlayerNames from 'goban/usePlayerNames';
+import uploadSgf from './uploadSgf';
 
-const firestore = firebaseApp.firestore();
-
-const useFileContents = (file?: File): [null | string, null | string] => {
-  const [contents, setContents] = useState<string>(null);
-  const [error, setError] = useState<string>(null);
-  const fileReader = useRef<FileReader>(null);
+const useFileContents = (file: File | null): [null | string, null | string] => {
+  const [contents, setContents] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const fileReader = useRef<FileReader | null>(null);
 
   useEffect(() => {
     if (fileReader.current) fileReader.current.abort();
@@ -46,8 +42,15 @@ const useFileContents = (file?: File): [null | string, null | string] => {
     } else {
       setError(null);
       fileReader.current = new FileReader();
-      fileReader.current.onload = () =>
-        setContents(fileReader.current.result as string);
+      fileReader.current.onload = () => {
+        if (!fileReader.current) return;
+        if (typeof fileReader.current.result === 'string')
+          setContents(fileReader.current.result);
+        else {
+          setContents(null);
+          setError('Unknown file type');
+        }
+      };
       fileReader.current.readAsText(file);
     }
   }, [file]);
@@ -122,16 +125,16 @@ const UploadForm = styled.form<{ previewing: boolean }>`
 
 const UploadSgfForm = () => {
   const [currentUser] = useCurrentUser();
-  const [file, setFile] = useState<File>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [contents, fileError] = useFileContents(file);
   const [rawContent, setRawContent] = useState<string>('');
   const sgf = rawContent || contents;
   const [gameTree, sgfError] = useSgf(sgf);
-  const [uploadError, setUploadError] = useState<string>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(event.currentTarget.files[0]);
+    setFile(event.currentTarget?.files?.[0] ?? null);
     setRawContent('');
   };
 
@@ -166,22 +169,12 @@ const UploadSgfForm = () => {
     </GoGameContextProvider>
   );
 
-  const uploadSgf = async () => {
+  const performUpload = async (): Promise<string | null> => {
     setUploadError(null);
-    const newDocument = firestore.collection('sgfFiles').doc();
-    const sgfFile: NewEntity<SgfFile> = {
-      contents: sgf,
-      uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),
-      userId: currentUser ? currentUser.uid : null,
-      userPhotoURL: currentUser ? currentUser.photoURL : null,
-      userDisplayName: currentUser ? currentUser.displayName : null,
-    };
-    try {
-      await newDocument.set(sgfFile);
-      return newDocument.id;
-    } catch (error) {
+    return await uploadSgf(sgf, currentUser).catch(error => {
       setUploadError(error.message);
-    }
+      return null;
+    });
   };
 
   const uploadButton = (
@@ -205,7 +198,7 @@ const UploadSgfForm = () => {
           onSubmit={async e => {
             e.preventDefault();
             setIsUploading(true);
-            const docId = await uploadSgf();
+            const docId = await performUpload();
             setIsUploading(false);
             docId && history.push(`/view/${docId}`);
           }}

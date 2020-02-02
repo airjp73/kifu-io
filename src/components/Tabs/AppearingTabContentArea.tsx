@@ -51,8 +51,10 @@ const AppearingTabContentArea: React.FC<AppearingTabContentAreaProps> = ({
         ({ item, props, key }) =>
           item && (
             <TabContentContainer key={key} style={props} className={className}>
-              {React.Children.map(children, (child: React.ReactElement) =>
-                React.cloneElement(child, { currentTab: item })
+              {React.Children.map(children, child =>
+                React.cloneElement(child as React.ReactElement<any>, {
+                  currentTab: item,
+                })
               )}
             </TabContentContainer>
           )

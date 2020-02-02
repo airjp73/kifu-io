@@ -49,7 +49,7 @@ const Goban: React.FunctionComponent<GobanProps> = ({
       />
       <MarkupLayer />
       {children}
-      {false && !smallBoard && (
+      {!smallBoard && (
         <EditingLayer
           blackStoneFactory={blackStoneFactory}
           whiteStoneFactory={whiteStoneFactory}

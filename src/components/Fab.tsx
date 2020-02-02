@@ -37,8 +37,8 @@ const sizeDimensions = {
 const Fab = styled.button<FabProps>`
   border-radius: 50%;
   background-color: ${panelBackground};
-  height: ${({ size }) => sizeDimensions[size]};
-  width: ${({ size }) => sizeDimensions[size]};
+  height: ${({ size }) => size && sizeDimensions[size]};
+  width: ${({ size }) => size && sizeDimensions[size]};
   border: none;
   outline: none;
   color: ${highlight};

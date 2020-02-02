@@ -8,8 +8,20 @@ interface BoardLayerProps {
 }
 
 type StarPoints = [number, number][];
-const starPoints9: StarPoints = [[2, 2], [6, 2], [2, 6], [6, 6], [4, 4]];
-const starPoints13: StarPoints = [[3, 3], [9, 3], [3, 9], [9, 9], [6, 6]];
+const starPoints9: StarPoints = [
+  [2, 2],
+  [6, 2],
+  [2, 6],
+  [6, 6],
+  [4, 4],
+];
+const starPoints13: StarPoints = [
+  [3, 3],
+  [9, 3],
+  [3, 9],
+  [9, 9],
+  [6, 6],
+];
 const starPoints19: StarPoints = [
   [3, 3],
   [9, 3],

@@ -384,7 +384,6 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
 
   // Turn the game tree into a format that's easier to work with
   // when drawing the tree
-  // TODO: Will need to handle updating this when implementing sgf editing
 
   const treeGrid: TreeGrid = useMemo(() => {
     const grid: TreeGrid = [];
@@ -427,7 +426,7 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
         }
 
         // Highlight node if it's a hotspot
-        if (getNode(treeNode.node).properties.HO) {
+        if (getNode(treeNode.node).properties?.HO) {
           gameTreeRenderer.current.drawHotspot(xIndex, yIndex);
         }
 
@@ -441,16 +440,14 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
 
   // Draw whole tree
   useEffect(() => {
-    if (!gameTreeRenderer.current) {
-      gameTreeRenderer.current = new GameTreeRenderer(
-        nodeLayerRef.current,
-        lineLayerRef.current,
-        selectionLayerRef.current,
-        highlightLayerRef.current,
-        containerRef.current,
-        height
-      );
-    }
+    gameTreeRenderer.current = new GameTreeRenderer(
+      nodeLayerRef.current,
+      lineLayerRef.current,
+      selectionLayerRef.current,
+      highlightLayerRef.current,
+      containerRef.current,
+      height
+    );
     drawViewport();
   }, [drawViewport, height]);
 

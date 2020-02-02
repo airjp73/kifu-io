@@ -29,12 +29,12 @@ const directionStyles = {
     }
   `,
   LEFT: css`
-    right: 100%;
-    flex-direction: row-reverse;
-    top: 0.3rem;
+    right: calc(100% + 1rem);
+    bottom: 0.25rem;
+    flex-direction: column-reverse;
 
-    > * {
-      margin-right: 2rem;
+    > * + * {
+      margin-bottom: 0.5rem;
     }
   `,
 };
@@ -54,7 +54,7 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
     config: { tension: 700, clamp: true },
   });
 
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   useClickOutside(containerRef, () => setOpen(false));
 
   return (
@@ -75,13 +75,13 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
           align-items: center;
           width: 100%;
           ${!open && 'pointer-events: none;'}
-          ${directionStyles[direction]}
+          ${direction && directionStyles[direction]}
         `}
       >
         {trail.map((style, index) =>
           React.cloneElement(childrenArray[index] as React.ReactElement, {
             key: index,
-            labelAbove: direction === 'LEFT',
+            // labelAbove: direction === 'LEFT',
             style,
           })
         )}

@@ -1,4 +1,3 @@
-import { GameTreeNode } from 'goban/parseSgf/normalizeGameTree';
 import { ThunkDispatch } from 'hooks/useThunkReducer';
 import placeStone from './placeStone';
 import { setPoint } from './actions';
@@ -25,6 +24,7 @@ import {
   addLabels,
   addXMarks,
 } from './moveStateActions';
+import { NodeProperties } from './parseSgf/parseSgf';
 
 /**
  * Some properties are not-yet-implemented or deliberately ignored.
@@ -36,16 +36,14 @@ import {
  * TODO    - Just not done yet
  */
 
-type LogMessage = (message: string, node: GameTreeNode) => void;
+type LogMessage = (message: string, node: NodeProperties) => void;
 const defaultLog = (message: string) => console.log(message); // eslint-disable-line no-console
 
-const processNode = (
-  node: GameTreeNode,
+const processNodeProperties = (
+  properties: NodeProperties = {},
   dispatch: ThunkDispatch<GameStateWithHistory>,
   logError: LogMessage = defaultLog
 ) => {
-  const properties = node.properties || {};
-
   // Sections organized like the spec for easier reference
   // https://www.red-bean.com/sgf/properties.html
 
@@ -56,7 +54,7 @@ const processNode = (
   }
   if (properties.KO) {
     if (!properties.B && !properties.W)
-      logError('Cannot have KO property without a move property', node);
+      logError('Cannot have KO property without a move property', properties);
     // IGNORED
     // The spec says this means to execute a move even if it's illegal
     // but it also says to do that anyway so no behavior necessary
@@ -91,7 +89,7 @@ const processNode = (
   ) {
     logError(
       'It is illegal to have setup properties and move properties in the same node',
-      node
+      properties
     );
   }
 
@@ -205,12 +203,18 @@ const processNode = (
 
   if (properties.FF && properties.FF[0] !== '4') {
     // TODO: Support old versions of the spec
-    logError('Currently only version 4 of the sgf spec is supported', node);
+    logError(
+      'Currently only version 4 of the sgf spec is supported',
+      properties
+    );
   }
 
   if (properties.GM && properties.GM[0] !== '1') {
     // IGNORE: This will always be 1
-    logError('Currently only version 4 of the sgf spec is supported', node);
+    logError(
+      'Currently only version 4 of the sgf spec is supported',
+      properties
+    );
   }
 
   if (properties.ST) {
@@ -311,4 +315,4 @@ const processNode = (
   // Primarily used for printing
 };
 
-export default processNode;
+export default processNodeProperties;

@@ -15,7 +15,12 @@ const getLiberties = (
   const A = 'a'.charCodeAt(0);
   const x = point.charCodeAt(0) - A;
   const y = point.charCodeAt(1) - A;
-  return [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]]
+  return [
+    [x + 1, y],
+    [x - 1, y],
+    [x, y + 1],
+    [x, y - 1],
+  ]
     .filter(
       ([xLib, yLib]) =>
         xLib < boardSize[0] && xLib >= 0 && yLib < boardSize[1] && yLib >= 0
@@ -89,17 +94,17 @@ const placeStone = (
   value: StoneColor,
   dispatch: ThunkDispatch<GameStateWithHistory>
 ) => {
-  dispatch(setPoint([point], value));
-  dispatch((dispatch, gameState) => {
+  dispatch((dispatch, getState) => {
+    dispatch(setPoint([point], value));
     const capturedStones = checkForCaptures(
       point,
-      gameState.boardState,
-      gameState.properties
+      getState().boardState,
+      getState().properties
     );
     if (capturedStones) {
       // Only one side can be captured in a single move
       // so we know they're all the same color
-      const capturedColor = gameState.boardState[capturedStones[0]];
+      const capturedColor = getState().boardState[capturedStones[0]];
       dispatch(captureStones(capturedStones, capturedColor));
     }
   });

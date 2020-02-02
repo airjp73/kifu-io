@@ -19,6 +19,7 @@ const createStoneSprite = (
   const stoneCenter = radius + padding;
 
   const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Unable to get canvas context');
 
   const highlightCenter = stoneCenter - radius / 3;
   const gradient = ctx.createRadialGradient(
@@ -74,6 +75,7 @@ export const createSelectionHighlight = (radius: number, color: string) => {
   const stoneCenter = radius + padding;
 
   const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Unabled to get canvas context');
 
   ctx.fillStyle = color;
   ctx.beginPath();

@@ -5,9 +5,9 @@ import useWindowResizeCallback from 'hooks/useWindowResizeCallback';
 import useForwardedRef from 'hooks/useForwardedRef';
 import CanvasContext from './CanvasContext';
 
-const WindowResizableCanvasContainer: React.FC<
-  React.HTMLProps<HTMLDivElement>
-> = ({ children, ...rest }, ref) => {
+const WindowResizableCanvasContainer: React.FC<React.HTMLProps<
+  HTMLDivElement
+>> = ({ children, ...rest }, ref) => {
   const [containerRef, refCallback] = useForwardedRef<HTMLDivElement>(ref);
   const [dimensions, setDimensions] = useState(null);
 

@@ -4,9 +4,9 @@ import { ChevronRight } from 'react-feather';
 import FlatButton from '../components/FlatButton';
 import { dark } from 'style';
 
-const ForwardButton: React.FunctionComponent<
-  React.ComponentProps<typeof FlatButton>
-> = props => {
+const ForwardButton: React.FunctionComponent<React.ComponentProps<
+  typeof FlatButton
+>> = props => {
   const { forward } = useGoGameContext();
 
   return (

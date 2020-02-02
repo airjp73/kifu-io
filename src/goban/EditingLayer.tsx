@@ -5,6 +5,7 @@ import { useGoGameContext } from './GoGameContext';
 import useStoneSize from './useStoneSize';
 import calculateStoneCoord from './calculateStoneCoord';
 import xyToPoint from './xyToPoint';
+import { addMove } from './gameTreeActions';
 
 interface EditingLayerProps {
   blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
@@ -28,9 +29,9 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     getCoord,
     stoneRadius,
   } = useGobanLayer();
-  const { gameState } = useGoGameContext();
+  const { gameState, dispatch } = useGoGameContext();
   const { boardState, moveState, properties } = gameState;
-  const { boardSize } = properties;
+  const boardSize = properties.boardSize ?? [19, 19];
   const [mouseCoords, setMouseCoords] = useState<MouseCoords | null>(null);
 
   const blackStone = useMemo(() => blackStoneFactory(stoneRadius), [
@@ -55,6 +56,14 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     if (!mouseCoords || x !== mouseCoords.x || y !== mouseCoords.y) {
       setMouseCoords({ x, y });
     }
+  };
+
+  const handleClick = (
+    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
+  ) => {
+    const x = coordToPointIndex(event.nativeEvent.offsetX);
+    const y = coordToPointIndex(event.nativeEvent.offsetY);
+    dispatch(addMove(xyToPoint([x, y])));
   };
 
   const handleMouseLeave = () => setMouseCoords(null);
@@ -102,6 +111,7 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     <CanvasLayer
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       ref={canvasRef}
       height={height}
       width={width}

@@ -8,7 +8,7 @@ interface MediaQueryViewProps {
   maxHeight?: number;
 }
 
-const MediaQueryView: React.FunctionComponent<MediaQueryViewProps> = ({
+const MediaQueryView: React.FC<MediaQueryViewProps> = ({
   children,
   minWidth,
   maxWidth,
@@ -21,17 +21,17 @@ const MediaQueryView: React.FunctionComponent<MediaQueryViewProps> = ({
     (!maxWidth || width <= maxWidth) &&
     (!minHeight || height >= minHeight) &&
     (!maxHeight || height <= maxHeight);
-  return meetsDimensionRequirements && <>{children}</>;
+  return <>{meetsDimensionRequirements && children}</>;
 };
 
-export const LandscapeView: React.FunctionComponent = ({ children }) => {
+export const LandscapeView: React.FC = ({ children }) => {
   const { height, width } = useWindowDimensions();
-  return width > height && (children as React.ReactElement);
+  return <>{width > height && children}</>;
 };
 
-export const PortraitView: React.FunctionComponent = ({ children }) => {
+export const PortraitView: React.FC = ({ children }) => {
   const { height, width } = useWindowDimensions();
-  return width <= height && (children as React.ReactElement);
+  return <>{width <= height && children}</>;
 };
 
 export default MediaQueryView;

@@ -24,9 +24,8 @@ const TextAreaElement = styled.textarea`
   cursor: pointer;
 `;
 
-const TextArea: React.FunctionComponent<
-  TextAreaProps & React.ComponentProps<typeof TextAreaElement>
-> = (
+const TextArea: React.FunctionComponent<TextAreaProps &
+  React.ComponentProps<typeof TextAreaElement>> = (
   { className, error, hint, icon, label, onChange, value, ...rest },
   forwardedRef
 ) => {

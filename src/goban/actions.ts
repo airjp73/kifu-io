@@ -1,4 +1,5 @@
 import { StoneColor } from 'goban/Goban';
+import { GameTree } from './parseSgf/normalizeGameTree';
 
 export const CAPTURE = 'CAPTURE';
 export const INIT = 'INIT';
@@ -6,6 +7,8 @@ export const SET_NODE = 'SET_NODE';
 export const SET_POINT = 'SET_POINT';
 export const POP_HISTORY = 'POP_HISTORY';
 export const PUSH_HISTORY = 'PUSH_HISTORY';
+export const START_EDITING = 'START_EDITING';
+export const STOP_EDITING = 'STOP_EDITING';
 
 // Board state
 export interface SetPointAction {
@@ -57,5 +60,19 @@ export const popHistory = (): PopHistoryAction => ({ type: POP_HISTORY });
 
 export interface InitAction {
   type: typeof INIT;
+  payload: GameTree;
 }
-export const init = (): InitAction => ({ type: INIT });
+export const init = (gameTree: GameTree): InitAction => ({
+  type: INIT,
+  payload: gameTree,
+});
+
+export interface StartEditingAction {
+  type: typeof START_EDITING;
+}
+export const startEditing = () => ({ type: START_EDITING });
+
+export interface StopEditingAction {
+  type: typeof STOP_EDITING;
+}
+export const stopEditing = () => ({ type: STOP_EDITING });

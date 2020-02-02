@@ -4,8 +4,8 @@ import UserAvatar from './UserAvatar';
 import { highlight } from 'style';
 
 interface UserProps {
-  photoURL: string;
-  displayName: string;
+  photoURL?: string;
+  displayName?: string;
 }
 
 const UserWrapper = styled.div`

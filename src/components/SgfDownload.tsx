@@ -30,8 +30,8 @@ const SgfDownload: React.FC<SgfDownloadProps> = ({
       ),
     [sgfContents]
   );
-  const formatPlayerName = (player: string, team: string, rank: string) =>
-    `${player || team}${rank ? ` ${rank}` : ''}`;
+  const formatPlayerName = (player?: string, team?: string, rank?: string) =>
+    `${player || team || ''}${rank ? ` ${rank}` : ''}`;
   const fileName = `${formatPlayerName(
     playerBlack,
     teamBlack,

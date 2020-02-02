@@ -6,9 +6,8 @@ interface FabTabProps {
   tabName?: string;
 }
 
-const FabTab: React.FunctionComponent<
-  FabTabProps & React.ComponentProps<typeof Fab>
-> = ({ tabName, ...rest }) => {
+const FabTab: React.FunctionComponent<FabTabProps &
+  React.ComponentProps<typeof Fab>> = ({ tabName, ...rest }) => {
   const { setCurrentTab } = useTabContext();
 
   return <Fab onClick={() => setCurrentTab(tabName)} {...rest} />;

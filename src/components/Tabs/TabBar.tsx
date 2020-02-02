@@ -24,14 +24,14 @@ const TabUnderline = animated(styled.div`
 
 const TabBar: React.FunctionComponent = ({ children }) => {
   const { currentTab } = useTabContext();
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [underlinePosition, setUnderlinePosition] = useSpring(() => ({
     left: 0,
     width: 0,
   }));
 
   const moveUnderline = useCallback(() => {
-    const tabElement = containerRef.current.querySelector(
+    const tabElement = containerRef.current!.querySelector<HTMLDivElement>(
       `[data-tabid="${currentTab}"]`
     );
     const left = tabElement ? tabElement.offsetLeft : 0;
@@ -40,6 +40,7 @@ const TabBar: React.FunctionComponent = ({ children }) => {
   }, [setUnderlinePosition, currentTab]);
 
   useEffect(() => {
+    if (!containerRef.current) return;
     moveUnderline();
 
     const observer = new MutationObserver(moveUnderline);

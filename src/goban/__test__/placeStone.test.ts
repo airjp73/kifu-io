@@ -284,7 +284,7 @@ describe('placeStone', () => {
           : expectedBoard;
 
       const state: GameStateWithHistory = {
-        ...gameStateReducer(undefined, init()),
+        ...gameStateReducer(undefined, init(null)),
         boardState: initialBoardState,
         properties: { boardSize },
       };
@@ -292,7 +292,7 @@ describe('placeStone', () => {
       let newState = state;
       const dispatch = jest.fn(action => {
         if (typeof action === 'function') {
-          action(dispatch, newState);
+          action(dispatch, () => newState);
         } else {
           newState = gameStateReducer(newState, action);
         }

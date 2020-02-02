@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useCallback } from 'react';
 import { GameTree, GameTreeNode } from 'goban/parseSgf/normalizeGameTree';
-import useThunkReducer from 'hooks/useThunkReducer';
+import useThunkReducer, { ThunkDispatch } from 'hooks/useThunkReducer';
 import gameStateReducer, { GameStateWithHistory } from './gameStateReducer';
 import { pushHistory, setNode, popHistory, init } from './actions';
-import processNode from './processNode';
+import processNodeProperties from './processNode';
 
 // Interfaces
 export interface GameContext {
@@ -13,6 +13,7 @@ export interface GameContext {
   gameTree: GameTree;
   getNode: (nodeId: string) => GameTreeNode;
   goToNode: (node: string) => void;
+  dispatch: ThunkDispatch<GameStateWithHistory>;
 }
 
 export interface Action {
@@ -20,22 +21,31 @@ export interface Action {
 }
 
 // Context
-const GoGameContext = React.createContext<GameContext>(null);
+const GoGameContext = React.createContext<GameContext | null>(null);
 
 // Context Consumer hook
-export const useGoGameContext = () => useContext(GoGameContext);
+export const useGoGameContext = (): GameContext => {
+  const contextValue = useContext(GoGameContext);
+  if (!contextValue)
+    throw new Error(
+      'Attempted to access go game context but it was not found.'
+    );
+  return contextValue;
+};
 
 // Context Provider component
 interface GoGameContextProviderProps {
   gameTree: GameTree;
 }
-export const GoGameContextProvider: React.FunctionComponent<
-  GoGameContextProviderProps
-> = ({ children, gameTree }) => {
+export const GoGameContextProvider: React.FunctionComponent<GoGameContextProviderProps> = ({
+  children,
+  gameTree: passedGameTree,
+}) => {
   const [gameState, dispatch] = useThunkReducer(
     gameStateReducer,
-    gameStateReducer(undefined, init()) // TODO: tweak hook to allow an init function
+    gameStateReducer(undefined, init(passedGameTree)) // TODO: tweak hook to allow an init function
   );
+  const gameTree = gameState.gameTree;
 
   const getNode = useCallback((nodeId: string) => gameTree.nodes[nodeId], [
     gameTree.nodes,
@@ -51,7 +61,7 @@ export const GoGameContextProvider: React.FunctionComponent<
     (nodeId: string) => {
       dispatch(pushHistory());
       dispatch(setNode(nodeId));
-      processNode(gameTree.nodes[nodeId], dispatch);
+      processNodeProperties(gameTree.nodes[nodeId].properties, dispatch);
     },
     [dispatch, gameTree.nodes]
   );
@@ -83,10 +93,10 @@ export const GoGameContextProvider: React.FunctionComponent<
   const goToNode = useCallback(
     (nodeId: string) => {
       if (getNode(nodeId).parent) goToNode(getNode(nodeId).parent);
-      else dispatch(init());
+      else dispatch(init(gameTree));
       nextMove(nodeId);
     },
-    [nextMove, dispatch, getNode]
+    [nextMove, dispatch, getNode, gameTree]
   );
 
   // Go to first move on mount
@@ -99,9 +109,10 @@ export const GoGameContextProvider: React.FunctionComponent<
         back,
         forward,
         gameState,
-        gameTree,
+        gameTree: gameState.gameTree,
         getNode,
         goToNode,
+        dispatch,
       }}
     >
       {gameState.node && children}

@@ -1,4 +1,6 @@
+import uuid from 'uuid/v4';
 import omit from 'lodash/omit';
+import { produce } from 'immer';
 import {
   SetPointAction,
   SET_POINT,
@@ -12,10 +14,17 @@ import {
   PopHistoryAction,
   InitAction,
   INIT,
+  StartEditingAction,
+  START_EDITING,
+  StopEditingAction,
+  STOP_EDITING,
 } from './actions';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
+import { GameTree } from './parseSgf/normalizeGameTree';
+import { NodeProperties } from './parseSgf/parseSgf';
+import { ADD_NODE, GameTreeAction } from './gameTreeActions';
 
 export type GameStateAction =
   | CaptureAction
@@ -25,7 +34,10 @@ export type GameStateAction =
   | SetMoveStateAction
   | SetNodeAction
   | SetPointAction
-  | SetPropertyAction;
+  | SetPropertyAction
+  | GameTreeAction
+  | StartEditingAction
+  | StopEditingAction;
 
 export interface BoardState {
   [key: string]: StoneColor | null;
@@ -92,14 +104,6 @@ const propertiesReducer = (
       };
     default:
       return state;
-  }
-};
-
-const nodeReducer = (state: string, action: GameStateAction): string => {
-  if (action.type === SET_NODE) {
-    return action.node;
-  } else {
-    return state;
   }
 };
 
@@ -177,6 +181,26 @@ const captureCountReducer = (
   }
 };
 
+const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
+  return produce(state, (draft: GameStateWithHistory) => {
+    const parentNodeId = draft.node;
+    const newNodeId = uuid();
+
+    draft.node = newNodeId;
+    draft.gameTree.nodes[parentNodeId].children =
+      draft.gameTree.nodes[parentNodeId].children ?? [];
+    draft.gameTree.nodes[parentNodeId].children.push(newNodeId);
+    draft.gameTree.nodes[newNodeId] = {
+      id: newNodeId,
+      parent: parentNodeId,
+      properties,
+      // We have a few dummy nodes at the start
+      moveNumber: draft.history.length - 1,
+    };
+    draft.editMode = true;
+  });
+};
+
 export interface GameState {
   properties: GameStateProperties;
   boardState: BoardState;
@@ -186,6 +210,8 @@ export interface GameState {
 }
 export interface GameStateWithHistory extends GameState {
   history: GameState[];
+  gameTree: GameTree;
+  editMode: boolean;
 }
 const defaultState: GameStateWithHistory = {
   boardState: {},
@@ -194,6 +220,11 @@ const defaultState: GameStateWithHistory = {
   moveState: defaultMoveState,
   captureCounts: defaultCaptureCounts,
   history: [],
+  gameTree: {
+    rootNode: '',
+    nodes: {},
+  },
+  editMode: false,
 };
 const gameStateReducer = (
   state: GameStateWithHistory = defaultState,
@@ -210,9 +241,14 @@ const gameStateReducer = (
 
   switch (action.type) {
     case INIT:
-      return defaultState;
+      return {
+        ...defaultState,
+        editMode: state.editMode,
+        gameTree: action.payload,
+      };
     case POP_HISTORY:
       return {
+        ...state,
         ...history[history.length - 1],
         history: history.slice(0, history.length - 1),
       };
@@ -225,14 +261,27 @@ const gameStateReducer = (
           { boardState, properties, node, moveState, captureCounts },
         ],
       };
+    case SET_NODE:
+      return { ...state, node: action.node };
+    case ADD_NODE:
+      return addNode(state, action.payload);
+    case START_EDITING:
+      return {
+        ...state,
+        editMode: true,
+      };
+    case STOP_EDITING:
+      return {
+        ...state,
+        editMode: false,
+      };
     default:
       return {
+        ...state,
         boardState: boardStateReducer(boardState, action),
         properties: propertiesReducer(properties, action),
-        node: nodeReducer(node, action),
         moveState: moveStateReducer(moveState, action),
         captureCounts: captureCountReducer(captureCounts, action),
-        history: history,
       };
   }
 };

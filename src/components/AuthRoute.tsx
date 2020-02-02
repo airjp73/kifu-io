@@ -4,10 +4,11 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import LoginForm from 'forms/LoginForm';
 
 const AuthRoute: React.FunctionComponent<RouteProps> = ({
-  component: Component,
+  component,
   ...rest
 }) => {
   const [currentUser, isLoaded] = useCurrentUser();
+  const Component = component as any;
   return (
     <Route
       {...rest}

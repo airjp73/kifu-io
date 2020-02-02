@@ -16,7 +16,7 @@ function useCurrentUser() {
     []
   );
 
-  const value: [firebase.User, boolean] = [currentUser, isLoaded];
+  const value: [firebase.User | null, boolean] = [currentUser, isLoaded];
   return value;
 }
 

@@ -23,7 +23,7 @@ const TabContentArea: React.FunctionComponent = ({ children }) => {
 
   const animDirection = useMemo(() => {
     const tabs = React.Children.toArray(children);
-    const findTabIndex = (tabName: string) =>
+    const findTabIndex = (tabName: string | null | undefined) =>
       tabs.findIndex(
         tab =>
           React.isValidElement<{ tab: string }>(tab) &&
@@ -60,8 +60,10 @@ const TabContentArea: React.FunctionComponent = ({ children }) => {
             Pass in props directly instead of tapping into the context
             So that the old container that's animating out doesn't update
           */}
-          {React.Children.map(children, (child: React.ReactElement) =>
-            React.cloneElement(child, { currentTab: item })
+          {React.Children.map(children, child =>
+            React.cloneElement(child as React.ReactElement<any>, {
+              currentTab: item,
+            })
           )}
         </TabContentContainer>
       ))}

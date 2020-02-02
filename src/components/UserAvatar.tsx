@@ -4,7 +4,7 @@ import { User } from 'react-feather';
 import { highlightFaded, panelBackground } from 'style';
 
 interface UserAvatarProps {
-  photoURL: string;
+  photoURL?: string;
 }
 
 const AvatarCircle = styled.div`
