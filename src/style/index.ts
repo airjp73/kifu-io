@@ -1,9 +1,11 @@
 import mapValues from 'lodash/mapValues';
 import purpleData from './colors/purple';
 import tealData from './colors/teal';
+import redData from './colors/red';
 
 export const purple = mapValues(purpleData, val => val.hex);
 export const teal = mapValues(tealData, val => val.hex);
+export const red = mapValues(redData, val => val.hex);
 
 export const panelBackground = purple[70];
 export const highlight = teal[0];
