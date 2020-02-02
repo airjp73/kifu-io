@@ -427,7 +427,7 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
         }
 
         // Highlight node if it's a hotspot
-        if (getNode(treeNode.node).properties.HO) {
+        if (getNode(treeNode.node).properties?.HO) {
           gameTreeRenderer.current.drawHotspot(xIndex, yIndex);
         }
 
