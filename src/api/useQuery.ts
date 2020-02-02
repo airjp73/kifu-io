@@ -63,7 +63,7 @@ const useQuery = <T extends FirebaseEntity>(
   }, [query, setLoading, fetchData]);
 
   const nextPage = useCallback(() => {
-    fetchData(queryState?.result?.docs[queryState.result.docs.length - 1]);
+    fetchData(queryState.result?.docs[queryState.result.docs.length - 1]);
   }, [fetchData, queryState.result]);
 
   return [queryState.docs as T[], loading, queryState.hasMore, nextPage];
