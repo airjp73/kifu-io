@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import firebase from 'firebase/app';
 import 'styled-components/macro';
 import { UploadCloud } from 'react-feather';
-import firebaseApp from 'api/firebase';
 import { UploadInput } from 'components/Input';
 import { GoGameContextProvider } from 'goban/GoGameContext';
 import SimpleContent from 'components/SimpleContent';
@@ -13,7 +11,6 @@ import useSgf from 'goban/useSgf';
 import AutoAdvanceControl from 'goban/AutoAdvanceControl';
 import useCurrentUser from 'hooks/useCurrentUser';
 import WithRouter from 'components/WithRouter';
-import { SgfFile, NewEntity } from 'api/apiDataTypes';
 import GameAnnouncements from 'goban/GameAnnouncements';
 import Tabs from 'components/Tabs/Tabs';
 import TabBar from 'components/Tabs/TabBar';
@@ -25,8 +22,6 @@ import { GameTree } from 'goban/parseSgf/normalizeGameTree';
 import { smallLandscapeMedia, highlightFaded } from 'style';
 import usePlayerNames from 'goban/usePlayerNames';
 import uploadSgf from './uploadSgf';
-
-const firestore = firebaseApp.firestore();
 
 const useFileContents = (file: File | null): [null | string, null | string] => {
   const [contents, setContents] = useState<string | null>(null);

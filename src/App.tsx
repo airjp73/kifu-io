@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { createGlobalStyle, css } from 'styled-components';
-import { ToastContainer, toast } from 'react-toastify';
+import { createGlobalStyle } from 'styled-components';
+import { ToastContainer } from 'react-toastify';
 import { teal, purple, red } from 'style';
 import Login from 'pages/Login';
 import View from 'pages/View';

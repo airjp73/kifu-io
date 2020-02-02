@@ -37,7 +37,7 @@ function createSgfFromGameTree(gameTree: GameTree): string {
 
 function stringifyProperties(props: NodeProperties): string {
   const escapeAndWrapValue = (val: string) => {
-    const escapedVal = val.replace(/[\[\]]/g, '\\$&');
+    const escapedVal = val.replace(/[[\]]/g, '\\$&');
     return `[${escapedVal}]`;
   };
 
