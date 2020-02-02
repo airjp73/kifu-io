@@ -15,7 +15,12 @@ const getLiberties = (
   const A = 'a'.charCodeAt(0);
   const x = point.charCodeAt(0) - A;
   const y = point.charCodeAt(1) - A;
-  return [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]]
+  return [
+    [x + 1, y],
+    [x - 1, y],
+    [x, y + 1],
+    [x, y - 1],
+  ]
     .filter(
       ([xLib, yLib]) =>
         xLib < boardSize[0] && xLib >= 0 && yLib < boardSize[1] && yLib >= 0

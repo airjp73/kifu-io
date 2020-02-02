@@ -20,13 +20,15 @@ const FileInput = styled.input`
   padding: 0.75rem;
 `;
 
-const UploadInput: React.FunctionComponent<
-  UploadInputProps & React.ComponentProps<typeof FileInput>
-> = ({ className, error, hint, label, onChange, ...rest }, forwardedRef) => {
+const UploadInput: React.FunctionComponent<UploadInputProps &
+  React.ComponentProps<typeof FileInput>> = (
+  { className, error, hint, label, onChange, ...rest },
+  forwardedRef
+) => {
   const [currentFilename, setCurrentFilename] = useState<string | null>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentFilename( event.currentTarget?.files?.[0]?.name ?? null);
+    setCurrentFilename(event.currentTarget?.files?.[0]?.name ?? null);
     onChange && onChange(event);
   };
 

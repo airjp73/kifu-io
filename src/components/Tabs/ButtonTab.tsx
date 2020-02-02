@@ -7,9 +7,13 @@ interface ButtonTabProps {
   tabName: string;
   label?: string;
 }
-const ButtonTab: React.FunctionComponent<
-  ButtonTabProps & React.ComponentProps<typeof FlatButton>
-> = ({ className, tabName, label, ...rest }) => {
+const ButtonTab: React.FunctionComponent<ButtonTabProps &
+  React.ComponentProps<typeof FlatButton>> = ({
+  className,
+  tabName,
+  label,
+  ...rest
+}) => {
   const { setCurrentTab } = useTabContext();
   return (
     <FlatButton

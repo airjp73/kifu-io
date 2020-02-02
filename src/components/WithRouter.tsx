@@ -5,8 +5,7 @@ interface WithRouterProps {
   children: (router: RouteComponentProps) => React.ReactElement;
 }
 
-const WithRouter: React.FunctionComponent<
-  WithRouterProps & RouteComponentProps
-> = ({ children, ...rest }) => children(rest);
+const WithRouter: React.FunctionComponent<WithRouterProps &
+  RouteComponentProps> = ({ children, ...rest }) => children(rest);
 
 export default withRouter(WithRouter);

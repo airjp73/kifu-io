@@ -19,7 +19,7 @@ import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
 import { GameTree } from './parseSgf/normalizeGameTree';
-import { NodeProperties } from './parseSgf/parseSgf'
+import { NodeProperties } from './parseSgf/parseSgf';
 import { ADD_NODE, GameTreeAction } from './gameTreeActions';
 
 export type GameStateAction =
@@ -181,17 +181,18 @@ const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
     const newNodeId = uuid();
 
     draft.node = newNodeId;
-    draft.gameTree.nodes[parentNodeId].children = draft.gameTree.nodes[parentNodeId].children ?? [];
+    draft.gameTree.nodes[parentNodeId].children =
+      draft.gameTree.nodes[parentNodeId].children ?? [];
     draft.gameTree.nodes[parentNodeId].children.push(newNodeId);
     draft.gameTree.nodes[newNodeId] = {
       id: newNodeId,
       parent: parentNodeId,
       properties,
       // We have a few dummy nodes at the start
-      moveNumber: draft.history.length - 1
+      moveNumber: draft.history.length - 1,
     };
   });
-}
+};
 
 export interface GameState {
   properties: GameStateProperties;

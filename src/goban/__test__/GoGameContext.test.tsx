@@ -35,12 +35,13 @@ const TestGoGame: React.FunctionComponent<TestGoGameProps> = ({ sgf }) => {
 };
 
 describe('Game context snapshots', () => {
-  each([['sgf1', sgf1], ['sgf2', sgf2], ['sgf3', sgf3]]).test(
-    '%s',
-    (desc, sgf) => {
-      const game = render(<TestGoGame sgf={sgf} />);
-      fireEvent.click(game.getByTestId('gotoend'));
-      expect(game.getByTestId('boardString')).toMatchSnapshot();
-    }
-  );
+  each([
+    ['sgf1', sgf1],
+    ['sgf2', sgf2],
+    ['sgf3', sgf3],
+  ]).test('%s', (desc, sgf) => {
+    const game = render(<TestGoGame sgf={sgf} />);
+    fireEvent.click(game.getByTestId('gotoend'));
+    expect(game.getByTestId('boardString')).toMatchSnapshot();
+  });
 });

@@ -50,9 +50,14 @@ const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
   }
 `;
 
-const FlatButton: React.FunctionComponent<
-  FlatButtonProps & React.ComponentProps<typeof FlatButtonStyles>
-> = ({ children, leftIcon, primary, rightIcon, ...rest }) => (
+const FlatButton: React.FunctionComponent<FlatButtonProps &
+  React.ComponentProps<typeof FlatButtonStyles>> = ({
+  children,
+  leftIcon,
+  primary,
+  rightIcon,
+  ...rest
+}) => (
   <FlatButtonStyles primary={primary} type="button" {...rest}>
     {leftIcon}
     {children && <span>{children}</span>}

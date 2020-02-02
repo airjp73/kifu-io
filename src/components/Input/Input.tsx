@@ -36,9 +36,11 @@ const InputElement = styled.input`
 //   cursor: pointer;
 // `;
 
-const Input: React.FunctionComponent<
-  InputProps & React.ComponentProps<typeof InputElement>
-> = ({ className, error, hint, icon, label, value, ...rest }, forwardedRef) => {
+const Input: React.FunctionComponent<InputProps &
+  React.ComponentProps<typeof InputElement>> = (
+  { className, error, hint, icon, label, value, ...rest },
+  forwardedRef
+) => {
   const [ref, refCallback] = useForwardedRef<HTMLInputElement>(forwardedRef);
 
   const getInputValue = () =>

@@ -5,9 +5,9 @@ interface StaticBoardStateControlProps {
   moveNumber: number;
 }
 
-const StaticBoardStateControl: React.FunctionComponent<
-  StaticBoardStateControlProps
-> = ({ moveNumber }) => {
+const StaticBoardStateControl: React.FunctionComponent<StaticBoardStateControlProps> = ({
+  moveNumber,
+}) => {
   const { back, forward } = useGoGameContext();
 
   // This breaks if we depend on back and forward

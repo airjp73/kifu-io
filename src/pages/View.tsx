@@ -13,9 +13,9 @@ interface ViewPageParams {
   gameId: string;
 }
 
-const GameViewPage: React.FunctionComponent<
-  Partial<RouteComponentProps<ViewPageParams>>
-> = ({ match }) => {
+const GameViewPage: React.FunctionComponent<Partial<
+  RouteComponentProps<ViewPageParams>
+>> = ({ match }) => {
   const docRef = useMemo(
     () => firestore.collection('sgfFiles').doc(match.params.gameId),
     [match.params.gameId]

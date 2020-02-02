@@ -171,7 +171,14 @@ describe('GoGameContext reducer', () => {
       'addLines',
       emptyState,
       addLines(['aa:cc', 'bb:bd']),
-      { moveState: { lines: [['aa', 'cc'], ['bb', 'bd']] } },
+      {
+        moveState: {
+          lines: [
+            ['aa', 'cc'],
+            ['bb', 'bd'],
+          ],
+        },
+      },
     ],
 
     [

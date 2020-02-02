@@ -4,9 +4,9 @@ import { ChevronLeft } from 'react-feather';
 import FlatButton from '../components/FlatButton';
 import { dark } from 'style';
 
-const BackButton: React.FunctionComponent<
-  React.ComponentProps<typeof FlatButton>
-> = props => {
+const BackButton: React.FunctionComponent<React.ComponentProps<
+  typeof FlatButton
+>> = props => {
   const { back } = useGoGameContext();
 
   return (

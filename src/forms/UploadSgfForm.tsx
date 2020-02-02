@@ -176,7 +176,7 @@ const UploadSgfForm = () => {
   const uploadSgf = async () => {
     setUploadError(null);
     const newDocument = firestore.collection('sgfFiles').doc();
-    if (!sgf) return setUploadError('Cannot upload an empty sgf')
+    if (!sgf) return setUploadError('Cannot upload an empty sgf');
     const sgfFile: NewEntity<SgfFile> = {
       contents: sgf,
       uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),

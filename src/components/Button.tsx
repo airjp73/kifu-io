@@ -19,9 +19,7 @@ const ButtonContainer = styled.button`
 
   background-color: ${props => (props.disabled ? teal[70] : primaryAction)};
   box-shadow: ${props => (props.disabled ? 'none' : boxShadowLow)};
-  ${props => !props.disabled && 'cursor: pointer;'}
-
-  :hover {
+  ${props => !props.disabled && 'cursor: pointer;'} :hover {
     ${props =>
       props.disabled
         ? 'box-shadow: none;'
@@ -40,9 +38,12 @@ const ButtonContainer = styled.button`
   }
 `;
 
-const Button: React.FunctionComponent<
-  ButtonProps & React.ComponentProps<typeof ButtonContainer>
-> = ({ children, icon, ...rest }) => (
+const Button: React.FunctionComponent<ButtonProps &
+  React.ComponentProps<typeof ButtonContainer>> = ({
+  children,
+  icon,
+  ...rest
+}) => (
   <ButtonContainer {...rest}>
     {icon}
     <span>{children}</span>

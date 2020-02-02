@@ -9,9 +9,9 @@ import { purple } from 'style';
 
 const auth = firebase.auth();
 
-const LogoutButton: React.FunctionComponent<
-  React.ComponentProps<typeof FlatButton>
-> = props => (
+const LogoutButton: React.FunctionComponent<React.ComponentProps<
+  typeof FlatButton
+>> = props => (
   <WithRouter>
     {({ history }) => (
       <FlatButton
