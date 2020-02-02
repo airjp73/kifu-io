@@ -186,7 +186,9 @@ const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
     draft.gameTree.nodes[newNodeId] = {
       id: newNodeId,
       parent: parentNodeId,
-      properties 
+      properties,
+      // We have a few dummy nodes at the start
+      moveNumber: draft.history.length - 1
     };
   });
 }
