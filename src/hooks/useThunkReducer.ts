@@ -21,15 +21,9 @@ const useThunkReducer = <S>(
 
   const thunkDispatch = (action: ThunkAction<S>) => {
     if (typeof action === 'function') {
-      const dispatchedActions: Action[] = [];
-      const dispatch = (action: Action) => dispatchedActions.push(action);
-
       setState(prevState => {
-        action(dispatch, prevState);
-        return dispatchedActions.reduce(
-          (nextState: S, currentAction) => reducer(nextState, currentAction),
-          prevState
-        );
+        action(thunkDispatch, prevState);
+        return prevState;
       });
     } else {
       setState(prevState => reducer(prevState, action));
