@@ -8,7 +8,7 @@ export const SET_POINT = 'SET_POINT';
 export const POP_HISTORY = 'POP_HISTORY';
 export const PUSH_HISTORY = 'PUSH_HISTORY';
 export const START_EDITING = 'START_EDITING';
-export const STOP_EDITING = 'STOP_EDITING';
+export const SGF_COPIED = 'STOP_EDITING';
 
 // Board state
 export interface SetPointAction {
@@ -72,7 +72,7 @@ export interface StartEditingAction {
 }
 export const startEditing = () => ({ type: START_EDITING });
 
-export interface StopEditingAction {
-  type: typeof STOP_EDITING;
+export interface SgfCopiedAction {
+  type: typeof SGF_COPIED;
 }
-export const stopEditing = () => ({ type: STOP_EDITING });
+export const sgfCopied = () => ({ type: SGF_COPIED });

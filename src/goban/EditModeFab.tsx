@@ -3,7 +3,7 @@ import { Edit, Save } from 'react-feather';
 import { toast } from 'react-toastify';
 import Fab from 'components/Fab';
 import { useGoGameContext } from './GoGameContext';
-import { startEditing, stopEditing } from './actions';
+import { startEditing, sgfCopied } from './actions';
 import { Prompt, useHistory } from 'react-router-dom';
 import { Location } from 'history';
 import createSgfFromGameTree from './parseSgf/createSgfFromGameTree';
@@ -28,7 +28,7 @@ const EditModeFab: React.FC = () => {
     if (docId) {
       toast.success('Sgf Copied and saved!', { containerId: 'game-view' });
       history.push(`/view/${docId}`, { afterSave: true });
-      dispatch(stopEditing());
+      dispatch(sgfCopied());
     } else {
       toast.error('Error saving SGF', { containerId: 'game-view' });
     }

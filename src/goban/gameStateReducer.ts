@@ -16,8 +16,8 @@ import {
   INIT,
   StartEditingAction,
   START_EDITING,
-  StopEditingAction,
-  STOP_EDITING,
+  SgfCopiedAction,
+  SGF_COPIED,
 } from './actions';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
@@ -30,7 +30,7 @@ import {
   DeleteBranchAction,
   DELETE_BRANCH,
 } from './gameTreeActions';
-import GameTreeView from './GameTreeView';
+import { APP_NAME, APP_VERSION } from './parseSgf/createSgfFromGameTree';
 
 export type GameStateAction =
   | CaptureAction
@@ -43,7 +43,7 @@ export type GameStateAction =
   | SetPropertyAction
   | GameTreeAction
   | StartEditingAction
-  | StopEditingAction
+  | SgfCopiedAction
   | DeleteBranchAction;
 
 export interface BoardState {
@@ -303,9 +303,13 @@ const gameStateReducer = (
         ...state,
         editMode: true,
       };
-    case STOP_EDITING:
+    case SGF_COPIED:
       return {
         ...state,
+        properties: {
+          ...properties,
+          application: { name: APP_NAME, version: APP_VERSION },
+        },
         editMode: false,
       };
     default:
