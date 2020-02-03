@@ -351,7 +351,6 @@ const createGridFromTree = (
 };
 
 const ScrollContainer = animated(styled.div`
-  position: relative;
   overflow: auto;
   height: 100%;
   width: 100%;
