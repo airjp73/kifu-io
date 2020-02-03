@@ -24,7 +24,11 @@ import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
 import { GameTree } from './parseSgf/normalizeGameTree';
 import { NodeProperties } from './parseSgf/parseSgf';
-import { ADD_NODE, GameTreeAction } from './gameTreeActions';
+import {
+  ADD_NODE,
+  GameTreeAction,
+  DeleteBranchAction,
+} from './gameTreeActions';
 
 export type GameStateAction =
   | CaptureAction
@@ -37,7 +41,8 @@ export type GameStateAction =
   | SetPropertyAction
   | GameTreeAction
   | StartEditingAction
-  | StopEditingAction;
+  | StopEditingAction
+  | DeleteBranchAction;
 
 export interface BoardState {
   [key: string]: StoneColor | null;

@@ -5,6 +5,7 @@ import processNodeProperties from './processNode';
 import { pushHistory, setNode } from './actions';
 
 export const ADD_NODE = 'game-tree/addNode';
+export const DELETE_BRANCH = 'game-tree/deleteBranch';
 
 export interface AddNodeAction {
   type: typeof ADD_NODE;
@@ -40,5 +41,14 @@ export const addMove = (point: string): ThunkAction<GameStateWithHistory> => (
   } as AddNodeAction);
   processNodeProperties(properties, dispatch);
 };
+
+export interface DeleteBranchAction {
+  type: typeof DELETE_BRANCH;
+  payload: string;
+}
+export const deleteBranch = (nodeId: string) => ({
+  type: DELETE_BRANCH,
+  payload: nodeId,
+});
 
 export type GameTreeAction = AddNodeAction;
