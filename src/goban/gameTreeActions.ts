@@ -19,6 +19,8 @@ export const addMove = (point: string): ThunkAction<GameStateWithHistory> => (
   const playerToPlay = getState().moveState.playerToPlay ?? 'b';
   const propName = playerToPlay.toUpperCase();
 
+  if (getState().boardState[point]) return;
+
   dispatch(pushHistory());
 
   const existingBranch = getState()
