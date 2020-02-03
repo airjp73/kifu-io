@@ -27,12 +27,13 @@ const linkStyle = css`
   white-space: nowrap;
   overflow: hidden;
 
-  &.active {
-    background-color: ${purple[80]};
-  }
-
   :hover {
     background-color: ${purple[60]};
+  }
+
+  &.active,
+  :active {
+    background-color: ${purple[80]};
   }
 
   > svg {
