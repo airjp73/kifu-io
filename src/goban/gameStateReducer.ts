@@ -22,13 +22,15 @@ import {
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
-import { GameTree } from './parseSgf/normalizeGameTree';
+import { GameTree, GameTreeNode } from './parseSgf/normalizeGameTree';
 import { NodeProperties } from './parseSgf/parseSgf';
 import {
   ADD_NODE,
   GameTreeAction,
   DeleteBranchAction,
+  DELETE_BRANCH,
 } from './gameTreeActions';
+import GameTreeView from './GameTreeView';
 
 export type GameStateAction =
   | CaptureAction
@@ -187,7 +189,7 @@ const captureCountReducer = (
 };
 
 const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
-  return produce(state, (draft: GameStateWithHistory) => {
+  return produce(state, draft => {
     const parentNodeId = draft.node;
     const newNodeId = uuid();
 
@@ -203,6 +205,30 @@ const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
       moveNumber: draft.history.length - 1,
     };
     draft.editMode = true;
+  });
+};
+
+const deleteBranch = (state: GameStateWithHistory, nodeId: string) => {
+  return produce(state, draft => {
+    const deletedNode = draft.gameTree.nodes[nodeId];
+    const nodes: GameTreeNode[] = [deletedNode];
+
+    while (nodes.length) {
+      const node = nodes.pop();
+      node.children?.forEach(childId => {
+        nodes.push(draft.gameTree.nodes[childId]);
+      });
+      delete draft.gameTree.nodes[nodeId];
+    }
+
+    const parent =
+      deletedNode.parent && draft.gameTree.nodes[deletedNode.parent];
+    if (parent) {
+      const updatedChildren = parent.children?.filter(
+        child => child !== nodeId
+      );
+      if (updatedChildren) parent.children = updatedChildren;
+    }
   });
 };
 
@@ -270,6 +296,8 @@ const gameStateReducer = (
       return { ...state, node: action.node };
     case ADD_NODE:
       return addNode(state, action.payload);
+    case DELETE_BRANCH:
+      return deleteBranch(state, action.payload);
     case START_EDITING:
       return {
         ...state,
