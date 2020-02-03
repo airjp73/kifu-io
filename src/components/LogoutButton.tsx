@@ -23,12 +23,15 @@ const LogoutButton: React.FunctionComponent<React.ComponentProps<
             flex-shrink: 0;
           }
 
-          &.active {
-            background-color: ${purple[80]};
-          }
+          :not(:disabled) {
+            &:hover,
+            &:focus {
+              background-color: ${purple[60]};
+            }
 
-          :hover {
-            background-color: ${purple[60]};
+            &:active {
+              background-color: ${purple[80]};
+            }
           }
         `}
         {...props}

@@ -14,6 +14,7 @@ import { useGoGameContext } from 'goban/GoGameContext';
 import { GameTree } from 'goban/parseSgf/normalizeGameTree';
 import { hotspotHighlight, stoneSelectionHighlight } from 'style';
 import useGlobalKeyListener, { KEY_CODES } from 'hooks/useGlobalKeyListener';
+import DeleteBranchButton from './DeleteBranchButton';
 
 interface GameTreeViewProps {
   className?: string;
@@ -570,6 +571,7 @@ const GameTreeView: React.FunctionComponent<GameTreeViewProps> = ({
           height: 1, // 1px is required in order for the width to cause scrolling
         }}
       />
+      <DeleteBranchButton />
     </ScrollContainer>
   );
 };

@@ -30,19 +30,26 @@ const FlatButtonStyles = styled.button<FlatButtonStyleProps>`
   background: none;
   display: flex;
   align-items: center;
-  cursor: pointer;
 
   ${props => props.primary && primaryStyles};
 
-  :hover,
-  :focus {
-    background-color: ${props =>
-      props.primary ? primaryHighlight : panelHighlight};
+  :not(:disabled) {
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background-color: ${props =>
+        props.primary ? primaryHighlight : panelHighlight};
+    }
+
+    &:active {
+      background-color: ${props =>
+        props.primary ? primaryActive : panelActiveButton};
+    }
   }
 
-  :active {
-    background-color: ${props =>
-      props.primary ? primaryActive : panelActiveButton};
+  :disabled {
+    opacity: 0.5;
   }
 
   > * + * {
