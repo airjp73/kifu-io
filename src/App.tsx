@@ -4,7 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import { teal, purple, red } from 'style';
 import Login from 'pages/Login';
-import View from 'pages/View';
+import View from 'pages/view/View';
 import Profile from 'pages/Profile';
 import Upload from 'pages/Upload';
 import AuthRoute from 'components/AuthRoute';
