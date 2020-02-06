@@ -13,6 +13,9 @@ const MoveLinkButton: React.FC<MoveLinkButtonProps> = props => {
 
   // TODO: test this probably?
   const copyMoveLink = () => {
+    // TODO: It would be nice if traversing the normalized game tree could be abstracted
+    // that would make it easier to test if we're not relying on the context itself
+    // maybe a class that proxies nodes?
     let targetNode = getNode(gameState.node);
     let currentNode = targetNode;
     const moves: string[] = [];
