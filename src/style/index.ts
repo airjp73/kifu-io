@@ -10,7 +10,7 @@ export const red = mapValues(redData, val => val.hex);
 export const panelBackground = purple[70];
 export const highlight = teal[0];
 export const highlightFaded = teal[10];
-export const stoneSelectionHighlight = 'rgba(121,113,234, .5)'; // rgb of primaryAction
+export const stoneSelectionHighlight = 'rgba(121,113,234, .5)'; // TODO: change to rgb of primaryAction
 export const hotspotHighlight = 'rgba(255,100,100, .75)';
 export const fadedGrey = '#6D6D6D';
 export const error = '#E8291D';
