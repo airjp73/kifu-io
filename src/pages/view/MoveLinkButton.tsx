@@ -2,28 +2,58 @@ import React from 'react';
 import { Share2 } from 'react-feather';
 import SpeedDialOption from 'components/SpeedDialOption';
 import { useGoGameContext } from 'goban/GoGameContext';
+import { GameTree, GameTreeNode } from 'goban/parseSgf/normalizeGameTree';
 
 type MoveLinkButtonProps = Omit<
   React.ComponentProps<typeof SpeedDialOption>,
   'label' | 'onClick'
 >;
 
-const MoveLinkButton: React.FC<MoveLinkButtonProps> = props => {
-  const { getNode, gameState } = useGoGameContext();
+// TODO: Move this to some common place
+interface TraversableGameTreeNode
+  extends Omit<GameTreeNode, 'parent' | 'children'> {
+  parent?: TraversableGameTreeNode;
+  children?: TraversableGameTreeNode[];
+}
 
-  // TODO: test this probably?
+// TODO: Move this to some common place
+class TreeTraverser {
+  tree: GameTree;
+
+  constructor(tree: GameTree) {
+    this.tree = tree;
+  }
+
+  get(id: string): TraversableGameTreeNode | undefined {
+    const node = this.tree.nodes[id];
+    if (!node) return;
+
+    const traverser = this;
+    return {
+      ...node,
+      get parent() {
+        return traverser.get(node.parent);
+      },
+      get children() {
+        return node.children?.map(child => traverser.get(child));
+      },
+    };
+  }
+}
+
+const MoveLinkButton: React.FC<MoveLinkButtonProps> = props => {
+  const { gameState, gameTree } = useGoGameContext();
+
+  // TODO: test this
   const copyMoveLink = () => {
-    // TODO: It would be nice if traversing the normalized game tree could be abstracted
-    // that would make it easier to test if we're not relying on the context itself
-    // maybe a class that proxies nodes?
-    let targetNode = getNode(gameState.node);
+    let targetNode = new TreeTraverser(gameTree).get(gameState.node);
     let currentNode = targetNode;
     const moves: string[] = [];
 
     while (currentNode) {
-      const parent = getNode(currentNode.parent);
+      const parent = currentNode.parent;
       const childIndex = parent?.children?.findIndex(
-        child => child === currentNode.id
+        child => child.id === currentNode.id
       );
 
       if (childIndex === -1) {
