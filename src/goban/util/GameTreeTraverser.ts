@@ -1,6 +1,6 @@
 import { GameTreeNode, GameTree } from 'goban/parseSgf/normalizeGameTree';
 
-interface TraversableGameTreeNode
+export interface TraversableGameTreeNode
   extends Omit<GameTreeNode, 'parent' | 'children'> {
   parent?: TraversableGameTreeNode;
   children?: TraversableGameTreeNode[];

@@ -28,6 +28,7 @@ import { purple } from 'style';
 import EditModeFab from './EditModeFab';
 import { ToastContainer } from 'react-toastify';
 import MoveLinkButton from 'pages/view/MoveLinkButton';
+import LinkedMoveHandler from 'pages/view/LinkedMoveHandler';
 
 interface GameViewProps {
   sgf: string;
@@ -129,6 +130,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
       />
       <GoGameContextProvider gameTree={gameTree}>
         <GobanKeyNavigation />
+        <LinkedMoveHandler />
         <HideInSmallLandscape>
           <GameViewCaptures />
         </HideInSmallLandscape>
