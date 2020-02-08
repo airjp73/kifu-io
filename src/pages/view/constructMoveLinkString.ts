@@ -1,16 +1,18 @@
 import { GameTree } from 'goban/parseSgf/normalizeGameTree';
-import GameTreeTraverser from 'goban/util/GameTreeTraverser';
+import GameTreeTraverser, {
+  TraversableGameTreeNode,
+} from 'goban/util/GameTreeTraverser';
 
 function constructMoveLinkString(gameTree: GameTree, node: string): string {
   let targetNode = new GameTreeTraverser(gameTree).get(node);
   let currentNode = targetNode;
+  const findChild = (child: TraversableGameTreeNode) =>
+    child.id === currentNode.id;
   const moves: string[] = [];
 
   while (currentNode && targetNode.moveNumber) {
     const parent = currentNode.parent;
-    const childIndex = parent?.children?.findIndex(
-      child => child.id === currentNode.id
-    );
+    const childIndex = parent?.children?.findIndex(findChild);
 
     if (childIndex === -1) {
       throw new Error('Unable to determine variation of child node');

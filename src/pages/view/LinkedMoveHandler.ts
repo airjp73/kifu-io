@@ -1,14 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGoGameContext } from 'goban/GoGameContext';
 import getLinkedNode from './getLinkedNode';
 import { toast } from 'react-toastify';
 
+// Setting the move based on query params
+// really should only be done when the page is first loaded.
+// Handling this in the reducer is also not right
+// since this involves a side-effect in error cases
+function useInit(func: () => void) {
+  const initFunc = useRef(func);
+  useEffect(() => initFunc.current(), [initFunc]);
+}
+
 const LinkedMoveHandler: React.FC = () => {
   const { gameTree, goToNode } = useGoGameContext();
   const location = useLocation();
 
-  useEffect(() => {
+  useInit(() => {
     try {
       const decodedSearchParams = decodeURIComponent(location.search);
       const move = new URLSearchParams(decodedSearchParams).get('move');
@@ -23,7 +32,7 @@ const LinkedMoveHandler: React.FC = () => {
         containerId: 'game-view',
       });
     }
-  }, []);
+  });
 
   return null;
 };
