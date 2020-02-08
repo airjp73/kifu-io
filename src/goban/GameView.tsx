@@ -27,6 +27,8 @@ import { Download, Maximize2, Minimize2 } from 'react-feather';
 import { purple } from 'style';
 import EditModeFab from './EditModeFab';
 import { ToastContainer } from 'react-toastify';
+import MoveLinkButton from 'pages/view/MoveLinkButton';
+import LinkedMoveHandler from 'pages/view/LinkedMoveHandler';
 
 interface GameViewProps {
   sgf: string;
@@ -128,6 +130,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
       />
       <GoGameContextProvider gameTree={gameTree}>
         <GobanKeyNavigation />
+        <LinkedMoveHandler />
         <HideInSmallLandscape>
           <GameViewCaptures />
         </HideInSmallLandscape>
@@ -152,6 +155,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
           >
             <EditModeFab />
             <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}>
+              <MoveLinkButton />
               <SpeedDialOption label="Download">
                 <SgfDownload sgfContents={sgf}>
                   <Download height="1rem" width="1rem" />
@@ -187,6 +191,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
           <GameViewInfo>
             <EditModeFab />
             <SpeedDial direction="DOWN">
+              <MoveLinkButton />
               <SpeedDialOption label="Download">
                 <SgfDownload sgfContents={sgf}>
                   <Download height="1rem" width="1rem" />
