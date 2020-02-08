@@ -8,6 +8,8 @@ import { toast } from 'react-toastify';
 // really should only be done when the page is first loaded.
 // Handling this in the reducer is also not right
 // since this involves a side-effect in error cases
+// TODO: This could probably be moved into the actual context init
+// if the context is reworked to init as a sided-effect
 function useInit(func: () => void) {
   const initFunc = useRef(func);
   useEffect(() => initFunc.current(), [initFunc]);
