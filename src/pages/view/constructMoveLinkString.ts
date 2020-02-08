@@ -6,7 +6,7 @@ function constructMoveLinkString(gameTree: GameTree, node: string): string {
   let currentNode = targetNode;
   const moves: string[] = [];
 
-  while (currentNode) {
+  while (currentNode && targetNode.moveNumber) {
     const parent = currentNode.parent;
     const childIndex = parent?.children?.findIndex(
       child => child.id === currentNode.id

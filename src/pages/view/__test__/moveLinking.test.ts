@@ -32,6 +32,11 @@ describe('constructMoveLinkString', () => {
       '(;GM[1];B[aa];W[ab](;B[ac];W[ad];B[ae])(;B[ba];W[bb];B[bc](;W[bd]ID[target])(;W[ca])))',
       '2,1:6',
     ],
+    [
+      'branches on the first move',
+      '(;GM[1](;B[aa])(;B[ba];W[bb]ID[target]))',
+      '1:2',
+    ],
   ];
 
   it.each(cases)(
