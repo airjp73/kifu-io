@@ -1,0 +1,21 @@
+{
+  "name": "kifu-io",
+  "sources": [
+    {
+      "dir": "src/reason",
+      "subdirs": true
+    }
+  ],
+  "package-specs": [
+    {
+      "module": "es6-global",
+      "in-source": true
+    }
+  ],
+  "suffix": ".bs.js",
+  "namespace": true,
+  "refmt": 3,
+  "gentypeconfig": {
+    "language": "typescript"
+  }
+}
