@@ -23,3 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 src/react-app-env.d.ts
+
+# reason/bucklescript
+lib
+.merlin
+.bsb.lock
