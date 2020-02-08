@@ -1,6 +1,7 @@
 import constructMoveLinkString from '../constructMoveLinkString';
 import normalizeGameTree, { GameTree } from 'goban/parseSgf/normalizeGameTree';
 import parseSgf from 'goban/parseSgf/parseSgf';
+import getLinkedNode from '../getLinkedNode';
 
 describe('constructMoveLinkString', () => {
   // Using a fake ID property to help choose a node
@@ -45,6 +46,21 @@ describe('constructMoveLinkString', () => {
 
       const result = constructMoveLinkString(tree, nodeId);
       expect(result).toEqual(expected);
+    }
+  );
+
+  it.each(cases)(
+    'should navigate to the correct move for %s',
+    (description, sgf, nodeLink) => {
+      const tree: GameTree = normalizeGameTree(parseSgf(sgf)[0]);
+
+      const expectedNodeId = Object.values(tree.nodes).find(
+        node => node.properties?.ID?.[0] === moveId
+      )?.id;
+      expect(expectedNodeId).not.toBeNull();
+
+      const result = getLinkedNode(tree, nodeLink);
+      expect(result).toEqual(expectedNodeId);
     }
   );
 });
