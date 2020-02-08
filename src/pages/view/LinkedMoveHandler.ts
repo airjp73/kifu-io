@@ -9,17 +9,20 @@ const LinkedMoveHandler: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const move = new URLSearchParams(decodeURIComponent(location.search)).get(
-      'move'
-    );
-    if (!move) return;
+    try {
+      const decodedSearchParams = decodeURIComponent(location.search);
+      const move = new URLSearchParams(decodedSearchParams).get('move');
+      if (!move) return;
 
-    const nodeId = getLinkedNode(gameTree, move);
-    if (nodeId) goToNode(nodeId);
-    else
+      const nodeId = getLinkedNode(gameTree, move);
+      if (!nodeId) throw new Error('invalid path');
+
+      goToNode(nodeId);
+    } catch (err) {
       toast.error('Invalid move specified in url', {
         containerId: 'game-view',
       });
+    }
   }, []);
 
   return null;
