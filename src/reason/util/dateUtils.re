@@ -23,12 +23,12 @@ let getMonthString = (month: string): string =>
 let getDayString = (day: int): string => {
   let suffix =
     switch (day) {
-    | 1 => "st"
-    | 21 => "st"
+    | 1
+    | 21
     | 31 => "st"
-    | 2 => "nd"
+    | 2
     | 22 => "nd"
-    | 3 => "rd"
+    | 3
     | 23 => "rd"
     | _ => "th"
     };
