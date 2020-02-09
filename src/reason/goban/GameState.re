@@ -16,22 +16,30 @@ type gameStateAction =
   | AddNode
   | DeleteBranch;
 
+[@gentype]
 type boardState = Js.Dict.t(stoneColor);
 
+[@gentype]
 type playedOnDates = Js.Dict.t(Js.Dict.t(list(int)));
 
+[@gentype]
 type showFor =
   | NextMove
   | CurrentMove;
 
+[@gentype]
 type application = {
   name: string,
   version: string,
 };
+
+[@gentype]
 type variationDisplay = {
   show: bool,
   showFor,
 };
+
+[@gentype]
 type gameStateProperties = {
   annotatorName: option(string),
   application: option(application),
@@ -59,29 +67,39 @@ type gameStateProperties = {
   variationDisplay: option(variationDisplay),
 };
 
+[@gentype]
 type favoredPlayer =
   | Black
   | White
   | Even
   | Unclear;
+
+[@gentype]
 type positionStatus = {
   favoredPlayer,
   magnitude: int,
 };
+
+[@gentype]
 type moveQualityType =
   | Bad
   | Doubtful
   | Interesting
   | Tesuji;
+
+[@gentype]
 type moveQuality = {
   quality: moveQualityType,
   magnitude: option(int),
 };
 
+[@gentype]
 type label = {
   point: string,
   label: string,
 };
+
+[@gentype]
 type moveState = {
   circles: list(string),
   comment: option(string),
@@ -98,6 +116,7 @@ type moveState = {
   labels: list(label),
 };
 
+[@gentype]
 type gameTreeNode = {
   id: string,
   parent: option(string),
@@ -105,6 +124,8 @@ type gameTreeNode = {
   properties: option(Js.Dict.t(list(string))),
   moveNumber: option(int),
 };
+
+[@gentype]
 type gameTree = {
   rootNode: string,
   nodes: Js.Dict.t(gameTreeNode),
@@ -115,11 +136,13 @@ type gameTree = {
 //   gameTree: gameTree,
 //   editMode: bool
 
+[@gentype]
 type captureCounts = {
   b: int,
   w: int,
 };
 
+[@gentype]
 type gameState = {
   properties: gameStateProperties,
   boardState,
@@ -128,6 +151,7 @@ type gameState = {
   captureCounts,
 };
 
+[@gentype]
 let captureCountReducer =
     (state: captureCounts, action: gameStateAction): captureCounts => {
   let newCount = (points, count) => count + List.length(points);
@@ -137,5 +161,3 @@ let captureCountReducer =
   | _ => state
   };
 };
-
-let thing = Capture(["hi"], Black);

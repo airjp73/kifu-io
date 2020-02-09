@@ -21,17 +21,8 @@ function captureCountReducer(state, action) {
   }
 }
 
-var thing = /* Capture */[
-  /* :: */[
-    "hi",
-    /* [] */0
-  ],
-  /* Black */0
-];
-
 export {
   captureCountReducer ,
-  thing ,
   
 }
 /* No side effect */
