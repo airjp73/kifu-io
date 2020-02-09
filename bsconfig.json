@@ -16,6 +16,10 @@
   "namespace": true,
   "refmt": 3,
   "gentypeconfig": {
-    "language": "typescript"
+    "language": "typescript",
+    "shims": {
+      "ReasonPervasives": "ReasonPervasives",
+      "Js": "Js"
+    }
   }
 }
