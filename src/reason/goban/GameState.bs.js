@@ -21,8 +21,27 @@ function captureCountReducer(state, action) {
   }
 }
 
+function updateCaptureCount(state, points, color) {
+  console.log(state);
+  console.log(points);
+  console.log(List.length(points));
+  console.log(color);
+  if (color) {
+    return {
+            b: state.b + List.length(points) | 0,
+            w: state.w
+          };
+  } else {
+    return {
+            b: state.b,
+            w: state.w + List.length(points) | 0
+          };
+  }
+}
+
 export {
   captureCountReducer ,
+  updateCaptureCount ,
   
 }
 /* No side effect */

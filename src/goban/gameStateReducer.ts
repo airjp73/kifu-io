@@ -31,6 +31,7 @@ import {
   DELETE_BRANCH,
 } from './gameTreeActions';
 import { APP_NAME, APP_VERSION } from './parseSgf/createSgfFromGameTree';
+import { updateCaptureCount } from 'reason/goban/GameState.bs';
 
 export type GameStateAction =
   | CaptureAction
@@ -312,6 +313,16 @@ const gameStateReducer = (
         },
         editMode: false,
       };
+    // case CAPTURE:
+    //   return {
+    //     ...state,
+    //     boardState: boardStateReducer(boardState, action),
+    //     captureCounts: updateCaptureCount(
+    //       state.captureCounts,
+    //       action.points,
+    //       action.color
+    //     ),
+    //   };
     default:
       return {
         ...state,

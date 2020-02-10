@@ -142,3 +142,8 @@ export const captureCountReducer: (state:captureCounts, action:gameStateAction) 
     : $$toRE40962700[Arg2]);
   return result
 };
+
+export const updateCaptureCount: (state:captureCounts, points:list<string>, color:stoneColor) => captureCounts = function (Arg1: any, Arg2: any, Arg3: any) {
+  const result = Curry._3(GameStateBS.updateCaptureCount, Arg1, Arg2, $$toRE447283240[Arg3]);
+  return result
+};

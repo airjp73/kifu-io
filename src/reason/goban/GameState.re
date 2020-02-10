@@ -161,3 +161,17 @@ let captureCountReducer =
   | _ => state
   };
 };
+
+[@gentype]
+let updateCaptureCount =
+    (state: captureCounts, points: list(string), color: stoneColor) => {
+  let newCount = (points, count) => count + List.length(points);
+  Js.log(state);
+  Js.log(points);
+  Js.log(List.length(points));
+  Js.log(color);
+  switch (color) {
+  | Black => {...state, w: newCount(points, state.w)}
+  | White => {...state, b: newCount(points, state.b)}
+  };
+};
