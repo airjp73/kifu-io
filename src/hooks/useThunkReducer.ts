@@ -22,10 +22,7 @@ const useThunkReducer = <S>(
 
   const thunkDispatch = (action: ThunkAction<S>) => {
     if (typeof action === 'function') {
-      setState(prevState => {
-        action(thunkDispatch, () => currentState.current);
-        return prevState;
-      });
+      action(thunkDispatch, () => currentState.current);
     } else {
       const nextState = reducer(currentState.current, action);
       currentState.current = nextState;
