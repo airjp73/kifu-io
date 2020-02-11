@@ -11,7 +11,7 @@ import { createStringFromBoardState } from '../boardStateTestHelpers';
 const BoardStateTestRenderer = () => {
   const { forward, back, gameState } = useGoGameContext();
   const boardString = createStringFromBoardState(
-    gameState.boardState,
+    gameState,
     gameState.properties.boardSize || [19, 19]
   );
   return (

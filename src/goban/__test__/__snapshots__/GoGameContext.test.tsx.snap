@@ -2,6 +2,15 @@
 
 exports[`Game context snapshots should perform sequence 0 correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
 . . . . . b w w w b . . . . . b w . . 
@@ -26,6 +35,15 @@ exports[`Game context snapshots should perform sequence 0 correctly for sgf1 1`]
 
 exports[`Game context snapshots should perform sequence 0 correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 1
+White: 0
+
+Board:
 . . b . . . . . . . . . . . . . . . . 
 . b b b . . . . . . . . . . . . . . . 
 . w b w . b . . . . . . . w . w w w . 
@@ -50,6 +68,15 @@ exports[`Game context snapshots should perform sequence 0 correctly for sgf2 1`]
 
 exports[`Game context snapshots should perform sequence 0 correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 3
+White: 2
+
+Board:
 . . . . b . . . . 
 . . w b . b . . . 
 b b b b . . b b . 
@@ -64,6 +91,15 @@ w w w b w w w b .
 
 exports[`Game context snapshots should perform sequence 1 correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 19
+White: 7
+
+Board:
 . . . . . . w b b b . b b b w . w . . 
 . . . . . . . w b b b . . b w w . w . 
 . . . . . b w w w b b b b w w b w . . 
@@ -88,6 +124,15 @@ w w w b w w b b b w w . b w w w w . .
 
 exports[`Game context snapshots should perform sequence 1 correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 4
+White: 6
+
+Board:
 . . b . . . . w . . w . . . . . . . . 
 . b b b b w w . w w b w w . w . . . . 
 . w b w w b w w b b b b b w b w w w . 
@@ -112,6 +157,15 @@ w w . w . w . w b b w . . w w b b b w
 
 exports[`Game context snapshots should perform sequence 1 correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 3
+White: 2
+
+Board:
 . . . . b . . . . 
 . . w b . b . . . 
 b b b b . . b b . 
@@ -126,6 +180,15 @@ w w w b w w w b .
 
 exports[`Game context snapshots should perform sequence 2 correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
 . . . . . b w w w b . . . . . b w . . 
@@ -150,6 +213,15 @@ exports[`Game context snapshots should perform sequence 2 correctly for sgf1 1`]
 
 exports[`Game context snapshots should perform sequence 2 correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 1
+White: 0
+
+Board:
 . . b . . . . . . . . . . . . . . . . 
 . b b b . . . . . . . . . . . . . . . 
 . w b w . b . . . . . . . w . w w w . 
@@ -174,6 +246,15 @@ exports[`Game context snapshots should perform sequence 2 correctly for sgf2 1`]
 
 exports[`Game context snapshots should perform sequence 2 correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 0
+White: 1
+
+Board:
 . . . . b . . . . 
 . . w b w b . . . 
 . b b b w w b b . 
@@ -188,6 +269,15 @@ w . w b w . w b .
 
 exports[`Game context snapshots should perform sequence 3 correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
 . . . . . b . . . . . . . . . . . . . 
@@ -212,6 +302,15 @@ exports[`Game context snapshots should perform sequence 3 correctly for sgf1 1`]
 
 exports[`Game context snapshots should perform sequence 3 correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
@@ -236,6 +335,15 @@ exports[`Game context snapshots should perform sequence 3 correctly for sgf2 1`]
 
 exports[`Game context snapshots should perform sequence 3 correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . 
 . . w b w b . . . 
 . . b . w w b b . 
@@ -250,6 +358,15 @@ exports[`Game context snapshots should perform sequence 3 correctly for sgf3 1`]
 
 exports[`Game context snapshots should perform sequence 4 correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
 . . . . . b . . . . . . . . . . . . . 
@@ -274,6 +391,15 @@ exports[`Game context snapshots should perform sequence 4 correctly for sgf1 1`]
 
 exports[`Game context snapshots should perform sequence 4 correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . w . . 
@@ -298,6 +424,15 @@ exports[`Game context snapshots should perform sequence 4 correctly for sgf2 1`]
 
 exports[`Game context snapshots should perform sequence 4 correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . 
 . . w b w b . . . 
 . . b b w w b b . 
@@ -312,6 +447,15 @@ exports[`Game context snapshots should perform sequence 4 correctly for sgf3 1`]
 
 exports[`Game context snapshots should perform sequence 5 correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
 . . . . . b . w . . . . . . . b w . . 
@@ -336,6 +480,15 @@ exports[`Game context snapshots should perform sequence 5 correctly for sgf1 1`]
 
 exports[`Game context snapshots should perform sequence 5 correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . b w . . . . . . . . . . . . . . . . 
 . . b w . . . . . . . . . w . w w w . 
@@ -360,6 +513,15 @@ exports[`Game context snapshots should perform sequence 5 correctly for sgf2 1`]
 
 exports[`Game context snapshots should perform sequence 5 correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 0
+White: 1
+
+Board:
 . . . . b . . . . 
 . . w b w b . . . 
 . b b b w w b b . 
@@ -374,6 +536,15 @@ w . w b w . w b .
 
 exports[`Game context snapshots should render 50 moves from the end correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 9
+White: 3
+
+Board:
 . . . . . . w . w . . b b b w . w . . 
 . . . . . . . w b b b . . b w w . w . 
 . . . . . b w w w b b b b w w b w . . 
@@ -398,6 +569,15 @@ w w w b w w b b b w . . b w w w w . .
 
 exports[`Game context snapshots should render 50 moves from the end correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 3
+White: 5
+
+Board:
 . . b . . . . w . . w . . . . . . . . 
 . b b b b w w . w w b w w . . . . . . 
 . w b w w b w w b b b b . w . w w w . 
@@ -422,6 +602,15 @@ w w . w . w . w b . . . . w . . b b w
 
 exports[`Game context snapshots should render 50 moves from the end correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . 
 . . . . . . . . . 
 . . b . . w b b . 
@@ -436,6 +625,15 @@ exports[`Game context snapshots should render 50 moves from the end correctly fo
 
 exports[`Game context snapshots should render move 50 correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 0
+White: 0
+
+Board:
 . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . 
 . . . . . b w w w b . . . . . b w . . 
@@ -460,6 +658,15 @@ exports[`Game context snapshots should render move 50 correctly for sgf1 1`] = `
 
 exports[`Game context snapshots should render move 50 correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 1
+White: 0
+
+Board:
 . . b . . . . . . . . . . . . . . . . 
 . b b b . . . . . . . . . . . . . . . 
 . w b w . b . . . . . . . w . w w w . 
@@ -484,6 +691,15 @@ exports[`Game context snapshots should render move 50 correctly for sgf2 1`] = `
 
 exports[`Game context snapshots should render move 50 correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 3
+White: 2
+
+Board:
 . . . . b . . . . 
 . . w b . b . . . 
 b b b b . . b b . 
@@ -498,6 +714,15 @@ w w w b w w w b .
 
 exports[`Game context snapshots should render the final position correctly for sgf1 1`] = `
 "
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 19
+White: 7
+
+Board:
 . . . . . . w b b b . b b b w . w . . 
 . . . . . . . w b b b . . b w w . w . 
 . . . . . b w w w b b b b w w b w . . 
@@ -522,6 +747,15 @@ w w w b w w b b b w w . b w w w w . .
 
 exports[`Game context snapshots should render the final position correctly for sgf2 1`] = `
 "
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 4
+White: 6
+
+Board:
 . . b . . . . w . . w . . . . . . . . 
 . b b b b w w . w w b w w . w . . . . 
 . w b w w b w w b b b b b w b w w w . 
@@ -546,6 +780,15 @@ w w . w . w . w b b w . . w w b b b w
 
 exports[`Game context snapshots should render the final position correctly for sgf3 1`] = `
 "
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 3
+White: 2
+
+Board:
 . . . . b . . . . 
 . . w b . b . . . 
 b b b b . . b b . 
