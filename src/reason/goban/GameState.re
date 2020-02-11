@@ -1,3 +1,4 @@
+// TODO: Figure out how to make Jest okay with es6 stuff
 [@gentype]
 type captureCounts = {
   b: int,
