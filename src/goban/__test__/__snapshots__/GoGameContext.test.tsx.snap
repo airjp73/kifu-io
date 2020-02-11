@@ -1,6 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Game context snapshots sgf1 1`] = `
+exports[`Game context snapshots should perform sequence 0 correctly for sgf1 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . b w w w b . . . . . b w . . 
+. . . w . w w b w b . . . . . b w . . 
+. . . . . . . b b b . . . . . b w . . 
+. . w . . . . . . . . . . . . . b w . 
+. . . . . . . . . . . . . . . . b w . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . b . . . . . . . . . . . w b . . . 
+. . . . . . . . . . . . . . b w w . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . b . . . . . . . . . . . . . . . 
+. . b . . . . . . . . . . . . . . . . 
+. . w b . . . . . . . . . . . w w . . 
+. . w . . . . . . . . . . . b . b . . 
+. . . w . w . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 0 correctly for sgf2 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . b . . . . . . . . . . . . . . . . 
+. b b b . . . . . . . . . . . . . . . 
+. w b w . b . . . . . . . w . w w w . 
+. w b w . . . . . . . . . . b b b w . 
+. w b w . . . . . . . . . . . . b b . 
+. b w b w . . . . . . . . . . . w . . 
+. w w . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . b . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . w . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . w . . b . . . . w b . b . . 
+. . . . . b . . . . . . . . b . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 0 correctly for sgf3 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . b . . . . 
+. . w b . b . . . 
+b b b b . . b b . 
+. w b b b b w b . 
+w w w b w w w b . 
+. w b b w . w b . 
+. w b . . w b b . 
+. w b . w . w b . 
+. w . . . . w . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 1 correctly for sgf1 1`] = `
 <pre
   data-testid="boardString"
 >
@@ -27,7 +98,7 @@ w w w b w w b b b w w . b w w w w . .
 </pre>
 `;
 
-exports[`Game context snapshots sgf2 1`] = `
+exports[`Game context snapshots should perform sequence 1 correctly for sgf2 1`] = `
 <pre
   data-testid="boardString"
 >
@@ -54,7 +125,504 @@ w w . w . w . w b b w . . w w b b b w
 </pre>
 `;
 
-exports[`Game context snapshots sgf3 1`] = `
+exports[`Game context snapshots should perform sequence 1 correctly for sgf3 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . b . . . . 
+. . w b . b . . . 
+b b b b . . b b . 
+b w b b b b w b . 
+w w w b w w w b . 
+. w b b w . w b . 
+. w b b w w b b . 
+. w b w w . w b b 
+. w b b w . w w w 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 2 correctly for sgf1 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . b w w w b . . . . . b w . . 
+. . . w . w w b w b . . . . . b w . . 
+. . . . . . . b b b . . . . . b w . . 
+. . w . . . . . . . . . . . . . b w . 
+. . . . . . . . . . . . . . . . b w . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . b . . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . w w . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . b . . . . . . . . . . . . . . . 
+. . b . . . . . . . . . . . . . . . . 
+. . w b . . . . . . . . . . . w w . . 
+. . w . . . . . . . . . . . b . b . . 
+. . . w . w . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 2 correctly for sgf2 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . b . . . . . . . . . . . . . . . . 
+. b b b . . . . . . . . . . . . . . . 
+. w b w . b . . . . . . . w . w w w . 
+. w b w . . . . . . . . . . b b b w . 
+. w b w . . . . . . . . . . . . b b . 
+. b w b w . . . . . . . . . . . w . . 
+. w w . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . w . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . b . . . . w b . b . . 
+. . . . . b . . . . . . . . b . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 2 correctly for sgf3 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . b . . . . 
+. . w b w b . . . 
+. b b b w w b b . 
+. w . b . . w b . 
+w . w b w . w b . 
+. w b b w b w b . 
+. w b . . w b b . 
+. w b . w . w . . 
+. . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 3 correctly for sgf1 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . b . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . b . . . . . . . . . . . . . . . . 
+. . w b . . . . . . . . . . . . . . . 
+. . w . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 3 correctly for sgf2 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . w . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . b . . . . . . . . . . 
+. . . . . b . . . . . . . . b . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 3 correctly for sgf3 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . 
+. . w b w b . . . 
+. . b . w w b b . 
+. . . . . . w b . 
+. . . . . . . . . 
+. . . . . . . . . 
+. . b . . . b . . 
+. . . . . . . . . 
+. . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 4 correctly for sgf1 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . b . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . w . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . b . . . . . . . . . . . . . . . . 
+. . w b . . . . . . . . . . . . . . . 
+. . w . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 4 correctly for sgf2 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . w . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . w . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . b . . . . . . . . . . 
+. . . . . b . . . . . . . . b . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 4 correctly for sgf3 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . 
+. . w b w b . . . 
+. . b b w w b b . 
+. . . . . . w b . 
+. . . . . . . . . 
+. . . . . . . . . 
+. . b . . . b . . 
+. . . . . . . . . 
+. . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 5 correctly for sgf1 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . b . w . . . . . . . b w . . 
+. . . w . . . b . b . . . . . b w . . 
+. . . . . . . . . . . . . . . b w . . 
+. . w . . . . . . . . . . . . . b w . 
+. . . . . . . . . . . . . . . . b w . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . b . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . w . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . b . . . . . . . . . . . . . . . 
+. . b . . . . . . . . . . . . . . . . 
+. . w b . . . . . . . . . . . w w . . 
+. . w . . . . . . . . . . . b . b . . 
+. . . w . w . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 5 correctly for sgf2 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. b w . . . . . . . . . . . . . . . . 
+. . b w . . . . . . . . . w . w w w . 
+. . b w . . . . . . . . . . b b b w . 
+. . b w . . . . . . . . . . . . b b . 
+. b w . . . . . . . . . . . . . w . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . w . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . b . . . . w b . b . . 
+. . . . . b . . . . . . . . b . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should perform sequence 5 correctly for sgf3 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . b . . . . 
+. . w b w b . . . 
+. b b b w w b b . 
+. w . b . . w b . 
+w . w b w . w b . 
+. w b b . . w b . 
+. w b . . w b b . 
+. . . . w . w . . 
+. . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render 50 moves from the end correctly for sgf1 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . w . w . . b b b w . w . . 
+. . . . . . . w b b b . . b w w . w . 
+. . . . . b w w w b b b b w w b w . . 
+. . . w . w w b w b . w w b b b w . . 
+. w . w . . . b b b . w b . b b w . . 
+. . w b . w . . . . . w b w . b b w . 
+. w w b . w w . b w b b b . b b b w . 
+. b w b . b b b . b w b b b w b w w . 
+. b b . . . . b . b w b w w w b b . . 
+. . b . . . . b b w w w w . w b b b b 
+. . . . . . . . . b w . . b b w w w w 
+. b . . . . . . . b w w w . b . . . . 
+b . . b . . b b . w b w b b . b b w . 
+w b b b b b . b w b b b . . . . . w . 
+w w w b w w b b b w . . b w w w w . . 
+. . w w . w b w b w . . b w b w . w . 
+. . . w . w w w w . . b w b b b w . . 
+. . . . . . . . . w . b w w b . w . . 
+. . . . . . . . . . . . . b . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render 50 moves from the end correctly for sgf2 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . b . . . . w . . w . . . . . . . . 
+. b b b b w w . w w b w w . . . . . . 
+. w b w w b w w b b b b . w . w w w . 
+. w b w . b b b b . . . w . b b b w . 
+. w b w . b . b . b w . w b . . b b b 
+. b w . w b w . b w . w b . b . w w . 
+. w w w b w w . b w w . b b . . . . . 
+. . . . b . . . . b . . . w b b . b b 
+. w . w b . . . . . . b . w w . b b w 
+. b . w b . . b . . . . b b b b . w w 
+. . . . b . b . b . b . w w w b w . . 
+b b b . b . . w . w w w . b w w w w . 
+b w w . . . w . w . w . . . . b b w . 
+w w . w . w . w b . . . . w . . b b w 
+. . . . w . w w b . w . . . . . b w . 
+. . . w w w b b b . w w . w b . b . . 
+. . . . w b . . . b w b w w b . . . . 
+. . w . w b . b . b b b w b b . . . . 
+. . . w b b . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render 50 moves from the end correctly for sgf3 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . 
+. . . . . . . . . 
+. . b . . w b b . 
+. . . . . . w b . 
+. . . . . . . . . 
+. . . . . . . . . 
+. . b . . . b . . 
+. . . . . . . . . 
+. . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render move 50 correctly for sgf1 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . b w w w b . . . . . b w . . 
+. . . w . w w b w b . . . . . b w . . 
+. . . . . . . b b b . . . . . b w . . 
+. . w . . . . . . . . . . . . . b w . 
+. . . . . . . . . . . . . . . . b w . 
+. . . . . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . w . b . . 
+. . b . . . . . . . . . w . w b . . . 
+. . . . . . . . . . . . . . b w w . . 
+. . . . . . . . . . . . . . b . . . . 
+. . . b . . . . . . . . . . . . b w . 
+. . b . . . . . . . . . . . . . . . . 
+. . w b . . . . . . . . . . . w w . . 
+. . w . . . . . . . . . . . b . b . . 
+. . . w . w . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render move 50 correctly for sgf2 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . b . . . . . . . . . . . . . . . . 
+. b b b . . . . . . . . . . . . . . . 
+. w b w . b . . . . . . . w . w w w . 
+. w b w . . . . . . . . . . b b b w . 
+. w b w . . . . . . . . . . . . b b . 
+. b w b w . . . . . . . . . . . w . . 
+. w w . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . b . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . w . . . . . 
+. . . . . b w . . . . . . . . . . . . 
+. . . w w w b . b . . . . w b . b . . 
+. . . . w b . . . . . . . . b . . . . 
+. . . . . b . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render move 50 correctly for sgf3 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . b . . . . 
+. . w b . b . . . 
+b b b b . . b b . 
+. w b b b b w b . 
+w w w b w w w b . 
+. w b b w . w b . 
+. w b b w w b b . 
+. w b . w . w b b 
+. w . b w . w w . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render the final position correctly for sgf1 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . . . . . w b b b . b b b w . w . . 
+. . . . . . . w b b b . . b w w . w . 
+. . . . . b w w w b b b b w w b w . . 
+. . . w w w w b w b . w w b b b w w . 
+. w . w b w b b b b . w b . b b w b . 
+w . w b b w b w . b . w b w . b b w . 
+b w w b w w w w b . b b b . b b b w . 
+b b w b b b b b . b w b b b w b w w w 
+. b b . . . . b . b w b w w w b b b w 
+. . b . . . . b b w w w w . w b b b b 
+. . . . . . . . . b w . . b b w w w w 
+. b . . . . . . . b w w w . b . w . . 
+b . b b . . b b . w b w b b b b b w . 
+w b b b b b . b w b b b b w w . w w . 
+w w w b w w b b b w w . b w w w w . . 
+. . w w . w b w b w w b b w b w . w . 
+. . . w . w w w w w b b . b b b w . . 
+. . . . . . . . . w w b . . b w w . . 
+. . . . . . . . . w b b b b . w . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render the final position correctly for sgf2 1`] = `
+<pre
+  data-testid="boardString"
+>
+  . . b . . . . w . . w . . . . . . . . 
+. b b b b w w . w w b w w . w . . . . 
+. w b w w b w w b b b b b w b w w w . 
+. w b w . b b b b . b b w w b b b w w 
+. w b w . b . b . b w w w b . . b b b 
+. b w w w b w . b w . w b . b . w w . 
+. w w w b w w . b w w w b b . . . . . 
+w . . w b . . . . b w b . w b b . b b 
+b w . w b . . . . . b b . w w . b b w 
+b b w w b . . b . . . . b b b b w w w 
+. . b b b b b b b b b b w w w b w . . 
+b b b . b w b w w w w w . b w w w w . 
+b w w w b w w . w . w . . w b b b w w 
+w w . w . w . w b b w . . w w b b b w 
+. . . . w . w w b . w . . w b . b w w 
+. . . w w w b b b . w w . w b . b b b 
+. . . . w b . . . b w b w w b . . . . 
+. . w . w b . b . b b b w b b . . . . 
+. . . w b b . . . . b w w w b . . . . 
+
+</pre>
+`;
+
+exports[`Game context snapshots should render the final position correctly for sgf3 1`] = `
 <pre
   data-testid="boardString"
 >
