@@ -1,4 +1,4 @@
-import { BoardState } from './gameStateReducer';
+import { BoardState, GameState } from './gameStateReducer';
 
 /**
  * A test helper to allow for creating board states for tests in a visual way.
@@ -28,10 +28,29 @@ export const createBoardStateFromString = (
 };
 
 export const createStringFromBoardState = (
-  boardState: BoardState,
+  gameState: GameState,
   size: [number, number]
 ): string => {
-  let boardString = '';
+  const { boardState, captureCounts, properties } = gameState;
+  const {
+    playerBlack,
+    playerWhite,
+    teamBlack,
+    teamWhite,
+    rankBlack,
+    rankWhite,
+  } = properties;
+  const playerString = (player: string, team: string, rank: string) =>
+    `${player || team} ${rank}`;
+  let boardString =
+    '\n' +
+    'Players:\n' +
+    `Black: ${playerString(playerBlack, teamBlack, rankBlack)}\n` +
+    `White: ${playerString(playerWhite, teamWhite, rankWhite)}\n\n` +
+    'Captures:\n' +
+    `Black: ${captureCounts.b}\n` +
+    `White: ${captureCounts.w}\n\n` +
+    'Board:\n';
   const A = 'a'.charCodeAt(0);
 
   for (let y = 0; y < size[1]; ++y) {
