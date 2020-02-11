@@ -47,7 +47,7 @@ describe('Game context snapshots', () => {
   ]).test('should render the final position correctly for %s', (desc, sgf) => {
     const game = render(<TestGoGame sgf={sgf} />);
     fireEvent.click(game.getByTestId('gotoend'));
-    expect(game.getByTestId('boardString')).toMatchSnapshot();
+    expect(game.getByTestId('boardString').textContent).toMatchSnapshot();
   });
 
   // lists of moves generated randomly
@@ -241,7 +241,7 @@ describe('Game context snapshots', () => {
       const sequence = sequences[sequenceIndex];
       const game = render(<TestGoGame sgf={sgf} />);
       sequence.forEach(testid => fireEvent.click(game.getByTestId(testid)));
-      expect(game.getByTestId('boardString')).toMatchSnapshot();
+      expect(game.getByTestId('boardString').textContent).toMatchSnapshot();
     }
   );
 
@@ -256,7 +256,7 @@ describe('Game context snapshots', () => {
     fireEvent.click(game.getByTestId('forward10'));
     fireEvent.click(game.getByTestId('forward10'));
     fireEvent.click(game.getByTestId('forward10'));
-    expect(game.getByTestId('boardString')).toMatchSnapshot();
+    expect(game.getByTestId('boardString').textContent).toMatchSnapshot();
   });
 
   each([
@@ -273,7 +273,7 @@ describe('Game context snapshots', () => {
       fireEvent.click(game.getByTestId('back10'));
       fireEvent.click(game.getByTestId('back10'));
       fireEvent.click(game.getByTestId('back10'));
-      expect(game.getByTestId('boardString')).toMatchSnapshot();
+      expect(game.getByTestId('boardString').textContent).toMatchSnapshot();
     }
   );
 });
