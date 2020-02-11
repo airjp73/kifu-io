@@ -31,7 +31,7 @@ export const createStringFromBoardState = (
   boardState: BoardState,
   size: [number, number]
 ): string => {
-  let boardString = '';
+  let boardString = '\n';
   const A = 'a'.charCodeAt(0);
 
   for (let y = 0; y < size[1]; ++y) {
