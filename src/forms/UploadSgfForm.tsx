@@ -84,6 +84,7 @@ const UploadPlayers = () => {
   return (
     <h3
       css={css`
+        grid-area: captures;
         text-align: center;
         color: ${highlightFaded};
       `}
@@ -111,7 +112,7 @@ const UploadForm = styled.form<{ previewing: boolean }>`
       'fields'
       'captures'
       'preview';
-    grid-template-rows: auto auto 20rem;
+    grid-template-rows: min-content min-content 1fr;
   }
 
   @media only screen and (orientation: portrait) {
@@ -119,7 +120,8 @@ const UploadForm = styled.form<{ previewing: boolean }>`
       'fields'
       'captures'
       'preview';
-    grid-template-rows: auto auto 1fr auto;
+    height: 100%;
+    grid-template-rows: min-content min-content 1fr;
   }
 `;
 
@@ -153,7 +155,6 @@ const UploadSgfForm = () => {
 
             @media only screen and (orientation: portrait) and (max-width: 1100px) {
               width: 100%;
-              padding-top: 95%;
             }
           `}
         >

@@ -3,7 +3,7 @@ import { useGoGameContext } from 'goban/GoGameContext';
 import styled from 'styled-components';
 import 'styled-components/macro';
 import { GameStateProperties, PlayedOnDates } from 'goban/gameStateReducer';
-import { getMonthString, getDayString } from 'util/dateUtils';
+import { getMonthString, getDayString } from 'reason/util/dateUtils.bs';
 
 interface SupportedProperty {
   name: keyof GameStateProperties;

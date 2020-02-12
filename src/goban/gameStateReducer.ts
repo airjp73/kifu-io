@@ -31,6 +31,11 @@ import {
   DELETE_BRANCH,
 } from './gameTreeActions';
 import { APP_NAME, APP_VERSION } from './parseSgf/createSgfFromGameTree';
+import { updateCaptureCount } from 'reason/goban/GameState.bs';
+import {
+  captureCounts,
+  defaultCaptureCounts,
+} from 'reason/goban/GameState.gen';
 
 export type GameStateAction =
   | CaptureAction
@@ -162,32 +167,6 @@ const moveStateReducer = (
   }
 };
 
-export interface CaptureCounts {
-  b: number;
-  w: number;
-}
-const defaultCaptureCounts: CaptureCounts = {
-  b: 0,
-  w: 0,
-};
-const captureCountReducer = (
-  state: CaptureCounts = defaultCaptureCounts,
-  action: GameStateAction
-): CaptureCounts => {
-  switch (action.type) {
-    case CAPTURE: {
-      // Increment captures for w if black stones captured
-      const color = action.color === 'b' ? 'w' : 'b';
-      return {
-        ...state,
-        [color]: state[color] + action.points.length,
-      };
-    }
-    default:
-      return state;
-  }
-};
-
 const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
   return produce(state, draft => {
     const parentNodeId = draft.node;
@@ -237,7 +216,7 @@ export interface GameState {
   boardState: BoardState;
   node: string;
   moveState: MoveState;
-  captureCounts: CaptureCounts;
+  captureCounts: captureCounts;
 }
 export interface GameStateWithHistory extends GameState {
   history: GameState[];
@@ -312,13 +291,22 @@ const gameStateReducer = (
         },
         editMode: false,
       };
+    case CAPTURE:
+      return {
+        ...state,
+        boardState: boardStateReducer(boardState, action),
+        captureCounts: updateCaptureCount(
+          state.captureCounts,
+          action.points,
+          action.color
+        ),
+      };
     default:
       return {
         ...state,
         boardState: boardStateReducer(boardState, action),
         properties: propertiesReducer(properties, action),
         moveState: moveStateReducer(moveState, action),
-        captureCounts: captureCountReducer(captureCounts, action),
       };
   }
 };
