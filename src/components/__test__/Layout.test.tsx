@@ -15,19 +15,21 @@ jest.mock('components/MediaQueryView.tsx', () => {
 
 test('should open slide-out panel on menu click and close on overlay click', async () => {
   const rendered = renderWithContext(<Layout />);
+  await wait();
 
   expect(rendered.queryByTestId('slide-out-panel')).not.toBeInTheDocument();
   expect(
     rendered.queryByTestId('slide-out-panel-overlay')
   ).not.toBeInTheDocument();
 
-  fireEvent.click(rendered.getByTestId('slide-out-menu-button'));
-  expect(rendered.getByTestId('slide-out-panel')).toBeInTheDocument();
+  fireEvent.click(await rendered.findByTestId('slide-out-menu-button'));
+  expect(await rendered.findByTestId('slide-out-panel')).toBeInTheDocument();
 
-  fireEvent.click(rendered.getByTestId('slide-out-panel-overlay'));
+  fireEvent.click(await rendered.findByTestId('slide-out-panel-overlay'));
   await wait(
     () =>
       expect(rendered.queryByTestId('slide-out-panel')).not.toBeInTheDocument(),
     { timeout: 500 }
   );
+  await wait();
 });
