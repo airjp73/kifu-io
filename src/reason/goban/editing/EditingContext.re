@@ -2,7 +2,7 @@
 type contextType = (EditingState.stateType, EditingState.dispatchType);
 
 let defaultContext: contextType = (
-  {unsavedChanges: false, tool: AddMove},
+  {tool: AddMove},
   (action: EditingState.actionType) => (),
 );
 
@@ -10,7 +10,7 @@ let defaultContext: contextType = (
 let context = React.createContext(defaultContext);
 
 [@gentype]
-let use = () => React.useContext(context);
+let useEditingContext = () => React.useContext(context);
 
 [@gentype]
 let makeProps = (~value, ~children, ()) => {

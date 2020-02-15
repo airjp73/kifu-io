@@ -3,7 +3,6 @@
 import * as React from "react";
 
 var defaultContext_000 = {
-  unsavedChanges: false,
   tool: /* AddMove */0
 };
 
@@ -18,7 +17,7 @@ var defaultContext = /* tuple */[
 
 var context = React.createContext(defaultContext);
 
-function use(param) {
+function useEditingContext(param) {
   return React.useContext(context);
 }
 
@@ -34,7 +33,7 @@ var make = context.Provider;
 export {
   defaultContext ,
   context ,
-  use ,
+  useEditingContext ,
   makeProps ,
   make ,
   
