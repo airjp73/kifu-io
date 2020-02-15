@@ -1,12 +1,7 @@
 [@gentype]
-type stoneColor =
-  | Black
-  | White;
-
-[@gentype]
 type tool =
   | AddMove
-  | AddStone(stoneColor);
+  | AddStone(GobanVariants.stoneColor);
 
 [@gentype]
 type stateType = {tool};

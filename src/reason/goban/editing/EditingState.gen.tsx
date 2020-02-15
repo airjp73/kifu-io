@@ -19,13 +19,12 @@ const Curry = require('bs-platform/lib/es6/curry.js');
 // tslint:disable-next-line:no-var-requires
 const EditingStateBS = require('./EditingState.bs');
 
-// tslint:disable-next-line:interface-over-type-literal
-export type stoneColor = "Black" | "White";
+import {stoneColor as GobanVariants_stoneColor} from '../../../../src/reason/goban/GobanVariants.gen';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type tool = 
     "AddMove"
-  | { tag: "AddStone"; value: stoneColor };
+  | { tag: "AddStone"; value: GobanVariants_stoneColor };
 
 // tslint:disable-next-line:interface-over-type-literal
 export type stateType = { readonly tool: tool };

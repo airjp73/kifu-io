@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import CanvasLayer from './canvas/CanvasLayer';
 import useGobanLayer from './useGobanLayer';
 import { useGoGameContext } from './GoGameContext';
@@ -8,15 +8,11 @@ import xyToPoint from './xyToPoint';
 import { addMove } from './gameTreeActions';
 import { useEditingContext } from 'reason/goban/editing/EditingContext.gen';
 import { useMousePosition } from 'reason/goban/GobanMousePosition.gen';
+import { setPoint } from './actions';
 
 interface EditingLayerProps {
   blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
   whiteStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
-}
-
-interface MouseCoords {
-  x: number;
-  y: number;
 }
 
 const EditingLayer: React.FC<EditingLayerProps> = ({
@@ -33,11 +29,18 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
   } = useGobanLayer();
   const { gameState, dispatch } = useGoGameContext();
   const { boardState, moveState, properties } = gameState;
+  const [{ tool }] = useEditingContext();
   const [mouseCoords, mouseCoordProps] = useMousePosition(
     coordToPointIndex,
-    ({ x, y }) => dispatch(addMove(xyToPoint([x, y])))
+    ({ x, y }) => {
+      const point = xyToPoint([x, y]);
+      if (tool === 'AddMove') {
+        dispatch(addMove(point));
+      } else if (tool.tag === 'AddStone') {
+        dispatch(setPoint([point], tool.value));
+      }
+    }
   );
-  const [{ tool }] = useEditingContext();
   const boardSize = properties.boardSize ?? [19, 19];
 
   const blackStone = useMemo(() => blackStoneFactory(stoneRadius), [
