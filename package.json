@@ -23,6 +23,7 @@
     "@reach/rect": "^0.2.1",
     "@types/reach__rect": "^0.2.0",
     "firebase": "^7.8.0",
+    "framer-motion": "^1.8.4",
     "immer": "^5.3.2",
     "lodash": "^4.17.11",
     "normalize.css": "^8.0.1",
