@@ -7,7 +7,6 @@ import * as EditingContext$KifuIo from "./EditingContext.bs.js";
 function EditingProvider(Props) {
   var children = Props.children;
   var match = React.useReducer(EditingState$KifuIo.reducer, {
-        unsavedChanges: false,
         tool: /* AddMove */0
       });
   var dispatch = match[1];
