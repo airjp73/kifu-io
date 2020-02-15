@@ -8,6 +8,6 @@ import * as React from 'react';
 const EditingProviderBS = require('./EditingProvider.bs');
 
 // tslint:disable-next-line:interface-over-type-literal
-export type provider_Props = { readonly children: React.ReactNode };
+export type Props = { readonly children: React.ReactNode };
 
-export const provider: React.ComponentType<{ readonly children: React.ReactNode }> = EditingProviderBS.provider;
+export const make: React.ComponentType<{ readonly children: React.ReactNode }> = EditingProviderBS.make;

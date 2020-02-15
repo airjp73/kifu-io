@@ -2,17 +2,9 @@
 
 
 function reducer(state, action) {
-  if (action) {
-    return {
-            unsavedChanges: false,
-            tool: state.tool
-          };
-  } else {
-    return {
-            unsavedChanges: true,
-            tool: state.tool
-          };
-  }
+  return {
+          tool: action[0]
+        };
 }
 
 export {

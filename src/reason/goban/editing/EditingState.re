@@ -9,15 +9,11 @@ type tool =
   | AddStone(stoneColor);
 
 [@gentype]
-type stateType = {
-  unsavedChanges: bool,
-  tool,
-};
+type stateType = {tool};
 
 [@gentype]
 type actionType =
-  | ChangesMade
-  | ChangesSaved;
+  | SetTool(tool);
 
 [@gentype]
 type dispatchType = actionType => unit;
@@ -25,6 +21,5 @@ type dispatchType = actionType => unit;
 [@gentype]
 let reducer = (state, action) =>
   switch (action) {
-  | ChangesMade => {...state, unsavedChanges: true}
-  | ChangesSaved => {...state, unsavedChanges: false}
+  | SetTool(tool) => {...state, tool}
   };

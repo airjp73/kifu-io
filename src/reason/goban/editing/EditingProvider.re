@@ -1,11 +1,8 @@
 [@gentype]
 [@react.component]
-let provider = (~children: React.element) => {
+let make = (~children: React.element) => {
   let (state, dispatch) =
-    React.useReducer(
-      EditingState.reducer,
-      {unsavedChanges: false, tool: AddMove},
-    );
+    React.useReducer(EditingState.reducer, {tool: AddMove});
 
   let value: EditingContext.contextType =
     React.useMemo2(() => (state, dispatch), (state, dispatch));

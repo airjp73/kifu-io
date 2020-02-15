@@ -13,6 +13,7 @@ import useFullScreen from 'hooks/useFullScreen';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownload from 'components/SgfDownload';
+import { make as EditingProvider } from 'reason/goban/editing/EditingProvider.gen';
 import GobanKeyNavigation from './GobanKeyNavigation';
 import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
 import FabGameInfo from './FabGameInfo';
@@ -162,75 +163,77 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         containerId="game-view"
       />
       <GoGameContextProvider gameTree={gameTree}>
-        <GobanKeyNavigation />
-        <LinkedMoveHandler />
-        <HideInSmallLandscape>
-          <GameViewCaptures />
-        </HideInSmallLandscape>
-        <GameViewGoban>
-          <GameAnnouncements />
-        </GameViewGoban>
-        <LandscapeView>
+        <EditingProvider>
+          <GobanKeyNavigation />
+          <LinkedMoveHandler />
+          <HideInSmallLandscape>
+            <GameViewCaptures />
+          </HideInSmallLandscape>
+          <GameViewGoban>
+            <GameAnnouncements />
+          </GameViewGoban>
+          <LandscapeView>
+            <MediaQueryView maxWidth={1000}>
+              <BackButton
+                css={css`
+                  grid-area: backButton;
+                  width: min-content;
+                `}
+              />
+            </MediaQueryView>
+          </LandscapeView>
           <MediaQueryView maxWidth={1000}>
-            <BackButton
+            <FabGameInfo
               css={css`
-                grid-area: backButton;
-                width: min-content;
+                grid-area: info;
               `}
-            />
-          </MediaQueryView>
-        </LandscapeView>
-        <MediaQueryView maxWidth={1000}>
-          <FabGameInfo
-            css={css`
-              grid-area: info;
-            `}
-          >
-            <EditModeFab />
-            {/* <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}></SpeedDial> */}
-            <OverflowSpeedDial
-              direction={isLandscape ? 'LEFT' : 'UP'}
-              sgf={sgf}
             >
-              {fullScreenOption}
-            </OverflowSpeedDial>
-          </FabGameInfo>
-        </MediaQueryView>
-        <LandscapeView>
-          <MediaQueryView maxWidth={1000}>
-            <BlackCaptures
-              css={css`
-                grid-area: black;
-                justify-content: flex-start;
-              `}
-            />
-            <WhiteCaptures
-              css={css`
-                grid-area: white;
-                justify-content: flex-start;
-              `}
-            />
-            <ForwardButton
-              css={css`
-                grid-area: forwardButton;
-                width: min-content;
-              `}
-            />
+              <EditModeFab />
+              {/* <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}></SpeedDial> */}
+              <OverflowSpeedDial
+                direction={isLandscape ? 'LEFT' : 'UP'}
+                sgf={sgf}
+              >
+                {fullScreenOption}
+              </OverflowSpeedDial>
+            </FabGameInfo>
           </MediaQueryView>
-        </LandscapeView>
-        <MediaQueryView minWidth={1000}>
-          <GameViewInfo>
-            <EditModeFab />
-            <OverflowSpeedDial direction="DOWN" sgf={sgf}>
-              {fullScreenOption}
-            </OverflowSpeedDial>
-          </GameViewInfo>
-        </MediaQueryView>
-        <HideInSmallLandscape>
-          <GameViewControlButtons>
-            <AutoAdvanceControl />
-          </GameViewControlButtons>
-        </HideInSmallLandscape>
+          <LandscapeView>
+            <MediaQueryView maxWidth={1000}>
+              <BlackCaptures
+                css={css`
+                  grid-area: black;
+                  justify-content: flex-start;
+                `}
+              />
+              <WhiteCaptures
+                css={css`
+                  grid-area: white;
+                  justify-content: flex-start;
+                `}
+              />
+              <ForwardButton
+                css={css`
+                  grid-area: forwardButton;
+                  width: min-content;
+                `}
+              />
+            </MediaQueryView>
+          </LandscapeView>
+          <MediaQueryView minWidth={1000}>
+            <GameViewInfo>
+              <EditModeFab />
+              <OverflowSpeedDial direction="DOWN" sgf={sgf}>
+                {fullScreenOption}
+              </OverflowSpeedDial>
+            </GameViewInfo>
+          </MediaQueryView>
+          <HideInSmallLandscape>
+            <GameViewControlButtons>
+              <AutoAdvanceControl />
+            </GameViewControlButtons>
+          </HideInSmallLandscape>
+        </EditingProvider>
       </GoGameContextProvider>
     </GameViewContainer>
   );

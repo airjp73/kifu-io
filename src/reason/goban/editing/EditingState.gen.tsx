@@ -10,8 +10,6 @@ const $$toJS447283240: { [key: string]: any } = {"0": "Black", "1": "White"};
 
 const $$toRE447283240: { [key: string]: any } = {"Black": 0, "White": 1};
 
-const $$toRE630929302: { [key: string]: any } = {"ChangesMade": 0, "ChangesSaved": 1};
-
 // tslint:disable-next-line:no-var-requires
 const CreateBucklescriptBlock = require('bs-platform/lib/es6/block.js');
 
@@ -30,19 +28,21 @@ export type tool =
   | { tag: "AddStone"; value: stoneColor };
 
 // tslint:disable-next-line:interface-over-type-literal
-export type stateType = { readonly unsavedChanges: boolean; readonly tool: tool };
+export type stateType = { readonly tool: tool };
 
 // tslint:disable-next-line:interface-over-type-literal
-export type actionType = "ChangesMade" | "ChangesSaved";
+export type actionType = { tag: "SetTool"; value: tool };
 
 // tslint:disable-next-line:interface-over-type-literal
 export type dispatchType = (_1:actionType) => void;
 
 export const reducer: (state:stateType, action:actionType) => stateType = function (Arg1: any, Arg2: any) {
-  const result = Curry._2(EditingStateBS.reducer, {unsavedChanges:Arg1.unsavedChanges, tool:typeof(Arg1.tool) === 'object'
+  const result = Curry._2(EditingStateBS.reducer, {tool:typeof(Arg1.tool) === 'object'
     ? CreateBucklescriptBlock.__(0, [$$toRE447283240[Arg1.tool.value]])
-    : $$toRE383455976[Arg1.tool]}, $$toRE630929302[Arg2]);
-  return {unsavedChanges:result.unsavedChanges, tool:typeof(result.tool) === 'object'
+    : $$toRE383455976[Arg1.tool]}, CreateBucklescriptBlock.__(0, [typeof(Arg2.value) === 'object'
+    ? CreateBucklescriptBlock.__(0, [$$toRE447283240[Arg2.value.value]])
+    : $$toRE383455976[Arg2.value]]));
+  return {tool:typeof(result.tool) === 'object'
     ? {tag:"AddStone", value:$$toJS447283240[result.tool[0]]}
     : $$toJS383455976[result.tool]}
 };

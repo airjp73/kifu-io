@@ -4,7 +4,7 @@ import * as React from "react";
 import * as EditingState$KifuIo from "./EditingState.bs.js";
 import * as EditingContext$KifuIo from "./EditingContext.bs.js";
 
-function EditingProvider$provider(Props) {
+function EditingProvider(Props) {
   var children = Props.children;
   var match = React.useReducer(EditingState$KifuIo.reducer, {
         unsavedChanges: false,
@@ -24,10 +24,10 @@ function EditingProvider$provider(Props) {
   return React.createElement(EditingContext$KifuIo.make, EditingContext$KifuIo.makeProps(value, children, /* () */0));
 }
 
-var provider = EditingProvider$provider;
+var make = EditingProvider;
 
 export {
-  provider ,
+  make ,
   
 }
 /* react Not a pure module */
