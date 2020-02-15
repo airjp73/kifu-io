@@ -8,7 +8,7 @@ const Curry = require('bs-platform/lib/es6/curry.js');
 // tslint:disable-next-line:no-var-requires
 const GobanMousePositionBS = require('./GobanMousePosition.bs');
 
-import {Mouse_t as ReactEvent_Mouse_t} from 'reason-react/src/ReactEvent.gen';
+import {Mouse_t as ReactEvent_Mouse_t} from '../../../src/reason/shims/ReactEvent.shim';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type mousePosition = { readonly x: number; readonly y: number };
