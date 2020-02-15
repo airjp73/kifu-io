@@ -100,6 +100,28 @@ const GameViewContainer = styled.div`
   }
 `;
 
+type OverflowSpeedDialProps = { sgf: string } & Pick<
+  React.ComponentProps<typeof SpeedDial>,
+  'direction'
+>;
+const OverflowSpeedDial: React.FC<OverflowSpeedDialProps> = ({
+  direction,
+  sgf,
+  children,
+}) => {
+  return (
+    <SpeedDial direction={direction}>
+      <MoveLinkButton />
+      <SpeedDialOption label="Download">
+        <SgfDownload sgfContents={sgf}>
+          <Download height="1rem" width="1rem" />
+        </SgfDownload>
+      </SpeedDialOption>
+      {children}
+    </SpeedDial>
+  );
+};
+
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
   const { height, width } = useWindowDimensions();
@@ -154,15 +176,13 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
             `}
           >
             <EditModeFab />
-            <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}>
-              <MoveLinkButton />
-              <SpeedDialOption label="Download">
-                <SgfDownload sgfContents={sgf}>
-                  <Download height="1rem" width="1rem" />
-                </SgfDownload>
-              </SpeedDialOption>
+            {/* <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}></SpeedDial> */}
+            <OverflowSpeedDial
+              direction={isLandscape ? 'LEFT' : 'UP'}
+              sgf={sgf}
+            >
               {fullScreenOption}
-            </SpeedDial>
+            </OverflowSpeedDial>
           </FabGameInfo>
         </MediaQueryView>
         <LandscapeView>
@@ -190,15 +210,9 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         <MediaQueryView minWidth={1000}>
           <GameViewInfo>
             <EditModeFab />
-            <SpeedDial direction="DOWN">
-              <MoveLinkButton />
-              <SpeedDialOption label="Download">
-                <SgfDownload sgfContents={sgf}>
-                  <Download height="1rem" width="1rem" />
-                </SgfDownload>
-              </SpeedDialOption>
+            <OverflowSpeedDial direction="DOWN" sgf={sgf}>
               {fullScreenOption}
-            </SpeedDial>
+            </OverflowSpeedDial>
           </GameViewInfo>
         </MediaQueryView>
         <HideInSmallLandscape>
