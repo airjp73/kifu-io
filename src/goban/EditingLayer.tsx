@@ -6,6 +6,8 @@ import useStoneSize from './useStoneSize';
 import calculateStoneCoord from './calculateStoneCoord';
 import xyToPoint from './xyToPoint';
 import { addMove } from './gameTreeActions';
+import { useEditingContext } from 'reason/goban/editing/EditingContext.gen';
+import { useMousePosition } from 'reason/goban/GobanMousePosition.gen';
 
 interface EditingLayerProps {
   blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
@@ -31,8 +33,12 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
   } = useGobanLayer();
   const { gameState, dispatch } = useGoGameContext();
   const { boardState, moveState, properties } = gameState;
+  const [mouseCoords, mouseCoordProps] = useMousePosition(
+    coordToPointIndex,
+    ({ x, y }) => dispatch(addMove(xyToPoint([x, y])))
+  );
+  const [{ tool }] = useEditingContext();
   const boardSize = properties.boardSize ?? [19, 19];
-  const [mouseCoords, setMouseCoords] = useState<MouseCoords | null>(null);
 
   const blackStone = useMemo(() => blackStoneFactory(stoneRadius), [
     stoneRadius,
@@ -47,26 +53,6 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
       ? whiteStone
       : blackStone;
   const stoneSize = useStoneSize(blackStone);
-
-  const handleMouseMove = (
-    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-  ) => {
-    const x = coordToPointIndex(event.nativeEvent.offsetX);
-    const y = coordToPointIndex(event.nativeEvent.offsetY);
-    if (!mouseCoords || x !== mouseCoords.x || y !== mouseCoords.y) {
-      setMouseCoords({ x, y });
-    }
-  };
-
-  const handleClick = (
-    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-  ) => {
-    const x = coordToPointIndex(event.nativeEvent.offsetX);
-    const y = coordToPointIndex(event.nativeEvent.offsetY);
-    dispatch(addMove(xyToPoint([x, y])));
-  };
-
-  const handleMouseLeave = () => setMouseCoords(null);
 
   const shouldDraw =
     mouseCoords &&
@@ -109,9 +95,7 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
 
   return (
     <CanvasLayer
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
+      {...mouseCoordProps}
       ref={canvasRef}
       height={height}
       width={width}
