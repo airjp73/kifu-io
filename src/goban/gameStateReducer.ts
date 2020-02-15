@@ -183,7 +183,7 @@ const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
       // We have a few dummy nodes at the start
       moveNumber: draft.history.length - 1,
     };
-    draft.editMode = true;
+    draft.unsavedChanges = true;
   });
 };
 
@@ -221,7 +221,7 @@ export interface GameState {
 export interface GameStateWithHistory extends GameState {
   history: GameState[];
   gameTree: GameTree;
-  editMode: boolean;
+  unsavedChanges: boolean;
 }
 const defaultState: GameStateWithHistory = {
   boardState: {},
@@ -234,7 +234,7 @@ const defaultState: GameStateWithHistory = {
     rootNode: '',
     nodes: {},
   },
-  editMode: false,
+  unsavedChanges: false,
 };
 const gameStateReducer = (
   state: GameStateWithHistory = defaultState,
@@ -253,7 +253,7 @@ const gameStateReducer = (
     case INIT:
       return {
         ...defaultState,
-        editMode: state.editMode,
+        unsavedChanges: state.unsavedChanges,
         gameTree: action.payload,
       };
     case POP_HISTORY:
@@ -280,7 +280,7 @@ const gameStateReducer = (
     case START_EDITING:
       return {
         ...state,
-        editMode: true,
+        unsavedChanges: true,
       };
     case SGF_COPIED:
       return {
@@ -289,7 +289,7 @@ const gameStateReducer = (
           ...properties,
           application: { name: APP_NAME, version: APP_VERSION },
         },
-        editMode: false,
+        unsavedChanges: false,
       };
     case CAPTURE:
       return {

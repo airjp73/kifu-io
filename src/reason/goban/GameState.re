@@ -157,7 +157,7 @@ let updateCaptureCount =
  type gameStateWithHistory(gameState) = {
    history: list(gameState),
    gameTree: gameTree,
-   editMode: bool
+   unsavedChanges: bool
 
  [@gentype]
  type gameState = {

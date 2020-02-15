@@ -14,7 +14,7 @@ type LocationState = { afterSave: boolean };
 
 const EditModeFab: React.FC = () => {
   const {
-    gameState: { editMode, gameTree },
+    gameState: { unsavedChanges, gameTree },
     dispatch,
   } = useGoGameContext();
   const history = useHistory<LocationState>();
@@ -37,14 +37,17 @@ const EditModeFab: React.FC = () => {
   return (
     <>
       <Prompt
-        when={editMode}
+        when={unsavedChanges}
         message={(location: Location<LocationState>) =>
           location.state?.afterSave ||
           'You have unsaved changes, are you sure you want to leave?'
         }
       />
-      <Fab highlighted={editMode} onClick={editMode ? handleSave : handleEdit}>
-        {editMode ? <Save /> : <Edit />}
+      <Fab
+        highlighted={unsavedChanges}
+        onClick={unsavedChanges ? handleSave : handleEdit}
+      >
+        {unsavedChanges ? <Save /> : <Edit />}
       </Fab>
     </>
   );

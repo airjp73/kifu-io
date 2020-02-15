@@ -14,9 +14,9 @@ const DeleteButton = styled(FlatButton)`
 
 const DeleteBranchButton: React.FC = () => {
   const { gameState, goToNode, getNode, dispatch } = useGoGameContext();
-  const { editMode, node } = gameState;
+  const { unsavedChanges, node } = gameState;
 
-  if (!editMode) return null;
+  if (!unsavedChanges) return null;
 
   return (
     <DeleteButton
