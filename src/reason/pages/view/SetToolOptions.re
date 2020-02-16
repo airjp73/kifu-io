@@ -16,7 +16,7 @@ module BlackStone = {
       };
 
     <SpeedDialOption
-      label="Add Black Stone" onClick=handleClick highlighted style>
+      label="Add Black Stone" onClick=handleClick highlighted ?style>
       <ReactFeather.Edit2 />
     </SpeedDialOption>;
   };
@@ -40,7 +40,7 @@ module WhiteStone = {
       };
 
     <SpeedDialOption
-      label="Add White Stone" onClick=handleClick highlighted style>
+      label="Add White Stone" onClick=handleClick highlighted ?style>
       <ReactFeather.Edit2 />
     </SpeedDialOption>;
   };
@@ -63,8 +63,8 @@ module Play = {
       | _ => false
       };
 
-    <SpeedDialOption label="Play" onClick=handleClick highlighted style>
-      <GoIcon />
+    <SpeedDialOption label="Play" onClick=handleClick highlighted ?style>
+      <GoIcon height="auto" width="auto" />
     </SpeedDialOption>;
   };
 };

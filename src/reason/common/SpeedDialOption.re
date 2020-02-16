@@ -1,3 +1,4 @@
+[@gentype]
 type junk = {junk: string};
 
 [@bs.module "../../components/SpeedDialOption.tsx"] [@react.component]
