@@ -6,19 +6,19 @@ module BaseSpeedDial = {
 };
 
 [@gentype]
-type direction =
-  | Up
-  | Down
-  | Left;
+[@bs.deriving jsConverter]
+type direction = [
+  | [@bs.as "UP"] `Up
+  | [@bs.as "DOWN"] `Down
+  | [@bs.as "LEFT"] `Left
+];
 
 [@gentype]
 [@react.component]
 let make = (~direction, ~children) => {
-  let directionStr: option(string) =
+  let directionStr =
     switch (direction) {
-    | Some(Up) => Some("UP")
-    | Some(Down) => Some("DOWN")
-    | Some(Left) => Some("LEFT")
+    | Some(dir) => Some(directionToJs(dir))
     | None => None
     };
 
