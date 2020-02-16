@@ -123,17 +123,6 @@ const OverflowSpeedDial: React.FC<OverflowSpeedDialProps> = ({
   );
 };
 
-type EditModeSpeedDialProps = Pick<
-  React.ComponentProps<typeof SpeedDial>,
-  'direction'
->;
-const EditModeSpeedDial: React.FC<EditModeSpeedDialProps> = ({
-  direction,
-  children,
-}) => {
-  return <SpeedDial direction={direction}>{children}</SpeedDial>;
-};
-
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
   const { height, width } = useWindowDimensions();
