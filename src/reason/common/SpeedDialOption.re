@@ -1,3 +1,5 @@
+type junk = {junk: string};
+
 [@bs.module "../../components/SpeedDialOption.tsx"] [@react.component]
 external make:
   (
@@ -6,7 +8,7 @@ external make:
     ~onClick: ReactEvent.Mouse.t => unit,
     ~labelAbove: bool=?,
     ~highlighted: bool=?,
-    ~style: Js.Obj=?
+    ~style: junk=?
   ) =>
   React.element =
   "default";
