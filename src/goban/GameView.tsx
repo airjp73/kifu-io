@@ -14,6 +14,7 @@ import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownload from 'components/SgfDownload';
 import { make as EditingProvider } from 'reason/goban/editing/EditingProvider.gen';
+import { make as EditingToolsSpeedDial } from 'reason/pages/view/EditingToolsSpeedDial.gen';
 import GobanKeyNavigation from './GobanKeyNavigation';
 import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
 import FabGameInfo from './FabGameInfo';
@@ -30,6 +31,7 @@ import EditModeFab from './EditModeFab';
 import { ToastContainer } from 'react-toastify';
 import MoveLinkButton from 'pages/view/MoveLinkButton';
 import LinkedMoveHandler from 'pages/view/LinkedMoveHandler';
+import { directionFromJs } from 'reason/common/SpeedDial.bs';
 
 interface GameViewProps {
   sgf: string;
@@ -132,6 +134,8 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
     gameViewRef
   );
 
+  const speedDialDirection = isLandscape ? 'LEFT' : 'UP';
+
   const fullScreenOption = (
     <SpeedDialOption
       label={isFullScreen ? 'Exit Full Screen' : 'Full Screen'}
@@ -178,11 +182,10 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
               `}
             >
               <EditModeFab />
-              {/* <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}></SpeedDial> */}
-              <OverflowSpeedDial
-                direction={isLandscape ? 'LEFT' : 'UP'}
-                sgf={sgf}
-              >
+              <EditingToolsSpeedDial
+                direction={directionFromJs(speedDialDirection)}
+              />
+              <OverflowSpeedDial direction={speedDialDirection} sgf={sgf}>
                 {fullScreenOption}
               </OverflowSpeedDial>
             </FabGameInfo>
@@ -212,6 +215,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
           <MediaQueryView minWidth={1000}>
             <GameViewInfo>
               <EditModeFab />
+              <EditingToolsSpeedDial direction={directionFromJs('DOWN')} />
               <OverflowSpeedDial direction="DOWN" sgf={sgf}>
                 {fullScreenOption}
               </OverflowSpeedDial>
