@@ -62,6 +62,7 @@ export const editPoint = (
       type: ADD_NODE,
       payload: color === 'b' ? { AB: [point] } : { AW: [point] },
     } as AddNodeAction);
+    dispatch(setPoint([point], color));
   } else {
     dispatch({
       type: EDIT_POINT,
