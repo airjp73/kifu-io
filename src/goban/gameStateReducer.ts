@@ -200,6 +200,7 @@ const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
 
 const deleteBranch = (state: GameStateWithHistory, nodeId: string) => {
   return produce(state, draft => {
+    draft.unsavedChanges = true;
     const deletedNode = draft.gameTree.nodes[nodeId];
     const nodes: GameTreeNode[] = [deletedNode];
 
