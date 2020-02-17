@@ -228,6 +228,7 @@ const handleEditPoint = (
   color: StoneColor
 ) => {
   return produce(state, draft => {
+    draft.unsavedChanges = true;
     const newColor =
       draft.boardState[point] === color
         ? null
