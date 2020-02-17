@@ -55,17 +55,16 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction, icon }) => {
     config: { tension: 700, clamp: true },
   });
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  useClickOutside(containerRef, () => setOpen(false));
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  useClickOutside(buttonRef, () => setOpen(false));
 
   return (
     <div
       css={css`
         position: relative;
       `}
-      ref={containerRef}
     >
-      <Fab onClick={() => setOpen(prevOpen => !prevOpen)}>
+      <Fab onClick={() => setOpen(prevOpen => !prevOpen)} ref={buttonRef}>
         {icon || <MoreHorizontal height="1.5rem" width="1.5rem" />}
       </Fab>
 
