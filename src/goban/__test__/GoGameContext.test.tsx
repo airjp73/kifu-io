@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import each from 'jest-each';
 import { render, fireEvent } from 'react-testing-library';
 import sgf1 from 'goban/parseSgf/snapshots/snapshot1';
@@ -7,13 +7,22 @@ import sgf3 from 'goban/parseSgf/snapshots/snapshot3';
 import useSgf from '../useSgf';
 import { GoGameContextProvider, useGoGameContext } from '../GoGameContext';
 import { createStringFromBoardState } from '../boardStateTestHelpers';
+import { addMove, editPoint } from 'goban/gameTreeActions';
+import createSgfFromGameTree from 'goban/parseSgf/createSgfFromGameTree';
 
 const BoardStateTestRenderer = () => {
-  const { forward, back, gameState } = useGoGameContext();
+  const { forward, back, gameState, dispatch } = useGoGameContext();
   const boardString = createStringFromBoardState(
     gameState,
     gameState.properties.boardSize || [19, 19]
   );
+  const [point, setPoint] = useState('');
+  const doThing: typeof dispatch = action => {
+    dispatch(action);
+    setPoint('');
+  };
+
+  const [generatedSgf, setGeneratedSgf] = useState<string | null>(null);
   return (
     <div>
       <pre data-testid="boardString">{boardString}</pre>;
@@ -23,6 +32,27 @@ const BoardStateTestRenderer = () => {
       <button data-testid="forward1" onClick={() => forward(1)} />
       <button data-testid="forward10" onClick={() => forward(10)} />
       <button data-testid="gotoend" onClick={() => forward(-1)} />
+      <input
+        data-testid="set-point"
+        value={point}
+        onChange={event => setPoint(event.target.value)}
+      />
+      <button data-testid="add-move" onClick={() => doThing(addMove(point))} />
+      <button
+        data-testid="add-b"
+        onClick={() => doThing(editPoint(point, 'b'))}
+      />
+      <button
+        data-testid="add-w"
+        onClick={() => doThing(editPoint(point, 'w'))}
+      />
+      <button
+        data-testid="create-sgf"
+        onClick={() =>
+          setGeneratedSgf(createSgfFromGameTree(gameState.gameTree))
+        }
+      />
+      {generatedSgf && <pre data-testid="generated-sgf">{generatedSgf}</pre>}
     </div>
   );
 };
@@ -50,8 +80,9 @@ describe('Game context snapshots', () => {
     expect(game.getByTestId('boardString').textContent).toMatchSnapshot();
   });
 
+  type Instruction = string | [string, string];
   // lists of moves generated randomly
-  const sequences: string[][] = [
+  const sequences: Instruction[][] = [
     [
       'forward10',
       'forward1',
@@ -222,6 +253,35 @@ describe('Game context snapshots', () => {
       'forward1',
       'forward10',
       'forward10',
+      'forward10',
+    ],
+    [
+      'forward10',
+      'forward10',
+      'forward10',
+      ['add-move', 'ol'],
+      ['add-w', 'oh'],
+      ['add-b', 'nf'],
+      ['add-move', 'fi'],
+      ['add-w', 'cq'],
+      ['add-move', 'bg'],
+      ['add-move', 'jo'],
+      ['add-b', 'fp'],
+      ['add-b', 'no'],
+      ['add-w', 'ml'],
+      ['add-move', 'qn'],
+      ['add-move', 'fh'],
+      ['add-move', 'eq'],
+      ['add-b', 'iq'],
+      ['add-b', 'fp'],
+      ['add-w', 'em'],
+      ['add-b', 'hq'],
+      ['add-move', 'og'],
+      ['add-b', 'di'],
+      ['add-w', 'mn'],
+      'back1',
+      'forward1',
+      'back10',
       'forward10',
     ],
   ];
@@ -237,11 +297,29 @@ describe('Game context snapshots', () => {
 
   each(cases).test(
     'should perform sequence %d correctly for %s',
-    (sequenceIndex, desc, sgf) => {
+    async (sequenceIndex, desc, sgf) => {
       const sequence = sequences[sequenceIndex];
       const game = render(<TestGoGame sgf={sgf} />);
-      sequence.forEach(testid => fireEvent.click(game.getByTestId(testid)));
+      let hasTreeMods = false;
+      sequence.forEach(instruction => {
+        if (typeof instruction === 'string') {
+          fireEvent.click(game.getByTestId(instruction));
+        } else {
+          hasTreeMods = true;
+          fireEvent.change(game.getByTestId('set-point'), {
+            target: { value: instruction[1] },
+          });
+          fireEvent.click(game.getByTestId(instruction[0]));
+        }
+      });
       expect(game.getByTestId('boardString').textContent).toMatchSnapshot();
+
+      if (hasTreeMods) {
+        fireEvent.click(game.getByTestId('create-sgf'));
+        expect(
+          (await game.findByTestId('generated-sgf')).textContent
+        ).toMatchSnapshot();
+      }
     }
   );
 
