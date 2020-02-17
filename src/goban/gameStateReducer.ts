@@ -19,7 +19,6 @@ import {
   SgfCopiedAction,
   SGF_COPIED,
 } from './actions';
-import { stoneColorToJs } from 'reason/goban/GobanVariants.bs';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
