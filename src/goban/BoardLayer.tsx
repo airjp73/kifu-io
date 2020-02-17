@@ -43,6 +43,7 @@ const BoardLayer: React.FC<BoardLayerProps> = ({ showCoords }) => {
   const boardHeight = boardSize[1];
 
   useEffect(() => {
+    if (!height || !width) return;
     const ctx = canvasRef.current.getContext('2d');
 
     drawBoard();

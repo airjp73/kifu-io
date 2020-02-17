@@ -47,6 +47,7 @@ const StoneLayer: React.FC<StoneLayerProps> = ({
   );
 
   useEffect(() => {
+    if (!height || !width) return;
     const ctx = canvasRef.current.getContext('2d');
 
     Object.entries(boardState).forEach(([point, color]) => {

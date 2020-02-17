@@ -64,6 +64,8 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
   const stoneSize = useStoneSize(blackStone);
 
   const shouldDraw =
+    height &&
+    width &&
     mouseCoords &&
     mouseCoords.x >= 0 &&
     mouseCoords.x < boardSize[0] &&

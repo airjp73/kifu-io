@@ -18,6 +18,7 @@ const MarkupLayer = () => {
   const currentPoint = currentMove && currentMove[0];
 
   useEffect(() => {
+    if (!height || !width) return;
     const ctx = canvasRef.current.getContext('2d');
     let highlightCurrentMove = !!currentPoint;
     const getMarkupColor = (point: string): string =>
