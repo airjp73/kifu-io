@@ -57,9 +57,17 @@ const GameInfoTabs = styled(Tabs)`
 
 const CloseFab = styled(FabTab)`
   position: absolute;
-  right: -0.5rem;
-  top: -1rem;
   z-index: 1;
+
+  ${portraitMedia} {
+    right: -0.5rem;
+    top: -2rem;
+  }
+
+  ${smallLandscapeMedia} {
+    left: -1.5rem;
+    top: -1.5rem;
+  }
 `;
 
 const GameInfoAppearingArea = styled(AppearingTabContentArea)`
@@ -68,8 +76,8 @@ const GameInfoAppearingArea = styled(AppearingTabContentArea)`
   }
 
   ${smallLandscapeMedia} {
-    top: -25px;
-    left: -400px;
+    top: -50px;
+    right: -250px;
   }
 `;
 
@@ -126,7 +134,7 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
         </PortraitView>
       </FabTabs>
       <GameInfoAppearingArea
-        originX={isLandscape ? 100 : 50}
+        originX={isLandscape ? 0 : 50}
         originY={isLandscape ? 50 : 100}
       >
         <CloseFab tabName={null}>
