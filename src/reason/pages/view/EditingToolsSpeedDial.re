@@ -8,8 +8,8 @@ let make = (~direction) => {
     icon={
       switch (state.tool) {
       | AddMove => <GoIcon width="1.5rem" height="1.5rem" />
-      | AddStone(`Black) => <ReactFeather.Edit2 />
-      | AddStone(`White) => <ReactFeather.Edit2 />
+      | AddStone(`Black) => <GoIcon.BlackStone radius=13 />
+      | AddStone(`White) => <GoIcon.WhiteStone radius=13 />
       }
     }>
     <SetToolOptions.Play />

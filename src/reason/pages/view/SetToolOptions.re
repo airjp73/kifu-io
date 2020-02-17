@@ -17,7 +17,7 @@ module BlackStone = {
 
     <SpeedDialOption
       label="Add Black Stone" onClick=handleClick highlighted ?style>
-      <ReactFeather.Edit2 />
+      <GoIcon.BlackStone radius=10 />
     </SpeedDialOption>;
   };
 };
@@ -41,7 +41,7 @@ module WhiteStone = {
 
     <SpeedDialOption
       label="Add White Stone" onClick=handleClick highlighted ?style>
-      <ReactFeather.Edit2 />
+      <GoIcon.WhiteStone radius=10 />
     </SpeedDialOption>;
   };
 };
