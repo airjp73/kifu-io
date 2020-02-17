@@ -64,7 +64,7 @@ module Play = {
       };
 
     <SpeedDialOption label="Play" onClick=handleClick highlighted ?style>
-      <GoIcon height="auto" width="auto" />
+      <GoIcon height="1.5rem" width="1.5rem" />
     </SpeedDialOption>;
   };
 };
