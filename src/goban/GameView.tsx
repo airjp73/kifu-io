@@ -18,8 +18,6 @@ import { make as EditingToolsSpeedDial } from 'reason/pages/view/EditingToolsSpe
 import GobanKeyNavigation from './GobanKeyNavigation';
 import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
 import FabGameInfo from './FabGameInfo';
-import BackButton from './BackButton';
-import ForwardButton from './ForwardButton';
 import HideInSmallLandscape from 'components/HideInSmallLandscape';
 import WhiteCaptures from './WhiteCaptures';
 import BlackCaptures from './BlackCaptures';
@@ -78,10 +76,10 @@ const GameViewContainer = styled.div`
   ${smallLandscapeMedia} {
     width: 100%;
     grid-template-areas:
-      '. board black black'
-      '. board white white'
-      'backButton board forwardButton info';
-    grid-template-columns: min-content 1fr min-content min-content;
+      'black board buttons'
+      'white board buttons'
+      'info board buttons';
+    grid-template-columns: min-content 1fr min-content;
     grid-template-rows: min-content min-content 1fr;
     box-sizing: border-box;
   }
@@ -105,15 +103,16 @@ const GameViewContainer = styled.div`
 
 type OverflowSpeedDialProps = { sgf: string } & Pick<
   React.ComponentProps<typeof SpeedDial>,
-  'direction'
+  'direction' | 'flowDirection'
 >;
 const OverflowSpeedDial: React.FC<OverflowSpeedDialProps> = ({
   direction,
   sgf,
   children,
+  flowDirection,
 }) => {
   return (
-    <SpeedDial direction={direction}>
+    <SpeedDial direction={direction} flowDirection={flowDirection}>
       <MoveLinkButton />
       <SpeedDialOption label="Download">
         <SgfDownload sgfContents={sgf}>
@@ -134,7 +133,8 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
     gameViewRef
   );
 
-  const speedDialDirection = isLandscape ? 'LEFT' : 'UP';
+  const speedDialDirection = isLandscape ? 'RIGHT' : 'UP';
+  const speedDialFlowDirection = isLandscape ? 'column' : undefined;
 
   const fullScreenOption = (
     <SpeedDialOption
@@ -165,16 +165,6 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
           <GameViewGoban>
             <GameAnnouncements />
           </GameViewGoban>
-          <LandscapeView>
-            <MediaQueryView maxWidth={1000}>
-              <BackButton
-                css={css`
-                  grid-area: backButton;
-                  width: min-content;
-                `}
-              />
-            </MediaQueryView>
-          </LandscapeView>
           <MediaQueryView maxWidth={1000}>
             <FabGameInfo
               css={css`
@@ -183,9 +173,14 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
             >
               <EditModeFab />
               <EditingToolsSpeedDial
+                flowDirection={speedDialFlowDirection}
                 direction={directionFromJs(speedDialDirection)}
               />
-              <OverflowSpeedDial direction={speedDialDirection} sgf={sgf}>
+              <OverflowSpeedDial
+                direction={speedDialDirection}
+                sgf={sgf}
+                flowDirection={speedDialFlowDirection}
+              >
                 {fullScreenOption}
               </OverflowSpeedDial>
             </FabGameInfo>
@@ -204,12 +199,6 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
                   justify-content: flex-start;
                 `}
               />
-              <ForwardButton
-                css={css`
-                  grid-area: forwardButton;
-                  width: min-content;
-                `}
-              />
             </MediaQueryView>
           </LandscapeView>
           <MediaQueryView minWidth={1001}>
@@ -221,11 +210,9 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
               </OverflowSpeedDial>
             </GameViewInfo>
           </MediaQueryView>
-          <HideInSmallLandscape>
-            <GameViewControlButtons>
-              <AutoAdvanceControl />
-            </GameViewControlButtons>
-          </HideInSmallLandscape>
+          <GameViewControlButtons>
+            <AutoAdvanceControl />
+          </GameViewControlButtons>
         </EditingProvider>
       </GoGameContextProvider>
     </GameViewContainer>

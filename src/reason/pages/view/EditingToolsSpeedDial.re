@@ -1,10 +1,11 @@
 [@gentype]
 [@react.component]
-let make = (~direction) => {
+let make = (~direction, ~flowDirection=?) => {
   let (state, dispatch) = EditingContext.useEditingContext();
 
   <SpeedDial
     direction={Some(direction)}
+    ?flowDirection
     icon={
       switch (state.tool) {
       | AddMove => <GoIcon.DoubleStone radius=13 />

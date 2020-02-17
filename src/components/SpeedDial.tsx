@@ -3,44 +3,66 @@ import { useTrail } from 'react-spring';
 import { css } from 'styled-components';
 import 'styled-components/macro';
 import { MoreHorizontal } from 'react-feather';
+import { labelDirections } from './SpeedDialOption';
 import useClickOutside from 'hooks/useClickOutside';
 import useIsFirstRender from 'hooks/useIsFirstRender';
 import Fab from './Fab';
 
 interface SpeedDialProps {
-  direction?: 'UP' | 'DOWN' | 'LEFT';
+  direction?: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
   icon?: React.ReactNode;
+  flowDirection?: string;
 }
 
+const flowMargins: { [key: string]: string } = {
+  'column-reverse': 'margin-bottom',
+  column: 'margin-top',
+  row: 'margin-left',
+  'row-reverse': 'margin-right',
+};
 const directionStyles = {
-  UP: css`
-    bottom: 100%;
-    flex-direction: column-reverse;
-
-    > * {
-      margin-bottom: 0.5rem;
-    }
-  `,
-  DOWN: css`
-    top: 100%;
-    flex-direction: column;
-
-    > * {
-      margin-top: 0.5rem;
-    }
-  `,
-  LEFT: css`
-    right: calc(100% + 1rem);
-    bottom: 0.25rem;
-    flex-direction: column-reverse;
+  UP: (flowDirection: string = 'column-reverse') => css`
+    bottom: calc(100% + 1rem);
+    flex-direction: ${flowDirection};
 
     > * + * {
-      margin-bottom: 0.5rem;
+      ${flowMargins[flowDirection]}: 0.5rem;
+    }
+  `,
+  DOWN: (flowDirection: string = 'column') => css`
+    top: calc(100% + 1rem);
+    flex-direction: ${flowDirection};
+
+    > * + * {
+      ${flowMargins[flowDirection]}: 0.5rem;
+    }
+  `,
+  LEFT: (flowDirection: string = 'column-reverse') => css`
+    right: calc(100% + 1rem);
+    bottom: 0.25rem;
+    flex-direction: ${flowDirection};
+
+    > * + * {
+      ${flowMargins[flowDirection]}: 0.5rem;
+    }
+  `,
+  RIGHT: (flowDirection: string = 'column-reverse') => css`
+    left: calc(100% + 1rem);
+    top: 0.25rem;
+    flex-direction: ${flowDirection};
+
+    > * + * {
+      ${flowMargins[flowDirection]}: 0.5rem;
     }
   `,
 };
 
-const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction, icon }) => {
+const SpeedDial: React.FC<SpeedDialProps> = ({
+  children,
+  direction,
+  icon,
+  flowDirection,
+}) => {
   const isFirstRender = useIsFirstRender();
   const childrenArray = React.Children.toArray(children);
 
@@ -75,13 +97,16 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction, icon }) => {
           align-items: center;
           width: 100%;
           ${!open && 'pointer-events: none;'}
-          ${direction && directionStyles[direction]}
+          ${direction && directionStyles[direction](flowDirection)}
         `}
       >
         {trail.map((style, index) =>
           React.cloneElement(childrenArray[index] as React.ReactElement, {
             key: index,
-            // labelAbove: direction === 'LEFT',
+            labelDirection:
+              direction === 'RIGHT'
+                ? labelDirections.RIGHT
+                : labelDirections.LEFT,
             style,
           })
         )}

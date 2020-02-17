@@ -4,7 +4,8 @@ module BaseSpeedDial = {
     (
       ~direction: option(string),
       ~children: React.element,
-      ~icon: React.element=?
+      ~icon: React.element=?,
+      ~flowDirection: string=?
     ) =>
     React.element =
     "default";
@@ -16,16 +17,19 @@ type direction = [
   | [@bs.as "UP"] `Up
   | [@bs.as "DOWN"] `Down
   | [@bs.as "LEFT"] `Left
+  | [@bs.as "RIGHT"] `Right
 ];
 
 [@gentype]
 [@react.component]
-let make = (~direction, ~children, ~icon=?) => {
+let make = (~direction, ~children, ~flowDirection=?, ~icon=?) => {
   let directionStr =
     switch (direction) {
     | Some(dir) => Some(directionToJs(dir))
     | None => None
     };
 
-  <BaseSpeedDial direction=directionStr ?icon> children </BaseSpeedDial>;
+  <BaseSpeedDial direction=directionStr ?flowDirection ?icon>
+    children
+  </BaseSpeedDial>;
 };

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import 'styled-components/macro';
 import { useGoGameContext } from 'goban/GoGameContext';
 import { boxShadowLow, tallMedia, shortMedia } from 'style';
-import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
+import MediaQueryView from 'components/MediaQueryView';
 import GameTreeView from 'goban/GameTreeView';
 import GameProperties from 'goban/GameProperties';
 import { MessageSquare, Info, GitBranch } from 'react-feather';

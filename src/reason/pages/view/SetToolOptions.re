@@ -1,7 +1,7 @@
 module BlackStone = {
   [@gentype]
   [@react.component]
-  let make = (~style=?) => {
+  let make = (~style=?, ~labelDirection=?) => {
     let (state, dispatch) = EditingContext.useEditingContext();
 
     let handleClick = _ => {
@@ -16,7 +16,11 @@ module BlackStone = {
       };
 
     <SpeedDialOption
-      label="Add Black Stone" onClick=handleClick highlighted ?style>
+      label="Add Black Stone"
+      onClick=handleClick
+      highlighted
+      ?style
+      ?labelDirection>
       <GoIcon.BlackStone radius=10 />
     </SpeedDialOption>;
   };
@@ -25,7 +29,7 @@ module BlackStone = {
 module WhiteStone = {
   [@gentype]
   [@react.component]
-  let make = (~style=?) => {
+  let make = (~style=?, ~labelDirection=?) => {
     let (state, dispatch) = EditingContext.useEditingContext();
 
     let handleClick = _ => {
@@ -40,7 +44,11 @@ module WhiteStone = {
       };
 
     <SpeedDialOption
-      label="Add White Stone" onClick=handleClick highlighted ?style>
+      label="Add White Stone"
+      onClick=handleClick
+      highlighted
+      ?style
+      ?labelDirection>
       <GoIcon.WhiteStone radius=10 />
     </SpeedDialOption>;
   };
@@ -49,7 +57,7 @@ module WhiteStone = {
 module Play = {
   [@gentype]
   [@react.component]
-  let make = (~style=?) => {
+  let make = (~style=?, ~labelDirection=?) => {
     let (state, dispatch) = EditingContext.useEditingContext();
 
     let handleClick = _ => {
@@ -63,7 +71,8 @@ module Play = {
       | _ => false
       };
 
-    <SpeedDialOption label="Play" onClick=handleClick highlighted ?style>
+    <SpeedDialOption
+      label="Play" onClick=handleClick highlighted ?style ?labelDirection>
       <GoIcon.DoubleStone radius=10 />
     </SpeedDialOption>;
   };
