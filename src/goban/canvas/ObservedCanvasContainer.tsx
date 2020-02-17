@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import { useRect } from '@reach/rect';
 import 'styled-components/macro';
 import { css } from 'styled-components';
@@ -14,7 +14,10 @@ const ObservedCanvasContainer: React.FC<React.HTMLProps<HTMLDivElement>> = (
 
   const width = containerRect && containerRect.width;
   const height = containerRect && containerRect.height;
-  const dimensions = height && { height, width };
+  const dimensions = useMemo(() => height && { height, width }, [
+    height,
+    width,
+  ]);
 
   return (
     <CanvasContext.Provider value={dimensions}>
