@@ -57,11 +57,16 @@ export const editPoint = (
   const currentNode = getState().gameTree.nodes[getState().node];
   if (currentNode.properties.B || currentNode.properties.W) {
     dispatch(pushHistory());
-    dispatch({
-      type: ADD_NODE,
-      payload: color === 'b' ? { AB: [point] } : { AW: [point] },
-    } as AddNodeAction);
-    dispatch(setPoint([point], color));
+    if (getState().boardState[point] === color) {
+      dispatch({ type: ADD_NODE, payload: { AE: [point] } } as AddNodeAction);
+      dispatch(setPoint([point], null));
+    } else {
+      dispatch({
+        type: ADD_NODE,
+        payload: color === 'b' ? { AB: [point] } : { AW: [point] },
+      } as AddNodeAction);
+      dispatch(setPoint([point], color));
+    }
   } else {
     dispatch({
       type: EDIT_POINT,

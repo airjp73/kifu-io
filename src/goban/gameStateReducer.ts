@@ -57,10 +57,15 @@ export interface BoardState {
   [key: string]: StoneColor | null;
 }
 const setPoints = (state: BoardState, action: SetPointAction) => {
-  const nextState = { ...state };
-  action.points.forEach(point => (nextState[point] = action.value));
-  return nextState;
+  return produce(state, draft => {
+    action.points.forEach(point => {
+      if (action.value) draft[point] = action.value;
+      else delete draft[point];
+    });
+    return draft;
+  });
 };
+
 const boardStateReducer = (
   state: BoardState,
   action: GameStateAction
@@ -234,7 +239,8 @@ const handleEditPoint = (
       draft.boardState[point] === color
         ? null
         : (draft.boardState[point] = color);
-    draft.boardState[point] = newColor;
+    if (newColor) draft.boardState[point] = newColor;
+    else delete draft.boardState[point];
 
     const currentNode = draft.gameTree.nodes[draft.node];
     const filterModifiedPoint = (arr?: string[]) =>
