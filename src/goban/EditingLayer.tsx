@@ -9,6 +9,7 @@ import { addMove, editPoint } from './gameTreeActions';
 import { useEditingContext } from 'reason/goban/editing/EditingContext.gen';
 import { useMousePosition } from 'reason/goban/GobanMousePosition.gen';
 import { setPoint } from './actions';
+import { jsFromStoneColor } from 'reason/goban/GobanVariants.bs';
 
 interface EditingLayerProps {
   blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
@@ -37,7 +38,7 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
       if (tool === 'AddMove') {
         dispatch(addMove(point));
       } else if (tool.tag === 'AddStone') {
-        dispatch(editPoint(point, tool.value));
+        dispatch(editPoint(point, jsFromStoneColor(tool.value)));
       }
     }
   );
