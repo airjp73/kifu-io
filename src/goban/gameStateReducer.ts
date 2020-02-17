@@ -30,9 +30,13 @@ import {
   DeleteBranchAction,
   DELETE_BRANCH,
   EditPointAction,
+  EDIT_POINT,
 } from './gameTreeActions';
 import { APP_NAME, APP_VERSION } from './parseSgf/createSgfFromGameTree';
-import { updateCaptureCount } from 'reason/goban/GameState.bs';
+import {
+  updateCaptureCount,
+  handleEditPoint,
+} from 'reason/goban/GameState.gen';
 import {
   captureCounts,
   defaultCaptureCounts,
@@ -303,6 +307,8 @@ const gameStateReducer = (
           action.color
         ),
       };
+    case EDIT_POINT:
+      return handleEditPoint(state, action.payload.point, action.payload.color);
     default:
       return {
         ...state,
