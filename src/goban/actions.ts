@@ -71,11 +71,6 @@ export const init = (gameTree: GameTree): InitAction => ({
   payload: gameTree,
 });
 
-export interface StartEditingAction {
-  type: typeof START_EDITING;
-}
-export const startEditing = () => ({ type: START_EDITING });
-
 export interface SgfCopiedAction {
   type: typeof SGF_COPIED;
 }

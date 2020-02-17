@@ -14,8 +14,6 @@ import {
   PopHistoryAction,
   InitAction,
   INIT,
-  StartEditingAction,
-  START_EDITING,
   SgfCopiedAction,
   SGF_COPIED,
 } from './actions';
@@ -51,7 +49,6 @@ export type GameStateAction =
   | SetPointAction
   | SetPropertyAction
   | GameTreeAction
-  | StartEditingAction
   | SgfCopiedAction
   | DeleteBranchAction
   | EditPointAction;
@@ -330,11 +327,6 @@ const gameStateReducer = (
       return addNode(state, action.payload);
     case DELETE_BRANCH:
       return deleteBranch(state, action.payload);
-    case START_EDITING:
-      return {
-        ...state,
-        unsavedChanges: true,
-      };
     case SGF_COPIED:
       return {
         ...state,
