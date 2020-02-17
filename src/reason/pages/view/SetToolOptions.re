@@ -5,13 +5,13 @@ module BlackStone = {
     let (state, dispatch) = EditingContext.useEditingContext();
 
     let handleClick = _ => {
-      dispatch(SetTool(AddStone(Black)));
+      dispatch(SetTool(AddStone(`Black)));
       ();
     };
 
     let highlighted =
       switch (state.tool) {
-      | AddStone(Black) => true
+      | AddStone(`Black) => true
       | _ => false
       };
 
@@ -29,13 +29,13 @@ module WhiteStone = {
     let (state, dispatch) = EditingContext.useEditingContext();
 
     let handleClick = _ => {
-      dispatch(SetTool(AddStone(White)));
+      dispatch(SetTool(AddStone(`White)));
       ();
     };
 
     let highlighted =
       switch (state.tool) {
-      | AddStone(White) => true
+      | AddStone(`White) => true
       | _ => false
       };
 

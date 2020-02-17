@@ -1,10 +1,3 @@
 [@gentype]
-type stoneColor =
-  | Black
-  | White;
-
-let jsFromStoneColor = color =>
-  switch (color) {
-  | Black => "b"
-  | White => "w"
-  };
+[@bs.deriving jsConverter]
+type stoneColor = [ | [@bs.as "b"] `Black | [@bs.as "w"] `White];
