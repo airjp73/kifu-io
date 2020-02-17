@@ -2151,6 +2151,764 @@ exports[`Game context snapshots should perform sequence 7 correctly for sgf3 2`]
 )"
 `;
 
+exports[`Game context snapshots should perform sequence 8 correctly for sgf1 1`] = `
+"
+Players:
+Black: AaronP 2d
+White: U undefined
+
+Captures:
+Black: 0
+White: 0
+
+Board:
+w . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . b . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . w . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . b . . . . . . . . . . . . . . . . 
+. . w b . . . . . . . . . . . . . . . 
+. . w . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+"
+`;
+
+exports[`Game context snapshots should perform sequence 8 correctly for sgf1 2`] = `
+"(
+  ;GM[1]FF[4]CA[UTF-8]AP[0.0.1:Kifu.io]ST[2]RU[Japanese]SZ[19]KM[6.50]TM[2400]OT[3x30 byo-yomi]PW[U]PB[AaronP]BR[2d]DT[2018-09-14]PC[The KGS Go Server at http://www.gokgs.com/]C[AaronP \\\\[2d?\\\\]: Have a good game! :)
+]RE[B+24.50]
+  ;B[pd]BL[2392.149]C[U \\\\[-\\\\]: gg thanks for reschedule
+]
+  ;W[dd]WL[2397.029]
+  ;B[pq]BL[2389.359]
+  ;W[dq]WL[2394.771]
+  ;B[do]BL[2382.224]
+  ;W[co]WL[2347.064]
+  ;B[cn]BL[2333.739]
+  ;W[cp]WL[2342.659]
+  ;B[fc]BL[2322.262]
+  ;W[cf]WL[2335.215]
+  (
+    ;B[dm]BL[2311.712]
+    ;W[fq]WL[2326.997]
+    ;B[cj]BL[2288.313]
+    ;W[qo]WL[2274.179]
+    ;B[op]BL[2241.747]
+    ;W[qk]WL[2259.746]
+    ;B[qp]BL[2155.363]
+    ;W[po]WL[2226.311]
+    ;B[qi]BL[2148.23]
+    ;W[qc]WL[2196.956]
+    ;B[pc]BL[2135.153]
+    ;W[qd]WL[2193.288]
+    ;B[qf]BL[2116.172]
+    ;W[qe]WL[2187.404]
+    ;B[pe]BL[2115.249]
+    ;W[rf]WL[2185.264]
+    ;B[qg]BL[2114.491]
+    ;W[rg]WL[2106.281]
+    ;B[jd]BL[2009.322]
+    ;W[hc]WL[2062.138]
+    ;B[hd]BL[1947.154]
+    ;W[ic]WL[1969.992]
+    ;B[jc]BL[1940.09]
+    ;W[id]WL[1967.139]
+    ;B[ie]BL[1939.294]
+    ;W[gd]WL[1966.071]
+    ;B[he]BL[1938.337]
+    ;W[gc]WL[1962.537]
+    ;B[je]BL[1861.806]
+    ;W[fd]WL[1942.676]
+    ;B[pj]BL[1847.843]
+    ;W[pk]WL[1919.592]
+    ;B[ok]BL[1845.175]
+    ;W[oj]WL[1844.324]
+    ;B[ol]BL[1763.482]
+    ;W[oi]WL[1802.679]
+    ;B[ph]BL[1584.103]
+    ;W[mj]WL[1723.498]
+    ;B[qm]BL[1287.197]
+    ;W[rm]WL[1640.906]
+    ;B[pm]BL[1255.63]
+    ;W[rn]WL[1589.739]
+    ;B[rj]BL[1207.965]
+    ;W[rk]WL[1549.969]
+    ;B[mh]BL[1100.902]
+    ;W[ml]WL[1494.569]
+    ;B[nm]BL[1057.373]
+    ;W[rh]WL[1442.376]
+    ;B[qj]BL[929.853]
+    ;W[ng]WL[1391.253]
+    ;B[nh]BL[872.288]
+    ;W[oh]WL[1372.946]
+    ;B[og]BL[870.419]
+    ;W[of]WL[1195.151]
+    ;B[pg]BL[867.966]
+    ;W[ne]WL[1126.997]
+    ;B[mg]BL[796.673]
+    ;W[nf]WL[1066.321]
+    ;B[pf]BL[771.851]
+    ;W[nc]WL[1053.828]
+    ;B[qb]BL[769.928]
+    ;W[rb]WL[1051.505]
+    ;B[nb]BL[753.403]
+    ;W[ob]WL[979.582]
+    ;B[nd]BL[691.213]
+    ;W[md]WL[827.338]
+    ;B[mc]BL[549.002]
+    ;W[oc]WL[792.924]
+    ;B[od]BL[533.912]
+    ;W[mb]WL[781.056]
+    ;B[lc]BL[528.115]
+    ;W[pb]WL[748.113]
+    ;B[me]BL[519.849]
+    ;W[oo]WL[681.536]
+    ;B[mm]BL[445.032]
+    ;W[np]WL[634.778]
+    ;B[nq]BL[440.63]
+    ;W[rp]WL[613.021]
+    ;B[mp]BL[431.212]
+    ;W[no]WL[598.871]
+    ;B[mo]BL[428.658]
+    ;W[mq]WL[587.009]
+    ;B[lq]BL[424.966]
+    ;W[mr]WL[583.745]
+    ;B[lr]BL[424.213]
+    ;W[nr]WL[575.379]
+    ;B[oq]BL[423.107]
+    ;W[qr]WL[504.236]
+    ;B[or]BL[417.777]
+    ;W[kj]WL[463.919]
+    ;B[jk]BL[399.198]
+    ;W[jj]WL[408.538]
+    ;B[ij]BL[394.706]
+    ;W[ii]WL[405.032]
+    ;B[hj]BL[372.523]
+    ;W[kh]WL[361.729]
+    ;B[hi]BL[353.21]
+    ;W[ih]WL[349.052]
+    ;B[hh]BL[347.598]
+    ;W[lf]WL[316.254]
+    ;B[mf]BL[344.602]
+    ;W[kk]WL[313.991]
+    ;B[jl]BL[339.528]
+    ;W[kl]WL[311.504]
+    ;B[km]BL[293.846]
+    ;W[lm]WL[212.417]
+    ;B[ln]BL[291.108]
+    ;W[ll]WL[211.186]
+    ;B[li]BL[269.81]
+    ;W[lj]WL[147.539]
+    ;B[ig]BL[209.986]
+    ;W[iq]WL[44.404]
+    ;B[gp]BL[124.033]
+    ;W[gq]WL[38.38]
+    ;B[ip]BL[115.552]
+    ;W[fp]WL[35.971]
+    ;B[go]BL[111.73]
+    ;W[fo]WL[33.114]
+    ;B[fn]BL[110.731]
+    ;W[jp]WL[11.785]
+    ;B[dg]BL[77.258]
+    ;W[cg]WL[3.337]
+    ;B[dh]BL[68.418]
+    ;W[gn]WL[30]OW[3]
+    ;B[io]BL[26.674]
+    ;W[jo]WL[30]OW[3]
+    ;B[hm]BL[30]OB[3]
+    ;W[jm]WL[30]OW[3]
+    ;B[kn]BL[30]OB[3]
+    ;W[in]WL[30]OW[3]
+    ;B[hn]BL[30]OB[3]
+    ;W[hp]WL[30]OW[3]
+    ;B[ho]BL[30]OB[3]
+    ;W[hq]WL[30]OW[3]
+    ;B[gm]BL[30]OB[3]
+    ;W[ch]WL[30]OW[3]
+    ;B[ci]BL[30]OB[3]
+    ;W[lb]WL[30]OW[3]
+    ;B[kb]BL[30]OB[3]
+    ;W[ff]WL[30]OW[3]
+    ;B[fh]BL[30]OB[3]
+    ;W[jr]WL[30]OW[2]
+    ;B[df]BL[30]OB[3]
+    ;W[de]WL[30]OW[2]
+    ;B[bh]BL[30]OB[3]
+    ;W[bg]WL[30]OW[2]
+    ;B[bn]BL[30]OB[3]
+    ;W[bo]WL[30]OW[2]
+    ;B[ib]BL[30]OB[3]
+    ;W[hb]WL[30]OW[2]
+    ;B[bi]BL[30]OB[3]
+    ;W[ld]WL[30]OW[2]
+    ;B[kc]BL[30]OB[3]
+    ;W[jg]WL[30]OW[2]
+    ;B[ji]BL[30]OB[3]
+    ;W[ki]WL[30]OW[2]
+    ;B[jh]BL[30]OB[3]
+    ;W[mi]WL[30]OW[2]
+    ;B[lh]BL[30]OB[3]
+    ;W[le]WL[30]OW[2]
+    ;B[oe]BL[30]OB[3]
+    ;W[nf]WL[30]OW[2]
+    ;B[kg]BL[30]OB[3]
+    ;W[ni]WL[30]OW[1]
+    ;B[nk]BL[30]OB[3]
+    ;W[be]WL[30]OW[1]
+    ;B[sj]BL[30]OB[3]
+    ;W[qh]WL[30]OW[1]
+    ;B[pi]BL[30]OB[3]
+    ;W[sk]WL[30]OW[1]
+    ;B[lg]BL[30]OB[3]
+    ;W[qq]WL[30]OW[1]
+    ;B[ha]BL[30]OB[3]
+    ;W[ga]WL[30]OW[1]
+    ;B[jn]BL[30]OB[3]
+    ;W[ia]WL[30]OW[1]
+    ;B[jb]BL[30]OB[3]
+    ;W[an]WL[30]OW[1]
+    ;B[am]BL[30]OB[3]
+    ;W[ao]WL[30]OW[1]
+    ;B[bl]BL[30]OB[3]
+    ;W[pp]WL[30]OW[1]
+    ;B[ns]BL[30]OB[3]
+    ;W[fg]WL[30]OW[1]
+    ;B[na]BL[30]OB[3]
+    ;W[qa]WL[30]OW[1]
+    ;B[la]BL[30]OB[3]
+    ;W[oa]WL[30]OW[1]
+    ;B[ma]BL[30]OB[3]
+    ;W[gg]WL[30]OW[1]
+    ;B[gh]BL[30]OB[3]
+    ;W[eo]WL[30]OW[1]
+    ;B[en]BL[30]OB[3]
+    ;W[dp]WL[30]OW[1]
+    ;B[dn]BL[30]OB[3]
+    ;W[si]WL[30]OW[1]
+    ;B[jf]BL[30]OB[3]
+    ;W[hf]WL[30]OW[1]
+    ;B[ja]BL[30]OB[3]
+    ;W[eg]WL[30]OW[1]
+    ;B[eh]BL[30]OB[3]
+    ;W[nn]WL[30]OW[1]
+    ;B[mn]BL[30]OB[3]
+    ;W[ql]WL[30]OW[1]
+    ;B[ge]BL[30]OB[3]
+    ;W[fe]WL[30]OW[1]
+    ;B[ag]BL[30]OB[3]
+    ;W[af]WL[30]OW[1]
+    ;B[ah]BL[30]OB[3]
+    ;W[kp]WL[30]OW[1]
+    ;B[kq]BL[30]OB[3]
+    ;W[jq]WL[30]OW[1]
+    ;B[ks]BL[30]OB[3]
+    ;W[kr]WL[30]OW[1]
+    ;B[ef]BL[30]OB[3]
+    ;W[js]WL[30]OW[1]
+    ;B[ls]BL[30]OB[3]
+    ;W[ps]WL[30]OW[1]
+    ;B[ee]BL[30]OB[3]
+    ;W[ed]WL[30]OW[1]
+    ;B[ri]BL[30]OB[3]
+    ;W[sh]WL[30]OW[1]
+    ;B[ha]BL[30]OB[3]
+    ;W[pr]WL[30]OW[1]
+    ;B[ms]BL[30]OB[3]
+    ;W[ia]WL[30]OW[1]
+    ;B[lp]BL[30]OB[3]
+    ;W[ko]WL[30]OW[1]
+    ;B[ha]BL[30]OB[3]
+    ;W[on]WL[30]OW[1]
+    ;B[om]BL[30]OB[3]
+    ;W[ia]WL[30]OW[1]
+    ;B[gf]BL[30]OB[3]
+    ;W[hg]WL[30]OW[1]
+    ;B[ha]BL[30]OB[3]
+    ;W[bm]WL[30]OW[1]
+    ;B[cm]BL[30]OB[3]
+    ;W[ia]WL[30]OW[1]
+    ;B[re]BL[30]OB[3]
+    ;W[rd]WL[30]OW[1]
+    ;B[ha]BL[30]OB[3]
+    ;W[qn]WL[30]OW[1]
+    ;B[ia]BL[30]OB[3]
+    ;W[]WL[30]OW[1]
+    ;B[]BL[30]OB[3]TW[aa][ba][ca][da][ea][fa][pa][ra][sa][ab][bb][cb][db][eb][fb][gb][qb][sb][ac][bc][cc][dc][ec][fc][rc][sc][ad][bd][cd][sd][ae][ce][re][se][bf][sf][sg][rl][sl][sm][sn][ro][so][ap][bp][ep][qp][sp][aq][bq][cq][eq][rq][sq][ar][br][cr][dr][er][fr][gr][hr][ir][rr][sr][as][bs][cs][ds][es][fs][gs][hs][is][qs][rs][ss]TB[ka][lb][mb][kd][ld][md][ke][le][ne][kf][lf][nf][of][jg][ng][ih][kh][oh][ai][di][ei][fi][gi][ii][ki][mi][ni][oi][aj][bj][dj][ej][fj][gj][jj][kj][lj][mj][nj][oj][ak][bk][ck][dk][ek][fk][gk][hk][ik][kk][lk][mk][al][cl][dl][el][fl][gl][hl][il][kl][ll][ml][nl][bm][em][fm][im][jm][lm][gn][in][mq][mr][nr]C[U \\\\[-\\\\]: thanks for the game
+AaronP \\\\[2d?\\\\]: Thanks for the game
+AaronP \\\\[2d?\\\\]: I thought for sure I was a goner for a bit there
+]
+  )
+  (
+    ;B[aa]
+    ;AEAW[aa]
+  )
+)"
+`;
+
+exports[`Game context snapshots should perform sequence 8 correctly for sgf2 1`] = `
+"
+Players:
+Black: Koons undefined
+White: AaronP 2d
+
+Captures:
+Black: 0
+White: 0
+
+Board:
+w . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . w . . 
+. . . w . . . . . . . . . . . b . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . w . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . w . . . . b . . . . . . . . . . 
+. . . . . b . . . . . . . . b . . . . 
+. . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . 
+"
+`;
+
+exports[`Game context snapshots should perform sequence 8 correctly for sgf2 2`] = `
+"(
+  ;GM[1]FF[4]CA[UTF-8]AP[0.0.1:Kifu.io]ST[2]RU[Japanese]SZ[19]KM[6.50]TM[2400]OT[3x30 byo-yomi]PW[AaronP]PB[Koons]WR[2d]DT[2019-01-17]PC[The KGS Go Server at http://www.gokgs.com/]C[Koons \\\\[?\\\\]: hi
+AaronP \\\\[2d?\\\\]: hi hf :)
+Koons \\\\[?\\\\]: have a good gae
+]RE[W+18.50]
+  ;B[pd]BL[2383.556]
+  ;W[dd]WL[2382.731]
+  ;B[oq]BL[2380.454]
+  ;W[dp]WL[2351.391]
+  ;B[fq]BL[2376.44]
+  ;W[dn]WL[2336.421]
+  ;B[ip]BL[2372.995]
+  ;W[qf]WL[2256.553]
+  ;B[qi]BL[2347.525]
+  ;W[qc]WL[2234.078]
+  (
+    ;B[qd]BL[2344.148]
+    ;W[pc]WL[2232.605]
+    ;B[od]BL[2341.253]
+    ;W[rd]WL[2231.899]
+    ;B[re]BL[2291.829]
+    ;W[rc]WL[2228.689]
+    ;B[qe]BL[2278.595]
+    ;W[nc]WL[2227.106]
+    ;B[qp]BL[2260.1]
+    ;W[np]WL[2184.688]
+    ;B[op]BL[2219.212]
+    ;W[nn]WL[2180.215]
+    ;B[cc]BL[2175.11]
+    ;W[dc]WL[2173.42]
+    ;B[cd]BL[2169.762]
+    ;W[cf]WL[2171.415]
+    ;B[ce]BL[2166.093]
+    ;W[de]WL[2170.355]
+    ;B[bf]BL[2163.477]
+    ;W[cb]WL[2168.875]
+    ;B[bb]BL[2143.173]
+    ;W[be]WL[2157.722]
+    ;B[db]BL[2131.725]
+    ;W[bc]WL[2154.537]
+    ;B[ca]BL[2130.282]
+    ;W[bd]WL[2153.668]
+    ;B[cb]BL[2129.389]
+    ;W[bg]WL[2152.951]
+    ;B[df]BL[2118.456]
+    ;W[cg]WL[2151.643]
+    ;B[fc]BL[2110.343]
+    ;W[ef]WL[2093.876]
+    ;B[cl]BL[1997.951]
+    ;W[fp]WL[1857.629]
+    ;B[gp]BL[1954.341]
+    ;W[eq]WL[1838.439]
+    ;B[fo]BL[1950.315]
+    ;W[ep]WL[1836.19]
+    ;B[fr]BL[1941.148]
+    ;W[go]WL[1651.581]
+    ;B[gn]BL[1936.32]
+    ;W[ho]WL[1648.768]
+    ;B[hp]BL[1935.575]
+    ;W[fn]WL[1629.015]
+    ;B[in]BL[1925.183]
+    ;W[di]WL[1562.606]
+    ;B[ej]BL[1696.433]
+    ;W[dj]WL[1506.932]
+    ;B[el]BL[1658.594]
+    ;W[hn]WL[1499.794]
+    ;B[hm]BL[1633.283]
+    ;W[gm]WL[1497.663]
+    ;B[io]BL[1631.682]
+    ;W[eo]WL[1496.646]
+    ;B[ek]BL[1410.938]
+    ;W[hl]WL[1488.447]
+    ;B[ei]BL[1345.861]
+    ;W[gc]WL[1335.228]
+    ;B[gd]BL[1281.628]
+    ;W[hc]WL[1157.149]
+    ;B[hd]BL[1078.764]
+    ;W[ec]WL[746.969]
+    (
+      ;B[eb]BL[688.279]
+      ;W[fb]WL[730.871]
+      ;B[fd]BL[685.289]
+      ;W[gb]WL[712.867]
+      ;B[ic]BL[679.952]
+      ;W[ib]WL[710.908]
+      ;B[jc]BL[678.827]
+      ;W[jb]WL[706.809]
+      ;B[kc]BL[677.745]
+      ;W[ha]WL[502.932]
+      ;B[eh]BL[648.691]
+      ;W[dg]WL[500.33]
+      ;B[ff]BL[612.443]
+      ;W[fg]WL[393.735]
+      ;B[eg]BL[605.037]
+      ;W[gg]WL[388.029]
+      ;B[hj]BL[467.084]
+      ;W[gf]WL[363.28]
+      ;B[fe]BL[445.379]
+      ;W[md]WL[341.733]
+      ;B[kf]BL[410.723]
+      ;W[im]WL[292.253]
+      ;B[pm]BL[358.514]
+      ;W[km]WL[263.66]
+      ;B[nl]BL[332.928]
+      ;W[ko]WL[242.814]
+      ;B[mf]BL[240.756]
+      ;W[kq]WL[226.569]
+      ;B[jr]BL[213.629]
+      ;W[rf]WL[193.728]
+      ;B[se]BL[172.937]
+      ;W[ie]WL[123.643]
+      ;B[he]BL[143.11]
+      ;W[jg]WL[89.684]
+      ;B[if]BL[102.231]
+      ;W[jf]WL[83.586]
+      ;B[je]BL[94.908]
+      ;W[nf]WL[30]OW[3]
+      ;B[ne]BL[42.742]
+      ;W[ke]WL[30]OW[3]
+      ;B[id]BL[39.077]
+      ;W[lf]WL[30]OW[3]
+      ;B[ig]BL[17.809]
+      ;W[kg]WL[30]OW[3]
+      ;B[mg]BL[9.844]
+      ;W[me]WL[30]OW[3]
+      ;B[of]BL[30]OB[3]
+      ;W[ni]WL[30]OW[3]
+      ;B[oh]BL[30]OB[3]
+      ;W[er]WL[30]OW[3]
+      ;B[es]BL[30]OB[3]
+      ;W[ds]WL[30]OW[3]
+      ;B[fs]BL[30]OB[3]
+      ;W[cr]WL[30]OW[3]
+      ;B[hr]BL[30]OB[3]
+      ;W[nh]WL[30]OW[3]
+      ;B[ng]BL[30]OB[3]
+      ;W[oi]WL[30]OW[3]
+      ;B[ph]BL[30]OB[2]
+      ;W[bm]WL[30]OW[3]
+      ;B[li]BL[30]OB[2]
+      ;W[mk]WL[30]OW[3]
+      ;B[kk]BL[30]OB[2]
+      ;W[ll]WL[30]OW[3]
+      ;B[mj]BL[30]OB[2]
+      ;W[nk]WL[30]OW[3]
+      ;B[nj]BL[30]OB[2]
+      ;W[ok]WL[30]OW[3]
+      ;B[oj]BL[30]OB[2]
+      ;W[qk]WL[30]OW[3]
+      ;B[pk]BL[30]OB[2]
+      ;W[pl]WL[30]OW[3]
+      ;B[pj]BL[30]OB[2]
+      ;W[ol]WL[30]OW[3]
+      ;B[qm]BL[30]OB[2]
+      ;W[ql]WL[30]OW[3]
+      ;B[bl]BL[30]OB[2]
+      ;W[cm]WL[30]OW[3]
+      ;B[bj]BL[30]OB[2]
+      ;W[bi]WL[30]OW[3]
+      ;B[kr]BL[30]OB[2]
+      ;W[nq]WL[30]OW[3]
+      ;B[nr]BL[30]OB[2]
+      ;W[mr]WL[30]OW[3]
+      ;B[or]BL[30]OB[2]
+      ;W[lb]WL[30]OW[3]
+      ;B[kb]BL[30]OB[2]
+      ;W[ka]WL[30]OW[3]
+      ;B[lc]BL[30]OB[2]
+      ;W[mb]WL[30]OW[3]
+      ;B[am]BL[30]OB[2]
+      ;W[an]WL[30]OW[3]
+      ;B[al]BL[30]OB[2]
+      ;W[bn]WL[30]OW[3]
+      ;B[jh]BL[30]OB[2]
+      ;W[rj]WL[30]OW[3]
+      ;B[ri]BL[30]OB[2]
+      ;W[si]WL[30]OW[3]
+      ;B[sh]BL[30]OB[2]
+      ;W[sj]WL[30]OW[3]
+      ;B[rh]BL[30]OB[2]
+      ;W[rm]WL[30]OW[3]
+      ;B[rn]BL[30]OB[2]
+      ;W[rl]WL[30]OW[3]
+      ;B[ik]BL[30]OB[1]
+      ;W[jl]WL[30]OW[3]
+      ;B[gk]BL[30]OB[1]
+      ;W[kl]WL[30]OW[3]
+      ;B[lq]BL[30]OB[1]
+      ;W[lp]WL[30]OW[3]
+      ;B[jq]BL[30]OB[1]
+      ;W[kp]WL[30]OW[3]
+      ;B[lr]BL[30]OB[1]
+      ;W[ro]WL[30]OW[3]
+      ;B[qo]BL[30]OB[1]
+      ;W[sn]WL[30]OW[3]
+      ;B[qn]BL[30]OB[1]
+      ;W[mq]WL[30]OW[3]
+      ;B[rp]BL[30]OB[1]
+      ;W[so]WL[30]OW[3]
+      ;B[sp]BL[30]OB[1]
+      ;W[sm]WL[30]OW[3]
+      ;B[oc]BL[30]OB[1]
+      ;W[ob]WL[30]OW[3]
+      ;B[mc]BL[30]OB[1]
+      ;W[nd]WL[30]OW[3]
+      ;B[jk]BL[30]OB[1]
+      ;W[lg]WL[30]OW[3]
+      ;B[ld]BL[30]OB[1]
+      ;W[le]WL[30]OW[3]
+      ;B[ai]BL[30]OB[1]
+      ;W[ah]WL[30]OW[3]
+      ;B[aj]BL[30]OB[1]
+      ;W[cj]WL[30]OW[3]
+      ;B[ck]BL[30]OB[1]
+      ;W[dh]WL[30]OW[3]
+      ;B[lh]BL[30]OB[1]
+      ;W[kh]WL[30]OW[3]
+      ;B[ki]BL[30]OB[1]
+      ;W[sd]WL[30]OW[3]
+      ;B[gl]BL[30]OB[1]
+      ;W[ms]WL[30]OW[3]
+      ;B[oo]BL[30]OB[1]
+      ;W[no]WL[30]OW[3]
+      ;B[om]BL[30]OB[1]
+      ;W[nm]WL[30]OW[3]
+      ;B[jn]BL[30]OB[1]
+      ;W[kn]WL[30]OW[3]
+      ;B[lk]BL[30]OB[1]
+      ;W[ns]WL[30]OW[3]
+      ;B[os]BL[30]OB[1]
+      ;W[il]WL[30]OW[3]
+      ;B[em]BL[30]OB[1]
+      ;W[fm]WL[30]OW[3]
+      ;B[kd]BL[30]OB[1]
+      ;W[ls]WL[30]OW[3]
+      ;B[ks]BL[30]OB[1]
+      ;W[fl]WL[30]OW[3]
+      ;B[fk]BL[30]OB[1]
+      ;W[on]WL[30]OW[3]
+      ;B[pn]BL[30]OB[1]
+      ;W[df]WL[30]OW[3]
+      ;B[hk]BL[30]OB[1]
+      ;W[dm]WL[30]OW[3]
+      ;B[dk]BL[30]OB[1]
+      ;W[qj]WL[30]OW[3]
+      ;B[]BL[30]OB[1]
+      ;W[]WL[30]OW[3]TW[aa][ba][ca][da][ea][fa][ga][ia][ja][la][ma][na][oa][pa][qa][ra][sa][ab][bb][cb][db][eb][hb][nb][pb][qb][rb][sb][ac][cc][sc][ad][cd][ae][ce][af][bf][kf][ag][bh][ch][ci][rk][sk][ml][nl][sl][hm][lm][mm][cn][gn][ln][mn][ao][bo][co][do][fo][lo][mo][ap][bp][cp][mp][aq][bq][cq][dq][ar][br][dr][as][bs][cs]TB[jd][ge][ie][oe][pe][gf][hf][nf][pf][qf][rf][sf][fg][gg][hg][og][pg][qg][rg][sg][fh][gh][hh][ih][mh][nh][qh][fi][gi][hi][ii][ji][mi][ni][oi][pi][fj][gj][ij][jj][kj][lj][ak][bk][po][pp][gq][hq][iq][pq][qq][rq][sq][gr][ir][pr][qr][rr][sr][gs][hs][is][js][ps][qs][rs][ss]C[Koons \\\\[?\\\\]: thanks
+AaronP \\\\[2d?\\\\]: thanks for the game
+AaronP \\\\[2d?\\\\]: i think you could have saved the upper left
+]
+    )
+    (
+      ;B[fb]
+      ;W[fd]
+      ;B[fe]
+      (
+        ;W[ed]
+        ;B[eb]
+        ;W[dg]
+        ;B[ic]C[Koons \\\\[?\\\\]: you could ko, i think
+]
+      )
+      (
+        ;W[ee]C[Koons \\\\[?\\\\]: but i hoped to use the thickness
+AaronP \\\\[2d?\\\\]: hmm yeah
+AaronP \\\\[2d?\\\\]: hard to say what's right
+Koons \\\\[?\\\\]: i messed up the right side
+Koons \\\\[?\\\\]: chimin will tell us :)\\\\
+Koons \\\\[?\\\\]: thanks again
+AaronP \\\\[2d?\\\\]: you too :)
+]
+      )
+    )
+  )
+  (
+    ;B[aa]
+    ;AEAW[aa]
+  )
+)"
+`;
+
+exports[`Game context snapshots should perform sequence 8 correctly for sgf3 1`] = `
+"
+Players:
+Black: Peridothaze ?
+White: AaronP 2k
+
+Captures:
+Black: 0
+White: 0
+
+Board:
+w . . . . . . . . 
+. . w b w b . . . 
+. . b b w w b b . 
+. . . . . . w b . 
+. . . . . . . . . 
+. . . . . . . . . 
+. . b . . . b . . 
+. . . . . . . . . 
+. . . . . . . . . 
+"
+`;
+
+exports[`Game context snapshots should perform sequence 8 correctly for sgf3 2`] = `
+"(
+  ;FF[4]CA[UTF-8]GM[1]DT[2016-04-06]PC[OGS: https://online-go.com/game/review/133783]PB[Peridothaze]PW[AaronP]BR[?]WR[2k]CP[online-go.com]TM[600]OT[5x30 byo-yomi]RE[W+T]SZ[9]KM[0.5]RU[japanese]HA[4]AB[cc][gg][gc][cg]AP[0.0.1:Kifu.io]
+  ;W[gd]
+  (
+    ;B[hd]
+    ;W[fc]
+    ;B[hc]
+    ;W[cb]
+    (
+      ;B[fb]
+      ;W[ec]
+      ;B[db]
+      ;W[eb]
+      ;B[dc]
+      (
+        ;W[ge]
+        ;B[he]
+        ;W[bf]
+        ;B[cf]
+        ;W[bd]
+        ;B[bc]
+        ;W[bg]
+        (
+          ;B[be]
+          ;W[ce]
+          ;B[dd]
+          ;W[ee]
+          ;B[de]
+          ;W[ae]
+          ;B[df]
+          ;W[fg]
+          ;B[ea]
+          ;W[gf]
+          ;B[hf]
+          ;W[gh]
+          ;B[hg]
+          ;W[eh]
+          (
+            ;B[ch]
+            ;W[bh]
+            ;B[ff]
+            ;W[ef]
+            ;B[fd]
+            ;W[fe]
+            ;B[ed]
+            ;W[bi]
+            ;B[cd]
+            ;W[be]
+            ;B[hh]
+            ;W[gi]
+            ;B[ac]
+            ;W[hi]
+            ;B[di]
+            ;W[ei]
+            ;B[dg]
+            ;W[eg]
+            ;B[ih]
+            ;W[dh]
+            ;B[ci]
+            ;W[ii]
+            ;B[ad]
+          )
+          (
+            ;B[bh]
+            (
+              ;W[ag]
+              ;B[cd]
+            )
+            (
+              ;W[cd]
+              ;B[ag]
+            )
+          )
+        )
+        (
+          ;B[ce]
+          (
+            ;W[cd]
+            ;B[dd]
+            ;W[de]
+            ;B[be]
+          )
+          (
+            ;W[ch]
+            ;B[dh]
+            ;W[bh]
+            ;B[ci]
+            ;W[bi]
+            ;B[be]
+            ;W[af]
+          )
+        )
+      )
+      (
+        ;W[aa]
+        ;ABAW[aa]
+      )
+    )
+    (
+      ;B[db]
+    )
+  )
+  (
+    ;B[fd]
+  )
+  (
+    ;B[hc]
+  )
+  (
+    ;B[fc]
+  )
+)"
+`;
+
 exports[`Game context snapshots should render 50 moves from the end correctly for sgf1 1`] = `
 "
 Players:

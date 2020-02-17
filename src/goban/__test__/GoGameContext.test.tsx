@@ -323,6 +323,8 @@ describe('Game context snapshots', () => {
       ['add-move', 'kn'],
       ['add-w', 'oo'],
     ],
+    // spot-check for erasing a point from a move node
+    ['forward10', ['add-move', 'aa'], ['add-b', 'aa'], ['add-w', 'aa']],
   ];
 
   const cases = sequences
