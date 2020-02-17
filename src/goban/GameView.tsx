@@ -212,7 +212,7 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
               />
             </MediaQueryView>
           </LandscapeView>
-          <MediaQueryView minWidth={1000}>
+          <MediaQueryView minWidth={1001}>
             <GameViewInfo>
               <EditModeFab />
               <EditingToolsSpeedDial direction={directionFromJs('DOWN')} />

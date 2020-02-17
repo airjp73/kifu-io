@@ -5,7 +5,7 @@ const HideInSmallLandscape: React.FC = ({ children }) => (
   <>
     <PortraitView>{children}</PortraitView>
     <LandscapeView>
-      <MediaQueryView minWidth={1000}>{children}</MediaQueryView>
+      <MediaQueryView minWidth={1001}>{children}</MediaQueryView>
     </LandscapeView>
   </>
 );
