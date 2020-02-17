@@ -13,11 +13,14 @@ import useFullScreen from 'hooks/useFullScreen';
 import AutoAdvanceControl from './AutoAdvanceControl';
 import GameAnnouncements from './GameAnnouncements';
 import SgfDownload from 'components/SgfDownload';
+import { make as EditingProvider } from 'reason/goban/editing/EditingProvider.gen';
+import { make as EditingToolsSpeedDial } from 'reason/pages/view/EditingToolsSpeedDial.gen';
 import GobanKeyNavigation from './GobanKeyNavigation';
-import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
+import MediaQueryView, {
+  LandscapeView,
+  PortraitView,
+} from 'components/MediaQueryView';
 import FabGameInfo from './FabGameInfo';
-import BackButton from './BackButton';
-import ForwardButton from './ForwardButton';
 import HideInSmallLandscape from 'components/HideInSmallLandscape';
 import WhiteCaptures from './WhiteCaptures';
 import BlackCaptures from './BlackCaptures';
@@ -29,6 +32,7 @@ import EditModeFab from './EditModeFab';
 import { ToastContainer } from 'react-toastify';
 import MoveLinkButton from 'pages/view/MoveLinkButton';
 import LinkedMoveHandler from 'pages/view/LinkedMoveHandler';
+import { directionFromJs } from 'reason/common/SpeedDial.bs';
 
 interface GameViewProps {
   sgf: string;
@@ -38,6 +42,12 @@ const GameViewCaptures = styled(CaptureCounts)``;
 const GameViewControlButtons = styled(GameControlButtons)``;
 const GameViewInfo = styled(GameInfo)``;
 const GameViewGoban = styled(Goban)``;
+const HeaderSaveButton = styled.div`
+  position: fixed;
+  top: 2.5rem; /* headerHeight - 1.5rem */
+  right: 1rem;
+  z-index: 1000;
+`;
 
 const GameViewContainer = styled.div`
   display: grid;
@@ -75,10 +85,10 @@ const GameViewContainer = styled.div`
   ${smallLandscapeMedia} {
     width: 100%;
     grid-template-areas:
-      '. board black black'
-      '. board white white'
-      'backButton board forwardButton info';
-    grid-template-columns: min-content 1fr min-content min-content;
+      'black board buttons'
+      'white board buttons'
+      'info board buttons';
+    grid-template-columns: min-content 1fr min-content;
     grid-template-rows: min-content min-content 1fr;
     box-sizing: border-box;
   }
@@ -100,6 +110,29 @@ const GameViewContainer = styled.div`
   }
 `;
 
+type OverflowSpeedDialProps = { sgf: string } & Pick<
+  React.ComponentProps<typeof SpeedDial>,
+  'direction' | 'flowDirection'
+>;
+const OverflowSpeedDial: React.FC<OverflowSpeedDialProps> = ({
+  direction,
+  sgf,
+  children,
+  flowDirection,
+}) => {
+  return (
+    <SpeedDial direction={direction} flowDirection={flowDirection}>
+      <MoveLinkButton />
+      <SpeedDialOption label="Download">
+        <SgfDownload sgfContents={sgf}>
+          <Download height="1rem" width="1rem" />
+        </SgfDownload>
+      </SpeedDialOption>
+      {children}
+    </SpeedDial>
+  );
+};
+
 const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [gameTree] = useSgf(sgf);
   const { height, width } = useWindowDimensions();
@@ -108,6 +141,9 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
   const [isFullScreen, goFullScreen, exitFullScreen] = useFullScreen(
     gameViewRef
   );
+
+  const speedDialDirection = isLandscape ? 'RIGHT' : 'UP';
+  const speedDialFlowDirection = isLandscape ? 'column' : undefined;
 
   const fullScreenOption = (
     <SpeedDialOption
@@ -129,83 +165,71 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
         containerId="game-view"
       />
       <GoGameContextProvider gameTree={gameTree}>
-        <GobanKeyNavigation />
-        <LinkedMoveHandler />
-        <HideInSmallLandscape>
-          <GameViewCaptures />
-        </HideInSmallLandscape>
-        <GameViewGoban>
-          <GameAnnouncements />
-        </GameViewGoban>
-        <LandscapeView>
+        <EditingProvider>
+          <PortraitView>
+            <HeaderSaveButton>
+              <EditModeFab />
+            </HeaderSaveButton>
+          </PortraitView>
+          <GobanKeyNavigation />
+          <LinkedMoveHandler />
+          <HideInSmallLandscape>
+            <GameViewCaptures />
+          </HideInSmallLandscape>
+          <GameViewGoban>
+            <GameAnnouncements />
+          </GameViewGoban>
           <MediaQueryView maxWidth={1000}>
-            <BackButton
+            <FabGameInfo
               css={css`
-                grid-area: backButton;
-                width: min-content;
+                grid-area: info;
               `}
-            />
+            >
+              <LandscapeView>
+                <EditModeFab />
+              </LandscapeView>
+              <EditingToolsSpeedDial
+                flowDirection={speedDialFlowDirection}
+                direction={directionFromJs(speedDialDirection)}
+              />
+              <OverflowSpeedDial
+                direction={speedDialDirection}
+                sgf={sgf}
+                flowDirection={speedDialFlowDirection}
+              >
+                {fullScreenOption}
+              </OverflowSpeedDial>
+            </FabGameInfo>
           </MediaQueryView>
-        </LandscapeView>
-        <MediaQueryView maxWidth={1000}>
-          <FabGameInfo
-            css={css`
-              grid-area: info;
-            `}
-          >
-            <EditModeFab />
-            <SpeedDial direction={isLandscape ? 'LEFT' : 'UP'}>
-              <MoveLinkButton />
-              <SpeedDialOption label="Download">
-                <SgfDownload sgfContents={sgf}>
-                  <Download height="1rem" width="1rem" />
-                </SgfDownload>
-              </SpeedDialOption>
-              {fullScreenOption}
-            </SpeedDial>
-          </FabGameInfo>
-        </MediaQueryView>
-        <LandscapeView>
-          <MediaQueryView maxWidth={1000}>
-            <BlackCaptures
-              css={css`
-                grid-area: black;
-                justify-content: flex-start;
-              `}
-            />
-            <WhiteCaptures
-              css={css`
-                grid-area: white;
-                justify-content: flex-start;
-              `}
-            />
-            <ForwardButton
-              css={css`
-                grid-area: forwardButton;
-                width: min-content;
-              `}
-            />
+          <LandscapeView>
+            <MediaQueryView maxWidth={1000}>
+              <BlackCaptures
+                css={css`
+                  grid-area: black;
+                  justify-content: flex-start;
+                `}
+              />
+              <WhiteCaptures
+                css={css`
+                  grid-area: white;
+                  justify-content: flex-start;
+                `}
+              />
+            </MediaQueryView>
+          </LandscapeView>
+          <MediaQueryView minWidth={1001}>
+            <GameViewInfo>
+              <EditModeFab />
+              <EditingToolsSpeedDial direction={directionFromJs('DOWN')} />
+              <OverflowSpeedDial direction="DOWN" sgf={sgf}>
+                {fullScreenOption}
+              </OverflowSpeedDial>
+            </GameViewInfo>
           </MediaQueryView>
-        </LandscapeView>
-        <MediaQueryView minWidth={1000}>
-          <GameViewInfo>
-            <EditModeFab />
-            <SpeedDial direction="DOWN">
-              <MoveLinkButton />
-              <SpeedDialOption label="Download">
-                <SgfDownload sgfContents={sgf}>
-                  <Download height="1rem" width="1rem" />
-                </SgfDownload>
-              </SpeedDialOption>
-              {fullScreenOption}
-            </SpeedDial>
-          </GameViewInfo>
-        </MediaQueryView>
-        <HideInSmallLandscape>
           <GameViewControlButtons>
             <AutoAdvanceControl />
           </GameViewControlButtons>
-        </HideInSmallLandscape>
+        </EditingProvider>
       </GoGameContextProvider>
     </GameViewContainer>
   );

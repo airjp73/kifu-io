@@ -1,5 +1,6 @@
 {
   "name": "kifu-io",
+  "reason": { "react-jsx": 3 },
   "sources": [
     {
       "dir": "src/reason",
@@ -19,7 +20,9 @@
     "language": "typescript",
     "shims": {
       "ReasonPervasives": "ReasonPervasives",
-      "Js": "Js"
+      "Js": "Js",
+      "ReactEvent": "ReactEvent"
     }
-  }
+  },
+  "bs-dependencies": ["reason-react"]
 }

@@ -1,4 +1,3 @@
-// TODO: Figure out how to make Jest okay with es6 stuff
 [@gentype]
 type captureCounts = {
   b: int,
@@ -19,153 +18,153 @@ let updateCaptureCount =
   };
 };
 
-// This stuff might be useful later
-/*
- type stoneColor =
-   | Black
-   | White;
+[@gentype]
+type boardState = Js.Dict.t(string);
+// TODO: make this right
+// type boardState = Js.Dict.t(GobanVariants.stoneColor);
 
- type gameStateAction =
-   | Capture(list(string), stoneColor)
-   | Init
-   | PopHistory
-   | PushHistory
-   | SetMove
-   | SetNode
-   | SetPoint
-   | SetProperty
-   | StartEditing
-   | SgfCopied
-   | AddNode
-   | DeleteBranch;
+[@gentype]
+type playedOnDates = Js.Dict.t(Js.Dict.t(list(int)));
 
- [@gentype]
- type boardState = Js.Dict.t(stoneColor);
+[@gentype]
+type showFor =
+  | NEXT_MOVE
+  | CURRENT_MOVE;
 
- [@gentype]
- type playedOnDates = Js.Dict.t(Js.Dict.t(list(int)));
+[@gentype]
+type application = {
+  name: string,
+  version: string,
+};
 
- [@gentype]
- type showFor =
-   | NextMove
-   | CurrentMove;
+[@gentype]
+type variationDisplay = {
+  show: bool,
+  showFor,
+};
 
- [@gentype]
- type application = {
-   name: string,
-   version: string,
- };
+[@gentype]
+type gameStateProperties = {
+  annotatorName: option(string),
+  application: option(application),
+  boardSize: option((int, int)),
+  copyright: option(string),
+  eventName: option(string),
+  gameComment: option(string),
+  gameName: option(string),
+  opening: option(string),
+  overtime: option(string),
+  placePlayed: option(string),
+  playedOn: option(playedOnDates),
+  playerBlack: option(string),
+  playerWhite: option(string),
+  rankBlack: option(string),
+  rankWhite: option(string),
+  result: option(string),
+  round: option(string),
+  ruleSet: option(string),
+  source: option(string),
+  teamBlack: option(string),
+  teamWhite: option(string),
+  timeLimit: option(int),
+  userEnteringGameRecord: option(string),
+  variationDisplay: option(variationDisplay),
+};
 
- [@gentype]
- type variationDisplay = {
-   show: bool,
-   showFor,
- };
+// [@gentype]
+// type favoredPlayer =
+//   | Black
+//   | White
+//   | Even
+//   | Unclear;
 
- [@gentype]
- type gameStateProperties = {
-   annotatorName: option(string),
-   application: option(application),
-   boardSize: option((int, int)),
-   copyright: option(string),
-   eventName: option(string),
-   gameComment: option(string),
-   gameName: option(string),
-   opening: option(string),
-   overtime: option(string),
-   placePlayed: option(string),
-   playedOn: option(playedOnDates),
-   playerBlack: option(string),
-   playerWhite: option(string),
-   rankBlack: option(string),
-   rankWhite: option(string),
-   result: option(string),
-   round: option(string),
-   ruleSet: option(string),
-   source: option(string),
-   teamBlack: option(string),
-   teamWhite: option(string),
-   timeLimit: option(int),
-   userEnteringGameRecord: option(string),
-   variationDisplay: option(variationDisplay),
- };
+[@gentype]
+type positionStatus = {
+  // favoredPlayer,
+  favoredPlayer: string,
+  magnitude: int,
+};
 
- [@gentype]
- type favoredPlayer =
-   | Black
-   | White
-   | Even
-   | Unclear;
+// [@gentype]
+// type moveQualityType =
+//   | Bad
+//   | Doubtful
+//   | Interesting
+//   | Tesuji;
 
- [@gentype]
- type positionStatus = {
-   favoredPlayer,
-   magnitude: int,
- };
+[@gentype]
+type moveQuality = {
+  // quality: moveQualityType,
+  quality: string,
+  magnitude: option(int),
+};
 
- [@gentype]
- type moveQualityType =
-   | Bad
-   | Doubtful
-   | Interesting
-   | Tesuji;
+[@gentype]
+type label = {
+  point: string,
+  label: string,
+};
 
- [@gentype]
- type moveQuality = {
-   quality: moveQualityType,
-   magnitude: option(int),
- };
+[@gentype]
+type moveState = {
+  circles: list(string),
+  comment: option(string),
+  estimatedScore: option(int),
+  hotspot: option(bool),
+  lines: list((string, string)),
+  moveQuality: option(moveQuality),
+  name: option(string),
+  // TODO: make this right
+  // playerToPlay: option(GobanVariants.stoneColor),
+  playerToPlay: option(string),
+  positionStatus: option(positionStatus),
+  squares: list(string),
+  triangles: list(string),
+  xMarks: list(string),
+  labels: list(label),
+};
 
- [@gentype]
- type label = {
-   point: string,
-   label: string,
- };
+[@gentype]
+type nodeProperties = option(Js.Dict.t(array(string)));
 
- [@gentype]
- type moveState = {
-   circles: list(string),
-   comment: option(string),
-   estimatedScore: option(int),
-   hotspot: option(bool),
-   lines: list((string, string)),
-   moveQuality: option(moveQuality),
-   name: option(string),
-   playerToPlay: option(stoneColor),
-   positionStatus: option(positionStatus),
-   squares: list(string),
-   triangles: list(string),
-   xMarks: list(string),
-   labels: list(label),
- };
+[@gentype]
+type gameTreeNode = {
+  id: string,
+  parent: option(string),
+  children: option(list(string)),
+  properties: nodeProperties,
+  moveNumber: option(int),
+};
 
- [@gentype]
- type gameTreeNode = {
-   id: string,
-   parent: option(string),
-   children: option(list(string)),
-   properties: option(Js.Dict.t(list(string))),
-   moveNumber: option(int),
- };
+[@gentype]
+type gameTree = {
+  rootNode: string,
+  nodes: Js.Dict.t(gameTreeNode),
+};
 
- [@gentype]
- type gameTree = {
-   rootNode: string,
-   nodes: Js.Dict.t(gameTreeNode),
- };
+[@gentype]
+type gameState = {
+  properties: gameStateProperties,
+  boardState,
+  node: string,
+  moveState,
+  captureCounts,
+};
 
- type gameStateWithHistory(gameState) = {
-   history: list(gameState),
-   gameTree: gameTree,
-   editMode: bool
+type gameStateWithHistory = {
+  properties: gameStateProperties,
+  boardState,
+  node: string,
+  moveState,
+  captureCounts,
+  history: array(gameState),
+  gameTree,
+  unsavedChanges: bool,
+};
 
- [@gentype]
- type gameState = {
-   properties: gameStateProperties,
-   boardState,
-   node: string,
-   moveState,
-   captureCounts,
- };
-
- */
+[@gentype]
+let addToNullableArray = (point: string, prop: option(array(string))) =>
+  switch (prop) {
+  | None => [|point|]
+  | Some(arr) => Array.concat([arr, [|point|]])
+  };

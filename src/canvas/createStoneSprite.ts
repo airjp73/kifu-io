@@ -90,3 +90,35 @@ export function calculateStonePadding(radius: number) {
 }
 
 export default createStoneSprite;
+
+export const getStoneSize = (stone: HTMLCanvasElement) => {
+  const width = stone.style.width;
+  return parseInt(width.substr(0, width.length - 2));
+};
+
+export const createDoubleStone: StoneSpriteFactory = (
+  radius: number,
+  canvas: HTMLCanvasElement = document.createElement('canvas')
+) => {
+  const stoneRadius = radius * 0.75;
+  const padding = calculateStonePadding(stoneRadius) / 4;
+  const black = createBlackStone(stoneRadius);
+  const white = createWhiteStone(stoneRadius);
+
+  const length = (stoneRadius + padding) * 5;
+  setCanvasDimensionsWithCorrectScaling(canvas, length, length);
+
+  const ctx = canvas.getContext('2d');
+  const stoneSize = getStoneSize(black);
+
+  ctx.drawImage(black, padding, padding, stoneSize, stoneSize);
+  ctx.drawImage(
+    white,
+    radius + padding,
+    radius / 2 + padding,
+    stoneSize,
+    stoneSize
+  );
+
+  return canvas;
+};

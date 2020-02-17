@@ -1,20 +1,22 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import CanvasLayer from './canvas/CanvasLayer';
 import useGobanLayer from './useGobanLayer';
 import { useGoGameContext } from './GoGameContext';
 import useStoneSize from './useStoneSize';
 import calculateStoneCoord from './calculateStoneCoord';
 import xyToPoint from './xyToPoint';
-import { addMove } from './gameTreeActions';
+import { addMove, editPoint } from './gameTreeActions';
+import { useEditingContext } from 'reason/goban/editing/EditingContext.gen';
+import { useMousePosition } from 'reason/goban/GobanMousePosition.gen';
+import {
+  stoneColorToJs,
+  stoneColorFromJs,
+} from 'reason/goban/GobanVariants.bs';
+import { getCurrentStone } from 'reason/pages/view/EditingLogic.gen';
 
 interface EditingLayerProps {
   blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
   whiteStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
-}
-
-interface MouseCoords {
-  x: number;
-  y: number;
 }
 
 const EditingLayer: React.FC<EditingLayerProps> = ({
@@ -31,8 +33,19 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
   } = useGobanLayer();
   const { gameState, dispatch } = useGoGameContext();
   const { boardState, moveState, properties } = gameState;
+  const [{ tool }] = useEditingContext();
+  const [mouseCoords, mouseCoordProps] = useMousePosition(
+    coordToPointIndex,
+    ({ x, y }) => {
+      const point = xyToPoint([x, y]);
+      if (tool === 'AddMove') {
+        dispatch(addMove(point));
+      } else if (tool.tag === 'AddStone') {
+        dispatch(editPoint(point, stoneColorToJs(tool.value)));
+      }
+    }
+  );
   const boardSize = properties.boardSize ?? [19, 19];
-  const [mouseCoords, setMouseCoords] = useState<MouseCoords | null>(null);
 
   const blackStone = useMemo(() => blackStoneFactory(stoneRadius), [
     stoneRadius,
@@ -42,33 +55,17 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     stoneRadius,
     whiteStoneFactory,
   ]);
-  const currentStone =
-    moveState.playerToPlay && moveState.playerToPlay === 'w'
-      ? whiteStone
-      : blackStone;
+  const currentStone = getCurrentStone(
+    moveState.playerToPlay && stoneColorFromJs(moveState.playerToPlay),
+    tool,
+    blackStone,
+    whiteStone
+  );
   const stoneSize = useStoneSize(blackStone);
 
-  const handleMouseMove = (
-    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-  ) => {
-    const x = coordToPointIndex(event.nativeEvent.offsetX);
-    const y = coordToPointIndex(event.nativeEvent.offsetY);
-    if (!mouseCoords || x !== mouseCoords.x || y !== mouseCoords.y) {
-      setMouseCoords({ x, y });
-    }
-  };
-
-  const handleClick = (
-    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-  ) => {
-    const x = coordToPointIndex(event.nativeEvent.offsetX);
-    const y = coordToPointIndex(event.nativeEvent.offsetY);
-    dispatch(addMove(xyToPoint([x, y])));
-  };
-
-  const handleMouseLeave = () => setMouseCoords(null);
-
   const shouldDraw =
+    height &&
+    width &&
     mouseCoords &&
     mouseCoords.x >= 0 &&
     mouseCoords.x < boardSize[0] &&
@@ -109,9 +106,7 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
 
   return (
     <CanvasLayer
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
+      {...mouseCoordProps}
       ref={canvasRef}
       height={height}
       width={width}

@@ -60,6 +60,7 @@ function stringifyProperties(props: NodeProperties): string {
     values.map(escapeAndWrapValue).join('');
 
   return Object.entries(props)
+    .filter(([propName, values]) => !!values)
     .map(([propName, values]) => `${propName}${stringifyValues(values)}`)
     .join('');
 }

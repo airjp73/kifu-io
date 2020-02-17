@@ -1,26 +1,27 @@
 import React from 'react';
-import { Edit, Save } from 'react-feather';
+import { Save } from 'react-feather';
 import { toast } from 'react-toastify';
+import { motion } from 'framer-motion';
 import Fab from 'components/Fab';
 import { useGoGameContext } from './GoGameContext';
-import { startEditing, sgfCopied } from './actions';
+import { sgfCopied } from './actions';
 import { Prompt, useHistory } from 'react-router-dom';
 import { Location } from 'history';
 import createSgfFromGameTree from './parseSgf/createSgfFromGameTree';
 import uploadSgf from 'forms/uploadSgf';
 import useCurrentUser from 'hooks/useCurrentUser';
 
+const MotionFab = motion.custom(Fab);
+
 type LocationState = { afterSave: boolean };
 
 const EditModeFab: React.FC = () => {
   const {
-    gameState: { editMode, gameTree },
+    gameState: { unsavedChanges, gameTree },
     dispatch,
   } = useGoGameContext();
   const history = useHistory<LocationState>();
   const [currentUser] = useCurrentUser();
-
-  const handleEdit = () => dispatch(startEditing());
 
   const handleSave = async () => {
     const sgf = createSgfFromGameTree(gameTree);
@@ -34,18 +35,26 @@ const EditModeFab: React.FC = () => {
     }
   };
 
+  if (!unsavedChanges) return null;
+
   return (
     <>
       <Prompt
-        when={editMode}
+        when={unsavedChanges}
         message={(location: Location<LocationState>) =>
           location.state?.afterSave ||
           'You have unsaved changes, are you sure you want to leave?'
         }
       />
-      <Fab highlighted={editMode} onClick={editMode ? handleSave : handleEdit}>
-        {editMode ? <Save /> : <Edit />}
-      </Fab>
+      <MotionFab
+        highlighted
+        onClick={handleSave}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: 'tween', duration: 0.1 }}
+      >
+        <Save />
+      </MotionFab>
     </>
   );
 };

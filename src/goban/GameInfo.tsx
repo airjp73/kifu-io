@@ -2,8 +2,8 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import 'styled-components/macro';
 import { useGoGameContext } from 'goban/GoGameContext';
-import { boxShadowLow, portraitMedia, landscapeMedia } from 'style';
-import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
+import { boxShadowLow, tallMedia, shortMedia } from 'style';
+import MediaQueryView from 'components/MediaQueryView';
 import GameTreeView from 'goban/GameTreeView';
 import GameProperties from 'goban/GameProperties';
 import { MessageSquare, Info, GitBranch } from 'react-feather';
@@ -24,27 +24,27 @@ const GameInfoWrapper = styled.div`
   margin: 0.5rem;
   box-shadow: ${boxShadowLow};
   border-radius: 5px;
+  overflow: hidden;
 
   > div {
     background-color: white;
     overflow: hidden;
+    height: 100%;
+    border-radius: 5px;
+    display: grid;
   }
 
-  ${landscapeMedia} {
+  ${shortMedia} {
     > div {
-      height: 100%;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: 1fr;
     }
   }
 
-  ${portraitMedia} {
+  ${tallMedia} {
     > div {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      left: 0;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
     }
   }
 `;
@@ -79,7 +79,7 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({
               label="Comments"
               primary={!!gameState.moveState.comment}
             />
-            <MediaQueryView maxHeight={600}>
+            <MediaQueryView maxHeight={650}>
               <ButtonTab
                 tabName="game-tree"
                 leftIcon={<GitBranch height="1rem" width="1rem" />}
@@ -122,15 +122,9 @@ const GameInfo: React.FunctionComponent<GameInfoProps> = ({
             <TabContent tab="other">{otherTab}</TabContent>
           </TabContentArea>
         </Tabs>
-        <LandscapeView>
-          <MediaQueryView minHeight={600}>
-            <GameTreeView
-              css={`
-                max-height: 70%;
-              `}
-            />
-          </MediaQueryView>
-        </LandscapeView>
+        <MediaQueryView minHeight={651}>
+          <GameTreeView />
+        </MediaQueryView>
       </div>
     </GameInfoWrapper>
   );

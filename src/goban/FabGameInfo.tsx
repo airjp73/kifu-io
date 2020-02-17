@@ -12,12 +12,16 @@ import TabContent from '../components/Tabs/TabContent';
 import FabTab from 'components/Tabs/FabTab';
 import AppearingTabContentArea from 'components/Tabs/AppearingTabContentArea';
 import { portraitMedia, smallLandscapeMedia } from 'style';
+import { LandscapeView, PortraitView } from 'components/MediaQueryView';
 
 interface FabGameInfoProps {
   className?: string;
 }
 
+const TabSection = styled.div``;
+
 const FabTabs = styled.div`
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
 
@@ -29,10 +33,19 @@ const FabTabs = styled.div`
 
   ${smallLandscapeMedia} {
     height: 100%;
-    flex-direction: column;
+    flex-direction: row;
+
+    ${TabSection} {
+      display: flex;
+      flex-direction: column;
+
+      > * + * {
+        margin-top: 1rem;
+      }
+    }
 
     > * + * {
-      margin-top: 1rem;
+      margin-left: 1rem;
     }
   }
 `;
@@ -44,9 +57,17 @@ const GameInfoTabs = styled(Tabs)`
 
 const CloseFab = styled(FabTab)`
   position: absolute;
-  right: -0.5rem;
-  top: -1rem;
   z-index: 1;
+
+  ${portraitMedia} {
+    right: -0.5rem;
+    top: -2rem;
+  }
+
+  ${smallLandscapeMedia} {
+    left: -1.5rem;
+    top: -1.5rem;
+  }
 `;
 
 const GameInfoAppearingArea = styled(AppearingTabContentArea)`
@@ -55,8 +76,8 @@ const GameInfoAppearingArea = styled(AppearingTabContentArea)`
   }
 
   ${smallLandscapeMedia} {
-    top: -25px;
-    left: -400px;
+    top: -50px;
+    right: -250px;
   }
 `;
 
@@ -86,22 +107,34 @@ const FabGameInfo: React.FunctionComponent<FabGameInfoProps> = ({
   const { height, width } = useWindowDimensions();
   const isLandscape = height < width;
 
+  const mainTabs = (
+    <>
+      <FabTab tabName="comments" highlighted={!!gameState.moveState.comment}>
+        <MessageSquare />
+      </FabTab>
+      <FabTab tabName="game-tree" highlighted={gameTreeIsHighlighted}>
+        <GitBranch height="1.5rem" width="1.5rem" />
+      </FabTab>
+      <FabTab tabName="more-info">
+        <Info height="1.5rem" width="1.5rem" />
+      </FabTab>
+    </>
+  );
+
   return (
     <GameInfoTabs className={className}>
       <FabTabs>
-        <FabTab tabName="comments" highlighted={!!gameState.moveState.comment}>
-          <MessageSquare />
-        </FabTab>
-        <FabTab tabName="game-tree" highlighted={gameTreeIsHighlighted}>
-          <GitBranch height="1.5rem" width="1.5rem" />
-        </FabTab>
-        <FabTab tabName="more-info">
-          <Info height="1.5rem" width="1.5rem" />
-        </FabTab>
-        {children}
+        <LandscapeView>
+          <TabSection>{mainTabs}</TabSection>
+          <TabSection>{children}</TabSection>
+        </LandscapeView>
+        <PortraitView>
+          {mainTabs}
+          {children}
+        </PortraitView>
       </FabTabs>
       <GameInfoAppearingArea
-        originX={isLandscape ? 100 : 50}
+        originX={isLandscape ? 0 : 50}
         originY={isLandscape ? 50 : 100}
       >
         <CloseFab tabName={null}>

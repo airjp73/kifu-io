@@ -11,9 +11,9 @@ async function uploadSgf(sgf: string, currentUser?: User): Promise<string> {
   const sgfFile: NewEntity<SgfFile> = {
     contents: sgf,
     uploadTimestamp: firebase.firestore.Timestamp.fromDate(new Date()),
-    userId: currentUser?.uid,
-    userPhotoURL: currentUser?.photoURL ?? undefined,
-    userDisplayName: currentUser?.displayName ?? undefined,
+    userId: currentUser?.uid ?? null,
+    userPhotoURL: currentUser?.photoURL ?? null,
+    userDisplayName: currentUser?.displayName ?? null,
   };
 
   try {

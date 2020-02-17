@@ -28,6 +28,8 @@ export const headerHeight = '4rem';
 export const lightBorder = '1px solid rgba(0, 0, 0, .2)';
 
 export const landscapeMedia = '@media only screen and (orientation: landscape)';
+export const tallMedia = '@media only screen and (min-height: 650px)';
+export const shortMedia = '@media only screen and (max-height: 650px)';
 export const portraitMedia = '@media only screen and (orientation: portrait)';
 export const smallLandscapeMedia = `@media only screen and (orientation: landscape) and (max-width: 1000px)`;
 export const mediumLandscapeMedia = `@media only screen and (orientation: landscape) and (max-width: 1200px)`;

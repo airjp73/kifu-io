@@ -1,5 +1,7 @@
 import { StoneColor } from 'goban/Goban';
 import { GameTree } from './parseSgf/normalizeGameTree';
+import { stoneColor } from 'reason/goban/GobanVariants.gen';
+import stoneColorValue from 'interop/stoneColorValue';
 
 export const CAPTURE = 'CAPTURE';
 export const INIT = 'INIT';
@@ -18,12 +20,14 @@ export interface SetPointAction {
 }
 export const setPoint = (
   points: string[],
-  value: StoneColor | null
-): SetPointAction => ({
-  type: SET_POINT,
-  points,
-  value,
-});
+  color: StoneColor | stoneColor | null
+): SetPointAction => {
+  return {
+    type: SET_POINT,
+    points,
+    value: stoneColorValue(color),
+  };
+};
 
 export interface CaptureAction {
   type: typeof CAPTURE;
@@ -66,11 +70,6 @@ export const init = (gameTree: GameTree): InitAction => ({
   type: INIT,
   payload: gameTree,
 });
-
-export interface StartEditingAction {
-  type: typeof START_EDITING;
-}
-export const startEditing = () => ({ type: START_EDITING });
 
 export interface SgfCopiedAction {
   type: typeof SGF_COPIED;

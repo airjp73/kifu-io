@@ -14,8 +14,6 @@ import {
   PopHistoryAction,
   InitAction,
   INIT,
-  StartEditingAction,
-  START_EDITING,
   SgfCopiedAction,
   SGF_COPIED,
 } from './actions';
@@ -29,13 +27,17 @@ import {
   GameTreeAction,
   DeleteBranchAction,
   DELETE_BRANCH,
+  EditPointAction,
+  EDIT_POINT,
 } from './gameTreeActions';
 import { APP_NAME, APP_VERSION } from './parseSgf/createSgfFromGameTree';
-import { updateCaptureCount } from 'reason/goban/GameState.bs';
+import { updateCaptureCount } from 'reason/goban/GameState.gen';
 import {
   captureCounts,
   defaultCaptureCounts,
+  addToNullableArray,
 } from 'reason/goban/GameState.gen';
+import GameTreeTraverser from './util/GameTreeTraverser';
 
 export type GameStateAction =
   | CaptureAction
@@ -47,18 +49,23 @@ export type GameStateAction =
   | SetPointAction
   | SetPropertyAction
   | GameTreeAction
-  | StartEditingAction
   | SgfCopiedAction
-  | DeleteBranchAction;
+  | DeleteBranchAction
+  | EditPointAction;
 
 export interface BoardState {
   [key: string]: StoneColor | null;
 }
 const setPoints = (state: BoardState, action: SetPointAction) => {
-  const nextState = { ...state };
-  action.points.forEach(point => (nextState[point] = action.value));
-  return nextState;
+  return produce(state, draft => {
+    action.points.forEach(point => {
+      if (action.value) draft[point] = action.value;
+      else delete draft[point];
+    });
+    return draft;
+  });
 };
+
 const boardStateReducer = (
   state: BoardState,
   action: GameStateAction
@@ -167,11 +174,21 @@ const moveStateReducer = (
   }
 };
 
-const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
-  return produce(state, draft => {
-    const parentNodeId = draft.node;
-    const newNodeId = uuid();
+const getNextMoveNumber = (state: GameStateWithHistory) => {
+  let node = new GameTreeTraverser(state.gameTree).get(state.node);
+  while (node && !node.moveNumber) node = node.parent;
+  return (node?.moveNumber ?? 0) + 1;
+};
 
+const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
+  const parentNodeId = state.node;
+  const newNodeId = uuid();
+  const nextMoveNumber = getNextMoveNumber(state);
+  const shouldHaveMoveNumber = Object.keys(properties).some(
+    prop => prop === 'B' || prop === 'W'
+  );
+
+  return produce(state, draft => {
     draft.node = newNodeId;
     draft.gameTree.nodes[parentNodeId].children =
       draft.gameTree.nodes[parentNodeId].children ?? [];
@@ -180,15 +197,15 @@ const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
       id: newNodeId,
       parent: parentNodeId,
       properties,
-      // We have a few dummy nodes at the start
-      moveNumber: draft.history.length - 1,
+      moveNumber: shouldHaveMoveNumber ? nextMoveNumber : null,
     };
-    draft.editMode = true;
+    draft.unsavedChanges = true;
   });
 };
 
 const deleteBranch = (state: GameStateWithHistory, nodeId: string) => {
   return produce(state, draft => {
+    draft.unsavedChanges = true;
     const deletedNode = draft.gameTree.nodes[nodeId];
     const nodes: GameTreeNode[] = [deletedNode];
 
@@ -211,6 +228,47 @@ const deleteBranch = (state: GameStateWithHistory, nodeId: string) => {
   });
 };
 
+const handleEditPoint = (
+  state: GameStateWithHistory,
+  point: string,
+  color: StoneColor
+) => {
+  return produce(state, draft => {
+    draft.unsavedChanges = true;
+    const newColor =
+      draft.boardState[point] === color
+        ? null
+        : (draft.boardState[point] = color);
+    if (newColor) draft.boardState[point] = newColor;
+    else delete draft.boardState[point];
+
+    const currentNode = draft.gameTree.nodes[draft.node];
+    const filterModifiedPoint = (arr?: string[]) =>
+      arr?.filter(val => val !== point);
+
+    const { AB, AW, AE } = currentNode.properties ?? {};
+    const newProps = {
+      AB: filterModifiedPoint(AB),
+      AW: filterModifiedPoint(AW),
+      AE: filterModifiedPoint(AE),
+    };
+
+    switch (newColor) {
+      case 'b':
+        newProps.AB = addToNullableArray(point, AB);
+        break;
+      case 'w':
+        newProps.AW = addToNullableArray(point, AW);
+        break;
+      case null:
+        newProps.AE = addToNullableArray(point, AE);
+        break;
+    }
+
+    currentNode.properties = { ...currentNode.properties, ...newProps };
+  });
+};
+
 export interface GameState {
   properties: GameStateProperties;
   boardState: BoardState;
@@ -221,7 +279,7 @@ export interface GameState {
 export interface GameStateWithHistory extends GameState {
   history: GameState[];
   gameTree: GameTree;
-  editMode: boolean;
+  unsavedChanges: boolean;
 }
 const defaultState: GameStateWithHistory = {
   boardState: {},
@@ -234,7 +292,7 @@ const defaultState: GameStateWithHistory = {
     rootNode: '',
     nodes: {},
   },
-  editMode: false,
+  unsavedChanges: false,
 };
 const gameStateReducer = (
   state: GameStateWithHistory = defaultState,
@@ -253,7 +311,7 @@ const gameStateReducer = (
     case INIT:
       return {
         ...defaultState,
-        editMode: state.editMode,
+        unsavedChanges: state.unsavedChanges,
         gameTree: action.payload,
       };
     case POP_HISTORY:
@@ -277,11 +335,6 @@ const gameStateReducer = (
       return addNode(state, action.payload);
     case DELETE_BRANCH:
       return deleteBranch(state, action.payload);
-    case START_EDITING:
-      return {
-        ...state,
-        editMode: true,
-      };
     case SGF_COPIED:
       return {
         ...state,
@@ -289,7 +342,7 @@ const gameStateReducer = (
           ...properties,
           application: { name: APP_NAME, version: APP_VERSION },
         },
-        editMode: false,
+        unsavedChanges: false,
       };
     case CAPTURE:
       return {
@@ -301,6 +354,8 @@ const gameStateReducer = (
           action.color
         ),
       };
+    case EDIT_POINT:
+      return handleEditPoint(state, action.payload.point, action.payload.color);
     default:
       return {
         ...state,
