@@ -7,7 +7,7 @@
     "start": "bsb -make-world && react-scripts start",
     "test": "bsb -make-world && react-scripts test --transformIgnorePatterns \"/node_modules/^(bs-platform)\"",
     "build": "bsb -make-world && cross-env EXTEND_ESLINT=true react-scripts build",
-    "now-build": "react-scripts build",
+    "now-build": "bsb -make-world && cross-env EXTEND_ESLINT=true react-scripts build",
     "typecheck": "tsc --project tsconfig.json --noEmit --skipLibCheck",
     "test:watch": "npm run test -- --watch",
     "prettier": "prettier --write src/**/*.{ts,tsx}"
