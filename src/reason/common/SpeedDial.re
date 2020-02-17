@@ -1,7 +1,12 @@
 module BaseSpeedDial = {
   [@bs.module "../../components/SpeedDial.tsx"] [@react.component]
   external make:
-    (~direction: option(string), ~children: React.element) => React.element =
+    (
+      ~direction: option(string),
+      ~children: React.element,
+      ~icon: React.element=?
+    ) =>
+    React.element =
     "default";
 };
 
@@ -15,12 +20,12 @@ type direction = [
 
 [@gentype]
 [@react.component]
-let make = (~direction, ~children) => {
+let make = (~direction, ~children, ~icon=?) => {
   let directionStr =
     switch (direction) {
     | Some(dir) => Some(directionToJs(dir))
     | None => None
     };
 
-  <BaseSpeedDial direction=directionStr> children </BaseSpeedDial>;
+  <BaseSpeedDial direction=directionStr ?icon> children </BaseSpeedDial>;
 };

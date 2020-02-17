@@ -9,6 +9,7 @@ import Fab from './Fab';
 
 interface SpeedDialProps {
   direction?: 'UP' | 'DOWN' | 'LEFT';
+  icon?: React.ReactNode;
 }
 
 const directionStyles = {
@@ -39,7 +40,7 @@ const directionStyles = {
   `,
 };
 
-const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
+const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction, icon }) => {
   const isFirstRender = useIsFirstRender();
   const childrenArray = React.Children.toArray(children);
 
@@ -65,7 +66,7 @@ const SpeedDial: React.FC<SpeedDialProps> = ({ children, direction }) => {
       ref={containerRef}
     >
       <Fab onClick={() => setOpen(prevOpen => !prevOpen)}>
-        <MoreHorizontal height="1.5rem" width="1.5rem" />
+        {icon || <MoreHorizontal height="1.5rem" width="1.5rem" />}
       </Fab>
 
       <div
