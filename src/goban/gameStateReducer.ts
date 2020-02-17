@@ -19,7 +19,7 @@ import {
   SgfCopiedAction,
   SGF_COPIED,
 } from './actions';
-import { jsFromStoneColor } from 'reason/goban/GobanVariants.bs';
+import { stoneColorToJs } from 'reason/goban/GobanVariants.bs';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
@@ -38,6 +38,7 @@ import { updateCaptureCount } from 'reason/goban/GameState.gen';
 import {
   captureCounts,
   defaultCaptureCounts,
+  addToNullableArray,
 } from 'reason/goban/GameState.gen';
 import GameTreeTraverser from './util/GameTreeTraverser';
 
@@ -237,25 +238,30 @@ const handleEditPoint = (
         : (draft.boardState[point] = color);
     draft.boardState[point] = newColor;
 
-    const currentNode = state.gameTree.nodes[state.node];
+    const currentNode = draft.gameTree.nodes[draft.node];
     const filterModifiedPoint = (arr?: string[]) =>
       arr?.filter(val => val !== point);
-    const { B, W, AE } = currentNode.properties ?? {};
-    filterModifiedPoint(B);
-    filterModifiedPoint(W);
-    filterModifiedPoint(AE);
 
-    const getProps = () => {
-      switch (newColor) {
-        case 'b':
-          return B;
-        case 'w':
-          return W;
-        case null:
-          return AE;
-      }
+    const { AB, AW, AE } = currentNode.properties ?? {};
+    const newProps = {
+      AB: filterModifiedPoint(AB),
+      AW: filterModifiedPoint(AW),
+      AE: filterModifiedPoint(AE),
     };
-    getProps().push(point);
+
+    switch (newColor) {
+      case 'b':
+        newProps.AB = addToNullableArray(point, AB);
+        break;
+      case 'w':
+        newProps.AW = addToNullableArray(point, AW);
+        break;
+      case null:
+        newProps.AE = addToNullableArray(point, AE);
+        break;
+    }
+
+    currentNode.properties = { ...currentNode.properties, ...newProps };
   });
 };
 
@@ -350,11 +356,7 @@ const gameStateReducer = (
         ),
       };
     case EDIT_POINT:
-      return handleEditPoint(
-        state,
-        action.payload.point,
-        jsFromStoneColor(action.payload.color)
-      );
+      return handleEditPoint(state, action.payload.point, action.payload.color);
     default:
       return {
         ...state,

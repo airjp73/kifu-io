@@ -125,11 +125,14 @@ type moveState = {
 };
 
 [@gentype]
+type nodeProperties = option(Js.Dict.t(array(string)));
+
+[@gentype]
 type gameTreeNode = {
   id: string,
   parent: option(string),
   children: option(list(string)),
-  properties: option(Js.Dict.t(list(string))),
+  properties: nodeProperties,
   moveNumber: option(int),
 };
 
@@ -154,15 +157,14 @@ type gameStateWithHistory = {
   node: string,
   moveState,
   captureCounts,
-  history: list(gameState),
+  history: array(gameState),
   gameTree,
   unsavedChanges: bool,
 };
 
 [@gentype]
-let handleEditPoint =
-    (
-      state: gameStateWithHistory,
-      point: string,
-      color: GobanVariants.stoneColor,
-    ) => {};
+let addToNullableArray = (point: string, prop: option(array(string))) =>
+  switch (prop) {
+  | None => [|point|]
+  | Some(arr) => Array.concat([arr, [|point|]])
+  };
