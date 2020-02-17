@@ -16,7 +16,10 @@ import SgfDownload from 'components/SgfDownload';
 import { make as EditingProvider } from 'reason/goban/editing/EditingProvider.gen';
 import { make as EditingToolsSpeedDial } from 'reason/pages/view/EditingToolsSpeedDial.gen';
 import GobanKeyNavigation from './GobanKeyNavigation';
-import MediaQueryView, { LandscapeView } from 'components/MediaQueryView';
+import MediaQueryView, {
+  LandscapeView,
+  PortraitView,
+} from 'components/MediaQueryView';
 import FabGameInfo from './FabGameInfo';
 import HideInSmallLandscape from 'components/HideInSmallLandscape';
 import WhiteCaptures from './WhiteCaptures';
@@ -39,6 +42,12 @@ const GameViewCaptures = styled(CaptureCounts)``;
 const GameViewControlButtons = styled(GameControlButtons)``;
 const GameViewInfo = styled(GameInfo)``;
 const GameViewGoban = styled(Goban)``;
+const HeaderSaveButton = styled.div`
+  position: fixed;
+  top: 2.5rem; /* headerHeight - 1.5rem */
+  right: 1rem;
+  z-index: 1000;
+`;
 
 const GameViewContainer = styled.div`
   display: grid;
@@ -157,6 +166,11 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
       />
       <GoGameContextProvider gameTree={gameTree}>
         <EditingProvider>
+          <PortraitView>
+            <HeaderSaveButton>
+              <EditModeFab />
+            </HeaderSaveButton>
+          </PortraitView>
           <GobanKeyNavigation />
           <LinkedMoveHandler />
           <HideInSmallLandscape>
@@ -171,7 +185,9 @@ const GameView: React.FunctionComponent<GameViewProps> = ({ sgf }) => {
                 grid-area: info;
               `}
             >
-              <EditModeFab />
+              <LandscapeView>
+                <EditModeFab />
+              </LandscapeView>
               <EditingToolsSpeedDial
                 flowDirection={speedDialFlowDirection}
                 direction={directionFromJs(speedDialDirection)}
