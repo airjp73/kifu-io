@@ -3,7 +3,6 @@ import { ThunkAction } from 'hooks/useThunkReducer';
 import { NodeProperties } from './parseSgf/parseSgf';
 import processNodeProperties from './processNode';
 import { pushHistory, setNode, setPoint } from './actions';
-import { StoneColor } from './Goban';
 import { stoneColor } from 'reason/goban/GobanVariants.gen';
 
 export const ADD_NODE = 'game-tree/addNode';
