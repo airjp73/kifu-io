@@ -19,6 +19,7 @@ import {
   SgfCopiedAction,
   SGF_COPIED,
 } from './actions';
+import { jsFromStoneColor } from 'reason/goban/GobanVariants.bs';
 import { SET_PROPERTY, SetPropertyAction } from './propertiesActions';
 import { StoneColor } from 'goban/Goban';
 import { SET_MOVE_STATE, SetMoveStateAction } from './moveStateActions';
@@ -33,14 +34,12 @@ import {
   EDIT_POINT,
 } from './gameTreeActions';
 import { APP_NAME, APP_VERSION } from './parseSgf/createSgfFromGameTree';
-import {
-  updateCaptureCount,
-  handleEditPoint,
-} from 'reason/goban/GameState.gen';
+import { updateCaptureCount } from 'reason/goban/GameState.gen';
 import {
   captureCounts,
   defaultCaptureCounts,
 } from 'reason/goban/GameState.gen';
+import GameTreeTraverser from './util/GameTreeTraverser';
 
 export type GameStateAction =
   | CaptureAction
@@ -173,11 +172,21 @@ const moveStateReducer = (
   }
 };
 
-const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
-  return produce(state, draft => {
-    const parentNodeId = draft.node;
-    const newNodeId = uuid();
+const getNextMoveNumber = (state: GameStateWithHistory) => {
+  let node = new GameTreeTraverser(state.gameTree).get(state.node);
+  while (node && !node.moveNumber) node = node.parent;
+  return (node?.moveNumber ?? 0) + 1;
+};
 
+const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
+  const parentNodeId = state.node;
+  const newNodeId = uuid();
+  const nextMoveNumber = getNextMoveNumber(state);
+  const shouldHaveMoveNumber = Object.keys(properties).some(
+    prop => prop === 'B' || prop === 'W'
+  );
+
+  return produce(state, draft => {
     draft.node = newNodeId;
     draft.gameTree.nodes[parentNodeId].children =
       draft.gameTree.nodes[parentNodeId].children ?? [];
@@ -186,8 +195,7 @@ const addNode = (state: GameStateWithHistory, properties: NodeProperties) => {
       id: newNodeId,
       parent: parentNodeId,
       properties,
-      // We have a few dummy nodes at the start
-      moveNumber: draft.history.length - 1,
+      moveNumber: shouldHaveMoveNumber ? nextMoveNumber : null,
     };
     draft.unsavedChanges = true;
   });
@@ -214,6 +222,40 @@ const deleteBranch = (state: GameStateWithHistory, nodeId: string) => {
       );
       if (updatedChildren) parent.children = updatedChildren;
     }
+  });
+};
+
+const handleEditPoint = (
+  state: GameStateWithHistory,
+  point: string,
+  color: StoneColor
+) => {
+  return produce(state, draft => {
+    const newColor =
+      draft.boardState[point] === color
+        ? null
+        : (draft.boardState[point] = color);
+    draft.boardState[point] = newColor;
+
+    const currentNode = state.gameTree.nodes[state.node];
+    const filterModifiedPoint = (arr?: string[]) =>
+      arr?.filter(val => val !== point);
+    const { B, W, AE } = currentNode.properties ?? {};
+    filterModifiedPoint(B);
+    filterModifiedPoint(W);
+    filterModifiedPoint(AE);
+
+    const getProps = () => {
+      switch (newColor) {
+        case 'b':
+          return B;
+        case 'w':
+          return W;
+        case null:
+          return AE;
+      }
+    };
+    getProps().push(point);
   });
 };
 
@@ -308,7 +350,11 @@ const gameStateReducer = (
         ),
       };
     case EDIT_POINT:
-      return handleEditPoint(state, action.payload.point, action.payload.color);
+      return handleEditPoint(
+        state,
+        action.payload.point,
+        jsFromStoneColor(action.payload.color)
+      );
     default:
       return {
         ...state,
