@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 import { createWhiteStone } from 'canvas/createStoneSprite';
 import styled from 'styled-components';
 
@@ -12,7 +12,7 @@ export const StoneIconCanvas = styled.canvas`
 
 const WhiteStoneIcon: React.FC<WhiteStoneIconProps> = ({ radius }) => {
   const whiteStoneRef = useRef(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     createWhiteStone(radius, whiteStoneRef.current);
   }, [radius]);
 

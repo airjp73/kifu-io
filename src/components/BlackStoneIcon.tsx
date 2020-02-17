@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 import { createBlackStone } from 'canvas/createStoneSprite';
 import styled from 'styled-components';
 
@@ -12,7 +12,7 @@ export const StoneIconCanvas = styled.canvas`
 
 const BlackStoneIcon: React.FC<BlackStoneIconProps> = ({ radius }) => {
   const blackStoneRef = useRef(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     createBlackStone(radius, blackStoneRef.current);
   }, [radius]);
 
