@@ -8,8 +8,11 @@ import xyToPoint from './xyToPoint';
 import { addMove, editPoint } from './gameTreeActions';
 import { useEditingContext } from 'reason/goban/editing/EditingContext.gen';
 import { useMousePosition } from 'reason/goban/GobanMousePosition.gen';
-import { setPoint } from './actions';
-import { stoneColorToJs } from 'reason/goban/GobanVariants.bs';
+import {
+  stoneColorToJs,
+  stoneColorFromJs,
+} from 'reason/goban/GobanVariants.bs';
+import { getCurrentStone } from 'reason/pages/view/EditingLogic.gen';
 
 interface EditingLayerProps {
   blackStoneFactory: (stoneRadius: number) => HTMLCanvasElement;
@@ -52,10 +55,12 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
     stoneRadius,
     whiteStoneFactory,
   ]);
-  const currentStone =
-    moveState.playerToPlay && moveState.playerToPlay === 'w'
-      ? whiteStone
-      : blackStone;
+  const currentStone = getCurrentStone(
+    moveState.playerToPlay && stoneColorFromJs(moveState.playerToPlay),
+    tool,
+    blackStone,
+    whiteStone
+  );
   const stoneSize = useStoneSize(blackStone);
 
   const shouldDraw =
