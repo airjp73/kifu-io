@@ -10,3 +10,8 @@ module WhiteStone = {
   [@bs.module "../../components/WhiteStoneIcon.tsx"] [@react.component]
   external make: (~radius: int) => React.element = "default";
 };
+
+module DoubleStone = {
+  [@bs.module "../../components/DoubleStoneIcon.tsx"] [@react.component]
+  external make: (~radius: int) => React.element = "default";
+};

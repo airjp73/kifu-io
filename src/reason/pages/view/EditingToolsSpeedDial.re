@@ -7,7 +7,7 @@ let make = (~direction) => {
     direction={Some(direction)}
     icon={
       switch (state.tool) {
-      | AddMove => <GoIcon width="1.5rem" height="1.5rem" />
+      | AddMove => <GoIcon.DoubleStone radius=13 />
       | AddStone(`Black) => <GoIcon.BlackStone radius=13 />
       | AddStone(`White) => <GoIcon.WhiteStone radius=13 />
       }
