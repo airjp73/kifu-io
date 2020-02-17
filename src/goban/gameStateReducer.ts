@@ -29,6 +29,7 @@ import {
   GameTreeAction,
   DeleteBranchAction,
   DELETE_BRANCH,
+  EditPointAction,
 } from './gameTreeActions';
 import { APP_NAME, APP_VERSION } from './parseSgf/createSgfFromGameTree';
 import { updateCaptureCount } from 'reason/goban/GameState.bs';
@@ -49,7 +50,8 @@ export type GameStateAction =
   | GameTreeAction
   | StartEditingAction
   | SgfCopiedAction
-  | DeleteBranchAction;
+  | DeleteBranchAction
+  | EditPointAction;
 
 export interface BoardState {
   [key: string]: StoneColor | null;

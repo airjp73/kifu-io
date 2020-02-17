@@ -5,7 +5,7 @@ import { useGoGameContext } from './GoGameContext';
 import useStoneSize from './useStoneSize';
 import calculateStoneCoord from './calculateStoneCoord';
 import xyToPoint from './xyToPoint';
-import { addMove } from './gameTreeActions';
+import { addMove, editPoint } from './gameTreeActions';
 import { useEditingContext } from 'reason/goban/editing/EditingContext.gen';
 import { useMousePosition } from 'reason/goban/GobanMousePosition.gen';
 import { setPoint } from './actions';
@@ -37,7 +37,7 @@ const EditingLayer: React.FC<EditingLayerProps> = ({
       if (tool === 'AddMove') {
         dispatch(addMove(point));
       } else if (tool.tag === 'AddStone') {
-        dispatch(setPoint([point], tool.value));
+        dispatch(editPoint(point, tool.value));
       }
     }
   );
